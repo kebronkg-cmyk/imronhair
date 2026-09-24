@@ -1,0 +1,6 @@
+# Abhängigkeiten des Prüfwerkzeugs — werden bei Bedarf neu installiert
+.claude/skills/impeccable/node_modules/
+
+# Prüf-Screenshots. Groß, und bei jedem Lauf neu.
+.impeccable/review/
+schuss-*.png
