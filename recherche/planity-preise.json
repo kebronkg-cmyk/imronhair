@@ -1,0 +1,1095 @@
+{
+ "pasing": {
+  "quelle": "https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen",
+  "gelesen": "2026-09-24",
+  "bewertung": {
+   "globalRating": 5,
+   "ratingDetails": {
+    "ambianceRating": 5,
+    "benefitRating": 5,
+    "hygieneRating": 5,
+    "welcomeRating": 5
+   },
+   "ratingsCount": 5
+  },
+  "kategorien": [
+   {
+    "name": "DAMEN | SCHNITT | STYLING",
+    "sort": 1,
+    "services": [
+     {
+      "name": "Damen Waschen-Schneiden-Fönen - kurz-mittel",
+      "duration": 60,
+      "prices": {
+       "default": 7000
+      },
+      "description": null,
+      "sort": 6
+     },
+     {
+      "name": "Damen - Waschen-Schneiden Fönen- lang",
+      "duration": 75,
+      "prices": {
+       "default": 8000
+      },
+      "description": null,
+      "sort": 8
+     },
+     {
+      "name": "Damen | Waschen-Fönen  - kurz",
+      "duration": 30,
+      "prices": {
+       "default": 3500
+      },
+      "description": null,
+      "sort": 9
+     },
+     {
+      "name": "Damen | Waschen-Fönen- mittel",
+      "duration": 30,
+      "prices": {
+       "default": 4500
+      },
+      "description": null,
+      "sort": 10
+     },
+     {
+      "name": "Damen | Waschen-Fönen - lang",
+      "duration": 45,
+      "prices": {
+       "default": 5000
+      },
+      "description": null,
+      "sort": 11
+     },
+     {
+      "name": "Damen -  Heiße Schere Zusatz Buchung",
+      "duration": 5,
+      "prices": {
+       "default": 1500
+      },
+      "description": null,
+      "sort": 12
+     },
+     {
+      "name": "Damen | | Dauerwelle - Preis je nach länge und Menge",
+      "duration": 100,
+      "prices": {
+       "min": 8000
+      },
+      "description": null,
+      "sort": 13
+     },
+     {
+      "name": "Damen | | Dauerwelle - Preis je nach länge und Menge",
+      "duration": 135,
+      "prices": {
+       "min": 14000
+      },
+      "description": null,
+      "sort": 102
+     }
+    ]
+   },
+   {
+    "name": "DAMEN | GLOSS | TÖNUNGEN",
+    "sort": 2,
+    "services": [
+     {
+      "name": "Damen - Glossing | Fönen | Haarkur - kurz",
+      "duration": 60,
+      "prices": {
+       "min": 7000
+      },
+      "description": null,
+      "sort": 1
+     },
+     {
+      "name": "Damen - Glossing | Fönen| Haarkur - mittel",
+      "duration": 60,
+      "prices": {
+       "default": 8000
+      },
+      "description": null,
+      "sort": 2
+     },
+     {
+      "name": "Damen - Glossing |Fönen | Haarkur - lang",
+      "duration": 60,
+      "prices": {
+       "min": 9000
+      },
+      "description": null,
+      "sort": 3
+     },
+     {
+      "name": "Damen - Glossing |Schneiden | Fönen | Haarkur  - kurz",
+      "duration": 70,
+      "prices": {
+       "min": 10500
+      },
+      "description": null,
+      "sort": 4
+     },
+     {
+      "name": "Damen - Glossing |Schneiden | Fönen | Haarkur  - mittel",
+      "duration": 75,
+      "prices": {
+       "min": 11000
+      },
+      "description": null,
+      "sort": 5
+     },
+     {
+      "name": "Damen - Glossing | Schneiden |Fönen| Haarkur  - lang",
+      "duration": 90,
+      "prices": {
+       "min": 12000
+      },
+      "description": null,
+      "sort": 6
+     },
+     {
+      "name": "Damen | Tönungen | Veredelung",
+      "duration": 15,
+      "prices": {
+       "min": 4000
+      },
+      "description": null,
+      "sort": 7
+     }
+    ]
+   },
+   {
+    "name": "HAARKUR | PFLEGE",
+    "sort": 3,
+    "services": [
+     {
+      "name": "Damen | Conditioner",
+      "duration": 5,
+      "prices": {
+       "default": 500
+      },
+      "description": null,
+      "sort": 3
+     },
+     {
+      "name": "Damen  | Haarkur kurz",
+      "duration": 10,
+      "prices": {
+       "default": 1000
+      },
+      "description": null,
+      "sort": 4
+     },
+     {
+      "name": "Damen  | Haarkur mittel",
+      "duration": 10,
+      "prices": {
+       "default": 1500
+      },
+      "description": null,
+      "sort": 5
+     },
+     {
+      "name": "Damen | Haarkur lang",
+      "duration": 10,
+      "prices": {
+       "default": 1700
+      },
+      "description": null,
+      "sort": 6
+     },
+     {
+      "name": "Damen | Crioukur Kältebehandlung und Föhnen|kurz",
+      "duration": 60,
+      "prices": {
+       "default": 7500
+      },
+      "description": null,
+      "sort": 7
+     },
+     {
+      "name": "Damen | Crioukur Kältebehandlung und Föhnen | mittel",
+      "duration": 60,
+      "prices": {
+       "default": 9000
+      },
+      "description": null,
+      "sort": 8
+     },
+     {
+      "name": "Damen | Crioukur Kältebehandlung und Föhnen  | lang",
+      "duration": 75,
+      "prices": {
+       "default": 11000
+      },
+      "description": null,
+      "sort": 9
+     }
+    ]
+   },
+   {
+    "name": "HERREN | SCHNITT | STYLING",
+    "sort": 4,
+    "services": [
+     {
+      "name": "Herren Cut | Styling",
+      "duration": 60,
+      "prices": {
+       "default": 4400
+      },
+      "description": null,
+      "sort": 4
+     },
+     {
+      "name": "Herren | Cut | Tonic Massage | Styling",
+      "duration": 60,
+      "prices": {
+       "default": 6000
+      },
+      "description": null,
+      "sort": 6
+     }
+    ]
+   },
+   {
+    "name": "KINDER | SCHNITT | STYLING",
+    "sort": 5,
+    "services": [
+     {
+      "name": "Kinder | Haarschnitt bis 6 Jahre",
+      "duration": 30,
+      "prices": {
+       "default": 3000
+      },
+      "description": null,
+      "sort": 1
+     }
+    ]
+   },
+   {
+    "name": "HAARVERLÄNGERUNG",
+    "sort": 6,
+    "services": [
+     {
+      "name": "Haarverdichtung Beratung",
+      "duration": 30,
+      "prices": {
+       "default": 5000
+      },
+      "description": null,
+      "sort": 1
+     },
+     {
+      "name": "Extensions Haarverlängerung Beratung",
+      "duration": 30,
+      "prices": {
+       "default": 5000
+      },
+      "description": null,
+      "sort": 2
+     },
+     {
+      "name": "Tapetechnik | Bondings ",
+      "duration": 30,
+      "prices": {
+       "onQuotation": true
+      },
+      "description": null,
+      "sort": 3
+     }
+    ]
+   },
+   {
+    "name": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "sort": 8,
+    "services": [
+     {
+      "name": "Damen - Strähnen Oberkopf, Schnitt & Föhnen & Pflege - kurz",
+      "duration": 150,
+      "prices": {
+       "min": 16000
+      },
+      "description": null,
+      "sort": 1
+     },
+     {
+      "name": "Damen - Strähnen Oberkopf, Schnitt & Föhnen & Pflege - mittel",
+      "duration": 150,
+      "prices": {
+       "min": 17000
+      },
+      "description": null,
+      "sort": 2
+     },
+     {
+      "name": "Damen - Strähnen Oberkopf, Schnitt & Föhnen & Pflege - lang",
+      "duration": 150,
+      "prices": {
+       "min": 18500
+      },
+      "description": null,
+      "sort": 3
+     },
+     {
+      "name": "Damen - Strähnen Oberkopf & Föhnen - kurz",
+      "duration": 120,
+      "prices": {
+       "min": 11000
+      },
+      "description": null,
+      "sort": 4
+     },
+     {
+      "name": "Damen - Strähnen Oberkopf & Föhnen - mittel",
+      "duration": 120,
+      "prices": {
+       "min": 12000
+      },
+      "description": null,
+      "sort": 5
+     },
+     {
+      "name": "Damen - Strähnen Oberkopf & Föhnen - lang",
+      "duration": 130,
+      "prices": {
+       "min": 13500
+      },
+      "description": null,
+      "sort": 6
+     },
+     {
+      "name": "Damen - Strähnen halber Kopf, Schnitt & Föhnen - kurz",
+      "duration": 150,
+      "prices": {
+       "min": 15500
+      },
+      "description": null,
+      "sort": 7
+     },
+     {
+      "name": "Damen - Strähnen halber Kopf, Schnitt & Föhnen - mittel",
+      "duration": 150,
+      "prices": {
+       "min": 16500
+      },
+      "description": null,
+      "sort": 8
+     },
+     {
+      "name": "Damen - Strähnen halber Kopf, Schnitt & Föhnen - lang",
+      "duration": 165,
+      "prices": {
+       "min": 18500
+      },
+      "description": null,
+      "sort": 9
+     },
+     {
+      "name": "Damen - Strähnen halber Kopf & Föhnen - kurz",
+      "duration": 120,
+      "prices": {
+       "min": 11000
+      },
+      "description": null,
+      "sort": 10
+     },
+     {
+      "name": "Damen - Strähnen halber Kopf & Föhnen - mittel",
+      "duration": 120,
+      "prices": {
+       "min": 14000
+      },
+      "description": null,
+      "sort": 11
+     },
+     {
+      "name": "Damen - Strähnen halber Kopf & Föhnen - lang",
+      "duration": 120,
+      "prices": {
+       "min": 17000
+      },
+      "description": null,
+      "sort": 12
+     },
+     {
+      "name": "Damen - Strähnchen ganzer Kopf, Schnitt & Föhnen - kurz",
+      "duration": 180,
+      "prices": {
+       "min": 15500
+      },
+      "description": null,
+      "sort": 20
+     },
+     {
+      "name": "Damen - Strähnchen ganzer Kopf, Schnitt & Föhnen - mittel",
+      "duration": 180,
+      "prices": {
+       "min": 16000
+      },
+      "description": null,
+      "sort": 21
+     },
+     {
+      "name": "Damen - Strähnchen ganzer Kopf, Schnitt & Föhnen - lang",
+      "duration": 180,
+      "prices": {
+       "min": 17000
+      },
+      "description": null,
+      "sort": 22
+     },
+     {
+      "name": "Damen - Strähnchen ganzer Kopf & Föhnen - kurz",
+      "duration": 150,
+      "prices": {
+       "min": 13000
+      },
+      "description": null,
+      "sort": 23
+     },
+     {
+      "name": "Damen - Strähnchen ganzer Kopf & Föhnen - mittel",
+      "duration": 150,
+      "prices": {
+       "min": 13500
+      },
+      "description": null,
+      "sort": 24
+     },
+     {
+      "name": "Damen - Strähnchen ganzer Kopf & Föhnen - lang",
+      "duration": 150,
+      "prices": {
+       "min": 15000
+      },
+      "description": null,
+      "sort": 25
+     },
+     {
+      "name": "Färben | Schneiden | Fönen| kurz",
+      "duration": 150,
+      "prices": null,
+      "description": null,
+      "sort": 28
+     },
+     {
+      "name": "Färben | Schneiden | Föhnen | mittel",
+      "duration": 150,
+      "prices": null,
+      "description": null,
+      "sort": 29
+     },
+     {
+      "name": "Färben |Schneiden | Fönen | lang",
+      "duration": 150,
+      "prices": null,
+      "description": null,
+      "sort": 30
+     },
+     {
+      "name": "Färben | Föhnen | kurz",
+      "duration": 120,
+      "prices": null,
+      "description": null,
+      "sort": 32
+     },
+     {
+      "name": "Färben | Föhnen | mittel ",
+      "duration": 120,
+      "prices": null,
+      "description": null,
+      "sort": 33
+     },
+     {
+      "name": "Färben | Föhnen | lang",
+      "duration": 130,
+      "prices": null,
+      "description": null,
+      "sort": 34
+     }
+    ]
+   },
+   {
+    "name": "DAMEN | BALAYAGE",
+    "sort": 9,
+    "services": [
+     {
+      "name": "Damen - Balayage, Schnitt & Styling - kurz",
+      "duration": 150,
+      "prices": {
+       "default": 22500
+      },
+      "description": null,
+      "sort": 1
+     },
+     {
+      "name": "Damen - Balayage, Schnitt & Styling - mittel",
+      "duration": 150,
+      "prices": {
+       "default": 24000
+      },
+      "description": null,
+      "sort": 2
+     },
+     {
+      "name": "Damen - Balayage, Schnitt & Styling - lang",
+      "duration": 150,
+      "prices": {
+       "default": 25000
+      },
+      "description": null,
+      "sort": 3
+     },
+     {
+      "name": "Damen - Balayage & Styling - kurz",
+      "duration": 150,
+      "prices": {
+       "default": 21000
+      },
+      "description": null,
+      "sort": 4
+     },
+     {
+      "name": "Damen - Balayage & Styling - mittel",
+      "duration": 150,
+      "prices": {
+       "default": 21500
+      },
+      "description": null,
+      "sort": 5
+     },
+     {
+      "name": "Damen - Balayage & Styling - lang",
+      "duration": 150,
+      "prices": {
+       "default": 22000
+      },
+      "description": null,
+      "sort": 6
+     }
+    ]
+   },
+   {
+    "name": null,
+    "sort": 10,
+    "services": []
+   },
+   {
+    "name": "KOSMETIK",
+    "sort": 11,
+    "services": [
+     {
+      "name": "Permanent Make up",
+      "duration": 120,
+      "prices": {
+       "onQuotation": true
+      },
+      "description": "Augenbrauen \n- Korrektur \n- Rekonstruktion \n\nLippen\n\nEyeliner\n-unten\n-oben",
+      "sort": 1
+     },
+     {
+      "name": "Brows | Zupfen | Formen | Fadentechnik",
+      "duration": 20,
+      "prices": {
+       "onQuotation": true
+      },
+      "description": null,
+      "sort": 2
+     },
+     {
+      "name": "Make up | Business | Braut",
+      "duration": 30,
+      "prices": {
+       "onQuotation": true
+      },
+      "description": null,
+      "sort": 3
+     }
+    ]
+   }
+  ]
+ },
+ "grosshadern": {
+  "quelle": "https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen",
+  "gelesen": "2026-09-24",
+  "bewertung": {
+   "globalRating": 4.862903225806452,
+   "ratingDetails": {
+    "ambianceRating": 4.806451612903226,
+    "benefitRating": 4.870967741935484,
+    "hygieneRating": 4.967741935483871,
+    "welcomeRating": 4.806451612903226
+   },
+   "ratingsCount": 31
+  },
+  "kategorien": [
+   {
+    "name": "Damen - Haarschnitte & Stylings",
+    "sort": 1,
+    "services": [
+     {
+      "name": "Damen Föhnen / Legen - Kurz-Mittel",
+      "duration": 30,
+      "prices": {
+       "default": 3700
+      },
+      "description": null,
+      "sort": 8
+     },
+     {
+      "name": "Damen Föhnen / Legen - Lang",
+      "duration": 45,
+      "prices": {
+       "default": 4700
+      },
+      "description": null,
+      "sort": 9
+     },
+     {
+      "name": "Damen - waschen-Schneiden & Föhnen - Kurz &Mittel",
+      "duration": 60,
+      "prices": {
+       "default": 6200
+      },
+      "description": null,
+      "sort": 10
+     },
+     {
+      "name": "Damen - waschen-Schneiden & Föhnen - Lang",
+      "duration": 60,
+      "prices": {
+       "default": 7200
+      },
+      "description": null,
+      "sort": 11
+     },
+     {
+      "name": "Damen - Dauerwelle & Styling - Kurz & Mittel",
+      "duration": 120,
+      "prices": {
+       "default": 13500
+      },
+      "description": null,
+      "sort": 12
+     },
+     {
+      "name": "Damen - Dauerwelle & Styling - Lang",
+      "duration": 120,
+      "prices": {
+       "default": 16500
+      },
+      "description": null,
+      "sort": 13
+     },
+     {
+      "name": "Damen - OLAPLEX TREATMENT (60 min) - Kurz & Mittel",
+      "duration": 60,
+      "prices": {
+       "default": 9200
+      },
+      "description": null,
+      "sort": 16
+     },
+     {
+      "name": "Damen - OLAPLEX TREATMENT (60 min) - Lang",
+      "duration": 60,
+      "prices": {
+       "default": 10200
+      },
+      "description": null,
+      "sort": 17
+     },
+     {
+      "name": "Herren - Maschinenhaarschnitt",
+      "duration": 20,
+      "prices": {
+       "default": 2800
+      },
+      "description": null,
+      "sort": 18
+     },
+     {
+      "name": "Damen - Hochsteckfrisur",
+      "duration": 60,
+      "prices": {
+       "default": 8000
+      },
+      "description": null,
+      "sort": 19
+     },
+     {
+      "name": "Damen - Dauerwelle & Schnitt& Styling - kurz",
+      "duration": 90,
+      "prices": {
+       "default": 13800
+      },
+      "description": null,
+      "sort": 20
+     },
+     {
+      "name": "Damen - Dauerwelle & Schnitt& Styling - lang",
+      "duration": 120,
+      "prices": {
+       "default": 14800
+      },
+      "description": null,
+      "sort": 21
+     }
+    ]
+   },
+   {
+    "name": "Damen - Farbe & Coloration",
+    "sort": 2,
+    "services": [
+     {
+      "name": "Ansatzfarbe, Schnitt & Föhnen inkl. Haarkur - Kurz & Mittel",
+      "duration": 120,
+      "prices": {
+       "min": 14200
+      },
+      "description": "1cm Ansatz sonst Aufschlag ab 10€",
+      "sort": 1
+     },
+     {
+      "name": "Ansatzfarbe, Schnitt & Föhnen inkl. Haarkur- Lang 2 Std.",
+      "duration": 120,
+      "prices": {
+       "min": 15200
+      },
+      "description": "1cm Ansatz sonst Aufschlag ab 10€",
+      "sort": 2
+     },
+     {
+      "name": "Ansatzfarbe & Stylen inkl. Haarkur - Kurz & Mittel ",
+      "duration": 90,
+      "prices": {
+       "min": 11700
+      },
+      "description": "je nach Produkt verbrauch",
+      "sort": 3
+     },
+     {
+      "name": "Ansatzfarbe & Stylen inkl. Haarkur - Lang ",
+      "duration": 90,
+      "prices": {
+       "min": 13200
+      },
+      "description": "je nach Produkt verbrauch",
+      "sort": 4
+     },
+     {
+      "name": "Glossing, Schnitt & Stylen - Kurz & Mittel inkl. Haarkur",
+      "duration": 105,
+      "prices": {
+       "min": 11700
+      },
+      "description": "je nach Produkt verbrauch",
+      "sort": 5
+     },
+     {
+      "name": "Glossing, Schnitt & Stylen inkl. Haarkur - Lang ab",
+      "duration": 105,
+      "prices": {
+       "min": 13000
+      },
+      "description": "je nach Produkt verbrauch",
+      "sort": 6
+     },
+     {
+      "name": "Glossing & Stylen inkl. Haarkur - Kurz & Mittel ",
+      "duration": 75,
+      "prices": {
+       "min": 8200
+      },
+      "description": null,
+      "sort": 7
+     },
+     {
+      "name": "Glossing & Stylen - Lang inkl. Haarkur",
+      "duration": 75,
+      "prices": {
+       "min": 10700
+      },
+      "description": null,
+      "sort": 8
+     },
+     {
+      "name": "Strähnen halber Kopf, Schnitt & Stylen inkl. Haarkur - Kurz & Mittel ",
+      "duration": 150,
+      "prices": {
+       "min": 17200
+      },
+      "description": "ohne Glossing ",
+      "sort": 9
+     },
+     {
+      "name": "Strähnen halber Kopf & Stylen - Kurz & Mittel inkl. Haarkur",
+      "duration": 120,
+      "prices": {
+       "min": 14700
+      },
+      "description": "je Nach Aufwand",
+      "sort": 11
+     },
+     {
+      "name": "Strähnen ganzer Kopf, Schnitt & Stylen - Kurz & Mittel inkl. Haarkur",
+      "duration": 180,
+      "prices": {
+       "min": 20700
+      },
+      "description": "je nach Aufwand",
+      "sort": 13
+     },
+     {
+      "name": "Strähnen ganzer Kopf, Schnitt & Stylen - Lang inkl. Haarkur",
+      "duration": 210,
+      "prices": {
+       "min": 21700
+      },
+      "description": "je nach Aufwand",
+      "sort": 14
+     },
+     {
+      "name": "Strähnen ganzer Kopf & Stylen - Kurz & Mittel inkl. Haarkur",
+      "duration": 160,
+      "prices": {
+       "min": 17700
+      },
+      "description": "je nach Aufwand",
+      "sort": 15
+     },
+     {
+      "name": "Strähnen ganzer Kopf & Stylen - Lang inkl. Haarkur",
+      "duration": 150,
+      "prices": {
+       "min": 19300
+      },
+      "description": "je nach Aufwand",
+      "sort": 16
+     },
+     {
+      "name": "Balayage & Schnitt & Stylen & Glossing inkl. Haarkur",
+      "duration": 220,
+      "prices": {
+       "min": 25000
+      },
+      "description": "Preis richtet sich nach Länge, Materialverbrauch und Aufwand.\nBitte beachten Sie: \nWenn Sie die Balayage Online buchen, lassen Sie sich vorab beraten.",
+      "sort": 17
+     },
+     {
+      "name": "glossing",
+      "duration": 20,
+      "prices": {
+       "min": 3500
+      },
+      "description": null,
+      "sort": 101
+     }
+    ]
+   },
+   {
+    "name": "Herren - Haarschnitte & Stylings",
+    "sort": 3,
+    "services": [
+     {
+      "name": "Herren - Schnitt & Styling",
+      "duration": 40,
+      "prices": {
+       "default": 3800
+      },
+      "description": null,
+      "sort": 5
+     },
+     {
+      "name": "Herren - Neuschnitt & Stylen",
+      "duration": 60,
+      "prices": {
+       "default": 4800
+      },
+      "description": null,
+      "sort": 6
+     },
+     {
+      "name": "Herren - Bart",
+      "duration": 15,
+      "prices": {
+       "default": 1500
+      },
+      "description": null,
+      "sort": 7
+     },
+     {
+      "name": "Herren - Maschinenhaarschnitt",
+      "duration": 20,
+      "prices": {
+       "default": 2500
+      },
+      "description": null,
+      "sort": 8
+     },
+     {
+      "name": "Herren - Dauerwelle inkl. Schnitt & Haarkur",
+      "duration": 120,
+      "prices": {
+       "min": 11500
+      },
+      "description": null,
+      "sort": 9
+     },
+     {
+      "name": "Herren - Grauhaarkaschierung",
+      "duration": 15,
+      "prices": {
+       "default": 2800
+      },
+      "description": null,
+      "sort": 10
+     }
+    ]
+   },
+   {
+    "name": "Kinder - Haarschnitte & Stylings",
+    "sort": 4,
+    "services": [
+     {
+      "name": "Mädchen - Haarschnitt - bis 6 Jahre",
+      "duration": 30,
+      "prices": {
+       "default": 4000
+      },
+      "description": null,
+      "sort": 1
+     },
+     {
+      "name": "Mädchen - Haarschnitt - je nach Aufwand ab 6 Jahre",
+      "duration": 30,
+      "prices": {
+       "default": 5500
+      },
+      "description": null,
+      "sort": 2
+     },
+     {
+      "name": "Jungen - Haarschnitt bis 10 Jahre",
+      "duration": 30,
+      "prices": {
+       "default": 3000
+      },
+      "description": null,
+      "sort": 3
+     }
+    ]
+   },
+   {
+    "name": "Permanent Make-Up",
+    "sort": 5,
+    "services": [
+     {
+      "name": "Permanent Make-Up - Augenbrauen - Korrektur",
+      "duration": 120,
+      "prices": {
+       "default": 45000
+      },
+      "description": "Termin nur auf Anfrage",
+      "sort": 1
+     },
+     {
+      "name": "Permanent Make-Up - Augenbrauen - Rekonstruktion",
+      "duration": 120,
+      "prices": {
+       "default": 55000
+      },
+      "description": "Termin nur auf Anfrage",
+      "sort": 2
+     },
+     {
+      "name": "Permanent Make-Up - Eyeliner Oberlid",
+      "duration": 60,
+      "prices": {
+       "default": 32000
+      },
+      "description": null,
+      "sort": 3
+     },
+     {
+      "name": "Permanent Make-Up - Eyeliner Unterlid",
+      "duration": 60,
+      "prices": {
+       "default": 18000
+      },
+      "description": null,
+      "sort": 4
+     },
+     {
+      "name": "Permanent Make-Up - Lippen",
+      "duration": 60,
+      "prices": {
+       "default": 55000
+      },
+      "description": null,
+      "sort": 5
+     }
+    ]
+   },
+   {
+    "name": "Augenbrauen & Wimpernbehandlungen",
+    "sort": 6,
+    "services": [
+     {
+      "name": "Augenbrauen färben",
+      "duration": 15,
+      "prices": {
+       "default": 1500
+      },
+      "description": null,
+      "sort": 1
+     },
+     {
+      "name": "Wimpern färben",
+      "duration": 20,
+      "prices": {
+       "default": 1500
+      },
+      "description": null,
+      "sort": 2
+     },
+     {
+      "name": "Augenbrauen zupfen",
+      "duration": 15,
+      "prices": {
+       "default": 1500
+      },
+      "description": null,
+      "sort": 3
+     }
+    ]
+   },
+   {
+    "name": "Haarverlängerung",
+    "sort": 7,
+    "services": [
+     {
+      "name": "Extensions / Haarverlängerung Beratung",
+      "duration": 30,
+      "prices": {
+       "default": 5000
+      },
+      "description": null,
+      "sort": 1
+     },
+     {
+      "name": "Haarverdichtung Beratung",
+      "duration": 30,
+      "prices": {
+       "default": 5000
+      },
+      "description": null,
+      "sort": 2
+     }
+    ]
+   }
+  ]
+ }
+}

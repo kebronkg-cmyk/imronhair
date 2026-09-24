@@ -4,47 +4,60 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Irmonhair &mdash; Friseur in M&uuml;nchen-Pasing und Gro&szlig;hadern</title>
-<meta name="description" content="Irmonhair, Friseur mit zwei Salons in M&uuml;nchen: Irmonherstra&szlig;e 7 in Pasing (089 821 116 4) und W&uuml;rmtalstra&szlig;e 119 in Gro&szlig;hadern (089 785 977 70). Damen- und Herrenhaarschnitte, Farbe und Str&auml;hnen mit Goldwell, Olaplex und Illumina, Haarverl&auml;ngerung, Augenbrauen in Fadentechnik.">
+<meta name="description" content="Irmonhair, Friseur mit zwei Salons in M&uuml;nchen: Irmonherstra&szlig;e 7 in Pasing (089 821 116 4) und W&uuml;rmtalstra&szlig;e 119 in Gro&szlig;hadern (089 785 977 70). Schnitt, Farbe, Str&auml;hnen und Balayage, Haarverl&auml;ngerung, Augenbrauen und Permanent Make-up.">
+<meta name="theme-color" content="#faf8f4">
 <link rel="icon" href="logo-favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="neu.css">
 <!-- Verhindert, dass der Auftakt kurz steht und dann von vorn beginnt.
      Die Klasse nimmt sich selbst zurück, falls das Skript nie ankommt. -->
 <script>var d=document.documentElement;d.className+=' vorlauf';setTimeout(function(){d.classList.remove('vorlauf')},1600)</script>
-<link rel="preload" href="schrift/Jost.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="schrift/Cormorant-300.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="schrift/Cormorant-400-Italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="schrift/Mulish.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="bilder/spiegel-pasing.webp" as="image" type="image/webp">
 </head>
 <body>
 
 <!-- ══ Der Vorhang ═══════════════════════════════════════════════════════
-     Beim Betreten steht zuerst der Schriftzug, dann kommt die Seite —
-     frühestens nach 1 s, spätestens nach 2 s; ohne Skript holt ihn die
-     Animation nach 5 s weg. Er darf niemanden einsperren.             -->
+     Beim Betreten steht kurz der Schriftzug, der Haarstrich zieht sich
+     durch — dann öffnet sich die Seite. Frühestens nach 0,9 s,
+     spätestens nach 1,8 s; ohne Skript holt ihn die CSS nach 4 s weg. -->
 <div class="vorhang" aria-hidden="true">
-  <div class="vorhang-rauch"></div>
   <img class="vorhang-siegel" src="logo-schriftzug.svg" alt="" width="280" height="124">
 </div>
 
 <a class="sprung" href="#auftakt-titel">Zum Inhalt springen</a>
 
-<!-- ══ Der Raum ══════════════════════════════════════════════════════════
-     Hinter der ganzen Seite steht eine helle Wand aus feinen Strähnen,
-     fest im Fenster. Die Abschnitte legen sich als Scheiben darüber.  -->
-<div class="raum-grund" aria-hidden="true"></div>
-<div class="raum-korn" aria-hidden="true"></div>
-
 <header class="leiste">
   <a class="marke" href="index.html" aria-label="Irmonhair, zur Startseite">
-    <img class="marke-zeichen" src="logo-zeichen.svg" alt="" width="30" height="30">
-    <span class="marke-wort">Irmonhair</span>
-    <span class="marke-zusatz">Friseur&nbsp;M&uuml;nchen</span>
+    <svg class="zeichen" viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
+      <defs>
+        <linearGradient id="zeichen-gold" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#6f5128"/><stop offset=".38" stop-color="#c9a263"/>
+          <stop offset=".52" stop-color="#ecd59e"/><stop offset=".68" stop-color="#b08546"/>
+          <stop offset="1" stop-color="#5f4422"/>
+        </linearGradient>
+      </defs>
+      <circle class="zeichen-ring" cx="32" cy="32" r="30.2" pathLength="100"/>
+      <circle class="zeichen-perlen" cx="32" cy="32" r="27.6"/>
+      <circle class="zeichen-ring zeichen-ring-innen" cx="32" cy="32" r="25.4" pathLength="100"/>
+      <path class="zeichen-i" d="M25.9 15.2H38.1V16.1C35.6 16.3 33.8 16.8 33.5 18.4V37.75H30.5V18.4C30.2 16.8 28.4 16.3 25.9 16.1Z"/>
+      <path class="zeichen-gold zeichen-strich" d="M11.5 38.3C24 37.8 40 37.55 52.5 37.65V38.25C40 38.2 24 38.55 11.5 38.95Z"/>
+      <path class="zeichen-gold zeichen-schwung" d="M45.5 37.7C43.4 41.4 40.1 45.3 36.2 49.2C33.2 52.2 29.9 54.3 26.3 55.8C29.6 53.7 32.3 51.3 34.7 48.6C38.3 44.7 41.3 41.1 43.7 37.75Z"/>
+    </svg>
+    <span class="marke-text">
+      <span class="marke-wort">Irmonhair</span>
+      <span class="marke-zusatz">Friseur &middot; M&uuml;nchen</span>
+    </span>
   </a>
   <nav class="wege" id="wege" aria-label="Hauptmen&uuml;">
     <a href="#leistungen">Leistungen</a>
+    <a href="#salons">Salons</a>
     <a href="#bewertungen">Bewertungen</a>
-    <a href="#standorte">Standorte</a>
     <a href="leistungen.html">Preisliste</a>
+    <a class="wege-termin" href="#standorte">Termin buchen</a>
   </nav>
-  <a class="pille" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
+  <a class="pille" href="tel:+49898211164"><span class="pille-ort">Pasing</span> 089&nbsp;821&nbsp;116&nbsp;4</a>
   <button class="klapp" id="klapp" type="button"
           aria-expanded="false" aria-controls="wege" aria-label="Men&uuml; &ouml;ffnen">
     <span aria-hidden="true"></span><span aria-hidden="true"></span>
@@ -54,193 +67,146 @@
 <main>
 
 <!-- ══ Auftakt ═══════════════════════════════════════════════════════════
-     Eine blonde, gekämmte Strähne mit Glanz trägt den ersten Bildschirm,
-     davor steht die Schere frei. Beide Telefonnummern stehen hier —
-     wer anrufen will, soll nicht suchen.                              -->
+     Links der Satz, rechts der Spiegel: ein Rahmen wie die goldenen
+     Spiegel in Pasing, darin der Blick in den Salon. Das Licht auf dem
+     Glas folgt dem Zeiger; der Umschalter wechselt den Salon. Beide
+     Telefonnummern stehen im ersten Bildschirm.                      -->
 <section class="auftakt">
-  <picture class="auftakt-grund" aria-hidden="true">
-    <source media="(orientation: portrait)" srcset="bilder/straehne-glanz-hoch.webp" width="1000" height="1800">
-    <img src="bilder/straehne-glanz-quer.webp" alt="" width="2000" height="1250" fetchpriority="high" decoding="async">
-  </picture>
-  <div class="auftakt-schleier" aria-hidden="true"></div>
-  <div class="auftakt-schere" aria-hidden="true">
-    <img src="bilder/schere-frei.webp" alt="" width="521" height="867" decoding="async">
-  </div>
-
   <div class="auftakt-satz">
-    <h1 class="wortmarke" id="auftakt-titel">
-      <span class="wortmarke-wort">Irmonhair</span>
-      <em class="wortmarke-kursiv">Friseur in M&uuml;nchen</em>
+    <p class="augenzeile"><span>Irmonhair</span> Friseur in M&uuml;nchen</p>
+    <h1 class="titel" id="auftakt-titel">
+      Frisuren, perfekt auf <em class="gold">Ihren Typ</em> abgestimmt.
     </h1>
+    <svg class="schwung" viewBox="0 0 248 62" aria-hidden="true">
+      <path d="M0 3.6C70 2 150 1.1 248 1.6V2.8C150 2.6 70 3.9 0 4.8Z"/>
+      <path d="M200 1.4C193 13.4 182 26 169 38.6C159 48.3 148 55 136 60C147 53 156 45.2 164 36.4C176 23.5 186 11.8 194 1.6Z"/>
+    </svg>
     <p class="auftakt-lauf">
-      Frisuren, perfekt auf Ihren Typ abgestimmt &mdash; in zwei Salons,
-      in Pasing und in Gro&szlig;hadern. Schnitt f&uuml;r Damen und Herren,
-      Farbe und Str&auml;hnen mit Goldwell, Olaplex und Illumina,
+      Zwei Salons, eine Handschrift: Schnitt f&uuml;r Damen, Herren und Kinder,
+      Farbe, Str&auml;hnen und Balayage mit Goldwell, Olaplex und Illumina,
       Haarverl&auml;ngerung und Augenbrauen in Fadentechnik.
     </p>
 
-    <div class="wahl wahl-mitte">
+    <div class="wahl">
       <a class="knopf" href="#standorte">Termin buchen</a>
-      <a class="knopf-still" href="tel:+49898211164">Pasing&nbsp;&middot; 089&nbsp;821&nbsp;116&nbsp;4</a>
-      <a class="knopf-still" href="tel:+498978597770">Gro&szlig;hadern&nbsp;&middot; 089&nbsp;785&nbsp;977&nbsp;70</a>
+      <a class="knopf-still" href="leistungen.html">Preise ansehen</a>
     </div>
 
-    <p class="stand-chip"><span class="stand" data-ort="pasing" data-vorsatz="Pasing"></span></p>
-    <p class="stand-chip"><span class="stand" data-ort="grosshadern" data-vorsatz="Gro&szlig;hadern"></span></p>
+    <ul class="rufe" aria-label="Direkt anrufen">
+      <li><a href="tel:+49898211164"><span class="rufe-ort">Pasing</span><span class="rufe-nr">089&nbsp;821&nbsp;116&nbsp;4</span></a>
+        <span class="stand" data-ort="pasing"></span></li>
+      <li><a href="tel:+498978597770"><span class="rufe-ort">Gro&szlig;hadern</span><span class="rufe-nr">089&nbsp;785&nbsp;977&nbsp;70</span></a>
+        <span class="stand" data-ort="grosshadern"></span></li>
+    </ul>
   </div>
 
-  <p class="kennung kennung-links" aria-hidden="true">Irmonherstr.&nbsp;7 &mdash; W&uuml;rmtalstr.&nbsp;119</p>
-  <p class="kennung kennung-rechts" aria-hidden="true">4,86 &#9733; Planity &middot; Gro&szlig;hadern</p>
+  <figure class="spiegel" data-salon="pasing">
+    <div class="spiegel-rahmen">
+      <div class="spiegel-glas">
+        <img class="spiegel-bild spiegel-bild-pasing" src="bilder/spiegel-pasing.webp"
+             alt="Salon Pasing: schwarze Kroko-Sessel vor goldgerahmten Spiegeln, hinten der Waschplatz"
+             width="900" height="1200" fetchpriority="high" decoding="async">
+        <img class="spiegel-bild spiegel-bild-grosshadern" src="bilder/spiegel-grosshadern.webp"
+             alt="Salon Gro&szlig;hadern: schwarze Sessel auf Holzboden, Blick zum Eingang an der W&uuml;rmtalstra&szlig;e"
+             width="767" height="1023" loading="lazy" decoding="async">
+        <span class="spiegel-licht" aria-hidden="true"></span>
+      </div>
+    </div>
+    <figcaption class="spiegel-fuss">
+      <span class="spiegel-wahl" role="group" aria-label="Blick in den Salon">
+        <button type="button" data-salon="pasing" aria-pressed="true">Pasing</button>
+        <button type="button" data-salon="grosshadern" aria-pressed="false">Gro&szlig;hadern</button>
+      </span>
+      <span class="spiegel-ort" aria-live="polite">Irmonherstra&szlig;e&nbsp;7</span>
+    </figcaption>
+  </figure>
 </section>
 
-<!-- ══ Auf einen Blick ═══════════════════════════════════════════════════ -->
-<section class="band" aria-label="Auf einen Blick">
-  <div class="band-zeile">
-    <p><b>Zwei Salons</b> <span>Pasing &amp; Gro&szlig;hadern</span></p>
-    <p><b>Goldwell</b> <span>Olaplex &middot; Illumina</span></p>
-    <p><b>Fadentechnik</b> <span>f&uuml;r die Augenbrauen</span></p>
-    <p><b>Online buchen</b> <span>&uuml;ber Planity</span></p>
-  </div>
-</section>
+<!-- ══ Die Strähne ═══════════════════════════════════════════════════════
+     Einmal, schmal und mit Glanz: das Material, von dem der Salon lebt.
+     Kein Hintergrund mehr — ein Band, das zwischen Auftakt und
+     Leistungen liegt, wie ein Haarband.                              -->
+<div class="band" aria-hidden="true">
+  <div class="band-straehne"></div>
+</div>
 
 <!-- ══ Leistungen ═══════════════════════════════════════════════════════
-     Beide Salons haben eigene Preislisten. Statt zwei Listen hinter-
-     einander stehen sie hier nebeneinander: links Pasing, rechts
-     Großhadern; ein Strich heisst, dass es die Leistung dort nicht
-     gibt. Preise wörtlich von der bisherigen Seite (24.09.2026). -->
-<section class="stufe stufe-tief" id="leistungen">
+     Acht Gruppen in der Reihenfolge des Ablaufs, jede mit dem Einstiegs-
+     preis beider Salons. Die Zahlen setzt recherche/preise.py aus den
+     Planity-Daten — nicht von Hand ändern.                           -->
+<section class="stufe" id="leistungen" aria-labelledby="leistungen-titel">
   <div class="mitte">
-    <h2 class="gross">Was hier gemacht wird</h2>
-    <p class="lauf lese">
-      Alle Preise sind Ab-Preise; bei Mehraufwand, Material oder Zeit
-      kommt ein Aufschlag dazu. Tippen Sie eine Zeile an &mdash; links steht
-      der Preis in Pasing, rechts in Gro&szlig;hadern.
-    </p>
-
-    <div class="faecher">
-      <details class="fach">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Damen</span>
-          <span class="fach-ab">ab 30&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Schnitt &amp; Frisur<em>Pasing kurz / mittel / lang &middot; Gro&szlig;hadern kurz&ndash;mittel / lang</em></span><span class="posten-preis"><b>ab 60 / 70 / 80&nbsp;&euro;</b><i>ab 62 / 72&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Frisur ohne Schnitt<em>Styling</em></span><span class="posten-preis"><b>ab 30 / 40 / 50&nbsp;&euro;</b><i>ab 37 / 47&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Olaplex Treatment</span><span class="posten-preis"><b>ab 70 / 90 / 110&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Dauerwelle</span><span class="posten-preis"><b>&ndash;</b><i>ab 70&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Haarkur</span><span class="posten-preis"><b>&ndash;</b><i>ab 10 / 15&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Conditioner</span><span class="posten-preis"><b>&ndash;</b><i>ab 6&nbsp;&euro;</i></span></li>
-        </ul></div>
-      </details>
-      <details class="fach">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Herren &amp; Kinder</span>
-          <span class="fach-ab">ab 25&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Schnitt &amp; Frisur<em>Gro&szlig;hadern: Schnitt &amp; Styling</em></span><span class="posten-preis"><b>ab 44&nbsp;&euro;</b><i>ab 35&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Schnitt mit Massage</span><span class="posten-preis"><b>50&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Neuschnitt &amp; Styling</span><span class="posten-preis"><b>&ndash;</b><i>ab 45&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Kranz- oder Maschinenschnitt</span><span class="posten-preis"><b>&ndash;</b><i>ab 25&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Greyshade</span><span class="posten-preis"><b>&ndash;</b><i>ab 30&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Farbe</span><span class="posten-preis"><b>&ndash;</b><i>ab 60&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Jungs bis 6 Jahre</span><span class="posten-preis"><b>ab 30&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Jungs 6&ndash;10 / ab 10 Jahre</span><span class="posten-preis"><b>&ndash;</b><i>ab 28 / 35&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">M&auml;dchen<em>Pasing: bis 6 Jahre</em></span><span class="posten-preis"><b>ab 45&nbsp;&euro;</b><i>ab 40 / 55&nbsp;&euro;</i></span></li>
-        </ul></div>
-      </details>
-      <details class="fach">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Farbe &amp; Str&auml;hnen</span>
-          <span class="fach-ab">ab 35&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Str&auml;hnen Oberkopf</span><span class="posten-preis"><b>ab 90&nbsp;&euro;</b><i>ab 80&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Str&auml;hnen halber Kopf</span><span class="posten-preis"><b>ab 110&nbsp;&euro;</b><i>ab 100&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Str&auml;hnen ganzer Kopf</span><span class="posten-preis"><b>ab 145&nbsp;&euro;</b><i>ab 130&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Balayage<em>L&auml;nge und Menge werden extra berechnet; Gro&szlig;hadern ohne Glossing</em></span><span class="posten-preis"><b>ab 180&nbsp;&euro;</b><i>ab 180&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Ansatz<em>5 Wochen, 1&nbsp;cm</em></span><span class="posten-preis"><b>&ndash;</b><i>ab 70&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Neufarbe<em>je nach Farbverbrauch und Haarl&auml;nge</em></span><span class="posten-preis"><b>&ndash;</b><i>ab 90&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Illumina</span><span class="posten-preis"><b>ab 60&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Elumen</span><span class="posten-preis"><b>ab 80&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Topchic</span><span class="posten-preis"><b>ab 40&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Greyshade</span><span class="posten-preis"><b>ab 40&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Gloss / Glossing</span><span class="posten-preis"><b>ab 60&nbsp;&euro;</b><i>ab 35 / 45&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Olaplex Color<em>kurz / mittel / lang</em></span><span class="posten-preis"><b>ab 40 / 60 / 80&nbsp;&euro;</b><i>&ndash;</i></span></li>
-        </ul></div>
-      </details>
-      <details class="fach">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Haarverl&auml;ngerung</span>
-          <span class="fach-ab">ab 7&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Extension pro Str&auml;hne<em>&Uuml;berl&auml;nge wird extra berechnet</em></span><span class="posten-preis"><b>7&nbsp;&euro;</b><i>&ndash;</i></span></li>
-        </ul></div>
-      </details>
-      <details class="fach">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Augenbrauen &amp; Wimpern</span>
-          <span class="fach-ab">ab 15&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Augenbrauen formen mit Faden</span><span class="posten-preis"><b>&ndash;</b><i>ab 15&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Augenbrauen f&auml;rben</span><span class="posten-preis"><b>&ndash;</b><i>ab 15&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Wimpern f&auml;rben</span><span class="posten-preis"><b>&ndash;</b><i>ab 15&nbsp;&euro;</i></span></li>
-        </ul></div>
-      </details>
+    <div class="kopfzeile">
+      <p class="augenzeile">Leistungen</p>
+      <h2 class="gross" id="leistungen-titel">Was hier gemacht wird &mdash; <em class="gold">und was es kostet</em>.</h2>
+      <p class="lauf">
+        Beide Salons haben eigene Preise. Hier steht der Einstieg je Gruppe;
+        die vollst&auml;ndige Liste mit L&auml;ngen und Dauer finden Sie in der Preisliste.
+      </p>
     </div>
-
-    <p class="mehr"><a href="leistungen.html">Die vollst&auml;ndige Preisliste &rarr;</a></p>
+<!-- preise:uebersicht -->
+<ol class="angebote"><li><a class="angebot" href="leistungen.html#schnitt" data-gruppe="schnitt"><span class="angebot-nr" aria-hidden="true">01</span><span class="angebot-text"><span class="angebot-name">Schnitt &amp; Styling</span><span class="angebot-lauf">Waschen, Schneiden, Föhnen — und Frisuren ohne Schnitt.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 35 €</span><span><i>Großhadern</i> ab 37 €</span></span></a></li><li><a class="angebot" href="leistungen.html#farbe" data-gruppe="farbe"><span class="angebot-nr" aria-hidden="true">02</span><span class="angebot-text"><span class="angebot-name">Farbe &amp; Glossing</span><span class="angebot-lauf">Ansatz, Färben, Glossing und Tönung.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 40 €</span><span><i>Großhadern</i> ab 82 €</span></span></a></li><li><a class="angebot" href="leistungen.html#straehnen" data-gruppe="straehnen"><span class="angebot-nr" aria-hidden="true">03</span><span class="angebot-text"><span class="angebot-name">Strähnen &amp; Balayage</span><span class="angebot-lauf">Oberkopf, halber oder ganzer Kopf — und Balayage.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 110 €</span><span><i>Großhadern</i> ab 147 €</span></span></a></li><li><a class="angebot" href="leistungen.html#pflege" data-gruppe="pflege"><span class="angebot-nr" aria-hidden="true">04</span><span class="angebot-text"><span class="angebot-name">Pflege &amp; Dauerwelle</span><span class="angebot-lauf">Haarkur, Olaplex, Kältebehandlung und Dauerwelle.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 5 €</span><span><i>Großhadern</i> ab 6 €</span></span></a></li><li><a class="angebot" href="leistungen.html#herren" data-gruppe="herren"><span class="angebot-nr" aria-hidden="true">05</span><span class="angebot-text"><span class="angebot-name">Herren</span><span class="angebot-lauf">Schnitt, Bart und Farbe für Herren.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 44 €</span><span><i>Großhadern</i> ab 15 €</span></span></a></li><li><a class="angebot" href="leistungen.html#kinder" data-gruppe="kinder"><span class="angebot-nr" aria-hidden="true">06</span><span class="angebot-text"><span class="angebot-name">Kinder</span><span class="angebot-lauf">Haarschnitte für Mädchen und Jungen.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 30 €</span><span><i>Großhadern</i> ab 30 €</span></span></a></li><li><a class="angebot" href="leistungen.html#verlaengerung" data-gruppe="verlaengerung"><span class="angebot-nr" aria-hidden="true">07</span><span class="angebot-text"><span class="angebot-name">Haarverlängerung</span><span class="angebot-lauf">Extensions und Verdichtung — zuerst die Beratung.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 7 €</span><span><i>Großhadern</i> ab 50 €</span></span></a></li><li><a class="angebot" href="leistungen.html#gesicht" data-gruppe="gesicht"><span class="angebot-nr" aria-hidden="true">08</span><span class="angebot-text"><span class="angebot-name">Augenbrauen &amp; Make-up</span><span class="angebot-lauf">Brauen, Wimpern, Permanent Make-up.</span></span><span class="angebot-preise"><span><i>Pasing</i> auf Anfrage</span><span><i>Großhadern</i> ab 15 €</span></span></a></li></ol>
+<!-- /preise:uebersicht -->
+    <p class="mehr"><a class="knopf-still" href="leistungen.html">Zur vollst&auml;ndigen Preisliste</a></p>
   </div>
 </section>
+
+<!-- ══ Salons ════════════════════════════════════════════════════════════
+     Die Fotos stammen aus den Planity-Einträgen der Salons. Antippen
+     vergrössert; auf der Kachel steht kein Symbol, die Beschriftung
+     darunter sagt, wo es ist.                                          -->
+<section class="salons" id="salons" aria-labelledby="salons-titel">
+  <div class="mitte">
+    <div class="kopfzeile">
+      <p class="augenzeile">Einblicke</p>
+      <h2 class="gross" id="salons-titel">Schwarzes Leder, <em class="gold">goldene Rahmen</em>.</h2>
+      <p class="lauf">
+        In Pasing sitzen Sie in Kroko-Sesseln vor barock gerahmten Spiegeln,
+        in Gro&szlig;hadern auf Holzboden mit Blick auf die W&uuml;rmtalstra&szlig;e.
+      </p>
+    </div>
+    <ul class="bilder">
+      <li class="bild bild-breit"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-raum.webp" aria-label="Pasing, der Salon mit den goldenen Spiegeln, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-raum-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; der Salon</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-waschplatz.webp" aria-label="Pasing, der Waschplatz, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-waschplatz-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; Waschplatz</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-grosshadern-raum.webp" aria-label="Gro&szlig;hadern, der Salon, gro&szlig; ansehen">
+        <img src="bilder/salon-grosshadern-raum-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
+        <p>Gro&szlig;hadern &middot; der Salon</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-spiegel.webp" aria-label="Pasing, Spiegelreihe, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-spiegel-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; Spiegelreihe</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-kroko.webp" aria-label="Pasing, Kroko-Leder am Waschplatz, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-kroko-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; Kroko-Leder</p></li>
+      <li class="bild bild-breit"><button type="button" class="bild-knopf" data-gross="bilder/salon-grosshadern-eingang.webp" aria-label="Gro&szlig;hadern, Blick zum Eingang, gro&szlig; ansehen">
+        <img src="bilder/salon-grosshadern-eingang-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
+        <p>Gro&szlig;hadern &middot; Eingang</p></li>
+    </ul>
+  </div>
+</section>
+
+<dialog class="gross-bild" id="gross-bild" aria-label="Foto vergr&ouml;&szlig;ert">
+  <p class="gross-bild-text"></p>
+  <button type="button" class="gross-bild-zu" aria-label="Schlie&szlig;en"><span aria-hidden="true"></span></button>
+</dialog>
 
 <!-- ══ Stimmen ═══════════════════════════════════════════════════════════
      Echt und wörtlich aus den Planity-Einträgen beider Salons (gelesen
      am 24.09.2026). Planity zeigt keine Namen, nur den Salon und das
-     Datum — so steht es auch hier. Schreibweise unverändert.         -->
-<section class="stimmen" id="bewertungen">
+     Datum — so steht es auch hier. Schreibweise unverändert. Der dunkle
+     Grund ist das schwarze Leder der Sessel.                          -->
+<section class="stimmen" id="bewertungen" aria-labelledby="stimmen-titel">
   <div class="mitte stimmen-bau">
     <div class="stimmen-kopf">
-      <h2 class="gross">Das sagen die, die <em>schon da waren</em>.</h2>
-        <div class="stimmen-note">
-          <p class="stimmen-wert">4,86<span class="nurlesen"> von 5 Sternen</span></p>
-          <div>
-            <p class="urteil-sterne" style="--voll: 97%">
-              <span class="urteil-grund" aria-hidden="true"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span>
-              <span class="urteil-fuell" aria-hidden="true"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span>
-            </p>
-            <p class="stimmen-mass">Gro&szlig;hadern &middot; 31 Bewertungen bei Planity</p>
-          </div>
-        </div>
-        <div class="stimmen-note">
-          <p class="stimmen-wert">5,0<span class="nurlesen"> von 5 Sternen</span></p>
-          <div>
-            <p class="urteil-sterne" style="--voll: 100%">
-              <span class="urteil-grund" aria-hidden="true"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span>
-              <span class="urteil-fuell" aria-hidden="true"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span>
-            </p>
-            <p class="stimmen-mass">Pasing &middot; 5 Bewertungen bei Planity</p>
-          </div>
-        </div>
-      <p class="lauf">
-        Die j&uuml;ngsten Bewertungen mit f&uuml;nf Sternen, im Wortlaut.
-      </p>
+      <p class="augenzeile">Bewertungen bei Planity</p>
+      <h2 class="gross" id="stimmen-titel">Das sagen die, die <em class="gold">schon da waren</em>.</h2>
+      <div class="noten">
+        <p class="note"><span class="note-wert">4,86</span><span class="note-sterne" style="--voll: 97%" aria-hidden="true"></span><span class="note-text">Gro&szlig;hadern<br>31 Bewertungen</span><span class="nurlesen"> &mdash; 4,86 von 5 Sternen</span></p>
+        <p class="note"><span class="note-wert">5,0</span><span class="note-sterne" style="--voll: 100%" aria-hidden="true"></span><span class="note-text">Pasing<br>5 Bewertungen</span><span class="nurlesen"> &mdash; 5,0 von 5 Sternen</span></p>
+      </div>
       <div class="wahl">
         <a class="knopf-still" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Gro&szlig;hadern bei Planity</a>
         <a class="knopf-still" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Pasing bei Planity</a>
@@ -250,70 +216,75 @@
     <div class="stimmen-liste">
       <figure class="stimme stimme-gross">
         <blockquote><p>Ich lasse mir schon seit mehreren Jahren meine Haare von Momo schneiden und war jedes Mal super zufrieden. Man merkt einfach, dass Momo sein Handwerk versteht. Kann ich wirklich jedem empfehlen!</p></blockquote>
-        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span><span class="stimme-wer">Gro&szlig;hadern</span><span class="stimme-wann"><time datetime="2026-08-04">4. August 2026</time> &middot; Planity</span></figcaption>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Gro&szlig;hadern</span><time datetime="2026-08-04">4. August 2026</time></figcaption>
       </figure>
       <figure class="stimme">
         <blockquote><p>Bin voll und ganz zufrieden, der Preis ist absolut gerechtfertigt f&uuml;r die Leistung und es wurde genau das umgesetzt, was zuvor besprochen wurde :)</p></blockquote>
-        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span><span class="stimme-wer">Pasing</span><span class="stimme-wann"><time datetime="2026-09-10">10. September 2026</time> &middot; Planity</span></figcaption>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Pasing</span><time datetime="2026-09-10">10. September 2026</time></figcaption>
       </figure>
       <figure class="stimme">
         <blockquote><p>Der Empfang war sehr herzlich,Mira war wie immer super nett der Haarschnitt passte wie immer,Der Salon war wie immer sehr sauber</p></blockquote>
-        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span><span class="stimme-wer">Gro&szlig;hadern</span><span class="stimme-wann"><time datetime="2026-09-22">22. September 2026</time> &middot; Planity</span></figcaption>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Gro&szlig;hadern</span><time datetime="2026-09-22">22. September 2026</time></figcaption>
       </figure>
       <figure class="stimme">
         <blockquote><p>Der Friseur Salon ist sch&ouml;n eingerichtet und sauber. Ich wurde herzlichst empfangen und professionell beraten. Die Salon Besitzerin hat mir die Haare gemacht und die sitzn ein Tag sp&auml;ter immer noch!</p></blockquote>
-        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span><span class="stimme-wer">Pasing</span><span class="stimme-wann"><time datetime="2026-02-28">28. Februar 2026</time> &middot; Planity</span></figcaption>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Pasing</span><time datetime="2026-02-28">28. Februar 2026</time></figcaption>
       </figure>
       <figure class="stimme">
         <blockquote><p>Super kompetent, super Arbeit, super Team, super Service, super sauber... Bis zum n&auml;chsten Mal!</p></blockquote>
-        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span><span class="stimme-wer">Pasing</span><span class="stimme-wann"><time datetime="2026-08-21">21. August 2026</time> &middot; Planity</span></figcaption>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Pasing</span><time datetime="2026-08-21">21. August 2026</time></figcaption>
       </figure>
       <figure class="stimme">
         <blockquote><p>Momo liefert wie immer Top Arbeit ab</p></blockquote>
-        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg><svg viewBox="0 0 20 19" width="20" height="19" aria-hidden="true"><path d="M10 0l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L10 13.7l-5.66 3.6 1.66-6.46L.88 6.58l6.65-.4z"/></svg></span><span class="stimme-wer">Gro&szlig;hadern</span><span class="stimme-wann"><time datetime="2026-07-25">25. Juli 2026</time> &middot; Planity</span></figcaption>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Gro&szlig;hadern</span><time datetime="2026-07-25">25. Juli 2026</time></figcaption>
       </figure>
     </div>
   </div>
 </section>
 
 <!-- ══ Standorte ═════════════════════════════════════════════════════════
-     Zwei Salons, zwei Karten — jede mit Anschrift, Nummer zum Antippen,
-     Öffnungszeiten, Live-Stand und dem Weg zum Termin bei Planity.   -->
-<section class="kontakt" id="standorte">
+     Zwei Salons, zwei Karten — jede mit Foto, Anschrift, Nummer zum
+     Antippen, Öffnungszeiten, Live-Stand und dem Weg zu Planity.     -->
+<section class="kontakt" id="standorte" aria-labelledby="standorte-titel">
   <div class="mitte">
-    <div class="kontakt-satz">
-      <h2 class="gross">Zwei Salons in <em>M&uuml;nchen</em>.</h2>
+    <div class="kopfzeile">
+      <p class="augenzeile">Termin</p>
+      <h2 class="gross" id="standorte-titel">Zwei Salons in <em class="gold">M&uuml;nchen</em>.</h2>
       <p class="lauf">
-        Termine buchen Sie online bei Planity &mdash; dort sehen Sie die
-        freien Zeiten. Wenn Sie lieber sprechen, rufen Sie den Salon an,
+        Online buchen Sie rund um die Uhr bei Planity &mdash; dort sehen Sie
+        die freien Zeiten. Wenn Sie lieber sprechen, rufen Sie den Salon an,
         der Ihnen n&auml;her liegt.
       </p>
     </div>
     <div class="orte">
-    <article class="zeiten-karte ort-karte" aria-labelledby="ort-pasing">
-      <h3 id="ort-pasing">Pasing</h3>
-      <address class="anschrift">Irmonherstra&szlig;e&nbsp;7<br>81241&nbsp;M&uuml;nchen<br>
-        <a class="rufnummer" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
-      </address>
-      <dl class="zeiten-liste"><div class="zeiten-zeile"><dt>Montag</dt><dd>geschlossen</dd></div><div class="zeiten-zeile"><dt>Dienstag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div class="zeiten-zeile"><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div class="zeiten-zeile"><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
-      <p class="zeiten-stand"><span class="stand" data-ort="pasing"></span></p>
-      <div class="wahl">
-        <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Termin buchen</a>
-        <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=Irmonherstra%C3%9Fe+7%2C+81241+M%C3%BCnchen" target="_blank" rel="noopener">Route planen</a>
-      </div>
-    </article>
-    <article class="zeiten-karte ort-karte" aria-labelledby="ort-grosshadern">
-      <h3 id="ort-grosshadern">Gro&szlig;hadern</h3>
-      <address class="anschrift">W&uuml;rmtalstra&szlig;e&nbsp;119<br>81375&nbsp;M&uuml;nchen<br>
-        <a class="rufnummer" href="tel:+498978597770">089&nbsp;785&nbsp;977&nbsp;70</a>
-      </address>
-      <dl class="zeiten-liste"><div class="zeiten-zeile"><dt>Montag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div class="zeiten-zeile"><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div class="zeiten-zeile"><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
-      <p class="zeiten-stand"><span class="stand" data-ort="grosshadern"></span></p>
-      <div class="wahl">
-        <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Termin buchen</a>
-        <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=W%C3%BCrmtalstra%C3%9Fe+119%2C+81375+M%C3%BCnchen" target="_blank" rel="noopener">Route planen</a>
-      </div>
-    </article>
+      <article class="ort" aria-labelledby="ort-pasing">
+        <img class="ort-bild" src="bilder/salon-pasing-tiefe-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async">
+        <div class="ort-inhalt">
+          <h3 id="ort-pasing">Pasing</h3>
+          <address class="anschrift">Irmonherstra&szlig;e&nbsp;7, 81241&nbsp;M&uuml;nchen</address>
+          <a class="rufnummer" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
+          <dl class="zeiten"><div><dt>Montag</dt><dd>geschlossen</dd></div><div><dt>Dienstag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
+          <p class="ort-stand"><span class="stand" data-ort="pasing"></span></p>
+          <div class="wahl">
+            <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Termin in Pasing buchen</a>
+            <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=Irmonherstra%C3%9Fe+7%2C+81241+M%C3%BCnchen" target="_blank" rel="noopener">Route</a>
+          </div>
+        </div>
+      </article>
+      <article class="ort" aria-labelledby="ort-grosshadern">
+        <img class="ort-bild" src="bilder/salon-grosshadern-raum-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async">
+        <div class="ort-inhalt">
+          <h3 id="ort-grosshadern">Gro&szlig;hadern</h3>
+          <address class="anschrift">W&uuml;rmtalstra&szlig;e&nbsp;119, 81375&nbsp;M&uuml;nchen</address>
+          <a class="rufnummer" href="tel:+498978597770">089&nbsp;785&nbsp;977&nbsp;70</a>
+          <dl class="zeiten"><div><dt>Montag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
+          <p class="ort-stand"><span class="stand" data-ort="grosshadern"></span></p>
+          <div class="wahl">
+            <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Termin in Gro&szlig;hadern buchen</a>
+            <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=W%C3%BCrmtalstra%C3%9Fe+119%2C+81375+M%C3%BCnchen" target="_blank" rel="noopener">Route</a>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </section>
@@ -322,9 +293,9 @@
 
 <footer class="fuss">
   <div class="mitte">
-    <img class="fuss-siegel" src="logo-schriftzug-hell.svg" alt="" width="280" height="124" loading="lazy" decoding="async">
-    <p class="fuss-marke">Irmonhair &middot; Friseur in M&uuml;nchen</p>
-    <nav class="fuss-wege" aria-label="Rechtliches">
+    <img class="fuss-siegel" src="logo-schriftzug-hell.svg" alt="Irmonhair" width="280" height="124" loading="lazy" decoding="async">
+    <p class="fuss-marke">Friseur in M&uuml;nchen &middot; Pasing &amp; Gro&szlig;hadern</p>
+    <nav class="fuss-wege" aria-label="Weitere Seiten">
       <a href="leistungen.html">Preisliste</a>
       <a href="impressum.html">Impressum</a>
       <a href="datenschutz.html">Datenschutz</a>

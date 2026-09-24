@@ -4,3 +4,6 @@
 # Prüf-Screenshots. Groß, und bei jedem Lauf neu.
 .impeccable/review/
 schuss-*.png
+
+# Python-Zwischendateien
+__pycache__/

@@ -57,11 +57,12 @@ beiden Salons.
 
 ## Evidence on Hand
 
-- Keine eigenen Fotos. Die Bilder der alten Seite sind Stockfotos der
-  Agentur und werden nicht übernommen.
+- Salonfotos aus den Planity-Einträgen (sechs Pasing, zwei Großhadern),
+  vom Salon selbst hochgeladen. Die Bilder der alten Seite sind
+  Stockfotos der Agentur und werden nicht übernommen.
 - Echte Bewertungen von Planity (anonym, mit Datum und Salon).
 
-**Nicht vorhanden und nicht zu erfinden:** Fotos vom Salon, vom Team, von
+**Nicht vorhanden und nicht zu erfinden:** Fotos vom Team und von
 Arbeiten; Namen des Teams ausser denen in Bewertungen und Impressum.
 
 ## Product Principles
@@ -74,4 +75,4 @@ Arbeiten; Namen des Teams ausser denen in Bewertungen und Impressum.
 ## Accessibility & Inclusion
 
 Handy zuerst, Kontrast mindestens WCAG AA (gemessen, schwächste Zeile
-5,3:1), `:focus-visible`, `prefers-reduced-motion`, antippbare Nummern.
+5,2:1), `:focus-visible`, `prefers-reduced-motion`, antippbare Nummern.

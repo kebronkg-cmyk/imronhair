@@ -3,169 +3,164 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Leistungen &amp; Preise &mdash; Irmonhair M&uuml;nchen</title>
-<meta name="description" content="Alle Preise von Irmonhair in M&uuml;nchen, Pasing und Gro&szlig;hadern: Damen, Herren, Kinder, Coloration, Str&auml;hnen, Balayage, Haarverl&auml;ngerung, Augenbrauen und Wimpern.">
+<title>Preisliste &mdash; Irmonhair M&uuml;nchen, Pasing und Gro&szlig;hadern</title>
+<meta name="description" content="Alle Preise von Irmonhair in M&uuml;nchen, getrennt nach Salon: Pasing (Irmonherstra&szlig;e 7) und Gro&szlig;hadern (W&uuml;rmtalstra&szlig;e 119). Schnitt, Farbe, Str&auml;hnen, Balayage, Pflege, Herren, Kinder, Haarverl&auml;ngerung, Augenbrauen und Make-up.">
+<meta name="theme-color" content="#faf8f4">
 <link rel="icon" href="logo-favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="neu.css">
-<link rel="preload" href="schrift/Jost.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="schrift/Cormorant-300.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="schrift/Mulish.woff2" as="font" type="font/woff2" crossorigin>
 </head>
-<body>
+<body class="seite-preise">
 
 <a class="sprung" href="#titel">Zum Inhalt springen</a>
 
 <header class="leiste">
   <a class="marke" href="index.html" aria-label="Irmonhair, zur Startseite">
-    <img class="marke-zeichen" src="logo-zeichen.svg" alt="" width="30" height="30">
-    <span class="marke-wort">Irmonhair</span>
-    <span class="marke-zusatz">Friseur&nbsp;M&uuml;nchen</span>
+    <svg class="zeichen" viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
+      <defs>
+        <linearGradient id="zeichen-gold" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#6f5128"/><stop offset=".38" stop-color="#c9a263"/>
+          <stop offset=".52" stop-color="#ecd59e"/><stop offset=".68" stop-color="#b08546"/>
+          <stop offset="1" stop-color="#5f4422"/>
+        </linearGradient>
+      </defs>
+      <circle class="zeichen-ring" cx="32" cy="32" r="30.2" pathLength="100"/>
+      <circle class="zeichen-perlen" cx="32" cy="32" r="27.6"/>
+      <circle class="zeichen-ring zeichen-ring-innen" cx="32" cy="32" r="25.4" pathLength="100"/>
+      <path class="zeichen-i" d="M25.9 15.2H38.1V16.1C35.6 16.3 33.8 16.8 33.5 18.4V37.75H30.5V18.4C30.2 16.8 28.4 16.3 25.9 16.1Z"/>
+      <path class="zeichen-gold zeichen-strich" d="M11.5 38.3C24 37.8 40 37.55 52.5 37.65V38.25C40 38.2 24 38.55 11.5 38.95Z"/>
+      <path class="zeichen-gold zeichen-schwung" d="M45.5 37.7C43.4 41.4 40.1 45.3 36.2 49.2C33.2 52.2 29.9 54.3 26.3 55.8C29.6 53.7 32.3 51.3 34.7 48.6C38.3 44.7 41.3 41.1 43.7 37.75Z"/>
+    </svg>
+    <span class="marke-text">
+      <span class="marke-wort">Irmonhair</span>
+      <span class="marke-zusatz">Friseur &middot; M&uuml;nchen</span>
+    </span>
   </a>
   <nav class="wege" id="wege" aria-label="Hauptmen&uuml;">
     <a href="index.html#leistungen">Leistungen</a>
+    <a href="index.html#salons">Salons</a>
     <a href="index.html#bewertungen">Bewertungen</a>
-    <a href="index.html#standorte">Standorte</a>
     <a href="leistungen.html" aria-current="page">Preisliste</a>
+    <a class="wege-termin" href="index.html#standorte">Termin buchen</a>
   </nav>
-  <a class="pille" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
+  <a class="pille" href="tel:+49898211164"><span class="pille-ort">Pasing</span> 089&nbsp;821&nbsp;116&nbsp;4</a>
   <button class="klapp" id="klapp" type="button"
           aria-expanded="false" aria-controls="wege" aria-label="Men&uuml; &ouml;ffnen">
     <span aria-hidden="true"></span><span aria-hidden="true"></span>
   </button>
 </header>
 
-<main>
+<main class="preise">
 
-<!-- Kein Foto über der Preisliste: hier wird gelesen und gerechnet. -->
-<section class="kopf-tief">
-  <p class="kennung kennung-links" aria-hidden="true">Irmonhair &mdash; Preisliste</p>
-  <p class="kennung kennung-rechts" aria-hidden="true">Stand&thinsp;/&thinsp;September 2026</p>
+<section class="preise-kopf">
   <div class="mitte">
-    <h1 class="wand-titel" id="titel">Was es kostet.</h1>
-    <p class="lauf lese">
-      Beide Salons haben eigene Preise. In jeder Zeile steht links der
-      Preis in <strong>Pasing</strong>, rechts der in
-      <strong>Gro&szlig;hadern</strong>; ein Strich heisst, dass es die
-      Leistung dort nicht gibt.
-    </p>
-    <p class="lauf lese">
-      Alle Preise sind Ab-Preise. Bei Mehraufwand, Material oder Zeit kommt
-      ein Aufschlag dazu. Verbindlich ist am Ende, was im Salon oder am
-      Telefon gesagt wird.
+    <p class="augenzeile">Preisliste</p>
+    <h1 class="titel" id="titel">Leistungen &amp; <em class="gold">Preise</em>.</h1>
+    <p class="lauf">
+      Jeder Salon hat seine eigene Preisliste. W&auml;hlen Sie zuerst Ihren
+      Salon &mdash; darunter springen Sie direkt in die Gruppe, die Sie suchen.
+      Wo es nach L&auml;nge geht, steht der Preis f&uuml;r jede L&auml;nge
+      einzeln. Stand: 24.&nbsp;September&nbsp;2026.
     </p>
   </div>
 </section>
 
-<div class="mitte liste stufe-liste" id="liste">
-      <details class="fach" id="damen">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Damen</span>
-          <span class="fach-ab">ab 30&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Schnitt &amp; Frisur<em>Pasing kurz / mittel / lang &middot; Gro&szlig;hadern kurz&ndash;mittel / lang</em></span><span class="posten-preis"><b>ab 60 / 70 / 80&nbsp;&euro;</b><i>ab 62 / 72&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Frisur ohne Schnitt<em>Styling</em></span><span class="posten-preis"><b>ab 30 / 40 / 50&nbsp;&euro;</b><i>ab 37 / 47&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Olaplex Treatment</span><span class="posten-preis"><b>ab 70 / 90 / 110&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Dauerwelle</span><span class="posten-preis"><b>&ndash;</b><i>ab 70&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Haarkur</span><span class="posten-preis"><b>&ndash;</b><i>ab 10 / 15&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Conditioner</span><span class="posten-preis"><b>&ndash;</b><i>ab 6&nbsp;&euro;</i></span></li>
-        </ul></div>
-      </details>
-      <details class="fach" id="herren">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Herren &amp; Kinder</span>
-          <span class="fach-ab">ab 25&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Schnitt &amp; Frisur<em>Gro&szlig;hadern: Schnitt &amp; Styling</em></span><span class="posten-preis"><b>ab 44&nbsp;&euro;</b><i>ab 35&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Schnitt mit Massage</span><span class="posten-preis"><b>50&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Neuschnitt &amp; Styling</span><span class="posten-preis"><b>&ndash;</b><i>ab 45&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Kranz- oder Maschinenschnitt</span><span class="posten-preis"><b>&ndash;</b><i>ab 25&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Greyshade</span><span class="posten-preis"><b>&ndash;</b><i>ab 30&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Farbe</span><span class="posten-preis"><b>&ndash;</b><i>ab 60&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Jungs bis 6 Jahre</span><span class="posten-preis"><b>ab 30&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Jungs 6&ndash;10 / ab 10 Jahre</span><span class="posten-preis"><b>&ndash;</b><i>ab 28 / 35&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">M&auml;dchen<em>Pasing: bis 6 Jahre</em></span><span class="posten-preis"><b>ab 45&nbsp;&euro;</b><i>ab 40 / 55&nbsp;&euro;</i></span></li>
-        </ul></div>
-      </details>
-      <details class="fach" id="farbe">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Farbe &amp; Str&auml;hnen</span>
-          <span class="fach-ab">ab 35&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Str&auml;hnen Oberkopf</span><span class="posten-preis"><b>ab 90&nbsp;&euro;</b><i>ab 80&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Str&auml;hnen halber Kopf</span><span class="posten-preis"><b>ab 110&nbsp;&euro;</b><i>ab 100&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Str&auml;hnen ganzer Kopf</span><span class="posten-preis"><b>ab 145&nbsp;&euro;</b><i>ab 130&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Balayage<em>L&auml;nge und Menge werden extra berechnet; Gro&szlig;hadern ohne Glossing</em></span><span class="posten-preis"><b>ab 180&nbsp;&euro;</b><i>ab 180&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Ansatz<em>5 Wochen, 1&nbsp;cm</em></span><span class="posten-preis"><b>&ndash;</b><i>ab 70&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Neufarbe<em>je nach Farbverbrauch und Haarl&auml;nge</em></span><span class="posten-preis"><b>&ndash;</b><i>ab 90&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Illumina</span><span class="posten-preis"><b>ab 60&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Elumen</span><span class="posten-preis"><b>ab 80&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Topchic</span><span class="posten-preis"><b>ab 40&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Greyshade</span><span class="posten-preis"><b>ab 40&nbsp;&euro;</b><i>&ndash;</i></span></li>
-          <li><span class="posten-name">Gloss / Glossing</span><span class="posten-preis"><b>ab 60&nbsp;&euro;</b><i>ab 35 / 45&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Olaplex Color<em>kurz / mittel / lang</em></span><span class="posten-preis"><b>ab 40 / 60 / 80&nbsp;&euro;</b><i>&ndash;</i></span></li>
-        </ul></div>
-      </details>
-      <details class="fach" id="verlaengerung">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Haarverl&auml;ngerung</span>
-          <span class="fach-ab">ab 7&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Extension pro Str&auml;hne<em>&Uuml;berl&auml;nge wird extra berechnet</em></span><span class="posten-preis"><b>7&nbsp;&euro;</b><i>&ndash;</i></span></li>
-        </ul></div>
-      </details>
-      <details class="fach" id="brauen">
-        <summary class="fach-kopf">
-          <span class="fach-wort">Augenbrauen &amp; Wimpern</span>
-          <span class="fach-ab">ab 15&nbsp;&euro;</span>
-          <span class="fach-zeichen" aria-hidden="true"></span>
-        </summary>
-        <div class="fach-inhalt">
-        <p class="spalten-wort"><span class="posten-preis"><b>Pasing</b><i>Gro&szlig;hadern</i></span></p>
-        <ul class="posten">
-          <li><span class="posten-name">Augenbrauen formen mit Faden</span><span class="posten-preis"><b>&ndash;</b><i>ab 15&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Augenbrauen f&auml;rben</span><span class="posten-preis"><b>&ndash;</b><i>ab 15&nbsp;&euro;</i></span></li>
-          <li><span class="posten-name">Wimpern f&auml;rben</span><span class="posten-preis"><b>&ndash;</b><i>ab 15&nbsp;&euro;</i></span></li>
-        </ul></div>
-      </details>
-
-  <div class="abschluss">
-    <p class="lauf">
-      Gefunden, was Sie suchen? Bei Planity sehen Sie die freien Zeiten
-      und buchen rund um die Uhr &mdash; oder Sie rufen an.
-    </p>
-    <div class="wahl">
-      <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Pasing buchen</a>
-      <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Gro&szlig;hadern buchen</a>
-      <a class="knopf-still" href="tel:+49898211164">Pasing&nbsp;&middot; 089&nbsp;821&nbsp;116&nbsp;4</a>
-      <a class="knopf-still" href="tel:+498978597770">Gro&szlig;hadern&nbsp;&middot; 089&nbsp;785&nbsp;977&nbsp;70</a>
-    </div>
+<!-- ══ Salonwahl ═════════════════════════════════════════════════════════
+     Zwei Schalter, ohne Skript echte Radioknöpfe: `:has()` blendet die
+     andere Liste aus. Das Skript merkt sich nur die Wahl und liest sie
+     aus der Adresse (#grosshadern, #farbe …).                          -->
+<div class="salonwahl-feld">
+  <div class="mitte">
+    <fieldset class="salonwahl">
+      <legend class="nurlesen">Salon w&auml;hlen</legend>
+      <input type="radio" name="salon" id="wahl-pasing" value="pasing" checked>
+      <label for="wahl-pasing"><span class="salonwahl-name">Pasing</span><span class="salonwahl-ort">Irmonherstra&szlig;e&nbsp;7</span></label>
+      <input type="radio" name="salon" id="wahl-grosshadern" value="grosshadern">
+      <label for="wahl-grosshadern"><span class="salonwahl-name">Gro&szlig;hadern</span><span class="salonwahl-ort">W&uuml;rmtalstra&szlig;e&nbsp;119</span></label>
+    </fieldset>
   </div>
-
 </div>
+
+<div class="salon salon-pasing" id="pasing" aria-label="Preise in Pasing">
+  <nav class="wegweiser" aria-label="Gruppen in Pasing">
+    <div class="mitte wegweiser-bahn">
+<!-- preise:weg-pasing -->
+<a href="#pasing-schnitt">Schnitt &amp; Styling</a><a href="#pasing-farbe">Farbe &amp; Glossing</a><a href="#pasing-straehnen">Strähnen &amp; Balayage</a><a href="#pasing-pflege">Pflege &amp; Dauerwelle</a><a href="#pasing-herren">Herren</a><a href="#pasing-kinder">Kinder</a><a href="#pasing-verlaengerung">Haarverlängerung</a><a href="#pasing-gesicht">Augenbrauen &amp; Make-up</a>
+<!-- /preise:weg-pasing -->
+    </div>
+  </nav>
+  <div class="mitte salon-liste">
+    <h2 class="nurlesen">Preise in Pasing</h2>
+<!-- preise:pasing -->
+<section class="gruppe" id="pasing-schnitt" aria-labelledby="pasing-schnitt-t"><header class="gruppe-kopf"><h3 id="pasing-schnitt-t">Schnitt &amp; Styling</h3><p>Waschen, Schneiden, Föhnen — und Frisuren ohne Schnitt.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Waschen, Schneiden, Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std. – 1 Std. 15 Min.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis">70 €</dd></div><div><dt>lang</dt><dd class="preis">80 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Waschen &amp; Föhnen</h4><p class="posten-zusatz">ohne Schnitt</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min. – 45 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis">35 €</dd></div><div><dt>mittel</dt><dd class="preis">45 €</dd></div><div><dt>lang</dt><dd class="preis">50 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Heiße Schere</h4><p class="posten-zusatz">als Zusatz zum Schnitt</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>5 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">15 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="pasing-farbe" aria-labelledby="pasing-farbe-t"><header class="gruppe-kopf"><h3 id="pasing-farbe-t">Farbe &amp; Glossing</h3><p>Ansatz, Färben, Glossing und Tönung.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Färben, Schneiden, Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. 30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis preis-wort">nach Beratung</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Färben &amp; Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. – 2 Std. 10 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis preis-wort">nach Beratung</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Glossing, Föhnen &amp; Haarkur</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 70 €</dd></div><div><dt>mittel</dt><dd class="preis">80 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 90 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Glossing, Schneiden, Föhnen &amp; Haarkur</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std. 10 Min. – 1 Std. 30 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 105 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 110 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 120 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Tönung &amp; Veredelung</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>15 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 40 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Illumina</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 60 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Elumen</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 80 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Topchic</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 40 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Greyshade</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 40 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Olaplex Color</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 40 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 60 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 80 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="pasing-straehnen" aria-labelledby="pasing-straehnen-t"><header class="gruppe-kopf"><h3 id="pasing-straehnen-t">Strähnen &amp; Balayage</h3><p>Oberkopf, halber oder ganzer Kopf — und Balayage.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen Oberkopf, Schneiden, Föhnen &amp; Pflege</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. 30 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 160 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 170 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 185 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen Oberkopf &amp; Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. – 2 Std. 10 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 110 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 120 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 135 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen halber Kopf, Schneiden &amp; Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. 30 Min. – 2 Std. 45 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 155 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 165 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 185 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen halber Kopf &amp; Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 110 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 140 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 170 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen ganzer Kopf, Schneiden &amp; Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>3 Std.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 155 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 160 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 170 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen ganzer Kopf &amp; Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. 30 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 130 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 135 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 150 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Balayage, Schneiden &amp; Styling</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. 30 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis">225 €</dd></div><div><dt>mittel</dt><dd class="preis">240 €</dd></div><div><dt>lang</dt><dd class="preis">250 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Balayage &amp; Styling</h4><p class="posten-zusatz">ohne Schnitt</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. 30 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis">210 €</dd></div><div><dt>mittel</dt><dd class="preis">215 €</dd></div><div><dt>lang</dt><dd class="preis">220 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="pasing-pflege" aria-labelledby="pasing-pflege-t"><header class="gruppe-kopf"><h3 id="pasing-pflege-t">Pflege &amp; Dauerwelle</h3><p>Haarkur, Olaplex, Kältebehandlung und Dauerwelle.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Conditioner</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>5 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">5 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Haarkur</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>10 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis">10 €</dd></div><div><dt>mittel</dt><dd class="preis">15 €</dd></div><div><dt>lang</dt><dd class="preis">17 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Crio-Kur mit Föhnen</h4><p class="posten-zusatz">Kältebehandlung fürs Haar</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std. – 1 Std. 15 Min.</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis">75 €</dd></div><div><dt>mittel</dt><dd class="preis">90 €</dd></div><div><dt>lang</dt><dd class="preis">110 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Dauerwelle</h4><p class="posten-zusatz">Preis je nach Länge und Menge</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std. 40 Min. – 2 Std. 15 Min.</p></div><dl class="stufen" data-n="2"><div><dt>1 Std. 40 Min.</dt><dd class="preis"><span class="ab">ab</span> 80 €</dd></div><div><dt>2 Std. 15 Min.</dt><dd class="preis"><span class="ab">ab</span> 140 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Olaplex-Behandlung</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="3"><div><dt>kurz</dt><dd class="preis"><span class="ab">ab</span> 70 €</dd></div><div><dt>mittel</dt><dd class="preis"><span class="ab">ab</span> 90 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 110 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="pasing-herren" aria-labelledby="pasing-herren-t"><header class="gruppe-kopf"><h3 id="pasing-herren-t">Herren</h3><p>Schnitt, Bart und Farbe für Herren.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Schnitt &amp; Styling</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">44 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Schnitt, Tonic-Massage &amp; Styling</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">60 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="pasing-kinder" aria-labelledby="pasing-kinder-t"><header class="gruppe-kopf"><h3 id="pasing-kinder-t">Kinder</h3><p>Haarschnitte für Mädchen und Jungen.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Haarschnitt bis 6 Jahre</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">30 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Mädchen bis 6 Jahre</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 45 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="pasing-verlaengerung" aria-labelledby="pasing-verlaengerung-t"><header class="gruppe-kopf"><h3 id="pasing-verlaengerung-t">Haarverlängerung</h3><p>Extensions und Verdichtung — zuerst die Beratung.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Beratung Extensions</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">50 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Beratung Haarverdichtung</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">50 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Tape-Technik &amp; Bondings</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis preis-wort">auf Anfrage</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Extensions</h4><p class="posten-zusatz">pro Strähne · Überlänge extra</p><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 7 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="pasing-gesicht" aria-labelledby="pasing-gesicht-t"><header class="gruppe-kopf"><h3 id="pasing-gesicht-t">Augenbrauen &amp; Make-up</h3><p>Brauen, Wimpern, Permanent Make-up.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Augenbrauen zupfen &amp; formen</h4><p class="posten-zusatz">mit Fadentechnik</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>20 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis preis-wort">auf Anfrage</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Permanent Make-up</h4><p class="posten-zusatz">Augenbrauen, Lippen, Eyeliner</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis preis-wort">auf Anfrage</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Make-up</h4><p class="posten-zusatz">Business und Braut</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis preis-wort">auf Anfrage</dd></div></dl></li></ul></section>
+<!-- /preise:pasing -->
+    <aside class="salon-schluss">
+      <p>Freie Zeiten in Pasing sehen Sie bei Planity &mdash; oder Sie rufen an.</p>
+      <div class="wahl">
+        <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Termin in Pasing buchen</a>
+        <a class="knopf-still" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="salon salon-grosshadern" id="grosshadern" aria-label="Preise in Gro&szlig;hadern">
+  <nav class="wegweiser" aria-label="Gruppen in Gro&szlig;hadern">
+    <div class="mitte wegweiser-bahn">
+<!-- preise:weg-grosshadern -->
+<a href="#grosshadern-schnitt">Schnitt &amp; Styling</a><a href="#grosshadern-farbe">Farbe &amp; Glossing</a><a href="#grosshadern-straehnen">Strähnen &amp; Balayage</a><a href="#grosshadern-pflege">Pflege &amp; Dauerwelle</a><a href="#grosshadern-herren">Herren</a><a href="#grosshadern-kinder">Kinder</a><a href="#grosshadern-verlaengerung">Haarverlängerung</a><a href="#grosshadern-gesicht">Augenbrauen &amp; Make-up</a>
+<!-- /preise:weg-grosshadern -->
+    </div>
+  </nav>
+  <div class="mitte salon-liste">
+    <h2 class="nurlesen">Preise in Gro&szlig;hadern</h2>
+<!-- preise:grosshadern -->
+<section class="gruppe" id="grosshadern-schnitt" aria-labelledby="grosshadern-schnitt-t"><header class="gruppe-kopf"><h3 id="grosshadern-schnitt-t">Schnitt &amp; Styling</h3><p>Waschen, Schneiden, Föhnen — und Frisuren ohne Schnitt.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Waschen, Schneiden, Föhnen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis">62 €</dd></div><div><dt>lang</dt><dd class="preis">72 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Föhnen &amp; Legen</h4><p class="posten-zusatz">ohne Schnitt</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min. – 45 Min.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis">37 €</dd></div><div><dt>lang</dt><dd class="preis">47 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Hochsteckfrisur</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">80 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="grosshadern-farbe" aria-labelledby="grosshadern-farbe-t"><header class="gruppe-kopf"><h3 id="grosshadern-farbe-t">Farbe &amp; Glossing</h3><p>Ansatz, Färben, Glossing und Tönung.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Ansatzfarbe, Schneiden &amp; Föhnen</h4><p class="posten-zusatz">inkl. Haarkur · bis 1 cm Ansatz, sonst Aufschlag ab 10 €</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 142 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 152 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Ansatzfarbe &amp; Stylen</h4><p class="posten-zusatz">inkl. Haarkur · je nach Produktverbrauch</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std. 30 Min.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 117 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 132 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Glossing, Schneiden &amp; Stylen</h4><p class="posten-zusatz">inkl. Haarkur · je nach Produktverbrauch</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std. 45 Min.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 117 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 130 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Glossing &amp; Stylen</h4><p class="posten-zusatz">inkl. Haarkur</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std. 15 Min.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 82 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 107 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Glossing</h4><p class="posten-zusatz">als Zusatz</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>20 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 35 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Neufarbe</h4><p class="posten-zusatz">je nach Farbverbrauch und Haarlänge</p><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 90 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="grosshadern-straehnen" aria-labelledby="grosshadern-straehnen-t"><header class="gruppe-kopf"><h3 id="grosshadern-straehnen-t">Strähnen &amp; Balayage</h3><p>Oberkopf, halber oder ganzer Kopf — und Balayage.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen halber Kopf, Schneiden &amp; Stylen</h4><p class="posten-zusatz">inkl. Haarkur, ohne Glossing</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. 30 Min.</p></div><dl class="stufen" data-n="1"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 172 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen halber Kopf &amp; Stylen</h4><p class="posten-zusatz">inkl. Haarkur · je nach Aufwand</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std.</p></div><dl class="stufen" data-n="1"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 147 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen ganzer Kopf, Schneiden &amp; Stylen</h4><p class="posten-zusatz">inkl. Haarkur · je nach Aufwand</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>3 Std. – 3 Std. 30 Min.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 207 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 217 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Strähnen ganzer Kopf &amp; Stylen</h4><p class="posten-zusatz">inkl. Haarkur · je nach Aufwand</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std. 30 Min. – 2 Std. 40 Min.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 177 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 193 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Balayage, Schneiden, Stylen &amp; Glossing</h4><p class="posten-zusatz">inkl. Haarkur · Preis nach Länge, Material und Aufwand; vor der Online-Buchung bitte beraten lassen</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>3 Std. 40 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 250 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="grosshadern-pflege" aria-labelledby="grosshadern-pflege-t"><header class="gruppe-kopf"><h3 id="grosshadern-pflege-t">Pflege &amp; Dauerwelle</h3><p>Haarkur, Olaplex, Kältebehandlung und Dauerwelle.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Olaplex-Behandlung</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis">92 €</dd></div><div><dt>lang</dt><dd class="preis">102 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Dauerwelle &amp; Styling</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std.</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis">135 €</dd></div><div><dt>lang</dt><dd class="preis">165 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Dauerwelle, Schneiden &amp; Styling</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std. 30 Min. – 2 Std.</p></div><dl class="stufen" data-n="2"><div><dt>kurz</dt><dd class="preis">138 €</dd></div><div><dt>lang</dt><dd class="preis">148 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Haarkur</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="2"><div><dt>kurz–mittel</dt><dd class="preis"><span class="ab">ab</span> 10 €</dd></div><div><dt>lang</dt><dd class="preis"><span class="ab">ab</span> 15 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Conditioner</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 6 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="grosshadern-herren" aria-labelledby="grosshadern-herren-t"><header class="gruppe-kopf"><h3 id="grosshadern-herren-t">Herren</h3><p>Schnitt, Bart und Farbe für Herren.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Schnitt &amp; Styling</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>40 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">38 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Neuschnitt &amp; Stylen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">48 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Maschinenhaarschnitt</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>20 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">25 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Bart</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>15 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">15 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Grauhaarkaschierung</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>15 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">28 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Dauerwelle mit Schnitt</h4><p class="posten-zusatz">inkl. Haarkur</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 115 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Farbe</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 60 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="grosshadern-kinder" aria-labelledby="grosshadern-kinder-t"><header class="gruppe-kopf"><h3 id="grosshadern-kinder-t">Kinder</h3><p>Haarschnitte für Mädchen und Jungen.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Mädchen bis 6 Jahre</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">40 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Mädchen ab 6 Jahre</h4><p class="posten-zusatz">je nach Aufwand</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">55 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Jungen bis 10 Jahre</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">30 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Jungen ab 10 Jahre</h4><p class="posten-dauer posten-telefon">telefonisch buchen</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis"><span class="ab">ab</span> 35 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="grosshadern-verlaengerung" aria-labelledby="grosshadern-verlaengerung-t"><header class="gruppe-kopf"><h3 id="grosshadern-verlaengerung-t">Haarverlängerung</h3><p>Extensions und Verdichtung — zuerst die Beratung.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Beratung Extensions</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">50 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Beratung Haarverdichtung</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>30 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">50 €</dd></div></dl></li></ul></section>
+<section class="gruppe" id="grosshadern-gesicht" aria-labelledby="grosshadern-gesicht-t"><header class="gruppe-kopf"><h3 id="grosshadern-gesicht-t">Augenbrauen &amp; Make-up</h3><p>Brauen, Wimpern, Permanent Make-up.</p></header><ul class="posten-liste"><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Augenbrauen zupfen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>15 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">15 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Augenbrauen färben</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>15 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">15 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Wimpern färben</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>20 Min.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">15 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Permanent Make-up: Augenbrauen, Korrektur</h4><p class="posten-zusatz">Termin nur auf Anfrage</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">450 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Permanent Make-up: Augenbrauen, Rekonstruktion</h4><p class="posten-zusatz">Termin nur auf Anfrage</p><p class="posten-dauer"><span class="nurlesen">Dauer: </span>2 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">550 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Permanent Make-up: Eyeliner</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="2"><div><dt>Oberlid</dt><dd class="preis">320 €</dd></div><div><dt>Unterlid</dt><dd class="preis">180 €</dd></div></dl></li><li class="posten"><div class="posten-kopf"><h4 class="posten-name">Permanent Make-up: Lippen</h4><p class="posten-dauer"><span class="nurlesen">Dauer: </span>1 Std.</p></div><dl class="stufen" data-n="1"><div class="einzeln"><dt class="nurlesen">Preis</dt><dd class="preis">550 €</dd></div></dl></li></ul></section>
+<!-- /preise:grosshadern -->
+    <aside class="salon-schluss">
+      <p>Freie Zeiten in Gro&szlig;hadern sehen Sie bei Planity &mdash; oder Sie rufen an.</p>
+      <div class="wahl">
+        <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Termin in Gro&szlig;hadern buchen</a>
+        <a class="knopf-still" href="tel:+498978597770">089&nbsp;785&nbsp;977&nbsp;70</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<section class="hinweise" aria-labelledby="hinweise-titel">
+  <div class="mitte">
+    <h2 class="nurlesen" id="hinweise-titel">So lesen Sie die Preise</h2>
+    <dl class="legende">
+      <div><dt><span class="ab">ab</span></dt><dd>Mindestpreis. Der Endpreis richtet sich nach L&auml;nge, Materialverbrauch und Aufwand &mdash; Sie erfahren ihn vor der Behandlung.</dd></div>
+      <div><dt>Dauer</dt><dd>Gesamtzeit im Salon, Einwirkzeit eingerechnet.</dd></div>
+      <div><dt>Quelle</dt><dd>&Uuml;bernommen aus der Online-Buchung der Salons bei Planity, Stand 24.&nbsp;September&nbsp;2026. Posten mit <em>telefonisch buchen</em> stehen nur auf der Preisliste der Salon-Website und sind nicht online buchbar. Verbindlich ist der Preis im Salon.</dd></div>
+    </dl>
+  </div>
+</section>
 
 </main>
 
 <footer class="fuss">
   <div class="mitte">
-    <img class="fuss-siegel" src="logo-schriftzug-hell.svg" alt="" width="280" height="124" loading="lazy" decoding="async">
-    <p class="fuss-marke">Irmonhair &middot; Friseur in M&uuml;nchen</p>
-    <nav class="fuss-wege" aria-label="Rechtliches">
-      <a href="leistungen.html">Preisliste</a>
+    <img class="fuss-siegel" src="logo-schriftzug-hell.svg" alt="Irmonhair" width="280" height="124" loading="lazy" decoding="async">
+    <p class="fuss-marke">Friseur in M&uuml;nchen &middot; Pasing &amp; Gro&szlig;hadern</p>
+    <nav class="fuss-wege" aria-label="Weitere Seiten">
+      <a href="index.html">Startseite</a>
       <a href="impressum.html">Impressum</a>
       <a href="datenschutz.html">Datenschutz</a>
     </nav>

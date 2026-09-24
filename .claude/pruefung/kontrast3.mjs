@@ -71,8 +71,14 @@ await b.close();
 const {writeFileSync, readFileSync} = await import('node:fs');
 writeFileSync('/tmp/k-ohne.png', roh);
 const {execFileSync} = await import('node:child_process');
-execFileSync('/tmp/ffs/node_modules/ffmpeg-static/ffmpeg',
-  ['-hide_banner','-loglevel','error','-i','/tmp/k-ohne.png','-pix_fmt','rgb24','-f','rawvideo','/tmp/k-ohne.rgb','-y']);
+const {existsSync} = await import('node:fs');
+/* ffmpeg gibt es nicht in jedem Container — dann liest Python (Pillow)
+   dasselbe PNG in dieselben Rohdaten. */
+const FFMPEG = '/tmp/ffs/node_modules/ffmpeg-static/ffmpeg';
+if (existsSync(FFMPEG))
+  execFileSync(FFMPEG, ['-hide_banner','-loglevel','error','-i','/tmp/k-ohne.png','-pix_fmt','rgb24','-f','rawvideo','/tmp/k-ohne.rgb','-y']);
+else
+  execFileSync('python3', ['-c', "from PIL import Image; Image.MAX_IMAGE_PIXELS=None; open('/tmp/k-ohne.rgb','wb').write(Image.open('/tmp/k-ohne.png').convert('RGB').tobytes())"]);
 const buf = readFileSync('/tmp/k-ohne.rgb');
 /* Die Breite nicht annehmen, sondern aus dem PNG lesen: stimmt sie
    nicht, verschiebt sich jede Zeile ein Stück weiter, und weit unten
