@@ -1,0 +1,1772 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Irmonhair — Friseur in München-Pasing und Großhadern
+
+   ── Ein heller Raum aus Haar ──────────────────────────────────────────
+
+   Die Seite ist hell und warm. Hinter allem steht eine Wand aus feinen,
+   cremefarbenen Strähnen; den ersten Bildschirm, die Leistungen und die
+   Standorte trägt eine blonde Strähne mit Glanz, die Stimmen eine
+   karamellfarbene, der Fuss eine schwarze als Anker. Alle Hintergründe
+   sind selbst gerechnet (`recherche/straehne.py`) — keine fremden
+   Bildrechte.
+
+   ── Woher die Farben kommen ───────────────────────────────────────────
+
+   Das Logo des Salons ist schwarz und weiss: gesperrte Versalien und ein
+   Haarstrich, der in einen Schwung fällt. Daraus kommen Schwarz (Schrift,
+   gefüllter Knopf, Fuss) und das warme Weiss des Grundes. Die einzige
+   Farbe ist die des Materials selbst: Blond und Karamell, der Ton von
+   Haar im Licht — `--akzent` für Flächen und Zeichen, `--akzent-schrift`
+   (Bronze, L 45 %) für Verweise.
+
+   ── Das Grundgerüst ───────────────────────────────────────────────────
+
+   Aufbau und Verhalten stammen aus dem Projekt BaHaar's Styling Studio;
+   Regeln für Abschnitte, die hier (noch) nicht vorkommen — Brautstyling,
+   Arbeiten, der Laden —, sind bewusst stehen geblieben, damit sie ohne
+   Neubau zurückkommen können, sobald es Fotos gibt.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Jost für die Anzeige: eine geometrische Grotesk in der Tradition der
+   Futura, dem gesperrten Schriftzug im Logo am nächsten. In den leichten
+   Schnitten wird sie elegant, ohne dünn zu wirken; die Kursive bringt den
+   Schwung. SIL Open Font License (schrift/Jost-OFL.txt). Mulish für den
+   Lauf. Alles liegt im Repository; nichts kommt von fremden Servern. */
+@font-face {
+  font-family: 'Jost';
+  src: url('schrift/Jost.woff2') format('woff2');
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Jost';
+  src: url('schrift/Jost-Italic.woff2') format('woff2');
+  font-weight: 100 900; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Mulish';
+  src: url('schrift/Mulish.woff2') format('woff2');
+  font-weight: 300 800; font-style: normal; font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  /* ── Grund ──────────────────────────────────────────────────────── */
+  /* Fast neutrales Weiss, das Weiss des Logos — kein Creme. Die Wärme
+     kommt allein aus den blonden Strähnen, nicht aus der Fläche. */
+  --grund:      oklch(98% .003 75);
+  --grund-tief: oklch(94.5% .006 70);
+  /* Die Scheibe, die sich über die Wand legt; `--durch` steuert, wie
+     viel Strähne durchkommt. */
+  --scheibe:    98.4% .003 75;
+
+  /* ── Schrift: warmes Schwarz, drei Stufen ───────────────────────── */
+  --schrift:       oklch(21% .012 60);
+  --schrift-leise: oklch(33% .014 60);
+  --schrift-still: oklch(42% .016 60);
+
+  /* ── Akzent: Fläche und Schrift getrennt ────────────────────────── */
+  --akzent:          oklch(70% .09 68);
+  --akzent-schrift:  oklch(45% .08 58);
+
+  /* Der gefüllte Knopf ist schwarz wie das Logo, die Schrift darauf das
+     warme Weiss des Grundes. */
+  --knopf-grund:  oklch(21% .012 60);
+  --knopf-hell:   oklch(34% .02 60);
+  --knopf-schrift: oklch(97.5% .010 80);
+
+  --linie:      oklch(25% .02 60 / .22);
+  --linie-fein: oklch(25% .02 60 / .12);
+
+  --schatten: 30% .03 60;
+
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --t-riesen: 2.35rem;
+  --t-gross:  1.9rem;
+  --t-mittel: 1.1rem;
+  --t-lauf:   1rem;
+  --t-klein:  .9375rem;
+  --t-marke:  .8125rem;
+
+  --a1: .5rem;  --a2: 1rem;  --a3: 1.75rem;
+  --a4: 3rem;   --a5: 5rem;  --a6: 7rem;
+
+  --rand: 1.25rem;
+  --spalte: 74rem;
+  --lese: 38rem;
+
+  --leiste: 56px;
+
+  --kurve: cubic-bezier(.22, .61, .36, 1);
+  /* Auftritt bremst aus, Abgang beschleunigt — andersherum sieht es
+     aus, als würde etwas weggezogen und dann hingeworfen. */
+  --kurve-fort: cubic-bezier(.55, 0, .78, .4);
+  --t1: .25s; --t2: .5s;
+
+  --kante: 3px;
+  --kante-voll: 999px;
+
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --t-riesen: 3.2rem; --t-gross: 2.4rem; --rand: 2rem; --leiste: 64px;
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --t-riesen: 3.9rem; --t-gross: 2.7rem; --rand: 2.5rem;
+  }
+}
+
+/* ── Grundlagen ───────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Der Bereich unter dem Fuss und hinter dem Überziehen gehört dem
+   Fuss, nicht dem Papier: sonst blitzt am Seitenende ein heller
+   Streifen auf. */
+html { background: var(--grund); }
+
+body {
+  margin: 0;
+  background: var(--grund);
+  color: var(--schrift);
+  font-family: 'Mulish', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: var(--t-lauf);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* `height: auto` gehört dazu: Die Attribute width/height im Markup sind
+   echte Angaben in Pixeln. Ohne die Zeile steht ein Bild in seiner
+   Originalhöhe, und ein daneben gesetztes `aspect-ratio` greift nie —
+   die Kacheln der Arbeiten waren dadurch 1333 px hohe Streifen. */
+img, svg, video { display: block; max-width: 100%; height: auto; }
+
+/* Lange, unteilbare Zeichenketten — E-Mail-Adressen, Steuernummern —
+   schieben am schmalen Schirm über den Rand hinaus, ohne dass ihr
+   Kasten mitwächst; man sieht es erst an `scrollWidth`. */
+body { overflow-wrap: break-word; }
+a, code, dd { overflow-wrap: anywhere; }
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--schrift);
+  outline-offset: 3px;
+  border-radius: var(--kante);
+}
+
+.mitte { max-width: var(--spalte); margin-inline: auto; padding-inline: var(--rand); }
+.lese { max-width: var(--lese); }
+
+.sprung {
+  /* Über dem Vorhang: wer sofort tabbt, soll den Sprunglink sehen und
+     nicht hinter einem Ladeschirm ins Leere fokussieren. */
+  position: fixed; left: var(--rand); top: -4rem; z-index: 95;
+  padding: .6rem 1rem; border-radius: var(--kante);
+  background: var(--schrift); color: var(--grund);
+  font-size: var(--t-klein); font-weight: 600; text-decoration: none;
+  transition: top var(--t1) var(--kurve);
+}
+.sprung:focus-visible { top: var(--rand); }
+
+/* ── Schriftbilder ────────────────────────────────────────────────────── */
+
+
+.riesen, .gross {
+  margin: 0 0 var(--a3);
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+.riesen { font-size: var(--t-riesen); }
+.gross  { font-size: var(--t-gross); }
+.riesen em, .gross em { font-style: italic; color: var(--schrift); }
+
+.lauf { margin: 0 0 var(--a3); color: var(--schrift-leise); }
+
+/* ── Die Leiste ───────────────────────────────────────────────────────
+   Sie weicht beim Runterscrollen aus und kommt beim Hochscrollen zurück.
+   Sechs Pixel Hysterese, sonst flackert sie beim sanften Auslaufen.   */
+
+.leiste {
+  position: sticky; top: 0; z-index: 30;
+  height: var(--leiste);
+  display: flex; align-items: center; gap: var(--a3);
+  padding-inline: var(--rand);
+  background: oklch(97.5% .012 80 / .86);
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--linie-fein);
+  transition: transform var(--t2) var(--kurve);
+}
+.leiste.weg { transform: translateY(-100%); }
+
+/* Auf den dunklen Seiten trägt die Leiste den Ton der Seite, nicht
+   Papier: eine helle Schiene über einer dunklen Liste liest sich wie
+   ein Fremdkörper. */
+body:has(.stufe-liste) .leiste {
+  background: oklch(97.5% .012 80 / .9);
+  border-bottom-color: var(--linie-fein);
+  color: var(--schrift);
+}
+body:has(.stufe-liste) .marke-zusatz,
+body:has(.stufe-liste) .wege a { color: var(--schrift-leise); }
+body:has(.stufe-liste) .pille {
+  border-color: var(--linie); color: var(--schrift);
+}
+body:has(.stufe-liste) .klapp span { background: var(--schrift); }
+body:has(.stufe-liste) .wege {
+  background: oklch(97.5% .012 80 / .97);
+  border-color: var(--linie-fein);
+}
+@media (hover: hover) and (pointer: fine) {
+  body:has(.stufe-liste) .wege a:hover { color: var(--schrift); }
+  body:has(.stufe-liste) .pille:hover { background: oklch(34% .022 60 / .06); }
+}
+
+/* Über der schwarzen Bühne ist die Leiste durchsichtig und hell — eine
+   Schiene über dem Glanz sähe aus wie ein Fremdkörper. Sobald der
+   Auftakt durchgelaufen ist, kommt sie zurück auf Papier. Umgeschaltet
+   wird per Klasse aus dem Skript, nicht per Verlauf: die Leiste hat nur
+   zwei Zustände, keinen Zwischenzustand. */
+.leiste-buehne {
+  background: transparent;
+  border-bottom-color: transparent;
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  color: var(--schrift);
+  transition: transform var(--t2) var(--kurve),
+              background var(--t2) var(--kurve),
+              border-color var(--t2) var(--kurve),
+              color var(--t2) var(--kurve);
+}
+.leiste-buehne .marke-zusatz,
+.leiste-buehne .wege a { color: var(--schrift-leise); }
+/* Über dem Lichtband des Glanzes stand die Nummer mit 3,6:1 — die
+   Pille bringt deshalb ihren eigenen dunklen Grund mit. */
+.leiste-buehne .pille {
+  border-color: oklch(34% .022 60 / .30); color: var(--schrift);
+  background: oklch(97.5% .012 80 / .62);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+}
+/* Der Klappknopf ist aus zwei Strichen gezeichnet; auf Schwarz müssen
+   auch sie hell werden, sonst steht oben rechts nichts. */
+.leiste-buehne .klapp span { background: var(--schrift); }
+@media (hover: hover) and (pointer: fine) {
+  .leiste-buehne .wege a:hover { color: var(--schrift); }
+  .leiste-buehne .pille:hover { background: oklch(34% .022 60 / .06); }
+}
+
+.marke {
+  display: inline-flex; align-items: baseline; gap: .55rem; flex-wrap: nowrap;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: 1.28rem; line-height: 1.1;
+  letter-spacing: -.005em; font-kerning: normal;
+  text-decoration: none;
+}
+/* Nur der Zusatz, nicht jedes span in der Marke: `.marke span` hatte
+   auch „BaHaar's" erwischt und ihm die Serife genommen — und am schmalen
+   Schirm beide ausgeblendet, sodass in der Leiste gar kein Name mehr
+   stand. Der Name geht nie weg, nur der Zusatz. */
+/* Der Name bricht nie um: `a` darf sonst überall trennen, und am
+   Telefon stand „BaHaa / r's" in zwei Zeilen. */
+.marke-wort { font-family: inherit; white-space: nowrap; overflow-wrap: normal; }
+/* Das kleine Zeichen vor dem Namen: der Haarschwung aus dem Logo im Ring,
+   in einer Fassung mit kräftigeren Haarstrichen, die bei 30 px nicht
+   verschwinden. */
+.marke-zeichen {
+  flex: none; align-self: center;
+  width: 30px; height: 30px;
+}
+.marke-zusatz {
+  font-family: 'Mulish', system-ui, sans-serif;
+  font-size: .6rem; font-weight: 500;
+  letter-spacing: .19em; text-transform: uppercase;
+  color: var(--schrift-still);
+}
+@media (max-width: 26rem) { .marke-zusatz { display: none; } }
+
+/* Am schmalen Schirm klappt das Menü unter der Leiste auf; ab 62rem
+   steht es als Zeile in der Leiste und der Klappknopf verschwindet.
+   `[hidden]` verliert sonst gegen die display-Regeln hier. */
+.wege {
+  position: absolute; top: 100%; left: 0; right: 0;
+  display: none; flex-direction: column; gap: 0;
+  padding: var(--a2) var(--rand) var(--a3);
+  /* Deckend, nicht fast deckend: Bei vier Prozent Rest steht die
+     Überschrift der Seite als Geist hinter den Wegen. */
+  background: var(--grund);
+  border-bottom: 1px solid var(--linie-fein);
+  font-size: var(--t-klein); color: var(--schrift-leise);
+}
+.wege.auf { display: flex; }
+.wege a { padding: .7rem 0; text-decoration: none; }
+.wege a + a { border-top: 1px solid var(--linie-fein); }
+
+.klapp {
+  margin-left: var(--a2);
+  width: 40px; height: 40px; padding: 0;
+  display: grid; align-content: center; justify-items: center; gap: 6px;
+  background: none; border: 0; cursor: pointer;
+}
+.klapp span {
+  display: block; width: 20px; height: 1.5px;
+  background: var(--schrift);
+  transition: transform var(--t1) var(--kurve), opacity var(--t1) var(--kurve);
+}
+.klapp[aria-expanded="true"] span:first-child { transform: translateY(3.75px) rotate(45deg); }
+.klapp[aria-expanded="true"] span:last-child  { transform: translateY(-3.75px) rotate(-45deg); }
+
+@media (min-width: 62rem) {
+  .wege {
+    position: static; display: flex; flex-direction: row;
+    margin-inline: auto; gap: var(--a3);
+    padding: 0; background: none; border: 0;
+  }
+  .wege a { padding: 0; }
+  .wege a + a { border-top: 0; }
+  .wege .nur-klein, .klapp { display: none; }
+}
+
+.pille {
+  margin-left: auto;
+  padding: .42rem 1rem;
+  border: 1px solid var(--linie);
+  border-radius: var(--kante-voll);
+  font-size: var(--t-klein);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none; white-space: nowrap;
+}
+@media (min-width: 62rem) { .pille { margin-left: 0; } }
+
+@media (hover: hover) and (pointer: fine) {
+  .wege a, .pille { transition: color var(--t1) var(--kurve), border-color var(--t1) var(--kurve); }
+  .wege a:hover { color: var(--schrift); }
+  .pille:hover { border-color: var(--schrift); color: var(--schrift); }
+}
+
+/* ── Knöpfe ───────────────────────────────────────────────────────────── */
+
+.knopf, .knopf-still {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .78rem 1.5rem;
+  border-radius: var(--kante-voll);
+  font: inherit;
+  font-size: var(--t-klein); font-weight: 600;
+  text-decoration: none; white-space: nowrap;
+  /* Als <button> brächte der Browser sonst seinen eigenen grauen Grund
+     mit, und derselbe Knopf sähe neben einem <a> anders aus. */
+  background: none; border: 0; cursor: pointer;
+}
+/* Der gefüllte Knopf trägt die Hausfarbe. Er ist der eine Ort, an dem
+   die Seite etwas von der Besucherin will, und der einzige, an dem
+   der Akzent als Fläche auftritt — überall sonst bleibt er Strich, Zeichen
+   oder Zeile. Dunkle Schrift darauf steht mit 11,4:1. */
+.knopf { background: var(--knopf-grund); color: var(--knopf-schrift); }
+.knopf-still {
+  border: 1px solid var(--linie);
+  color: var(--schrift);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.knopf-still svg { width: 1em; height: 1em; opacity: .7; }
+
+@media (hover: hover) and (pointer: fine) {
+  .knopf, .knopf-still { transition: transform var(--t1) var(--kurve), background-color var(--t1) var(--kurve), border-color var(--t1) var(--kurve); }
+  .knopf:hover { transform: translateY(-2px); background: var(--knopf-hell); }
+  .knopf-still:hover { transform: translateY(-2px); border-color: var(--schrift); }
+}
+
+/* ── Auftakt ──────────────────────────────────────────────────────────
+   Vollflächig, wie in der Vorlage: eine Aufnahme des Ladens über die
+   Zweifarben-Rampe, darüber die Wortmarke in Tinte. Kein Schleier über
+   der ganzen Fläche — der Duoton hebt die Lichter ohnehin so weit an,
+   dass Schwarz darauf steht. Nur hinter dem Satzblock liegt ein weicher
+   Verlauf aus Papier.                                                 */
+
+/* ── Der Auftakt ──────────────────────────────────────────────────────
+   Der Glanz trägt den ersten Bildschirm, davor steht die freigestellte
+   Schere. Der Schleier liegt nicht über der ganzen Fläche: nur die
+   Ränder oben und unten, dazu der Schatten hinter dem Textblock. Vier
+   Fünftel des Bildes bleiben offen.                                  */
+
+.auftakt {
+  position: relative;
+  isolation: isolate;
+  /* Die Leiste klebt oben und liegt darüber, statt einen weissen
+     Streifen über das Bild zu legen: der Auftakt wird um ihre Höhe nach
+     oben gezogen und beginnt an der Kante des Fensters. */
+  margin-top: calc(-1 * var(--leiste));
+  min-height: min(100svh, 980px);
+  /* Die Schere steht oben und bleibt frei, die Schrift sitzt unten. Ein
+     Schleier mitten im Bild hätte genau das verdeckt, wofür das Bild
+     da ist. */
+  display: grid; align-items: end; justify-items: center;
+  padding: calc(var(--leiste) + var(--a4)) var(--rand) var(--a5);
+  overflow: hidden;
+  background: var(--grund);
+  color: var(--schrift);
+}
+
+/* Der Glanz: eine gekämmte Strähne, über die breit ein Licht läuft.
+   Zwei eigene Zuschnitte (2000 × 1250 quer, 1000 × 1800 hochkant), jeder
+   für sein Format gerechnet — `cover` schneidet deshalb fast nichts. */
+.auftakt-grund {
+  position: absolute; inset: 0; z-index: -2;
+}
+.auftakt-grund img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 50%;
+}
+
+/* Der Schleier nimmt nur die Ränder: unten in den Grund der Seite
+   hinein, oben ein schmales Band für die Leiste. Hinter der Schrift
+   sorgt ihr eigener Schatten für Ruhe — die Fläche bleibt offen. */
+.auftakt-schleier {
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(to top,
+      var(--grund) 0%,
+      oklch(97.5% .012 80 / .8) 9%,
+      oklch(97.5% .012 80 / .3) 22%,
+      transparent 38%),
+    linear-gradient(to bottom, oklch(97.5% .012 80 / .55) 0%, transparent 15%);
+}
+
+/* Die Schere, aus der Aufnahme gelöst. Sie steht rechts, wo am breiten
+   Schirm keine Schrift steht, und wirft einen weichen Schatten mit
+   Versatz nach unten auf den Glanz — so schwebt sie davor, statt
+   aufgeklebt zu wirken. Sie wird nie grösser gezeigt als ihre Vorlage
+   (867 px hoch). */
+.auftakt-schere {
+  position: absolute; z-index: 0;
+  pointer-events: none;
+  right: max(var(--rand), calc((100vw - var(--spalte)) / 2 + var(--rand)));
+  top: 50%;
+  height: min(74svh, 620px);
+  aspect-ratio: 521 / 867;
+  translate: 0 -46%;
+}
+.auftakt-schere img {
+  width: 100%; height: 100%;
+  rotate: -7deg;
+  filter: drop-shadow(0 26px 30px oklch(32% .022 60 / .34))
+          drop-shadow(0 4px 6px oklch(32% .022 60 / .28));
+  animation: schere-schweben 14s cubic-bezier(.33, 0, .2, 1) infinite;
+}
+/* Ein langsames Schweben, damit das Metall im Licht lebt. Jede Hälfte
+   bremst in ihren Umkehrpunkt hinein; bei acht Pixeln in sieben
+   Sekunden ist die Umkehr nicht zu sehen. */
+@keyframes schere-schweben {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -9px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auftakt-schere img { animation: none; }
+}
+
+/* Am Telefon steht die Schere oben, die Schrift darunter. */
+@media (max-width: 61.99rem) {
+  .auftakt-schere {
+    right: 50%; top: calc(var(--leiste) + 1rem);
+    height: min(38svh, 340px);
+    translate: 50% 0;
+  }
+  .auftakt-schere img { rotate: -18deg; }
+}
+
+/* Der Auftritt: ein gestalteter Moment, in Gruppen zu dritt. Die
+   Schere kommt mit der ersten Gruppe. Solange das Skript noch nicht
+   gelaufen ist (`vorlauf`), bleibt der Auftakt leer; die Klasse nimmt
+   sich nach 1,6 s selbst zurück. */
+.vorlauf .auftakt-satz > *, .vorlauf .auftakt-schere { opacity: 0; }
+.auftritt-gross {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  filter: blur(8px);
+}
+.auftakt-schere.auftritt-gross { transform: translate3d(0, 34px, 0) rotate(-3deg); }
+.auftritt-gross.auftritt-da {
+  opacity: 1; transform: none; filter: none;
+  transition: opacity .9s var(--kurve), transform .9s var(--kurve), filter .9s var(--kurve);
+}
+
+.auftakt-satz {
+  position: relative; z-index: 1;
+  max-width: 46rem; width: 100%;
+  text-align: center;
+}
+/* Der Schatten hinter dem Wort, nicht über dem Bild.
+
+   Vorher hielt ein Schleier über die halbe Auftakthöhe die Schrift
+   lesbar — und deckte dabei genau die Schere zu, die den ersten
+   Bildschirm trägt. Jetzt ist der Schleier licht und nur der Textblock
+   bringt seinen eigenen Grund mit. Vier Fünftel der Aufnahme bleiben
+   offen, und die Schere steht frei.
+
+   Ein senkrechtes Band, keine Ellipse: bei einem radialen Verlauf
+   zählt der Abstand in beiden Achsen zusammen, und an den Enden einer
+   so breiten Zeile wie „BaHaar's" läge der Punkt schon fast am Rand
+   des Radius. Seitlich läuft es über den Textblock hinaus aus, damit
+   nirgends eine Kante steht. */
+.auftakt-satz::before {
+  content: ""; position: absolute; z-index: -1;
+  inset: -5rem -24vw -2.5rem;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    oklch(97.5% .012 80 / .34) 9%,
+    oklch(97.5% .012 80 / .62) 22%,
+    oklch(97.5% .012 80 / .62) 58%,
+    oklch(97.5% .012 80 / .4) 82%,
+    transparent 100%);
+}
+
+/* Die Wortmarke. Bei dieser Grösse braucht die Anzeige
+   sie eine engere Laufweite, sonst fällt die Zeile auseinander. */
+/* Eine Regel, nicht zwei: weiter unten stand dieselbe Auswahl noch
+   einmal und überschrieb Rand und Zeilenabstand. */
+.wortmarke {
+  margin: var(--a2) 0 var(--a3);
+  line-height: .92;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: -.018em;
+  color: var(--schrift);
+}
+.wortmarke-wort {
+  display: block;
+  font-size: clamp(3rem, 11vw, 7.5rem);
+}
+.wortmarke-kursiv {
+  display: block;
+  font-style: italic;
+  font-size: clamp(2.1rem, 7.6vw, 5.2rem);
+  letter-spacing: -.01em;
+  color: var(--schrift-leise);
+}
+
+.auftakt-lauf {
+  margin: 0 auto var(--a4);
+  max-width: 34rem;
+  font-size: var(--t-lauf); line-height: 1.6;
+  color: var(--schrift-leise);
+}
+
+.wahl-mitte { justify-content: center; }
+
+/* Auf der Bühne kehren sich die Knöpfe um: gefüllt ist hell, weil auf
+   Schwarz das Helle vorn steht. */
+.auftakt .knopf {
+  background: var(--knopf-grund); color: var(--knopf-schrift);
+}
+.auftakt .knopf-still {
+  border-color: oklch(34% .022 60 / .4); color: var(--schrift);
+}
+@media (hover: hover) and (pointer: fine) {
+  .auftakt .knopf-still:hover { background: oklch(34% .022 60 / .06); }
+}
+
+/* ── Der Auftakt in der Breite: Schrift links, Schere frei ───────────
+   Gemessen steckt das Metall der Schere bei 1440 px fast vollständig in
+   der mittleren Zone der Breite — links und rechts davon ist die
+   Aufnahme leer. Ein mittig gesetzter Textblock steht also zwangsläufig
+   genau darauf, egal wie licht der Schleier ist. Deshalb rückt die
+   Schrift auf breiten Schirmen an die linke Kante, dorthin, wo ohnehin
+   nichts steht, und bündig mit der Wortmarke in der Leiste. Die Schere
+   bekommt die Bühne, und der Schatten hinter dem Text darf leichter
+   werden, weil dort weniger Glanz liegt.
+
+   Am schmalen Schirm füllt die Schere die ganze Breite; dort hilft nur
+   die Höhe, und der Block bleibt mittig unten. */
+@media (min-width: 62rem) {
+  .auftakt { justify-items: start; }
+  .auftakt-satz {
+    max-width: 30rem;
+    text-align: left;
+  }
+  .auftakt .wahl-mitte { justify-content: flex-start; }
+  .auftakt .stand-chip { margin-inline: 0; }
+  /* Etwas kleiner, damit die Zeile in die freie Zone passt, statt in
+     die Schere hineinzuwachsen. */
+  .auftakt .wortmarke-wort { font-size: clamp(3rem, 11vw, 6.6rem); }
+  .auftakt .wortmarke-kursiv { font-size: clamp(2.1rem, 7.6vw, 4.6rem); }
+  /* Der Schatten spannt sich links über den Rand hinaus und muss nach
+     rechts auslaufen — sonst steht eine senkrechte Kante quer im
+     Glanz. Ein Verlauf allein tut das nicht: die Deckung kommt von
+     oben nach unten, also blendet eine Maske die rechte Seite aus. */
+  .auftakt-satz::before {
+    inset: -4rem -10rem -2rem -14rem;
+    -webkit-mask-image: linear-gradient(to right, #000 0 52%, transparent 100%);
+            mask-image: linear-gradient(to right, #000 0 52%, transparent 100%);
+  }
+}
+
+/* ── Der Auftakt am schmalen Schirm: die Schere oben, die Schrift tief
+   Am Telefon steht die Schere oben in der Mitte; der Textblock rückt so
+   weit nach unten, wie er kann, und wird dafür enger gesetzt. Nichts
+   davon wird kleiner, nur die Abstände. Sein Schatten ist hier dichter
+   als am breiten Schirm, weil unter ihm das Lichtband des Glanzes
+   durchläuft. */
+@media (max-width: 61.99rem) {
+  .auftakt { padding-bottom: var(--a4); }
+  .auftakt .wortmarke { margin-bottom: var(--a2); }
+  .auftakt-lauf { margin-bottom: var(--a3); }
+  .auftakt .wahl { margin-bottom: 0; }
+  .auftakt .stand-chip { margin-top: var(--a3); }
+  .auftakt-satz::before {
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      oklch(97.5% .012 80 / .45) 10%,
+      oklch(97.5% .012 80 / .72) 24%,
+      oklch(97.5% .012 80 / .72) 70%,
+      oklch(97.5% .012 80 / .45) 88%,
+      transparent 100%);
+  }
+}
+
+/* Die Standmarke sitzt unter den Knöpfen, wie der kleine Knopf in der
+   Vorlage. Der Punkt trägt die Auskunft, das Wort erklärt sie. */
+.stand-chip {
+  display: inline-flex; align-items: center; gap: .55rem;
+  margin: var(--a4) 0 0;
+  padding: .42rem .95rem .42rem .75rem;
+  border: 1px solid oklch(34% .022 60 / .22);
+  border-radius: var(--kante-voll);
+  /* Eigener Grund: die Marke steht sonst mal auf Schwarz und mal auf
+     hellem Glanz, und in der hellen Lage reicht die Reserve nicht. */
+  background: oklch(97.5% .012 80 / .72);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  font-family: var(--mono);
+  font-size: .72rem; letter-spacing: .06em;
+  color: var(--schrift);
+}
+.stand-chip::before {
+  content: ""; flex: none;
+  width: .4rem; height: .4rem; border-radius: 50%;
+  background: oklch(34% .022 60 / .35);
+}
+.stand-chip:has(.offen)::before {
+  background: var(--akzent);
+  box-shadow: 0 0 0 3px oklch(80% .070 68 / .20);
+}
+
+/* Die Eckzeilen bleiben, aber in der Helligkeit der Bühne. */
+.auftakt .kennung { color: var(--schrift-still); }
+@media (max-width: 48rem) { .auftakt .kennung { display: none; } }
+
+/* Wer Bewegung abbestellt hat, bekommt das Standbild — darum kümmert
+   sich `.raum-grund` für die ganze Seite, der Auftakt bleibt
+   durchsichtig. Die Regeln, die hier einmal ein eigenes Video im
+   Auftakt versorgt haben, sind mit dem Umbau auf den durchgehenden
+   Raum gegenstandslos geworden. */
+
+
+/* Die kleinen Kennungen in den Ecken: der technische Gegenpol zur
+   Wortmarke, wie in der Vorlage. Rein dekorativ. */
+.kennung {
+  position: absolute; z-index: 2; margin: 0;
+  top: calc(var(--leiste) + var(--a2));
+
+  font-family: var(--mono);
+  font-size: .66rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--schrift-leise);
+}
+.kennung-links  { left: var(--rand); }
+.kennung-rechts { right: var(--rand); }
+@media (max-width: 40rem) { .kennung-rechts { display: none; } }
+/* Auf dem Raster unterbricht die Zeile die Messlinie — dafür braucht sie
+   den Papiergrund. Ohne Raster wäre er nur ein Kasten im Bild. */
+@media (min-width: 48rem) {
+  .raster ~ .kennung { padding: 0 .55rem; background: var(--grund); }
+}
+
+.wahl { display: flex; flex-wrap: wrap; gap: var(--a2); margin-bottom: var(--a3); }
+
+.ort {
+  margin: 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--a2) var(--a3);
+  font-size: var(--t-klein); color: var(--schrift-leise);
+}
+.zeichen { display: inline-flex; align-items: center; gap: .6rem; }
+.zeichen img {
+  width: 34px; height: 34px; border-radius: 50%;
+  object-fit: cover;
+  outline: 1px solid var(--linie);
+}
+.zeichen b { color: var(--schrift); font-weight: 600; }
+
+.belege {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  max-width: var(--spalte);
+  margin-inline: auto;
+  background: var(--linie-fein);
+  border-block: 1px solid var(--linie-fein);
+}
+@media (min-width: 48rem) { .belege { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.belege p {
+  margin: 0; padding: var(--a3) var(--rand);
+  background: var(--grund);
+  display: flex; flex-direction: column; gap: .2rem;
+  font-size: var(--t-klein);
+  color: var(--schrift-still);
+}
+.belege b {
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: 1.55rem; font-weight: 400;
+  color: var(--schrift);
+  line-height: 1.1;
+}
+
+/* ── Am Becken ────────────────────────────────────────────────────────── */
+
+/* ── Bahnen ───────────────────────────────────────────────────────────── */
+
+.bahn { padding-block: var(--a5); }
+.bahn + .bahn { border-top: 1px solid var(--linie-fein); }
+
+/* ── Leistungen ───────────────────────────────────────────────────────── */
+
+.karten {
+  display: grid;
+  /* Feste Spaltenzahlen statt auto-fit: Sechs Karten gehen glatt durch
+     eins, zwei und drei auf. Bei vier Spalten bleiben zwei Felder leer,
+     und die zeigen dann den Grund des Rasters als hellen Klotz. */
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--linie-fein);
+  border: 1px solid var(--linie-fein);
+  border-radius: var(--kante);
+  overflow: hidden;
+}
+.karte { margin: 0; padding: var(--a3); background: var(--grund); }
+@media (min-width: 40rem) { .karten { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 64rem) { .karten { grid-template-columns: 1fr 1fr 1fr; } }
+.karte h3 {
+  margin: 0 0 var(--a2);
+  font-size: var(--t-mittel); font-weight: 600;
+  letter-spacing: -.005em;
+}
+.karte dl { margin: 0; display: flex; flex-direction: column; gap: .55rem; }
+.karte dl > div {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--a2);
+}
+.karte dt { color: var(--schrift-leise); font-size: var(--t-klein); }
+.karte dd {
+  margin: 0;
+  color: var(--schrift);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-klein); font-weight: 600;
+  white-space: nowrap;
+}
+
+.mehr { margin: var(--a3) 0 0; font-size: var(--t-klein); }
+.mehr a { color: var(--akzent-schrift); text-decoration: none; }
+@media (hover: hover) and (pointer: fine) { .mehr a:hover { text-decoration: underline; } }
+
+/* ── Der Vorhang ──────────────────────────────────────────────────────
+   Warmer Schimmer, bevor die Seite kommt. Drei Bewegungen, nicht mehr: zwei
+   Schwaden, die auf geschlossenen Bahnen ziehen, und die Wortmarke,
+   die auftaucht. Die Bahnen sind geschlossen und laufen `linear` —
+   eine Schwade, die am Wendepunkt kurz stehen bleibt, verrät sich
+   sofort als Schleife. Beide Dauern sind teilerfremd, damit sich das
+   Bild nicht sichtbar wiederholt.                                    */
+
+.vorhang {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: center;
+  overflow: hidden;
+  background: var(--grund);
+  /* Er fängt nichts ab: reine Kulisse. Ohne diese Zeile blieb er
+     während des Ausblendens anklickbar — und ohne Skript blendet ihn
+     nur die Notaus-Animation weg, die eine knappe Sekunde braucht. */
+  pointer-events: none;
+  /* Notausgang, falls das Skript nie ankommt. */
+  animation: vorhang-notaus .9s var(--kurve-fort) 5s forwards;
+}
+.vorhang-rauch {
+  position: absolute; inset: -25%;
+  background:
+    radial-gradient(38% 30% at 30% 44%,
+      oklch(74% .091 68 / .38) 0%, oklch(74% .091 68 / .12) 46%, transparent 100%),
+    radial-gradient(32% 42% at 70% 60%,
+      oklch(80% .084 68 / .28) 0%, oklch(80% .084 68 / .08) 50%, transparent 100%);
+  animation: vorhang-zug-a 19s linear infinite;
+}
+.vorhang-rauch::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(34% 26% at 56% 28%,
+    oklch(86% .070 68 / .24) 0%, oklch(86% .070 68 / .06) 52%, transparent 100%);
+  animation: vorhang-zug-b 23s linear infinite;
+}
+/* Der Schriftzug eröffnet die Seite, derselbe schliesst sie im Fuss. */
+.vorhang-siegel {
+  position: relative;
+  width: clamp(13rem, 56vw, 20rem); height: auto;
+  animation: vorhang-marke .9s var(--kurve) both;
+}
+
+/* Der Abgang: das Skript setzt die Klasse, sobald der Glanz bereit ist. */
+.vorhang.geht {
+  animation: none;
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+  transition: opacity .75s var(--kurve-fort), transform .75s var(--kurve-fort);
+}
+.vorhang.fort { display: none; }
+
+@keyframes vorhang-zug-a {
+  0%   { transform: translate3d(-4%,  3%, 0) scale(1.06); }
+  25%  { transform: translate3d( 3%, -3%, 0) scale(1.13); }
+  50%  { transform: translate3d( 5%,  4%, 0) scale(1.04); }
+  75%  { transform: translate3d(-2%,  6%, 0) scale(1.11); }
+  100% { transform: translate3d(-4%,  3%, 0) scale(1.06); }
+}
+@keyframes vorhang-zug-b {
+  0%   { transform: translate3d( 4%, -2%, 0) scale(1.10); }
+  33%  { transform: translate3d(-5%,  3%, 0) scale(1.02); }
+  66%  { transform: translate3d(-1%, -5%, 0) scale(1.14); }
+  100% { transform: translate3d( 4%, -2%, 0) scale(1.10); }
+}
+@keyframes vorhang-marke {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes vorhang-notaus {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* Wer Bewegung abbestellt hat, bekommt keinen Ladeschirm: ein Vorhang
+   ohne Zug ist nur Wartezeit. */
+@media (prefers-reduced-motion: reduce) {
+  .vorhang { display: none; }
+}
+
+/* ── Brautstyling ─────────────────────────────────────────────────────── */
+
+.preis { margin: 0 0 var(--a3); font-size: var(--t-klein); color: var(--schrift-still); }
+.preis b {
+  display: block;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: 1.7rem; font-weight: 400;
+  color: var(--schrift);
+}
+/* ── Arbeiten ─────────────────────────────────────────────────────────── */
+
+.werke {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--a2);
+}
+/* Acht Aufnahmen: zwei oder vier Spalten gehen glatt auf, drei nicht. */
+@media (min-width: 48rem) { .werke { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.werke img {
+  width: 100%; aspect-ratio: 3 / 4; object-fit: cover;
+  border-radius: var(--kante);
+}
+
+/* ── Der Laden ────────────────────────────────────────────────────────── */
+
+/* Vier Aufnahmen: eine Spalte am schmalen Schirm, sonst zwei. `auto-fit`
+   hätte hier drei Spalten gelegt und die vierte allein gelassen. */
+.raeume {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--a2);
+}
+@media (min-width: 48rem) { .raeume { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.raeume img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--kante); }
+
+.spruch {
+  margin: var(--a5) auto 0;
+  max-width: 34rem;
+  padding: 0;
+  text-align: center;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: 1.5rem; line-height: 1.35;
+  color: var(--schrift-leise);
+}
+.spruch cite {
+  display: block;
+  margin-top: var(--a2);
+  font-family: 'Mulish', system-ui, sans-serif;
+  font-size: var(--t-marke); font-style: normal;
+  letter-spacing: .17em; text-transform: uppercase;
+  color: var(--schrift-still);
+}
+
+/* ── Kontakt ──────────────────────────────────────────────────────────── */
+
+.spalten {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--a4);
+}
+/* Die gesperrten Marken über den Spalten sagen, wo man ist. Sie in der
+   Hausfarbe zu setzen gibt der Seite einen Takt, ohne dass irgendwo
+   eine Fläche dazukommt — dasselbe Mittel wie schon bei BRAUTSTYLING,
+   jetzt durchgehend. */
+.spalten h3 {
+  margin: 0 0 var(--a2);
+  font-size: var(--t-marke);
+  letter-spacing: .17em; text-transform: uppercase;
+  color: var(--akzent-schrift);
+  font-weight: 500;
+}
+/* Die Zeitentabelle und `.kontakt a` standen hier aus der Zeit, als der
+   Kontakt drei Spalten mit einer Tabelle war. Die Zeiten sind jetzt
+   eine Karte aus `dl`, und die Linkfarbe steht beim Abschnitt selbst —
+   von hier aus überschrieb sie sogar die Schrift auf dem gefüllten
+   Knopf, der dann leer aussah. */
+
+/* ── Die Preisliste als Mini-Navi ─────────────────────────────────────
+   Neun Zeilen, eine je Gruppe, mit dem niedrigsten Preis am Rand. Wer
+   nur wissen will, was ein Herrenschnitt kostet, liest neun Zeilen
+   statt sechzig. Getragen von `<details>`: ohne Skript, mit Tastatur,
+   und der Browser übernimmt das Auf- und Zuklappen selbst.          */
+
+.liste { padding-block: var(--a5) var(--a6); }
+
+.fach { border-bottom: 1px solid var(--linie-fein); }
+.fach:first-of-type { border-top: 1px solid var(--linie-fein); }
+.fach { scroll-margin-top: calc(var(--leiste) + 1rem); }
+
+.fach-kopf {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 1.5rem;
+  align-items: baseline;
+  gap: var(--a2);
+  padding: 1.15rem .25rem;
+  cursor: pointer;
+  list-style: none;
+  transition: background var(--t1) var(--kurve);
+}
+.fach-kopf::-webkit-details-marker { display: none; }
+.fach-kopf:focus-visible { outline: 2px solid var(--schrift); outline-offset: -2px; }
+
+.fach-wort {
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: var(--t-mittel);
+  color: var(--schrift);
+}
+.fach-ab {
+  font-size: var(--t-marke);
+  letter-spacing: .04em;
+  color: var(--akzent-schrift);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Das Zeichen ist ein gezeichnetes Kreuz, das sich beim Öffnen zum
+   Strich dreht — zwei Balken, kein Schriftzeichen: ein Pfeil aus der
+   Schrift säße auf jedem Gerät ein paar Pixel woanders. */
+.fach-zeichen {
+  position: relative;
+  align-self: center;
+  width: 1.5rem; height: 1.5rem;
+}
+.fach-zeichen::before,
+.fach-zeichen::after {
+  content: "";
+  position: absolute; left: 50%; top: 50%;
+  width: .7rem; height: 1px;
+  margin: -.5px 0 0 -.35rem;
+  background: var(--akzent-schrift);
+  transition: transform var(--t1) var(--kurve);
+}
+.fach-zeichen::after { transform: rotate(90deg); }
+.fach[open] .fach-zeichen::after { transform: rotate(0deg); }
+
+/* Die offene Gruppe bekommt einen Strich in der Akzentfarbe an die Seite — das
+   ist der eine Ort, an dem die Hausfarbe auf dieser Seite auftritt. */
+.fach[open] { background: var(--grund-tief); }
+.fach[open] .fach-kopf { box-shadow: inset 2px 0 0 var(--akzent-schrift); }
+.fach[open] .fach-wort { font-style: italic; }
+
+.fach-inhalt { padding: 0 .25rem var(--a3); }
+
+@media (hover: hover) and (pointer: fine) {
+  .fach-kopf:hover { background: var(--grund-tief); }
+}
+
+@media (min-width: 48rem) {
+  .fach-kopf { padding-inline: var(--a2); }
+  .fach-inhalt { padding-inline: var(--a2); }
+  .fach-wort { font-size: 1.35rem; }
+}
+
+.gruppe-wort {
+  margin: 0 0 var(--a2);
+  font-size: var(--t-klein);
+  color: var(--schrift-still);
+}
+
+.spalten-wort {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin: 0;
+  padding-bottom: .4rem;
+  border-bottom: 1px solid var(--linie-fein);
+}
+.spalten-wort .posten-preis { grid-column: 2; }
+.spalten-wort .posten-preis b,
+.spalten-wort .posten-preis i {
+  font-weight: 400; font-size: var(--t-marke);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--schrift-still);
+}
+
+.posten { list-style: none; margin: 0; padding: 0; }
+.posten li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--a2);
+  padding: .8rem 0;
+}
+.posten li + li { border-top: 1px solid var(--linie-fein); }
+
+.posten-name { font-size: var(--t-klein); }
+.posten-name em {
+  display: block;
+  margin-top: .18rem;
+  font-style: normal; font-size: var(--t-marke);
+  color: var(--schrift-still);
+}
+.posten-preis {
+  display: grid; grid-template-columns: auto; gap: 0 var(--a2);
+  text-align: right;
+  white-space: nowrap;
+}
+.posten-preis b { font-weight: 600; font-size: var(--t-klein); color: var(--schrift); font-variant-numeric: tabular-nums; }
+.posten-preis i {
+  font-style: normal; font-size: var(--t-klein);
+  color: var(--schrift-still); font-variant-numeric: tabular-nums;
+}
+@media (min-width: 34rem) {
+  .posten-preis { grid-template-columns: auto auto; }
+  .posten-preis b, .posten-preis i { min-width: 4.4rem; }
+}
+
+
+/* ═══ Ein Raum, keine Platten ══════════════════════════════════════════
+   Die Seite hatte sieben verschiedenfarbige Abschnitte übereinander —
+   auf Seitenlänge las sich das als Zufall, nicht als Aufbau. Jetzt gibt
+   es nur noch einen Grund: die gestrichene Wand hinter allem.
+
+   Jeder Abschnitt legt sich als Scheibe darüber und lässt die
+   Pinselzüge durch. Die Abschnitte unterscheiden sich durch Form, nicht
+   durch Farbe — mit einer Ausnahme: die Stimmen stehen auf hellem Putz.
+
+   Farbe kommt aus dem Material: Blond und Karamell sind Akzent, keine Fläche.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Nicht hinter den Seitengrund, sondern davor: ein Element mit
+   negativer Ebene liegt hinter der Grundfarbe des Dokuments und wäre
+   unsichtbar. Der dunkle Grund gehört deshalb an `html`, die Wand liegt
+   darüber, und alles Sichtbare wieder über ihm. */
+html { background: var(--grund); }
+body { background: transparent; }
+
+/* Die Wand. Feine, fast weisse Strähnen (L 95 %), fest im Fenster hinter
+   der ganzen Seite — selbst gerechnet, siehe `recherche/straehne.py`.
+
+   Ein eigenes festes Element, nicht `background-attachment: fixed` am
+   Dokument: das ignoriert Safari auf dem iPhone, und die Aufnahme würde
+   über die ganze Seitenlänge gezogen. */
+.raum-grund {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background: var(--grund) url('bilder/straehne-wand.webp') 50% 50% / cover no-repeat;
+}
+/* Ein Hauch Korn über der Wand, damit die glatten Strähnen nicht nach
+   Rechner aussehen. Mittelgraues Rauschen über `overlay` lässt die
+   Farbe unangetastet; auf hellem Grund reicht die Hälfte. */
+.raum-korn {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  opacity: .12;
+  mix-blend-mode: overlay;
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23k)'/%3E%3C/svg%3E");
+}
+
+main, .fuss { position: relative; z-index: 1; }
+
+/* Die Scheibe. `--durch` steuert, wie viel Wand ein Abschnitt
+   durchlässt — der einzige Regler, den die Seite für Tiefe braucht.
+   Wand und Scheibe sind beide hell; die Strähnen sollen als Material
+   zu lesen sein, und die Schrift hält trotzdem über 7:1 (gemessen). */
+.band, .stufe, .werk, .urteil, .laden, .kontakt, .kopf-tief, .recht {
+  position: relative;
+  --durch: .46;
+  background: oklch(var(--scheibe) / var(--durch));
+  color: var(--schrift);
+}
+.band  { --durch: .22; }        /* die schmale Zeile zeigt am meisten Wand */
+.werk  { --durch: .34; }
+.recht { --durch: .82; }        /* Impressum liest man am Stück */
+
+/* ── Die Zeile unter dem Auftakt ──────────────────────────────────── */
+
+.band { padding: var(--a3) var(--rand); }
+.band-zeile {
+  max-width: var(--spalte); margin-inline: auto;
+  display: grid; grid-template-columns: 1fr;
+}
+.band-zeile p {
+  margin: 0; padding: .85rem 0;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .6rem;
+  font-size: var(--t-klein); color: var(--schrift-leise);
+}
+.band-zeile p + p { border-top: 1px solid var(--linie-fein); }
+.band-zeile b {
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-weight: 400; font-size: 1.25rem; color: var(--schrift);
+}
+.band-zeile span { color: var(--schrift-still); }
+@media (min-width: 52rem) {
+  .band-zeile { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .band-zeile p {
+    display: block; padding: 0 var(--a3);
+    border-left: 1px solid var(--linie-fein);
+  }
+  .band-zeile p:first-child { padding-left: 0; border-left: 0; }
+  .band-zeile p + p { border-top: 0; }
+  .band-zeile b { display: block; margin-bottom: .1rem; }
+}
+
+/* ── Leistungen: fünf Zeilen, gross ───────────────────────────────── */
+
+.stufe { padding: var(--a6) var(--rand); }
+/* Leistungen und Kontakt stehen auf derselben Strähne wie der Auftakt —
+   dieselbe Farbvariante, eigens gerechnet mit anderem Verlauf, damit
+   sich nichts sichtbar wiederholt. Auf dem Glanz rücken die stillste
+   Schriftstufe und die Akzentschrift je eine Sprosse dunkler — sonst
+   stünden die Verweise in Bronze zu knapp an der Grenze. */
+.stufe-tief, .kontakt {
+  background: var(--grund) url('bilder/straehne-glanz-leistungen.webp') 50% 50% / cover no-repeat;
+  --schrift-still: var(--schrift-leise);
+  --akzent-schrift: oklch(40% .075 56);
+}
+.stufe .gross, .stufe .gross em { color: var(--schrift); }
+.stufe .lauf { color: var(--schrift-leise); }
+.stufe .mehr a { color: var(--schrift); }
+.faecher { margin-top: var(--a4); max-width: 60rem; }
+.stufe .fach { border-bottom: 1px solid var(--linie-fein); }
+.stufe .fach:first-child { border-top: 1px solid var(--linie-fein); }
+.stufe .fach-kopf { padding-block: 1.5rem; }
+.stufe .fach-wort { color: var(--schrift); font-size: 1.35rem; }
+.stufe .fach-ab { color: var(--akzent-schrift); }
+.stufe .fach-zeichen::before,
+.stufe .fach-zeichen::after { background: var(--akzent); }
+.stufe .fach[open] .fach-kopf { box-shadow: inset 2px 0 0 var(--akzent-schrift); }
+.stufe .posten li + li { border-top: 1px solid var(--linie-fein); }
+.stufe .posten-name { color: var(--schrift-leise); }
+.stufe .posten-name em { color: var(--schrift-still); }
+.stufe .posten-preis b { color: var(--schrift); }
+.stufe .fach-kopf:focus-visible { outline-color: var(--akzent-schrift); }
+@media (hover: hover) and (pointer: fine) {
+  .stufe .fach-kopf:hover { background: oklch(34% .022 60 / .05); }
+}
+@media (min-width: 48rem) { .stufe .fach-wort { font-size: 1.9rem; } }
+
+/* ── Brautstyling: die Aufnahme ist das Angebot ───────────────────── */
+
+/* Die Aufnahme ist ein sehr hohes Hochformat, 899 × 1750. Sie lag
+   bisher als vollflächiger Grund hinter dem Text, und `cover` machte
+   daraus im Querband einen Ausschnitt Haar — kein Kopf, keine Form,
+   die Perlenranke angeschnitten. Der Rahmen gab das Format vor statt
+   umgekehrt. Jetzt steht sie in einer eigenen Spalte, ungeschleiert
+   und in einem Ausschnitt, der die Frisur ganz zeigt; der Text steht
+   daneben auf dem dunklen Grund. Damit braucht keine Zeile mehr einen
+   Schleier, und das Bild ist das, was es sein soll: das Angebot. */
+
+.braut {
+  position: relative;
+  display: grid;
+  grid-template-areas: "bild" "satz";
+  gap: var(--a4);
+  padding: 0 0 var(--a6);
+  /* Eine Scheibe wie die übrigen, nicht deckend: sonst stand das
+     Brautbild neben einem schwarzen Loch mitten in der Wand. */
+  background: oklch(var(--scheibe) / .8);
+  color: var(--schrift);
+  border-block: 1px solid var(--linie-fein);
+}
+.braut-grund {
+  grid-area: bild;
+  width: 100%; height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover; object-position: 50% 24%;
+}
+.braut-satz {
+  grid-area: satz;
+  padding-inline: var(--rand);
+  max-width: 34rem;
+}
+.braut-marke {
+  margin: 0 0 var(--a2);
+  font-family: var(--mono);
+  font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--akzent-schrift);
+}
+.braut .gross, .braut .gross em { color: var(--schrift); }
+.braut .lauf { color: var(--schrift-leise); }
+.braut .preis { color: var(--schrift-still); }
+.braut .preis b { color: var(--schrift); }
+.braut .knopf { background: var(--knopf-grund); color: var(--knopf-schrift); }
+
+@media (min-width: 62rem) {
+  /* Text links, Aufnahme rechts bis an den Rand. Die Höhe gibt der
+     Abschnitt vor, die Breite die Spalte — daraus ergibt sich ein
+     Ausschnitt um 1:1,2, in dem Krone, Ranke und Locken zusammen
+     stehen. Kein `aspect-ratio` hier: es würde mit der Höhe streiten. */
+  .braut {
+    grid-template-areas: "satz bild";
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: stretch;
+    min-height: min(86svh, 860px);
+    gap: var(--a5);
+    padding: 0 0 0 max(var(--rand), calc((100vw - var(--spalte)) / 2 + var(--rand)));
+  }
+  .braut-grund {
+    aspect-ratio: auto;
+    height: 100%;
+    object-position: 50% 26%;
+  }
+  .braut-satz { align-self: center; padding-inline: 0; padding-block: var(--a6); }
+}
+
+/* ── Arbeiten: die Bilder sind der Abschnitt ──────────────────────── */
+
+.werk { padding: var(--a6) 0 0; }
+.werk-kopf {
+  max-width: var(--spalte); margin-inline: auto;
+  padding-inline: var(--rand); margin-bottom: var(--a4);
+}
+.werk-kopf .gross { color: var(--schrift); }
+.werk-kopf .lauf { color: var(--schrift-leise); max-width: var(--lese); margin-bottom: 0; }
+/* Der Zug. Er läuft von rechts herein und weiter durch, gleichmässig
+   und langsam: 8 Aufnahmen je Satz, eine Runde in 72 s. Bewegt wird nur
+   `transform` — eine Bahn, die Breiten oder Ränder animiert, ruckelt.
+
+   Zwei gleiche Sätze im Zug, verschoben um genau eine Satzbreite
+   (-50 % der Zugbreite): damit trifft das Ende exakt auf den Anfang und
+   die Schleife hat keine Naht. Linear ist hier richtig — ein Förderband
+   beschleunigt nicht, und eine ease-Kurve würde bei jeder Runde
+   sichtbar stocken.                                                  */
+
+.werke-bahn { overflow: hidden; }
+
+.werke-zug {
+  display: flex;
+  width: max-content;
+  animation: werke-zug 72s linear infinite;
+  will-change: transform;
+}
+@keyframes werke-zug {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.werke-satz {
+  display: flex; gap: 2px;
+  margin: 0; padding: 0 0 0 2px; list-style: none;
+}
+.werke-satz li { flex: none; }
+.werke-satz img {
+  width: clamp(9.5rem, 30vw, 17rem);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* Unter der Maus hält der Zug an — wer hinsehen will, soll hinsehen
+   können, ohne dem Bild nachzulaufen. */
+@media (hover: hover) and (pointer: fine) {
+  .werke-bahn:hover .werke-zug,
+  .werke-bahn:focus-within .werke-zug { animation-play-state: paused; }
+}
+
+/* Ein stehender Zug ist kein Zug. Wer Bewegung abbestellt hat, bekommt
+   deshalb keinen eingefrorenen Streifen, sondern eine Reihe, die man
+   selbst schiebt — mit Rasterpunkten, damit sie sauber einrastet. */
+@media (prefers-reduced-motion: reduce) {
+  .werke-zug { animation: none; width: auto; }
+  .werke-satz[aria-hidden="true"] { display: none; }
+  .werke-bahn {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+  }
+  .werke-satz li { scroll-snap-align: start; }
+}
+
+/* ── Der Laden: eine grosse Aufnahme, Text daneben ────────────────── */
+
+.laden { padding: var(--a6) var(--rand); }
+.laden-bau {
+  max-width: var(--spalte); margin-inline: auto;
+  display: grid; grid-template-columns: 1fr; gap: var(--a2);
+}
+.laden figure { margin: 0; }
+.laden img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--kante); }
+.laden-gross img { aspect-ratio: 4 / 3; }
+.laden-klein img { aspect-ratio: 16 / 10; }
+.laden-satz { align-self: center; padding-block: var(--a2); }
+.laden-satz .gross { color: var(--schrift); }
+.laden-satz .lauf { color: var(--schrift-leise); margin-bottom: 0; }
+@media (min-width: 60rem) {
+  .laden-bau {
+    grid-template-columns: 1.25fr 1fr;
+    grid-template-areas: "gross satz" "klein1 klein2";
+    gap: var(--a2);
+  }
+  .laden-gross { grid-area: gross; }
+  .laden-satz  { grid-area: satz; padding-left: var(--a3); }
+  .laden-klein:nth-of-type(3) { grid-area: klein1; }
+  .laden-klein:nth-of-type(4) { grid-area: klein2; }
+  .laden-gross img { aspect-ratio: 5 / 4; }
+}
+.laden .spruch {
+  max-width: 42rem; margin: var(--a6) auto 0;
+  color: var(--schrift-leise);
+}
+.laden .spruch cite { color: var(--schrift-still); }
+
+
+/* ── Nur für Vorleseprogramme ─────────────────────────────────────── */
+.nurlesen {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+}
+
+/* ── Die Augenzeile ───────────────────────────────────────────────────
+   Der kleine Punkt davor ist der einzige Ort, an dem der Akzent als Fläche
+   auftritt, ohne ein Knopf zu sein — er markiert den Anfang eines
+   Abschnitts, so wie ein Absatzzeichen. */
+.augenzeile {
+  display: flex; align-items: center; gap: .6rem;
+  margin: 0 0 var(--a2);
+  font-family: var(--mono);
+  font-size: var(--t-marke); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--akzent-schrift);
+}
+.augenzeile::before {
+  content: ""; flex: none;
+  width: .4rem; height: .4rem; border-radius: 50%;
+  background: var(--akzent);
+  box-shadow: 0 0 0 3px oklch(80% .070 68 / .18);
+}
+
+/* ── Das Urteil ───────────────────────────────────────────────────────
+   Aufbau wie bei Google: links die Note als eigene Tafel, rechts der
+   Satz und die zwei Wege. */
+
+.urteil { padding: var(--a6) var(--rand); }
+.urteil-bau {
+  display: grid; gap: var(--a4);
+  align-items: center;
+}
+@media (min-width: 56rem) {
+  .urteil-bau {
+    grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+    gap: var(--a5);
+  }
+}
+.urteil-note {
+  padding: var(--a3) var(--a2);
+  text-align: center;
+  border: 1px solid var(--linie);
+  border-radius: var(--kante);
+  background: oklch(99% .006 80 / .7);
+}
+.urteil-wert {
+  margin: 0;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-weight: 400; font-size: 4.2rem; line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--schrift);
+}
+/* Zwei Sternreihen übereinander: unten die leeren, darüber die vollen,
+   beschnitten auf 4,8 von 5. `grid-area: 1 / 1` stapelt sie — zwei
+   Kinder in einem Raster ergäben sonst zwei Zeilen. */
+.urteil-sterne {
+  display: grid; justify-content: center;
+  margin: .7rem 0 .55rem;
+}
+.urteil-grund, .urteil-fuell {
+  grid-area: 1 / 1;
+  display: flex; gap: .18rem;
+  line-height: 0;
+}
+.urteil-grund { color: oklch(34% .022 60 / .2); }
+.urteil-fuell {
+  color: var(--akzent-schrift);
+  width: var(--voll, 100%);
+  overflow: hidden;
+}
+.urteil-sterne svg { flex: none; fill: currentColor; }
+.urteil-mass {
+  margin: 0;
+  font-size: var(--t-marke); letter-spacing: .04em;
+  color: var(--schrift-still);
+}
+.urteil-satz .gross { color: var(--schrift); margin-bottom: var(--a2); }
+.urteil-satz .gross em { color: var(--akzent-schrift); font-style: normal; }
+.urteil-satz .lauf { color: var(--schrift-leise); max-width: 34rem; }
+.urteil-satz .wahl { margin-top: var(--a3); }
+
+/* ── Stimmen ──────────────────────────────────────────────────────────
+   Die kräftigste Fläche der Seite: eine karamellfarbene Strähne, dunkle
+   Schrift darauf. Kein Raster aus gleichen Kärtchen: eine Stimme gross
+   und kursiv, die übrigen laufen in Spalten, jede so lang, wie sie
+   geschrieben wurde. */
+
+.stimmen {
+  position: relative;
+  padding: var(--a6) var(--rand);
+  background: oklch(79% .07 66) url('bilder/straehne-karamell.webp') 50% 50% / cover no-repeat;
+  color: var(--schrift);
+  /* Auf Karamell reicht die stillste Stufe nicht — eine Sprosse dunkler. */
+  --schrift-still: var(--schrift-leise);
+  --linie: oklch(30% .022 60 / .28);
+}
+.stimmen-bau { display: grid; gap: var(--a5); }
+@media (min-width: 62rem) {
+  .stimmen-bau {
+    grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
+    gap: var(--a5) clamp(3rem, 6vw, 6rem);
+    align-items: start;
+  }
+  .stimmen-kopf { position: sticky; top: calc(var(--leiste) + var(--a3)); }
+}
+.stimmen .gross { color: var(--schrift); }
+.stimmen .gross em { font-style: italic; color: var(--schrift); }
+.stimmen .lauf { color: var(--schrift-leise); max-width: 30rem; }
+
+.stimmen-note {
+  display: flex; align-items: center; gap: var(--a2);
+  margin: 0 0 var(--a3);
+  padding-block: var(--a2);
+  border-block: 1px solid var(--linie);
+}
+.stimmen-wert {
+  margin: 0;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: 3.4rem; line-height: 1; letter-spacing: -.02em;
+  color: var(--schrift);
+}
+.stimmen-note .urteil-sterne { justify-content: start; margin: 0 0 .3rem; }
+.stimmen-note .urteil-grund { color: oklch(47% .066 68 / .28); }
+.stimmen-note .urteil-fuell { color: var(--akzent-schrift); }
+.stimmen-mass { margin: 0; font-size: var(--t-klein); color: var(--schrift-leise); }
+
+/* Auf hellem Grund ist der stille Knopf dunkel umrandet. */
+.stimmen .knopf-still { border-color: oklch(30% .022 60 / .45); color: var(--schrift); }
+@media (hover: hover) and (pointer: fine) {
+  .stimmen .knopf-still:hover { border-color: var(--schrift); }
+}
+.stimmen :focus-visible { outline-color: var(--schrift); }
+
+.stimmen-liste {
+  columns: 1;
+  column-gap: var(--a4);
+}
+@media (min-width: 44rem) { .stimmen-liste { columns: 2; } }
+.stimme {
+  break-inside: avoid;
+  margin: 0 0 var(--a4);
+  padding-top: var(--a3);
+  border-top: 1px solid var(--linie);
+}
+.stimme blockquote { margin: 0 0 var(--a2); }
+.stimme p {
+  margin: 0;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: 1.22rem; line-height: 1.42;
+  color: var(--schrift);
+  text-wrap: pretty;
+}
+.stimme p::before { content: "\201E"; }
+.stimme p::after  { content: "\201C"; }
+/* Die grosse Stimme geht über beide Spalten. */
+.stimme-gross { column-span: all; border-top: 0; padding-top: 0; margin-bottom: var(--a5); }
+.stimme-gross p {
+  font-style: italic;
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.3;
+  letter-spacing: -.012em;
+}
+.stimme figcaption {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .75rem;
+  font-size: .8125rem;
+  color: var(--schrift-leise);
+}
+.stimme-sterne { display: inline-flex; gap: 2px; line-height: 0; color: var(--akzent-schrift); }
+.stimme-sterne svg { width: 13px; height: 12px; fill: currentColor; }
+.stimme-wer { font-weight: 700; letter-spacing: .04em; color: var(--schrift); }
+
+/* ── Wo Sie mich finden ───────────────────────────────────────────────
+   Anschrift und Nummer links, die Zeiten als Karte rechts. */
+
+.kontakt {
+  padding: var(--a6) var(--rand);
+  background-image: url('bilder/straehne-glanz-kontakt.webp');
+}
+.kontakt-bau { display: grid; gap: var(--a4); align-items: start; }
+@media (min-width: 56rem) {
+  .kontakt-bau {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+    gap: var(--a5);
+  }
+}
+.kontakt .gross { color: var(--schrift); }
+.kontakt .gross em { color: var(--akzent-schrift); font-style: normal; }
+.kontakt .lauf { color: var(--schrift-leise); max-width: 32rem; }
+/* Nicht einfach `.kontakt a`: das ist spezifischer als `.knopf` und
+   färbte dessen Schrift in der Akzentfarbe — auf gleichem Grund stand der Knopf
+   dann leer da. Die Knöpfe werden ausgenommen, statt sie mit
+   `!important` zurückzuholen. */
+.kontakt a:not(.knopf):not(.knopf-still) { color: var(--akzent-schrift); }
+.kontakt .knopf-still { border-color: var(--linie); color: var(--schrift); }
+.anschrift {
+  margin: 0 0 var(--a3);
+  font-style: normal; font-size: var(--t-lauf); line-height: 1.7;
+  color: var(--schrift-leise);
+}
+/* Die Nummer ist auf dem Telefon der kürzeste Weg zum Termin — sie
+   darf so gross sein, dass man sie ohne Zielen trifft. */
+.rufnummer {
+  display: inline-block; margin-top: .4rem;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: 1.85rem; letter-spacing: .01em;
+  color: var(--schrift); text-decoration: none;
+  border-bottom: 2px solid var(--akzent);
+  padding-bottom: .12rem;
+  font-variant-numeric: tabular-nums;
+}
+.kontakt .wahl { margin-top: var(--a3); }
+.kontakt-fuss { margin: var(--a3) 0 0; font-size: var(--t-klein); }
+.kontakt-fuss a { color: var(--akzent-schrift); }
+
+.zeiten-karte {
+  padding: var(--a3);
+  border: 1px solid var(--linie);
+  border-radius: var(--kante);
+  background: oklch(99% .006 80 / .7);
+}
+.zeiten-karte h3 {
+  margin: 0 0 var(--a2);
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-weight: 400; font-size: 1.4rem;
+  color: var(--schrift);
+}
+.zeiten-liste { margin: 0; }
+.zeiten-zeile {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--a2);
+  padding: .62rem 0;
+  font-size: var(--t-klein);
+}
+.zeiten-zeile + .zeiten-zeile { border-top: 1px solid var(--linie-fein); }
+.zeiten-zeile dt { color: var(--schrift-leise); }
+.zeiten-zeile dd {
+  margin: 0; text-align: right;
+  color: var(--schrift); font-variant-numeric: tabular-nums;
+}
+.zeiten-stand {
+  margin: var(--a2) 0 0; padding-top: var(--a2);
+  border-top: 1px solid var(--linie-fein);
+  font-size: var(--t-marke); color: var(--schrift-still);
+}
+
+/* ── Fuss ─────────────────────────────────────────────────────────── */
+
+/* Der Fuss ist der Anker: die einzige tiefe Fläche der Seite, eine
+   schwarze Strähne, schwarz wie das Logo. Hier drehen sich die
+   Schrifttokens um — neu gemessen, nicht gespiegelt: der Akzent wird ein
+   helles Honigblond. */
+.fuss {
+  position: relative;
+  padding: var(--a5) 0 var(--a4);
+  text-align: center;
+  font-size: var(--t-klein);
+  background: oklch(17% .012 60) url('bilder/straehne-schwarz.webp') 50% 50% / cover no-repeat;
+  --schrift:       oklch(97% .010 80);
+  --schrift-leise: oklch(88% .010 70);
+  --schrift-still: oklch(80% .012 70);
+  --akzent-schrift: oklch(82% .08 72);
+  color: var(--schrift-still);
+}
+.fuss-siegel { width: 14rem; height: auto; margin: 0 auto var(--a3); }
+.fuss-marke {
+  margin: 0 0 var(--a3);
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-size: 1.35rem;
+  color: var(--schrift);
+}
+.fuss-wege { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem var(--a3); }
+.fuss-wege a { padding-block: .35rem; color: var(--akzent-schrift); }
+.fuss-recht {
+  margin: var(--a3) 0 0;
+  font-size: var(--t-marke); letter-spacing: .02em;
+  color: var(--schrift-still);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fuss-wege a:hover { color: var(--schrift); }
+}
+
+/* ── Die Preisliste in derselben Welt ─────────────────────────────────
+   Die Preise auf der Startseite stehen auf der dunklen Sprosse; die
+   vollständige Liste darf keine andere Seite sein. Kopf eine Sprosse
+   tiefer, Liste auf derselben Höhe wie drüben.                       */
+
+.kopf-tief {
+  position: relative;
+  background: oklch(var(--scheibe) / .9);
+  color: var(--schrift);
+  margin-top: calc(-1 * var(--leiste));
+  padding: calc(var(--leiste) + var(--a5)) 0 var(--a5);
+}
+.kopf-tief .kennung { color: var(--schrift-still); }
+.kopf-tief .lauf { color: var(--schrift-leise); }
+.wand-titel {
+  margin: 0 0 var(--a3);
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 8vw, 5.4rem);
+  line-height: .98; letter-spacing: -.02em;
+  color: var(--schrift);
+}
+@media (max-width: 48rem) { .kopf-tief .kennung { display: none; } }
+
+.stufe-liste {
+  background: none;
+  color: var(--schrift);
+}
+
+.stufe-liste .fach { border-bottom-color: var(--linie-fein); }
+.stufe-liste .fach:first-of-type { border-top-color: var(--linie-fein); }
+.stufe-liste .fach-wort { color: var(--schrift); }
+.stufe-liste .fach-ab { color: var(--akzent-schrift); }
+.stufe-liste .fach-zeichen::before,
+.stufe-liste .fach-zeichen::after { background: var(--akzent); }
+.stufe-liste .fach[open] { background: oklch(34% .022 60 / .045); }
+.stufe-liste .fach[open] .fach-kopf { box-shadow: inset 2px 0 0 var(--akzent-schrift); }
+.stufe-liste .fach-kopf:focus-visible { outline-color: var(--akzent-schrift); }
+.stufe-liste .gruppe-wort,
+.stufe-liste .posten-name em,
+.stufe-liste .posten-preis i,
+.stufe-liste .spalten-wort .posten-preis b,
+.stufe-liste .spalten-wort .posten-preis i { color: var(--schrift-still); }
+.stufe-liste .posten-name { color: var(--schrift-leise); }
+.stufe-liste .posten-preis b { color: var(--schrift); }
+.stufe-liste .posten li + li,
+.stufe-liste .spalten-wort { border-color: var(--linie-fein); }
+.stufe-liste .schluss { color: var(--schrift-still); }
+.stufe-liste .schluss a { color: var(--schrift); }
+@media (hover: hover) and (pointer: fine) {
+  .stufe-liste .fach-kopf:hover { background: oklch(34% .022 60 / .05); }
+}
+
+.stufe-liste .abschluss {
+  background: oklch(99% .006 80 / .7);
+  border-color: var(--linie-fein);
+}
+.stufe-liste .abschluss .lauf { color: var(--schrift-leise); }
+/* Der gefüllte Knopf am Ende der Liste folgt dem Knopf der Seite. */
+.stufe-liste .abschluss .knopf { background: var(--knopf-grund); color: var(--knopf-schrift); }
+.stufe-liste .abschluss .knopf-still {
+  border-color: var(--linie); color: var(--schrift);
+}
+
+
+/* Die Rechtsseiten stehen im selben Raum. */
+.recht { padding-block: var(--a5) var(--a6); }
+.recht h2, .recht h3, .recht dt { color: var(--schrift); }
+.recht p, .recht li, .recht dd { color: var(--schrift-leise); }
+.recht a { color: var(--schrift); }
+.riesen { color: var(--schrift); }
+
+
+/* ═══ Irmonhair ═════════════════════════════════════════════════════════
+   Was nur diese Seite braucht. */
+
+/* Name in der Leiste und im Auftakt wie im Logo: Versalien, weit
+   gesperrt, leicht. Kurze Zeilen — die Sperrung gilt nie für Lauftext. */
+.marke-wort {
+  font-weight: 350; text-transform: uppercase;
+  letter-spacing: .26em; font-size: 1.02rem;
+}
+/* Am schmalen Telefon passen Name, Nummer und Menüknopf sonst nicht in
+   eine Zeile — gemessen 21 px zu breit bei 390 px. */
+@media (max-width: 26rem) {
+  .marke-wort { letter-spacing: .16em; font-size: .9rem; }
+  .leiste { gap: var(--a2); }
+  .klapp { margin-left: .25rem; }
+}
+/* Ist der Schirm niedrig, hat die Schere über dem Text keinen Platz;
+   dann fehlt sie lieber, als hinter der Schrift zu stehen. */
+@media (max-width: 61.99rem) and (max-height: 819px) {
+  .auftakt-schere { display: none; }
+}
+.wortmarke { font-weight: 300; }
+.wortmarke-wort {
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  margin-right: -.16em;
+  font-size: clamp(2.6rem, 9vw, 6.2rem);
+}
+/* Der Name bricht nie um — „IRMONH / AIR" war am breiten Schirm die
+   Folge, weil die Spalte dort nur 30rem misst. */
+.auftakt .wortmarke-wort { font-size: clamp(2.3rem, 4.6vw, 4.3rem); white-space: nowrap; }
+@media (max-width: 61.99rem) {
+  .auftakt .wortmarke-wort { font-size: clamp(2.1rem, 11vw, 3.4rem); }
+  /* Am Telefon steht mehr Text im Auftakt als beim Vorbild (zwei
+     Nummern, zwei Standmarken) — die Schere wird kleiner und rückt in
+     die rechte obere Ecke, statt hinter der Schrift zu stehen. */
+  .auftakt-schere { height: min(19svh, 170px); right: var(--rand); translate: 0 0; }
+  .auftakt-schere img { rotate: -8deg; }
+}
+.wortmarke-kursiv {
+  margin-top: .35em;
+  font-weight: 350; letter-spacing: .01em;
+  font-size: clamp(1.6rem, 4.4vw, 2.9rem);
+}
+.auftakt .wortmarke-kursiv { font-size: clamp(1.6rem, 4.4vw, 2.9rem); }
+.gross, .riesen, .wand-titel { font-weight: 350; letter-spacing: -.005em; }
+
+/* Zwei Standmarken untereinander, nicht nebeneinander gequetscht. */
+.stand-chip + .stand-chip { margin-top: .5rem; }
+.auftakt .stand-chip { display: flex; width: fit-content; }
+@media (max-width: 61.99rem) { .auftakt .stand-chip { margin-inline: auto; } }
+
+/* Zwei Standorte: je eine Karte mit Anschrift, Nummer, Zeiten und dem
+   Weg zum Termin. Am schmalen Schirm untereinander. */
+.kontakt-satz { max-width: 38rem; margin-bottom: var(--a4); }
+.orte { display: grid; gap: var(--a3); }
+@media (min-width: 52rem) { .orte { grid-template-columns: 1fr 1fr; } }
+.ort-karte h3 { font-size: 1.7rem; margin-bottom: var(--a2); }
+.ort-karte .anschrift { margin-bottom: var(--a2); }
+.ort-karte .zeiten-stand { margin-bottom: var(--a3); }
+.ort-karte .wahl { margin-bottom: 0; }
