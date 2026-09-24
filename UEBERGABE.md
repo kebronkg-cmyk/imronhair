@@ -77,18 +77,23 @@ Der Detektor braucht einmal
 ## Erste Fassung unter /alt/
 
 https://kebronkg-cmyk.github.io/imronhair/alt/ — die Fassung aus der Zip
-(Stand `8eb16f9`), mit `noindex`, und darauf aufgebaut:
+(Stand `8eb16f9`), mit `noindex`, als stimmige Alternative ausgebaut:
 
-- Zeichen oben links: das Medaillon der neuen Fassung (40 px).
-- Leistungen: Einstiegspreise aus `preise.py` statt der alten Klappfächer.
-- „Einblick in beide Salons“: sechs Fotos, antippen öffnet das Bild.
-- Stimmen: ruhige Fläche statt Karamell, davor das Glanzband; die grosse
-  Stimme nennt keinen Namen mehr (vorher Momo).
-- Standorte: je das beste Foto oben in der Karte, Schleier im Ton des
-  Papiers, dicht unter Zeiten und Knöpfen.
-- Preisliste: eine klebende Zeile mit Salonwahl und Gruppen, darunter
-  dieselben Planity-Listen wie in der neuen Fassung (`preise.py` schreibt
-  beide Fassungen).
-- Detektor: auf den Hauptseiten gleich viele Meldungen wie vorher (11),
-  alle aus der Vorlage (Laufband-Regel ohne Verwendung, `overflow` am
-  `body`, Innenabstände im Band); keine aus den neuen Teilen.
+- **Eine Fläche.** Der Auftakt (Strähne, Schere) bleibt das Markenzeichen;
+  danach liegt alles auf derselben Scheibe (`--durch: .8`), die Wand
+  schimmert nur durch. Keine Abschnittsbilder mehr, keine harten Wechsel.
+  Unter jeder grossen Überschrift zieht sich der Haarstrich aus dem Logo.
+- **Glanzband** einmal zwischen Galerie und Stimmen, nach allen Seiten
+  ausgeblendet.
+- **Galerie:** sechs grosse Fotos (3:2, zwei nebeneinander), eigene
+  Ansicht mit Blättern, Pfeiltasten, Wischen; Schliessen führt an dieselbe
+  Stelle und auf dasselbe Foto zurück.
+- **Standorte:** je Salon eine Zeile, der ganze Raum unbeschnitten im
+  feinen Goldrahmen, Angaben daneben; zweite Zeile gespiegelt.
+- **Besonderheit:** „Welcher Salon liegt näher?“ — Geolocation im
+  Browser, Luftlinie zu beiden Salons (Koordinaten OpenStreetMap, auf die
+  Hausnummer genau), der nähere wird markiert. In `alt/datenschutz.html`
+  beschrieben.
+- Stimmen ruhig, die grosse ohne Friseurnamen; Medaillon als Zeichen;
+  Preisliste mit einer klebenden Zeile, Listen aus `preise.py`.
+- Detektor: 10 Meldungen, alle aus der Vorlage (vorher 11).

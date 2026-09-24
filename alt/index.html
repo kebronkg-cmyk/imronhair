@@ -128,21 +128,42 @@
 </section>
 
 <!-- ══ Einblicke ═════════════════════════════════════════════════════════
-     Sechs Fotos aus den Planity-Einträgen der Salons. Antippen öffnet
-     das Bild gross; auf der Kachel steht kein Symbol.                 -->
+     Sechs Fotos aus den Planity-Einträgen der Salons, gross. Antippen
+     öffnet die Ansicht (neu.js): blättern mit Pfeilen, Tasten oder
+     Wischen; schliessen führt genau hierher zurück. Ohne Skript öffnet
+     der Verweis das Bild selbst.                                      -->
 <section class="stufe galerie" id="salons" aria-labelledby="galerie-titel">
   <div class="mitte">
     <h2 class="gross" id="galerie-titel">Einblick in <em>beide Salons</em>.</h2>
     <ul class="galerie-bilder">
-      <li><a href="bilder/salon-pasing-raum.webp" aria-label="Pasing &middot; der Salon &ndash; Foto gro&szlig; &ouml;ffnen"><img src="bilder/salon-pasing-raum-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></a><p>Pasing &middot; der Salon</p></li>
-      <li><a href="bilder/salon-pasing-waschplatz.webp" aria-label="Pasing &middot; Waschplatz &ndash; Foto gro&szlig; &ouml;ffnen"><img src="bilder/salon-pasing-waschplatz-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></a><p>Pasing &middot; Waschplatz</p></li>
-      <li><a href="bilder/salon-grosshadern-raum.webp" aria-label="Gro&szlig;hadern &middot; der Salon &ndash; Foto gro&szlig; &ouml;ffnen"><img src="bilder/salon-grosshadern-raum-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></a><p>Gro&szlig;hadern &middot; der Salon</p></li>
-      <li><a href="bilder/salon-pasing-spiegel.webp" aria-label="Pasing &middot; Spiegelreihe &ndash; Foto gro&szlig; &ouml;ffnen"><img src="bilder/salon-pasing-spiegel-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></a><p>Pasing &middot; Spiegelreihe</p></li>
-      <li><a href="bilder/salon-pasing-kroko.webp" aria-label="Pasing &middot; Kroko-Leder &ndash; Foto gro&szlig; &ouml;ffnen"><img src="bilder/salon-pasing-kroko-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></a><p>Pasing &middot; Kroko-Leder</p></li>
-      <li><a href="bilder/salon-grosshadern-eingang.webp" aria-label="Gro&szlig;hadern &middot; Eingang &ndash; Foto gro&szlig; &ouml;ffnen"><img src="bilder/salon-grosshadern-eingang-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></a><p>Gro&szlig;hadern &middot; Eingang</p></li>
+      <li><a class="galerie-link" href="bilder/salon-pasing-raum.webp" data-nr="0" data-gross="bilder/salon-pasing-raum.webp" data-b="1600" data-h="1200">
+        <img src="bilder/salon-pasing-raum-klein.webp" srcset="bilder/salon-pasing-raum-klein.webp 720w, bilder/salon-pasing-raum.webp 1600w" sizes="(min-width: 52rem) 46vw, 94vw" alt="Pasing: der Salon" width="720" height="540" loading="lazy" decoding="async"></a>
+        <p><b>Pasing</b> der Salon</p></li>
+      <li ><a class="galerie-link" href="bilder/salon-pasing-waschplatz.webp" data-nr="1" data-gross="bilder/salon-pasing-waschplatz.webp" data-b="1600" data-h="1200">
+        <img src="bilder/salon-pasing-waschplatz-klein.webp" srcset="bilder/salon-pasing-waschplatz-klein.webp 720w, bilder/salon-pasing-waschplatz.webp 1600w" sizes="(min-width: 52rem) 46vw, 94vw" alt="Pasing: Waschplatz" width="720" height="540" loading="lazy" decoding="async"></a>
+        <p><b>Pasing</b> Waschplatz</p></li>
+      <li ><a class="galerie-link" href="bilder/salon-grosshadern-raum.webp" data-nr="2" data-gross="bilder/salon-grosshadern-raum.webp" data-b="1533" data-h="1022">
+        <img src="bilder/salon-grosshadern-raum-klein.webp" srcset="bilder/salon-grosshadern-raum-klein.webp 720w, bilder/salon-grosshadern-raum.webp 1533w" sizes="(min-width: 52rem) 46vw, 94vw" alt="Gro&szlig;hadern: der Salon" width="720" height="480" loading="lazy" decoding="async"></a>
+        <p><b>Gro&szlig;hadern</b> der Salon</p></li>
+      <li ><a class="galerie-link" href="bilder/salon-pasing-spiegel.webp" data-nr="3" data-gross="bilder/salon-pasing-spiegel.webp" data-b="1200" data-h="800">
+        <img src="bilder/salon-pasing-spiegel-klein.webp" srcset="bilder/salon-pasing-spiegel-klein.webp 720w, bilder/salon-pasing-spiegel.webp 1200w" sizes="(min-width: 52rem) 46vw, 94vw" alt="Pasing: Spiegelreihe" width="720" height="480" loading="lazy" decoding="async"></a>
+        <p><b>Pasing</b> Spiegelreihe</p></li>
+      <li ><a class="galerie-link" href="bilder/salon-pasing-kroko.webp" data-nr="4" data-gross="bilder/salon-pasing-kroko.webp" data-b="1600" data-h="1200">
+        <img src="bilder/salon-pasing-kroko-klein.webp" srcset="bilder/salon-pasing-kroko-klein.webp 720w, bilder/salon-pasing-kroko.webp 1600w" sizes="(min-width: 52rem) 46vw, 94vw" alt="Pasing: Kroko-Leder am Waschplatz" width="720" height="540" loading="lazy" decoding="async"></a>
+        <p><b>Pasing</b> Kroko-Leder am Waschplatz</p></li>
+      <li><a class="galerie-link" href="bilder/salon-grosshadern-eingang.webp" data-nr="5" data-gross="bilder/salon-grosshadern-eingang.webp" data-b="1534" data-h="1023">
+        <img src="bilder/salon-grosshadern-eingang-klein.webp" srcset="bilder/salon-grosshadern-eingang-klein.webp 720w, bilder/salon-grosshadern-eingang.webp 1534w" sizes="(min-width: 52rem) 46vw, 94vw" alt="Gro&szlig;hadern: Blick zum Eingang" width="720" height="480" loading="lazy" decoding="async"></a>
+        <p><b>Gro&szlig;hadern</b> Blick zum Eingang</p></li>
     </ul>
   </div>
 </section>
+
+<dialog class="ansicht" id="ansicht" aria-label="Fotos der Salons">
+  <figure class="ansicht-bild"><figcaption><span class="ansicht-text"></span><span class="ansicht-zahl"></span></figcaption></figure>
+  <button type="button" class="ansicht-knopf ansicht-zurueck" aria-label="Vorheriges Foto"><span aria-hidden="true"></span></button>
+  <button type="button" class="ansicht-knopf ansicht-weiter" aria-label="N&auml;chstes Foto"><span aria-hidden="true"></span></button>
+  <button type="button" class="ansicht-zu" aria-label="Ansicht schlie&szlig;en"><span aria-hidden="true"></span></button>
+</dialog>
 
 <!-- Die Strähne, einmal als Band: ein ruhiger Übergang zu den Stimmen. -->
 <div class="glanzband" aria-hidden="true"><div></div></div>
@@ -214,8 +235,10 @@
 </section>
 
 <!-- ══ Standorte ═════════════════════════════════════════════════════════
-     Zwei Salons, zwei Karten — jede mit Anschrift, Nummer zum Antippen,
-     Öffnungszeiten, Live-Stand und dem Weg zum Termin bei Planity.   -->
+     Je Salon eine Zeile: der ganze Raum als Foto, daneben Anschrift,
+     Nummer, Zeiten, Live-Stand und der Weg zu Planity. Der Finder misst
+     auf Wunsch die Entfernung zu beiden Salons (neu.js) — der Standort
+     verlässt den Browser nicht.                                       -->
 <section class="kontakt" id="standorte">
   <div class="mitte">
     <div class="kontakt-satz">
@@ -226,29 +249,47 @@
         der Ihnen n&auml;her liegt.
       </p>
     </div>
-    <div class="orte">
-    <article class="zeiten-karte ort-karte ort-pasing" aria-labelledby="ort-pasing">
-      <h3 id="ort-pasing">Pasing</h3>
-      <address class="anschrift">Irmonherstra&szlig;e&nbsp;7<br>81241&nbsp;M&uuml;nchen<br>
-        <a class="rufnummer" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
-      </address>
-      <dl class="zeiten-liste"><div class="zeiten-zeile"><dt>Montag</dt><dd>geschlossen</dd></div><div class="zeiten-zeile"><dt>Dienstag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div class="zeiten-zeile"><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div class="zeiten-zeile"><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
-      <p class="zeiten-stand"><span class="stand" data-ort="pasing"></span></p>
-      <div class="wahl">
-        <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Termin buchen</a>
-        <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=Irmonherstra%C3%9Fe+7%2C+81241+M%C3%BCnchen" target="_blank" rel="noopener">Route planen</a>
+    <div class="finder">
+      <button type="button" class="knopf-still finder-knopf" id="finder">Welcher Salon liegt n&auml;her?</button>
+      <p class="finder-text" id="finder-text" aria-live="polite">Ihr Standort wird nur in Ihrem Browser verrechnet und nirgends gespeichert.</p>
+    </div>
+    <div class="orte-reihen">
+    <article class="salon-reihe" id="salon-pasing" aria-labelledby="ort-pasing">
+      <figure class="salon-foto">
+        <img src="bilder/salon-pasing-raum-klein.webp" srcset="bilder/salon-pasing-raum-klein.webp 720w, bilder/salon-pasing-raum.webp 1600w" sizes="(min-width: 60rem) 44rem, 94vw" alt="Salon Pasing: der ganze Raum mit schwarzen Kroko-Sesseln vor goldgerahmten Spiegeln, hinten der Waschplatz" width="720" height="540" loading="lazy" decoding="async">
+      </figure>
+      <div class="salon-info">
+        <p class="salon-naeher" data-ort="pasing" hidden>N&auml;her an Ihnen</p>
+        <h3 id="ort-pasing">Pasing</h3>
+        <address class="anschrift">Irmonherstra&szlig;e&nbsp;7, 81241&nbsp;M&uuml;nchen<br>
+          <a class="rufnummer" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
+        </address>
+        <p class="salon-weg" data-ort="pasing" hidden></p>
+        <dl class="zeiten-liste"><div class="zeiten-zeile"><dt>Montag</dt><dd>geschlossen</dd></div><div class="zeiten-zeile"><dt>Dienstag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div class="zeiten-zeile"><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div class="zeiten-zeile"><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
+        <p class="zeiten-stand"><span class="stand" data-ort="pasing"></span></p>
+        <div class="wahl">
+          <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Termin in Pasing buchen</a>
+          <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=Irmonherstra%C3%9Fe+7%2C+81241+M%C3%BCnchen" target="_blank" rel="noopener">Route planen</a>
+        </div>
       </div>
     </article>
-    <article class="zeiten-karte ort-karte ort-grosshadern" aria-labelledby="ort-grosshadern">
-      <h3 id="ort-grosshadern">Gro&szlig;hadern</h3>
-      <address class="anschrift">W&uuml;rmtalstra&szlig;e&nbsp;119<br>81375&nbsp;M&uuml;nchen<br>
-        <a class="rufnummer" href="tel:+498978597770">089&nbsp;785&nbsp;977&nbsp;70</a>
-      </address>
-      <dl class="zeiten-liste"><div class="zeiten-zeile"><dt>Montag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div class="zeiten-zeile"><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div class="zeiten-zeile"><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
-      <p class="zeiten-stand"><span class="stand" data-ort="grosshadern"></span></p>
-      <div class="wahl">
-        <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Termin buchen</a>
-        <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=W%C3%BCrmtalstra%C3%9Fe+119%2C+81375+M%C3%BCnchen" target="_blank" rel="noopener">Route planen</a>
+    <article class="salon-reihe" id="salon-grosshadern" aria-labelledby="ort-grosshadern">
+      <figure class="salon-foto">
+        <img src="bilder/salon-grosshadern-raum-klein.webp" srcset="bilder/salon-grosshadern-raum-klein.webp 720w, bilder/salon-grosshadern-raum.webp 1533w" sizes="(min-width: 60rem) 44rem, 94vw" alt="Salon Gro&szlig;hadern: der ganze Raum mit schwarzen Sesseln auf dunklem Holzboden und der Fensterfront" width="720" height="480" loading="lazy" decoding="async">
+      </figure>
+      <div class="salon-info">
+        <p class="salon-naeher" data-ort="grosshadern" hidden>N&auml;her an Ihnen</p>
+        <h3 id="ort-grosshadern">Gro&szlig;hadern</h3>
+        <address class="anschrift">W&uuml;rmtalstra&szlig;e&nbsp;119, 81375&nbsp;M&uuml;nchen<br>
+          <a class="rufnummer" href="tel:+498978597770">089&nbsp;785&nbsp;977&nbsp;70</a>
+        </address>
+        <p class="salon-weg" data-ort="grosshadern" hidden></p>
+        <dl class="zeiten-liste"><div class="zeiten-zeile"><dt>Montag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div class="zeiten-zeile"><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div class="zeiten-zeile"><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
+        <p class="zeiten-stand"><span class="stand" data-ort="grosshadern"></span></p>
+        <div class="wahl">
+          <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Termin in Gro&szlig;hadern buchen</a>
+          <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=W%C3%BCrmtalstra%C3%9Fe+119%2C+81375+M%C3%BCnchen" target="_blank" rel="noopener">Route planen</a>
+        </div>
       </div>
     </article>
     </div>

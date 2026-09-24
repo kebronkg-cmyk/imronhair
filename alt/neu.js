@@ -206,7 +206,7 @@
      als Ganzes ein. */
   const ZIELE = '.gross, .wand-titel, .belege p, .fach, .werke-bahn, ' +
                 '.laden figure, .spruch, .abschluss, .spalten > div, .karte, ' +
-                '.stimme, .stimmen-kopf, .kontakt-satz, .ort-karte';
+                '.stimme, .stimmen-kopf, .kontakt-satz, .ort-karte, .galerie-bilder li, .salon-reihe, .finder';
 
   /* Nichts aus einem geschlossenen Fach: was `display: none` trägt,
      meldet der Beobachter nie — es bliebe beim Aufklappen unsichtbar
@@ -287,4 +287,141 @@
     spaeher();
   });
   spaeher();
+})();
+
+/* ── Die Ansicht der Fotos ──────────────────────────────────────────────
+   Ein eigenes Fenster statt der nackten Bilddatei: blättern mit den
+   Knöpfen, den Pfeiltasten oder Wischen, schliessen mit Esc, dem Kreuz
+   oder einem Tipp neben das Bild. Beim Schliessen steht die Seite genau
+   dort, wo sie war, und der Fokus liegt wieder auf dem Foto, von dem
+   man kam. */
+(function () {
+  const ansicht = document.getElementById('ansicht');
+  const links = [...document.querySelectorAll('.galerie-link')];
+  if (!ansicht || !ansicht.showModal || !links.length) return;
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Das Bild entsteht erst hier — ein leeres <img> im Quelltext wäre
+     ohne Skript ein kaputtes Bild. */
+  const bild = document.createElement('img');
+  bild.alt = ''; bild.decoding = 'async';
+  ansicht.querySelector('.ansicht-bild').prepend(bild);
+  const text = ansicht.querySelector('.ansicht-text');
+  const zahl = ansicht.querySelector('.ansicht-zahl');
+  const wurzel = document.documentElement;
+  let nr = 0, herkunft = null, oben = 0;
+
+  /* „Pasing · Waschplatz“ — der Salon steht fett davor und bekommt
+     in der Ansicht einen Punkt als Trenner. */
+  const unterschrift = (a) => {
+    const p = a.parentElement.querySelector('p'), b = p.querySelector('b');
+    const rest = p.textContent.replace(b ? b.textContent : '', '').trim();
+    return b ? b.textContent + ' · ' + rest : rest;
+  };
+  function vorladen(i) { const a = links[(i + links.length) % links.length]; const v = new Image(); v.src = a.dataset.gross; }
+  function zeigen(i, richtung) {
+    nr = (i + links.length) % links.length;
+    const a = links[nr];
+    const setzen = () => {
+      bild.src = a.dataset.gross; bild.width = +a.dataset.b; bild.height = +a.dataset.h;
+      bild.alt = a.querySelector('img').alt;
+      text.textContent = unterschrift(a);
+      zahl.textContent = (nr + 1) + ' / ' + links.length;
+      bild.classList.remove('wechselt');
+    };
+    if (richtung && !ruhig) {
+      bild.style.setProperty('--weg', (richtung > 0 ? -24 : 24) + 'px');
+      bild.classList.add('wechselt');
+      setTimeout(() => { bild.style.setProperty('--weg', (richtung > 0 ? 24 : -24) + 'px'); setzen(); }, 200);
+    } else setzen();
+    vorladen(nr + 1); vorladen(nr - 1);
+  }
+  function oeffnen(i, a) {
+    herkunft = a; oben = window.scrollY;
+    zeigen(i, 0);
+    wurzel.classList.add('ansicht-offen');
+    ansicht.classList.remove('zu');
+    ansicht.showModal();
+  }
+  function schliessen() {
+    if (!ansicht.open) return;
+    const ende = () => {
+      ansicht.close(); ansicht.classList.remove('zu');
+      wurzel.classList.remove('ansicht-offen');
+      window.scrollTo({ top: oben, behavior: 'instant' });
+      if (herkunft) herkunft.focus({ preventScroll: true });
+    };
+    if (ruhig) return ende();
+    ansicht.classList.add('zu');
+    setTimeout(ende, 280);
+  }
+
+  links.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); oeffnen(i, a); }));
+  ansicht.querySelector('.ansicht-weiter').addEventListener('click', () => zeigen(nr + 1, 1));
+  ansicht.querySelector('.ansicht-zurueck').addEventListener('click', () => zeigen(nr - 1, -1));
+  ansicht.querySelector('.ansicht-zu').addEventListener('click', schliessen);
+  /* Ein Tipp neben das Bild schliesst — ein Tipp aufs Bild nicht. */
+  ansicht.addEventListener('click', (e) => { if (e.target === ansicht || e.target.classList.contains('ansicht-bild')) schliessen(); });
+  ansicht.addEventListener('cancel', (e) => { e.preventDefault(); schliessen(); });
+  ansicht.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') zeigen(nr + 1, 1);
+    else if (e.key === 'ArrowLeft') zeigen(nr - 1, -1);
+  });
+  /* Wischen: waagrecht mehr als 50 px, und deutlich mehr als senkrecht. */
+  let x0 = null, y0 = 0;
+  ansicht.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') { x0 = e.clientX; y0 = e.clientY; } });
+  ansicht.addEventListener('pointerup', (e) => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) zeigen(nr + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+  });
+})();
+
+/* ── Welcher Salon liegt näher? ─────────────────────────────────────────
+   Auf Knopfdruck fragt der Browser nach dem Standort; die Entfernung zu
+   beiden Salons wird hier gerechnet (Luftlinie) und nirgends hin
+   geschickt. Der nähere Salon bekommt ein Zeichen, und die Seite fährt
+   zu ihm. Koordinaten: OpenStreetMap, auf die Hausnummer genau. */
+(function () {
+  const knopf = document.getElementById('finder');
+  const meldung = document.getElementById('finder-text');
+  if (!knopf || !meldung) return;
+  if (!('geolocation' in navigator)) { knopf.parentElement.hidden = true; return; }
+  const SALONS = {
+    pasing:      { name: 'Pasing',     lat: 48.1485620, lon: 11.4591604 },
+    grosshadern: { name: 'Großhadern', lat: 48.1152757, lon: 11.4776080 },
+  };
+  const km = (a, b) => {
+    const r = Math.PI / 180, R = 6371;
+    const dLat = (b.lat - a.lat) * r, dLon = (b.lon - a.lon) * r;
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  };
+  const schoen = (d) => d < 1 ? Math.round(d * 1000 / 50) * 50 + ' m' : d.toFixed(1).replace('.', ',') + ' km';
+
+  knopf.addEventListener('click', () => {
+    knopf.disabled = true;
+    meldung.textContent = 'Einen Moment — der Browser fragt nach Ihrem Standort …';
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const ich = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+      const wege = Object.entries(SALONS).map(([ort, s]) => [ort, km(ich, s)]).sort((a, b) => a[1] - b[1]);
+      for (const [ort, d] of wege) {
+        const weg = document.querySelector('.salon-weg[data-ort="' + ort + '"]');
+        if (weg) { weg.textContent = schoen(d) + ' Luftlinie von Ihnen'; weg.hidden = false; }
+        const marke = document.querySelector('.salon-naeher[data-ort="' + ort + '"]');
+        if (marke) marke.hidden = ort !== wege[0][0];
+        const reihe = document.getElementById('salon-' + ort);
+        if (reihe) reihe.classList.toggle('ist-naeher', ort === wege[0][0]);
+      }
+      const [erster, d] = wege[0];
+      meldung.textContent = SALONS[erster].name + ' liegt näher — ' + schoen(d) + ' Luftlinie.';
+      knopf.disabled = false;
+      const ziel = document.getElementById('salon-' + erster);
+      if (ziel) ziel.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    }, (fehler) => {
+      knopf.disabled = false;
+      meldung.textContent = fehler.code === 1
+        ? 'Kein Standort freigegeben — kein Problem: Pasing liegt an der Irmonherstraße, Großhadern an der Würmtalstraße.'
+        : 'Der Standort liess sich gerade nicht bestimmen. Bitte später noch einmal versuchen.';
+    }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+  });
 })();
