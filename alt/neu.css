@@ -1770,3 +1770,277 @@ main, .fuss { position: relative; z-index: 1; }
 .ort-karte .anschrift { margin-bottom: var(--a2); }
 .ort-karte .zeiten-stand { margin-bottom: var(--a3); }
 .ort-karte .wahl { margin-bottom: 0; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Nachtrag 24.09.2026 — Fotos, ruhigere Stimmen, neue Preisliste
+   Alles hier ist auf seinen Abschnitt beschränkt: `.posten`, `.liste`
+   und `.abschluss` sind oben schon vergeben.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Der Schleier über den Salonfotos: das Papier der Seite, eine Spur
+     wärmer — er nimmt das Weiss der Wände und den Honig der Strähne auf. */
+  --schleier: 97.6% .012 80;
+}
+
+/* ── Das Zeichen: das Medaillon der neuen Fassung ─────────────────── */
+.marke { align-items: center; }
+.marke-zeichen { width: 40px; height: 40px; }
+@media (max-width: 30rem) { .marke-zeichen { width: 34px; height: 34px; } }
+
+/* ── Leistungen: Einstieg je Gruppe (aus preise.py) ───────────────── */
+.stufe .angebote {
+  display: grid; margin: var(--a4) 0 0; padding: 0; list-style: none;
+  max-width: 60rem;
+}
+.stufe .angebote li { border-top: 1px solid var(--linie-fein); }
+.stufe .angebote li:last-child { border-bottom: 1px solid var(--linie-fein); }
+.stufe .angebot {
+  display: grid; grid-template-columns: 2.2rem minmax(0, 1fr) auto;
+  gap: .2rem 1rem; align-items: baseline;
+  padding: 1.25rem .25rem;
+  text-decoration: none; color: var(--schrift);
+  transition: background-color var(--t1) var(--kurve);
+}
+.angebot-nr { font-size: var(--t-klein); color: var(--akzent-schrift); font-variant-numeric: tabular-nums; }
+.angebot-text { display: grid; gap: .15rem; }
+.angebot-name { font-family: 'Jost', 'Mulish', system-ui, sans-serif; font-size: 1.35rem; }
+.angebot-lauf { font-size: var(--t-klein); color: var(--schrift-leise); }
+.angebot-preise {
+  display: grid; gap: .2rem; justify-items: end; white-space: nowrap;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif; font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.angebot-preise i { font-style: normal; font-size: .8125rem; color: var(--schrift-leise); margin-right: .3rem; }
+@media (hover: hover) and (pointer: fine) {
+  .stufe .angebot:hover { background: oklch(99% .006 80 / .55); }
+}
+@media (max-width: 36rem) {
+  .stufe .angebot { grid-template-columns: 1.8rem minmax(0, 1fr); }
+  .angebot-preise { grid-column: 2; display: flex; flex-wrap: wrap; gap: .2rem 1.1rem; margin-top: .35rem; }
+}
+
+/* ── Einblicke: sechs Fotos ───────────────────────────────────────── */
+.galerie { --durch: .78; }
+.galerie-bilder {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--a2);
+  margin: var(--a4) 0 0; padding: 0; list-style: none;
+}
+@media (min-width: 52rem) { .galerie-bilder { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--a3); } }
+.galerie-bilder a {
+  position: relative; display: block; overflow: hidden;
+  border-radius: var(--kante);
+  background: var(--schrift);
+  cursor: zoom-in;
+}
+/* Alle Aufnahmen sind quer (4:3 und 3:2); 3:2 schneidet höchstens ein
+   Zehntel ab und hält die Reihen gleich hoch. */
+.galerie-bilder img {
+  width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
+  transition: transform .9s var(--kurve);
+}
+.galerie-bilder a::after {
+  content: ''; position: absolute; inset: 8px;
+  border: 1px solid oklch(98% .01 80 / 0);
+  border-radius: 2px;
+  transition: border-color var(--t2) var(--kurve);
+}
+@media (hover: hover) and (pointer: fine) {
+  .galerie-bilder a:hover img { transform: scale(1.04); }
+  .galerie-bilder a:hover::after { border-color: oklch(98% .01 80 / .75); }
+}
+.galerie-bilder p {
+  margin: .55rem 0 0;
+  font-size: .8125rem; letter-spacing: .04em;
+  color: var(--schrift-leise);
+}
+
+/* ── Das Glanzband vor den Stimmen ────────────────────────────────── */
+.glanzband {
+  position: relative; z-index: 1;
+  height: clamp(70px, 9vw, 130px);
+  background: var(--grund-tief);
+  overflow: hidden;
+}
+.glanzband div {
+  position: absolute; inset: -30% -5%;
+  background: url('bilder/straehne-glanz-quer.webp') 50% 46% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+}
+.glanzband::before, .glanzband::after {
+  content: ''; position: absolute; left: 0; right: 0; z-index: 1; height: 36%;
+  pointer-events: none;
+}
+.glanzband::before { top: 0;    background: linear-gradient(var(--grund-tief), transparent); }
+.glanzband::after  { bottom: 0; background: linear-gradient(transparent, var(--grund-tief)); }
+
+/* ── Stimmen: ruhig ──────────────────────────────────────────────────
+   Statt der Karamell-Strähne eine stille Fläche im Ton des Papiers.
+   Die Farbe kommt nur noch aus den Sternen. */
+.stimmen {
+  background: var(--grund-tief);
+  --linie: oklch(30% .022 60 / .18);
+}
+.stimmen .stimmen-note .urteil-grund { color: oklch(47% .066 68 / .2); }
+
+/* ── Standorte: je ein Foto hinter der Karte ─────────────────────────
+   Oben steht das Foto offen, darunter legt sich ein Schleier im Ton
+   des Papiers darüber — dicht genau dort, wo Zeiten und Knöpfe stehen.
+   Der Schleier hat mehrere Stufen, damit keine Kante zu sehen ist. */
+.ort-karte {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding-top: clamp(10rem, 22vw, 14rem);
+  background: oklch(var(--schleier));
+  border-color: oklch(30% .022 60 / .14);
+  box-shadow: 0 30px 60px -44px oklch(25% .03 60 / .5);
+}
+.ort-karte::before, .ort-karte::after {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+}
+/* Das Foto füllt nur den oberen Teil: über die ganze Karte gezogen,
+   zeigte der Ausschnitt oben nur die Decke. */
+.ort-karte::before {
+  bottom: auto; height: 24rem; background: 50% 62% / cover no-repeat;
+  /* Unten ausblenden, sonst steht dort, wo das Foto endet, eine Kante. */
+  -webkit-mask-image: linear-gradient(#000 50%, transparent 92%);
+          mask-image: linear-gradient(#000 50%, transparent 92%);
+}
+.ort-pasing::before      { background-image: url('bilder/salon-pasing-raum.webp'); }
+.ort-grosshadern::before { background-image: url('bilder/salon-grosshadern-raum.webp'); }
+.ort-karte::after {
+  background: linear-gradient(180deg,
+    oklch(var(--schleier) / 0) 0%,
+    oklch(var(--schleier) / .12) 9rem,
+    oklch(var(--schleier) / .7) 12rem,
+    oklch(var(--schleier) / .93) 15rem,
+    oklch(var(--schleier) / .96) 100%);
+}
+/* Der Name steht noch auf dem Foto — dort trägt ihn ein eigenes Feld. */
+.ort-karte h3 {
+  display: inline-block;
+  padding: .25rem .75rem .3rem;
+  margin-left: -.75rem;
+  border-radius: var(--kante);
+  background: oklch(var(--schleier) / .92);
+}
+.ort-karte .zeiten-liste, .ort-karte .anschrift { position: relative; }
+
+/* ═══ Preisliste ══════════════════════════════════════════════════════ */
+
+/* Nur die gewählte Liste; ohne `:has()` stehen beide untereinander. */
+.preise:has(#wahl-grosshadern:checked) .salon-pasing,
+.preise:has(#wahl-pasing:checked) .salon-grosshadern { display: none; }
+
+/* ── Die Preisleiste: Salon und Gruppen in einer Zeile ────────────── */
+.preisleiste {
+  position: sticky; top: var(--leiste); z-index: 40;
+  padding: .5rem var(--rand);
+  background: oklch(98.4% .003 75 / .95);
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+  border-block: 1px solid var(--linie-fein);
+  transition: transform .45s var(--kurve);
+}
+html.leiste-weg .preisleiste {
+  transform: translateY(calc(-1 * var(--leiste)));
+  transition-timing-function: var(--kurve-fort);
+}
+.preisleiste-bau {
+  display: flex; align-items: center; gap: var(--a2);
+  max-width: 58rem;
+  padding: 0;
+}
+.salonwahl {
+  flex: none; display: inline-flex;
+  margin: 0; padding: 3px; border: 1px solid var(--linie); border-radius: 999px;
+  background: var(--grund);
+}
+.salonwahl input { position: absolute; opacity: 0; pointer-events: none; }
+.salonwahl label {
+  padding: .55rem 1rem; border-radius: 999px;
+  font-family: 'Jost', 'Mulish', system-ui, sans-serif; font-size: .9375rem;
+  color: var(--schrift-leise); cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t1) var(--kurve), color var(--t1) var(--kurve);
+}
+.salonwahl input:checked + label { background: var(--schrift); color: var(--grund); }
+.salonwahl input:focus-visible + label { outline: 2px solid var(--akzent-schrift); outline-offset: 2px; }
+
+.wegweiser-bahn {
+  display: flex; gap: .15rem; min-width: 0; flex: 1;
+  overflow-x: auto; scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 90%, transparent);
+          mask-image: linear-gradient(90deg, #000 90%, transparent);
+}
+.wegweiser-bahn::-webkit-scrollbar { display: none; }
+.wegweiser-bahn a {
+  flex: none; padding: .55rem .8rem; border-radius: 999px;
+  font-size: .875rem; text-decoration: none; white-space: nowrap;
+  color: var(--schrift-leise);
+  transition: color var(--t1) var(--kurve), box-shadow var(--t1) var(--kurve);
+}
+.wegweiser-bahn a[aria-current="true"] { color: var(--schrift); box-shadow: inset 0 -2px 0 var(--akzent); border-radius: 0; }
+@media (hover: hover) and (pointer: fine) { .wegweiser-bahn a:hover { color: var(--schrift); } }
+
+/* Am Handy zwei flache Zeilen: oben der Salon über die ganze Breite,
+   darunter die Gruppen. */
+@media (max-width: 44rem) {
+  .preisleiste { padding: .45rem var(--rand) .2rem; }
+  .preisleiste-bau { flex-wrap: wrap; gap: .35rem; }
+  .salonwahl { width: 100%; }
+  .salonwahl label { flex: 1; text-align: center; padding-block: .5rem; }
+  .wegweiser-bahn { flex-basis: 100%; }
+}
+
+/* ── Salon, Gruppen, Posten ───────────────────────────────────────── */
+.preise .liste { max-width: calc(58rem + 2 * var(--rand)); padding-top: var(--a4); }
+.salon-titel {
+  margin: 0; font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-weight: 400; font-size: clamp(2rem, 1.6rem + 1.6vw, 2.8rem); line-height: 1.1;
+}
+.salon-titel span { display: block; margin-top: .35rem; font-family: 'Mulish', system-ui, sans-serif; font-size: var(--t-klein); color: var(--schrift-leise); }
+.salon-titel a { color: var(--akzent-schrift); }
+
+.preise .gruppe { padding-top: var(--a4); scroll-margin-top: calc(var(--leiste) + 4.5rem); }
+@media (max-width: 44rem) { .preise .gruppe { scroll-margin-top: calc(var(--leiste) + 7rem); } }
+.preise .gruppe-kopf { padding-bottom: .7rem; border-bottom: 1px solid var(--schrift); }
+.preise .gruppe-kopf h3 {
+  margin: 0; font-family: 'Jost', 'Mulish', system-ui, sans-serif;
+  font-weight: 400; font-size: 1.6rem; color: var(--schrift);
+}
+.preise .gruppe-kopf p { margin: .2rem 0 0; font-size: var(--t-klein); color: var(--schrift-leise); }
+
+.preise .posten-liste { margin: 0; padding: 0; list-style: none; }
+.preise .posten {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: .5rem 1.5rem; align-items: center;
+  padding: .9rem 0;
+  border-bottom: 1px solid var(--linie-fein);
+}
+.preise .posten-kopf { display: grid; gap: .1rem; }
+.preise .posten-name { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--schrift); }
+.preise .posten-zusatz { margin: 0; font-size: .875rem; color: var(--schrift-leise); }
+.preise .posten-dauer { margin: 0; font-size: .8125rem; color: var(--schrift-still); }
+.preise .posten-telefon { color: var(--akzent-schrift); font-weight: 600; }
+
+.preise .stufen { display: grid; grid-template-columns: repeat(3, 6.2rem); justify-content: end; margin: 0; }
+.preise .stufen[data-n="1"] > div { grid-column: 3; }
+.preise .stufen[data-n="2"] > div:first-child { grid-column: 2; }
+.preise .stufen > div { display: grid; gap: .1rem; justify-items: end; text-align: right; }
+.preise .stufen dt { font-size: .75rem; color: var(--schrift-still); }
+.preise .stufen dd {
+  margin: 0; font-family: 'Jost', 'Mulish', system-ui, sans-serif; font-size: 1.1rem;
+  font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--schrift);
+}
+.preise .ab { font-size: .8em; color: var(--schrift-still); margin-right: .15em; }
+.preise .stufen dd.preis-wort { font-family: 'Mulish', system-ui, sans-serif; font-size: .95rem; font-style: italic; color: var(--schrift-leise); }
+.preise .einzeln dt { display: none; }
+@media (max-width: 40rem) {
+  .preise .posten { grid-template-columns: 1fr; gap: .4rem; }
+  .preise .stufen { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); justify-content: stretch; }
+  .preise .stufen[data-n="1"] { --n: 1; }
+  .preise .stufen[data-n="2"] { --n: 2; }
+  .preise .stufen[data-n] > div:nth-child(n) { grid-column: auto; justify-items: start; text-align: left; }
+}
+.preise .abschluss { margin-top: var(--a5); }

@@ -227,3 +227,64 @@
 
   for (const el of stuecke) beob.observe(el);
 })();
+
+/* ── Preisliste: Salonwahl und Wegweiser ─────────────────────────────────
+   Die Wahl steht in Radioknöpfen; hier wird sie gemerkt und aus der
+   Adresse gelesen (#grosshadern, #farbe, #grosshadern-farbe). Der Späher
+   markiert die Gruppe, die gerade oben steht. Die Preisleiste weicht mit
+   der Leiste aus — dafür spiegelt `leiste-weg` deren Zustand. */
+(function () {
+  const wurzel = document.documentElement;
+  const leiste = document.querySelector('.leiste');
+  if (leiste) new MutationObserver(() =>
+    wurzel.classList.toggle('leiste-weg', leiste.classList.contains('weg'))
+  ).observe(leiste, { attributes: true, attributeFilter: ['class'] });
+
+  const wahl = document.querySelectorAll('.salonwahl input');
+  if (!wahl.length) return;
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const gewaehlt = () => (document.querySelector('.salonwahl input:checked') || {}).value || 'pasing';
+  const waehlen = (s) => { const el = document.getElementById('wahl-' + s); if (el) el.checked = true; };
+  try { const g = localStorage.getItem('irmonhair-salon'); if (g) waehlen(g); } catch (e) { /* privat */ }
+
+  function adresse() {
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (!h) return;
+    const [a, b] = h.split('-');
+    if (a === 'pasing' || a === 'grosshadern') waehlen(a);
+    const ziel = document.getElementById(b ? h : (a === 'pasing' || a === 'grosshadern' ? '' : gewaehlt() + '-' + a));
+    if (ziel) requestAnimationFrame(() => ziel.scrollIntoView());
+  }
+  adresse();
+  addEventListener('hashchange', adresse);
+
+  let beob = null;
+  function spaeher() {
+    if (beob) beob.disconnect();
+    if (!('IntersectionObserver' in window)) return;
+    const s = gewaehlt();
+    const verweise = [...document.querySelectorAll('.wegweiser-bahn.salon-' + s + ' a')];
+    const gruppen = [...document.querySelectorAll('#' + s + ' .gruppe')];
+    const sichtbar = new Set();
+    beob = new IntersectionObserver((eintraege) => {
+      for (const e of eintraege) (e.isIntersecting ? sichtbar.add(e.target) : sichtbar.delete(e.target));
+      const erste = gruppen.find((g) => sichtbar.has(g));
+      if (!erste) return;
+      for (const v of verweise) {
+        const an = v.getAttribute('href') === '#' + erste.id;
+        if (an && v.getAttribute('aria-current') !== 'true') {
+          v.setAttribute('aria-current', 'true');
+          const bahn = v.parentElement;
+          bahn.scrollTo({ left: v.offsetLeft - bahn.clientWidth / 2 + v.offsetWidth / 2, behavior: ruhig ? 'auto' : 'smooth' });
+        } else if (!an) v.removeAttribute('aria-current');
+      }
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    for (const g of gruppen) beob.observe(g);
+  }
+  for (const r of wahl) r.addEventListener('change', () => {
+    try { localStorage.setItem('irmonhair-salon', r.value); } catch (e) { /* privat */ }
+    history.replaceState(null, '', '#' + r.value);
+    spaeher();
+  });
+  spaeher();
+})();

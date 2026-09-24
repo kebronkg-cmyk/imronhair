@@ -401,5 +401,10 @@ if __name__ == '__main__':
     einsetzen('leistungen.html', 'weg-pasing', wegweiser_html('pasing', pas))
     einsetzen('leistungen.html', 'weg-grosshadern', wegweiser_html('grosshadern', gro))
     einsetzen('index.html', 'uebersicht', uebersicht_html(pas, gro))
+    # Die erste Fassung unter /alt/ bekommt dieselben Listen.
+    for marke, inhalt in [('pasing', salon_html('pasing', pas)), ('grosshadern', salon_html('grosshadern', gro)),
+                          ('weg-pasing', wegweiser_html('pasing', pas)), ('weg-grosshadern', wegweiser_html('grosshadern', gro))]:
+        einsetzen('alt/leistungen.html', marke, inhalt)
+    einsetzen('alt/index.html', 'uebersicht', uebersicht_html(pas, gro))
     n = sum(len(v) for v in pas.values()) + sum(len(v) for v in gro.values())
     print(f'{n} Posten gesetzt, Stand {DATEN["pasing"]["gelesen"]}')

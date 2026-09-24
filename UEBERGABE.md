@@ -73,3 +73,22 @@ und `ABNAHME.md` (offene Punkte) gelten weiter.
 Der Detektor braucht einmal
 `cd .claude/skills/impeccable && npm install --no-save htmlparser2 css-select css-tree domutils`
 (der Ordner `node_modules` ist ignoriert), sonst läuft er eingeschränkt.
+
+## Erste Fassung unter /alt/
+
+https://kebronkg-cmyk.github.io/imronhair/alt/ — die Fassung aus der Zip
+(Stand `8eb16f9`), mit `noindex`, und darauf aufgebaut:
+
+- Zeichen oben links: das Medaillon der neuen Fassung (40 px).
+- Leistungen: Einstiegspreise aus `preise.py` statt der alten Klappfächer.
+- „Einblick in beide Salons“: sechs Fotos, antippen öffnet das Bild.
+- Stimmen: ruhige Fläche statt Karamell, davor das Glanzband; die grosse
+  Stimme nennt keinen Namen mehr (vorher Momo).
+- Standorte: je das beste Foto oben in der Karte, Schleier im Ton des
+  Papiers, dicht unter Zeiten und Knöpfen.
+- Preisliste: eine klebende Zeile mit Salonwahl und Gruppen, darunter
+  dieselben Planity-Listen wie in der neuen Fassung (`preise.py` schreibt
+  beide Fassungen).
+- Detektor: auf den Hauptseiten gleich viele Meldungen wie vorher (11),
+  alle aus der Vorlage (Laufband-Regel ohne Verwendung, `overflow` am
+  `body`, Innenabstände im Band); keine aus den neuen Teilen.
