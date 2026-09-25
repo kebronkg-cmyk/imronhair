@@ -132,6 +132,10 @@ Inhaberin. Die Hauptadresse bleibt die Spiegel-Fassung.
   („pro Strähne“) zählen nicht mehr als Einstieg — die Übersicht zeigte
   bei Haarverlängerung „ab 7 €“, jetzt „ab 50 €“ (die Beratung), auch in
   der Hauptfassung und unter /alt/.
-- Detektor: 5 Meldungen, alle zum LED-Schein (gewollt, er ist das Licht
-  aus der Vorlage). Kontrast über der Grenze, keine Überbreite bei 390
+- Detektor: 11 Meldungen „dark-glow“, alle gewollt (LED-Kante am Spiegel,
+  Regal-Klammer, Hauptknopf). Seit `schleife/DESIGN.md` existiert, gleicht
+  er zusätzlich gegen das dokumentierte System ab: 74 Werte (Farben,
+  Schriftgrössen, Radien) stammen aus der Spiegel-Grundlage und stehen
+  nicht in der Skala. Nächster Schritt: diese Werte auf die Tokens aus
+  DESIGN.md zurückführen. Kontrast über der Grenze, keine Überbreite bei 390
   und 360 px, keine Konsolenfehler.
