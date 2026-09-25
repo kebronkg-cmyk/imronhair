@@ -1599,3 +1599,11 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
 .salonwahl input:checked + label { background: var(--knopf-grund); color: var(--tinte); border-color: var(--knopf-kante); }
 .salonwahl input:checked + label .salonwahl-ort { color: var(--tinte-leise); }
 .salonwahl input:checked + label::before { border-color: var(--knopf-kante); box-shadow: inset 0 0 0 3px var(--knopf-grund), inset 0 0 0 10px var(--gold); }
+
+/* Gewählt und Termin im Menü: schwarz mit LED-Kante statt heller Füllung —
+   die einzige helle Fläche der Seite bleibt der Travertin. */
+.wegweiser a { border: 1px solid transparent; }
+.wegweiser a[aria-current="true"] { background: var(--knopf-grund); color: var(--tinte); border-color: var(--knopf-kante); }
+@media (max-width: 63.99rem) {
+  .wege .wege-termin { background: var(--knopf-grund); color: var(--tinte); border: 1px solid var(--knopf-kante); }
+}
