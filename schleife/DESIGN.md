@@ -26,7 +26,17 @@ colors:
   travertin: "oklch(88% .022 78)"
   travertin-tinte: "oklch(20% .012 60)"
   travertin-gold: "oklch(46% .09 66)"
-  travertin-hand: "oklch(40% .085 64)"
+  travertin-hand: "oklch(34% .08 62)"
+  travertin-hell: "oklch(93% .018 80)"
+  travertin-tief: "oklch(80% .026 74)"
+  travertin-still: "oklch(29% .018 62)"
+  travertin-linie: "oklch(30% .02 60)"
+  sterne: "oklch(56% .11 70)"
+  weiss-licht: "oklch(100% 0 0)"
+  schatten: "oklch(0% 0 0)"
+  bronze: "oklch(36% .04 70)"
+  linie-gold-hell: "oklch(86% .075 88)"
+  offen: "oklch(62% .15 150)"
 typography:
   display:
     fontFamily: "Jost, Mulish, system-ui, sans-serif"
@@ -67,6 +77,20 @@ typography:
     fontWeight: 500
     lineHeight: 1.2
     letterSpacing: ".16em"
+  scale:
+    mini: ".72rem"
+    knopf: ".8rem"
+    klein: ".85rem"
+    notiz: ".92rem"
+    lese: "1rem"
+    fliess: "1.0625rem"
+    zwischen: "1.25rem"
+    zahl: "1.5rem"
+    titel: "1.7rem"
+    stufe-2-2: "2.2rem"
+    stufe-2-5: "2.5rem"
+    stufe-3: "3rem"
+    stufe-4-6: "4.6rem"
   preis:
     fontFamily: "Jost, Mulish, system-ui, sans-serif"
     fontSize: "1.05rem"
@@ -74,9 +98,12 @@ typography:
     lineHeight: 1.2
     fontFeature: "tnum, lnum"
 rounded:
+  klammer: "1px"
   fokus: "2px"
   nische: "3px"
   pille: "999px"
+  bogen-fuss: "6px"
+  rahmen-fuss: "10px"
 spacing:
   a2: "1rem"
   a3: "1.75rem"
@@ -175,6 +202,10 @@ Eine warme Nachtpalette aus einem Farbton (Hue 55–85), in der das Gold nur dur
 - **Travertin** (`travertin`) mit `--travertin-stein` (`bilder/travertin.webp`, 350×190 px gekachelt, hell überlegt 93→85 %): der eine helle Raum, der Bewertungsabschnitt.
 - **Travertin-Tinte** (`travertin-tinte`): Schild, Zahlen und Knopfschrift auf Stein.
 - **Travertin-Gold** (`travertin-gold`) und **Travertin-Hand** (`travertin-hand`): das Gold, auf hellem Grund neu gemessen — Unterstrich und Handschriftzeile werden dort zu dunklem Umbra statt hellem Gold.
+- **Auf dem Stein außerdem:** `travertin-hell` (Karten, Schleieranfang), `travertin-tief` (Schleierende), `travertin-still` (kleine Zeilen, mind. 6:1), `travertin-linie` (Trennlinien, nur mit Alpha), `sterne` (Sternleiste).
+- **Licht und Schatten:** `weiss-licht` nur mit Alpha als Glanz auf dem Spiegelglas, `schatten` nur mit Alpha für Schlagschatten, `bronze` für warme Vignetten und die Regalstange, `linie-gold-hell` für Haarlinien über Fotos und Unterstreichungen.
+- **Zustand:** `offen` — der grüne Punkt „geöffnet“; die einzige kühle Farbe, nur als 8-px-Punkt.
+- **Alpha-Stufen** entstehen immer aus einem Token: `color-mix(in oklch, var(--token) 35%, transparent)`. Kein Rohwert im Stil.
 
 ### Named Rules
 **Die Kantenlicht-Regel.** Gold ist Licht, und Licht sitzt an Kanten. Es erscheint als Linie, Rand, Unterstrich oder Schein — nie als gefüllte Fläche, nie als Knopfgrund.

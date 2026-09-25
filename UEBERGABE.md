@@ -111,11 +111,14 @@ Inhaberin. Die Hauptadresse bleibt die Spiegel-Fassung.
 - **Schrift:** Jost 300 gesperrt für Überschriften und Wortmarke
   (Schaufensterbuchstaben), Sacramento für die zwei Handschriftzeilen,
   Mulish für den Lauftext. Cormorant ist hier entfernt.
-- **Die Schleife** liegt als Inline-SVG oben links am Spiegel: ein
-  flaches schwarzes Leuchtschild wie an der Fassade (Bandknoten,
-  umgeschlagene Schlaufen, Bänder mit V-Schnitt), das Licht nur als Kante,
-  die sich beim Laden einmal entlangzieht. Jedes Band trägt seine Kante
-  selbst, damit das vordere die des hinteren verdeckt.
+- **Die Schleife** ist aus dem Schaufensterfoto nachgezeichnet
+  (`recherche/schleife.py`, Koordinaten des Fotoausschnitts 560 × 900):
+  Satin mit Volumen (Verlauf je Fläche, weiche Glanzbahnen), hinterleuchtet,
+  LED nur an den Kanten, an denen es im Foto steht. Das Skript setzt sie
+  zwischen Marken `<!-- schleife:… -->` an vier Stellen: gross oben rechts
+  am Spiegel (gespiegelt, das lange Band fällt aussen), im Ladebildschirm
+  über dem Schriftzug, als Zeichen in der Leiste (nur Schlaufen und Knoten,
+  Bänder laufen aus) und als Favicon `schleife/logo-schleife.svg`.
 - **Überschriften** wie das Schild: ein Wort in gesperrten Versalien
   (`.schild`), darunter eine Handschriftzeile (`.schild-zeile`).
 - **Knöpfe** schwarz mit LED-Kante (`--knopf-grund`, `--knopf-kante`),
@@ -132,10 +135,15 @@ Inhaberin. Die Hauptadresse bleibt die Spiegel-Fassung.
   („pro Strähne“) zählen nicht mehr als Einstieg — die Übersicht zeigte
   bei Haarverlängerung „ab 7 €“, jetzt „ab 50 €“ (die Beratung), auch in
   der Hauptfassung und unter /alt/.
-- Detektor: 11 Meldungen „dark-glow“, alle gewollt (LED-Kante am Spiegel,
-  Regal-Klammer, Hauptknopf). Seit `schleife/DESIGN.md` existiert, gleicht
-  er zusätzlich gegen das dokumentierte System ab: 74 Werte (Farben,
-  Schriftgrössen, Radien) stammen aus der Spiegel-Grundlage und stehen
-  nicht in der Skala. Nächster Schritt: diese Werte auf die Tokens aus
-  DESIGN.md zurückführen. Kontrast über der Grenze, keine Überbreite bei 390
+- **Tokens:** Jede Farbe im Stil ist ein Token aus `:root`, Alpha-Stufen
+  über `color-mix`; neue Rollen (`weiss-licht`, `schatten`, `bronze`,
+  `linie-gold-hell`, `offen`, `sterne`, `travertin-*`) und die
+  Schrifttreppe stehen in `schleife/DESIGN.md`. Dabei zwei Fehler behoben:
+  „Extensions entdecken“ und die Telefonpille wurden beim Überfahren fast
+  weiß (Rest der hellen Fassung).
+- **Galerie am Handy** zwei nebeneinander, weiter antippbar.
+- Detektor: 10 Meldungen, alle „dark-glow“ und gewollt — der Leuchtschein
+  am Spiegel, an der Regal-Klammer und am Hauptknopf (je Seite).
+- Die Norm für weitere Salons: `.claude/skills/salon-website/`.
+- Kontrast über der Grenze, keine Überbreite bei 390
   und 360 px, keine Konsolenfehler.
