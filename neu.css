@@ -485,17 +485,32 @@ button { font: inherit; color: inherit; }
 }
 
 .auftakt-satz { max-width: 40rem; }
-.auftakt .titel { max-width: 12ch; }
-@media (min-width: 60rem) { .auftakt .titel { max-width: 11ch; } }
 
-/* Der Haarstrich mit dem Schwung, frei aus dem Logo gezogen. */
-.schwung {
-  width: clamp(150px, 16vw, 220px); height: auto;
-  margin: var(--a3) 0 0 .2rem;
-  fill: var(--gold-tief);
+/* Der Name, klassisch: gesperrte Versalien in der Garamond, darunter
+   der Ort kursiv. Edel und deutlich, aber nicht laut — Grösse und
+   Gewicht bleiben unter dem, was ein Plakat täte. */
+.wortmarke {
+  display: grid; gap: .5rem;
+  margin: 0;
+  font-family: var(--serif);
+  color: var(--tinte);
 }
-.schwung path:first-child { fill: var(--gold); }
-
+.wortmarke-name {
+  font-weight: 500;
+  font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.6rem);
+  line-height: 1;
+  letter-spacing: .16em;
+  margin-right: -.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.wortmarke-ort {
+  font-style: italic; font-weight: 400;
+  font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.2rem);
+  line-height: 1.15;
+  color: var(--gold-wort);
+}
+.auftakt .auftakt-lauf { margin-top: var(--a3); }
 .auftakt-lauf {
   margin: var(--a2) 0 0;
   max-width: 33rem;
@@ -529,7 +544,7 @@ button { font: inherit; color: inherit; }
 @media (hover: hover) and (pointer: fine) {
   .rufe a:hover .rufe-nr { background-size: 100% 1px; }
 }
-.rufe .stand { display: block; margin-top: .55rem; }
+.rufe .stand { display: flex; margin-top: .55rem; }
 @media (max-width: 30rem) {
   .rufe { grid-template-columns: 1fr 1fr; gap: var(--a2); }
   .rufe-nr { font-size: 1.3rem; }
@@ -597,6 +612,10 @@ button { font: inherit; color: inherit; }
   position: relative; height: 100%;
   overflow: hidden;
   border-radius: 999px 999px 3px 3px;
+  /* Der Bogen als harte Maske: `overflow` mit Rundung schneidet in
+     Safari nicht, solange ein Bild darin animiert wird — dann stand das
+     Foto beim Wechsel kurz als Rechteck im Rahmen. */
+  clip-path: inset(0 round 999px 999px 3px 3px);
   background: var(--nacht);
   isolation: isolate;
 }
@@ -1235,11 +1254,8 @@ html.leiste-weg .wegweiser {
     transition: opacity 1s var(--kurve), transform 1s var(--kurve), filter 1s var(--kurve); }
   .auftritt.auftritt-da, .auftritt-gross.auftritt-da { opacity: 1; transform: none; filter: none; }
 
-  /* Der Spiegel steigt langsamer, der Schwung zieht sich von links. */
+  /* Der Spiegel steigt langsamer. */
   .spiegel.auftritt-gross { transform: translateY(28px) scale(.985); transition-duration: 1.3s; }
-  .schwung.auftritt-gross { filter: none; transform: none; clip-path: inset(0 100% 0 0);
-    transition: opacity .4s var(--kurve), clip-path 1.1s var(--kurve); }
-  .schwung.auftritt-da { clip-path: inset(0 0 0 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

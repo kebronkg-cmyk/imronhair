@@ -121,8 +121,6 @@
       k.addEventListener('click', () => {
         const salon = k.dataset.salon;
         if (spiegel.dataset.salon === salon) return;
-        const bild = spiegel.querySelector('.spiegel-bild-' + salon);
-        if (bild && bild.loading === 'lazy') bild.loading = 'eager';
         spiegel.dataset.salon = salon;
         for (const b of knoepfe) b.setAttribute('aria-pressed', String(b === k));
         if (ort) ort.textContent = ORTE[salon];
@@ -131,9 +129,9 @@
         spiegel.classList.add('wechsel');
       });
     }
-    /* Das zweite Bild still vorladen, sobald die Seite ruht. */
-    const zweit = spiegel.querySelector('.spiegel-bild-grosshadern');
-    if (zweit) setTimeout(() => { zweit.loading = 'eager'; }, 2500);
+    /* Beide Bilder laden sofort und werden vorab dekodiert — der Wechsel
+       zeigt dann ein fertiges Bild statt eines, das erst aufgebaut wird. */
+    for (const b of spiegel.querySelectorAll('.spiegel-bild')) if (b.decode) b.decode().catch(() => {});
 
     if (!ruhig && rahmen) {
       let ziel = null, lauf = false;
