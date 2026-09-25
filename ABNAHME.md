@@ -108,3 +108,23 @@ Aus dem Grundgerüst übernommen und auf Planity umgestellt. Die Firma und
 Anschrift von Planity sind bewusst nicht eingetragen, solange sie nicht
 geprüft sind; die Erklärung sollte einmal rechtlich gegengelesen werden —
 die Seite ist jetzt öffentlich.
+
+## 8. Fassung „Schleife“ unter /schleife/ — mit der Inhaberin klären
+
+https://kebronkg-cmyk.github.io/imronhair/schleife/ setzt ihre Vorlagen um
+(Schaufenster bei Nacht, schwarze Schleife, warmes LED-Licht, Travertin,
+„More Hair. More You.“, „Schönheit beginnt mit starken Haaren.“) und
+stellt Extensions nach vorn. Vor dem Umstellen auf die Hauptadresse:
+
+- **Zahlen aus den Vorlagen stehen bewusst nicht da.** „100 % Echthaar“,
+  „über 100 Farbtöne“ und „5 € pro Strähne“ sind weggelassen; die Seite
+  sagt nur „Echthaar“. Website und Preisliste nennen für Extensions **ab 7 € pro
+  Strähne**, die Vorlage 5 € — welcher Preis gilt? Stimmen die Zahlen,
+  tragen wir sie nach.
+- **Das Farbregal** (zehn Stränge von Platin bis Schwarz) zeigt
+  Farbbeispiele, keine Musterkarte eines Herstellers. Die Seite sagt das
+  unter der Auswahl. Wenn es eine echte Farbkarte gibt (Marke, Tonnamen),
+  bauen wir die Stränge danach.
+- **Tape-Technik und Bondings** stehen bei Planity nur für Pasing — bitte
+  bestätigen, dass Großhadern beides ebenso anbietet.
+- **Beratung 50 €** stammt aus Planity (beide Salons).

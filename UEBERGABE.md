@@ -97,3 +97,30 @@ https://kebronkg-cmyk.github.io/imronhair/alt/ — die Fassung aus der Zip
 - Stimmen ruhig, die grosse ohne Friseurnamen; Medaillon als Zeichen;
   Preisliste mit einer klebenden Zeile, Listen aus `preise.py`.
 - Detektor: 10 Meldungen, alle aus der Vorlage (vorher 11).
+
+## Dritte Fassung unter /schleife/ (25.09.2026)
+
+https://kebronkg-cmyk.github.io/imronhair/schleife/ — Kopie der
+Spiegel-Fassung mit `noindex`, neu gestimmt nach den Vorlagen der
+Inhaberin. Die Hauptadresse bleibt die Spiegel-Fassung.
+
+- **Nacht statt Papier.** Tokens in `schleife/neu.css` überschrieben:
+  warmes Schwarz als Grund, Travertin als einzige helle Fläche (Stimmen),
+  LED-Gold als Leitfarbe (`--gold…`, `--led-schein`). Lesbares Gold
+  (`--gold-schrift`, `--gold-wort`) getrennt vom Ornament-Gold.
+- **Schrift:** Jost 300 gesperrt für Überschriften und Wortmarke
+  (Schaufensterbuchstaben), Sacramento für die zwei Handschriftzeilen,
+  Mulish für den Lauftext. Cormorant ist hier entfernt.
+- **Die Schleife** liegt als Inline-SVG oben links am Spiegel (Satin,
+  Knoten, LED-Kante, die sich beim Laden entlangzieht); am Handy eine
+  kleine Schleife über der Wortmarke.
+- **Extensions** als eigener Abschnitt `#extensions` direkt nach dem
+  Auftakt, mit fünf Werten aus der Vorlage (ohne Zahlen).
+- **Das Farbregal** (`form.regal`): zehn Haarstränge an Klammern unter
+  einer LED-Leiste, dazu Länge und Wunsch; daraus entsteht ein Satz, der
+  kopiert werden kann, und die Beratung bei Planity in beiden Salons.
+  Ohne Skript bleibt es eine Auswahl mit Buchungsknöpfen.
+- `recherche/preise.py` schreibt jetzt auch `schleife/`.
+- Detektor: 5 Meldungen, alle zum LED-Schein (gewollt, er ist das Licht
+  aus der Vorlage). Kontrast über der Grenze, keine Überbreite bei 390
+  und 360 px, keine Konsolenfehler.

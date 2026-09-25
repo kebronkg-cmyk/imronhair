@@ -406,5 +406,10 @@ if __name__ == '__main__':
                           ('weg-pasing', wegweiser_html('pasing', pas)), ('weg-grosshadern', wegweiser_html('grosshadern', gro))]:
         einsetzen('alt/leistungen.html', marke, inhalt)
     einsetzen('alt/index.html', 'uebersicht', uebersicht_html(pas, gro))
+    # Die Fassung mit der Schleife unter /schleife/ hat dieselben Marken.
+    for marke, inhalt in [('pasing', salon_html('pasing', pas)), ('grosshadern', salon_html('grosshadern', gro)),
+                          ('weg-pasing', wegweiser_html('pasing', pas)), ('weg-grosshadern', wegweiser_html('grosshadern', gro))]:
+        einsetzen('schleife/leistungen.html', marke, inhalt)
+    einsetzen('schleife/index.html', 'uebersicht', uebersicht_html(pas, gro))
     n = sum(len(v) for v in pas.values()) + sum(len(v) for v in gro.values())
     print(f'{n} Posten gesetzt, Stand {DATEN["pasing"]["gelesen"]}')
