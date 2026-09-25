@@ -614,7 +614,10 @@ button { font: inherit; color: inherit; }
   opacity: 1; transform: scale(1.0);
 }
 .spiegel-bild-pasing { object-position: 50% 50%; }
-.spiegel-bild-grosshadern { object-position: 45% 50%; }
+.spiegel-bild-grosshadern { object-position: 50% 50%; }
+/* Großhadern ist ein Ausschnitt aus einem Querformat und schon nah —
+   die Kamerafahrt beginnt hier kaum vergrössert. */
+.spiegel-bild.spiegel-bild-grosshadern { transform: scale(1.02); }
 
 .spiegel-licht {
   position: absolute; inset: 0; z-index: 2;
@@ -758,22 +761,23 @@ html:not(.js) .spiegel-wahl { display: none; }
 .mehr { margin: var(--a4) 0 0; }
 
 /* ── Salons: die Fotos ────────────────────────────────────────────── */
-/* Spalten statt Raster: jedes Foto behält sein Format, nichts wird
-   auf ein fremdes Seitenverhältnis zugeschnitten. */
+/* Ein Raster mit einheitlichem 3:2: in Spalten standen die Fotos je
+   nach Format versetzt (die Spiegelreihe sass höher als ihre Nachbarn).
+   Die 4:3-Aufnahmen verlieren oben und unten je ein Zwanzigstel. */
 .salons { background: var(--papier-tief); }
 .bilder {
-  columns: 1; column-gap: var(--a3);
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--a3);
   margin: 0; padding: 0; list-style: none;
 }
-@media (min-width: 40rem) { .bilder { columns: 2; } }
-@media (min-width: 64rem) { .bilder { columns: 3; } }
-.bild { break-inside: avoid; margin: 0 0 var(--a3); }
+@media (min-width: 40rem) { .bilder { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 64rem) { .bilder { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.bild { margin: 0; }
 .bild-knopf {
   position: relative; display: block; width: 100%;
   padding: 0; border: 0; background: var(--nacht);
   overflow: hidden; cursor: zoom-in;
 }
-.bild-knopf img { width: 100%; transition: transform 1.2s var(--kurve-weich); }
+.bild-knopf img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; transition: transform 1.2s var(--kurve-weich); }
 .bild-knopf::after {
   content: ''; position: absolute; inset: 10px;
   border: 1px solid oklch(86% .075 88 / 0);
@@ -937,6 +941,36 @@ html:not(.js) .spiegel-wahl { display: none; }
 .zeiten dd { margin: 0; font-family: var(--marke); font-variant-numeric: tabular-nums; }
 .ort-stand { margin: var(--a2) 0 0; }
 .ort .wahl { margin-top: auto; padding-top: var(--a3); }
+
+/* ── Welcher Salon liegt näher? ───────────────────────────────────────
+   Ein stiller Knopf über den Karten; der nähere Salon bekommt ein
+   Schild und einen Goldfaden um die Karte, beide die Entfernung. */
+.finder {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem;
+  margin: calc(-1 * var(--a3)) 0 var(--a4);
+}
+.finder-knopf { gap: .6rem; }
+.finder-knopf::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  border: 1.5px solid var(--gold-tief);
+  box-shadow: 0 0 0 3px oklch(72% .095 80 / .3);
+}
+.finder-knopf:disabled { opacity: .6; cursor: progress; }
+.finder-text { margin: 0; max-width: 32rem; font-size: .9rem; color: var(--tinte-still); }
+.ort-naeher {
+  align-self: flex-start;
+  margin: 0 0 .8rem; padding: .45rem .8rem;
+  border-radius: 999px;
+  background: var(--tinte); color: var(--papier);
+  font: 500 var(--t-mini)/1 var(--marke); letter-spacing: .18em; text-transform: uppercase;
+}
+.ort-weg {
+  margin: .7rem 0 0;
+  font: 500 .9rem/1.3 var(--marke); letter-spacing: .04em;
+  color: var(--gold-schrift);
+}
+.ort-naeher[hidden], .ort-weg[hidden] { display: none; }
+.ort.ist-naeher { border-color: var(--gold-tief); box-shadow: 0 0 0 1px var(--gold-tief), 0 30px 60px -45px oklch(25% .03 60 / .35); }
 
 /* ═══ Fuss ════════════════════════════════════════════════════════════ */
 

@@ -107,8 +107,8 @@
              alt="Salon Pasing: schwarze Kroko-Sessel vor goldgerahmten Spiegeln, hinten der Waschplatz"
              width="900" height="1200" fetchpriority="high" decoding="async">
         <img class="spiegel-bild spiegel-bild-grosshadern" src="bilder/spiegel-grosshadern.webp"
-             alt="Salon Gro&szlig;hadern: schwarze Sessel auf Holzboden, Blick zum Eingang an der W&uuml;rmtalstra&szlig;e"
-             width="767" height="1023" loading="lazy" decoding="async">
+             alt="Salon Gro&szlig;hadern: schwarze Sessel auf dunklem Holzboden, hinten die Waschpl&auml;tze vor der Fensterfront"
+             width="766" height="1022" loading="lazy" decoding="async">
         <span class="spiegel-licht" aria-hidden="true"></span>
       </div>
     </div>
@@ -169,18 +169,18 @@
       <li class="bild bild-breit"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-raum.webp" aria-label="Pasing, der Salon mit den goldenen Spiegeln, gro&szlig; ansehen">
         <img src="bilder/salon-pasing-raum-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
         <p>Pasing &middot; der Salon</p></li>
-      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-waschplatz.webp" aria-label="Pasing, der Waschplatz, gro&szlig; ansehen">
-        <img src="bilder/salon-pasing-waschplatz-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
-        <p>Pasing &middot; Waschplatz</p></li>
       <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-grosshadern-raum.webp" aria-label="Gro&szlig;hadern, der Salon, gro&szlig; ansehen">
         <img src="bilder/salon-grosshadern-raum-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
         <p>Gro&szlig;hadern &middot; der Salon</p></li>
-      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-spiegel.webp" aria-label="Pasing, Spiegelreihe, gro&szlig; ansehen">
-        <img src="bilder/salon-pasing-spiegel-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
-        <p>Pasing &middot; Spiegelreihe</p></li>
       <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-kroko.webp" aria-label="Pasing, Kroko-Leder am Waschplatz, gro&szlig; ansehen">
         <img src="bilder/salon-pasing-kroko-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
         <p>Pasing &middot; Kroko-Leder</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-waschplatz.webp" aria-label="Pasing, der Waschplatz, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-waschplatz-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; Waschplatz</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-spiegel.webp" aria-label="Pasing, Spiegelreihe, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-spiegel-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; Spiegelreihe</p></li>
       <li class="bild bild-breit"><button type="button" class="bild-knopf" data-gross="bilder/salon-grosshadern-eingang.webp" aria-label="Gro&szlig;hadern, Blick zum Eingang, gro&szlig; ansehen">
         <img src="bilder/salon-grosshadern-eingang-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
         <p>Gro&szlig;hadern &middot; Eingang</p></li>
@@ -244,7 +244,9 @@
 
 <!-- ══ Standorte ═════════════════════════════════════════════════════════
      Zwei Salons, zwei Karten — jede mit Foto, Anschrift, Nummer zum
-     Antippen, Öffnungszeiten, Live-Stand und dem Weg zu Planity.     -->
+     Antippen, Öffnungszeiten, Live-Stand und dem Weg zu Planity. Der
+     Finder misst auf Wunsch die Entfernung zu beiden Salons (neu.js);
+     der Standort verlässt den Browser nicht.                          -->
 <section class="kontakt" id="standorte" aria-labelledby="standorte-titel">
   <div class="mitte">
     <div class="kopfzeile">
@@ -256,13 +258,19 @@
         der Ihnen n&auml;her liegt.
       </p>
     </div>
+    <div class="finder">
+      <button type="button" class="knopf-still finder-knopf" id="finder">Welcher Salon liegt n&auml;her?</button>
+      <p class="finder-text" id="finder-text" aria-live="polite">Ihr Standort wird nur in Ihrem Browser verrechnet und nirgends gespeichert.</p>
+    </div>
     <div class="orte">
-      <article class="ort" aria-labelledby="ort-pasing">
+      <article class="ort" id="salon-pasing" aria-labelledby="ort-pasing">
         <img class="ort-bild" src="bilder/salon-pasing-tiefe-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async">
         <div class="ort-inhalt">
+          <p class="ort-naeher" data-ort="pasing" hidden>N&auml;her an Ihnen</p>
           <h3 id="ort-pasing">Pasing</h3>
           <address class="anschrift">Irmonherstra&szlig;e&nbsp;7, 81241&nbsp;M&uuml;nchen</address>
           <a class="rufnummer" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
+          <p class="ort-weg" data-ort="pasing" hidden></p>
           <dl class="zeiten"><div><dt>Montag</dt><dd>geschlossen</dd></div><div><dt>Dienstag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
           <p class="ort-stand"><span class="stand" data-ort="pasing"></span></p>
           <div class="wahl">
@@ -271,12 +279,14 @@
           </div>
         </div>
       </article>
-      <article class="ort" aria-labelledby="ort-grosshadern">
+      <article class="ort" id="salon-grosshadern" aria-labelledby="ort-grosshadern">
         <img class="ort-bild" src="bilder/salon-grosshadern-raum-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async">
         <div class="ort-inhalt">
+          <p class="ort-naeher" data-ort="grosshadern" hidden>N&auml;her an Ihnen</p>
           <h3 id="ort-grosshadern">Gro&szlig;hadern</h3>
           <address class="anschrift">W&uuml;rmtalstra&szlig;e&nbsp;119, 81375&nbsp;M&uuml;nchen</address>
           <a class="rufnummer" href="tel:+498978597770">089&nbsp;785&nbsp;977&nbsp;70</a>
+          <p class="ort-weg" data-ort="grosshadern" hidden></p>
           <dl class="zeiten"><div><dt>Montag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
           <p class="ort-stand"><span class="stand" data-ort="grosshadern"></span></p>
           <div class="wahl">

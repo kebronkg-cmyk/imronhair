@@ -338,3 +338,53 @@
   }, { rootMargin: '0px 0px -8% 0px' });
   for (const el of stuecke) beob.observe(el);
 })();
+
+/* ── Welcher Salon liegt näher? ─────────────────────────────────────────
+   Auf Knopfdruck fragt der Browser nach dem Standort; die Entfernung zu
+   beiden Salons wird hier gerechnet (Luftlinie) und nirgends hin
+   geschickt. Der nähere Salon bekommt ein Schild, und die Seite fährt
+   zu ihm. Koordinaten: OpenStreetMap, auf die Hausnummer genau. */
+(function () {
+  const knopf = document.getElementById('finder');
+  const meldung = document.getElementById('finder-text');
+  if (!knopf || !meldung) return;
+  if (!('geolocation' in navigator)) { knopf.parentElement.hidden = true; return; }
+  const SALONS = {
+    pasing:      { name: 'Pasing',     lat: 48.1485620, lon: 11.4591604 },
+    grosshadern: { name: 'Großhadern', lat: 48.1152757, lon: 11.4776080 },
+  };
+  const km = (a, b) => {
+    const r = Math.PI / 180, R = 6371;
+    const dLat = (b.lat - a.lat) * r, dLon = (b.lon - a.lon) * r;
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  };
+  const schoen = (d) => d < 1 ? Math.round(d * 1000 / 50) * 50 + ' m' : d.toFixed(1).replace('.', ',') + ' km';
+
+  knopf.addEventListener('click', () => {
+    knopf.disabled = true;
+    meldung.textContent = 'Einen Moment — der Browser fragt nach Ihrem Standort …';
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const ich = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+      const wege = Object.entries(SALONS).map(([ort, s]) => [ort, km(ich, s)]).sort((a, b) => a[1] - b[1]);
+      const erster = wege[0][0];
+      for (const [ort, d] of wege) {
+        const weg = document.querySelector('.ort-weg[data-ort="' + ort + '"]');
+        if (weg) { weg.textContent = schoen(d) + ' Luftlinie von Ihnen'; weg.hidden = false; }
+        const schild = document.querySelector('.ort-naeher[data-ort="' + ort + '"]');
+        if (schild) schild.hidden = ort !== erster;
+        const karte = document.getElementById('salon-' + ort);
+        if (karte) karte.classList.toggle('ist-naeher', ort === erster);
+      }
+      meldung.textContent = SALONS[erster].name + ' liegt näher — ' + schoen(wege[0][1]) + ' Luftlinie.';
+      knopf.disabled = false;
+      const ziel = document.getElementById('salon-' + erster);
+      if (ziel) ziel.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    }, (fehler) => {
+      knopf.disabled = false;
+      meldung.textContent = fehler.code === 1
+        ? 'Kein Standort freigegeben — kein Problem: Pasing liegt an der Irmonherstraße, Großhadern an der Würmtalstraße.'
+        : 'Der Standort liess sich gerade nicht bestimmen. Bitte später noch einmal versuchen.';
+    }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+  });
+})();
