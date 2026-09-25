@@ -1287,7 +1287,9 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
   .pille:hover { background: oklch(84% .1 84 / .08); }
 }
 /* Der Hauptknopf ist schwarz wie das Schild; das Licht läuft als Kante. */
-.knopf { border-color: var(--knopf-kante); }
+/* Nur der Hauptknopf leuchtet — wie die Schleife, mit engem Schein.
+   Die stillen Knöpfe daneben behalten die dunkle Linie. */
+.knopf { border-color: var(--knopf-kante); box-shadow: 0 0 10px -1px var(--led-schein); }
 .knopf::after { display: none; }
 @media (hover: hover) and (pointer: fine) {
   .knopf:hover { background: oklch(22% .03 70); }
