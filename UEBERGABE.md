@@ -111,16 +111,27 @@ Inhaberin. Die Hauptadresse bleibt die Spiegel-Fassung.
 - **Schrift:** Jost 300 gesperrt für Überschriften und Wortmarke
   (Schaufensterbuchstaben), Sacramento für die zwei Handschriftzeilen,
   Mulish für den Lauftext. Cormorant ist hier entfernt.
-- **Die Schleife** liegt als Inline-SVG oben links am Spiegel (Satin,
-  Knoten, LED-Kante, die sich beim Laden entlangzieht); am Handy eine
-  kleine Schleife über der Wortmarke.
+- **Die Schleife** liegt als Inline-SVG oben links am Spiegel: ein
+  flaches schwarzes Leuchtschild wie an der Fassade (Bandknoten,
+  umgeschlagene Schlaufen, Bänder mit V-Schnitt), das Licht nur als Kante,
+  die sich beim Laden einmal entlangzieht. Jedes Band trägt seine Kante
+  selbst, damit das vordere die des hinteren verdeckt.
+- **Überschriften** wie das Schild: ein Wort in gesperrten Versalien
+  (`.schild`), darunter eine Handschriftzeile (`.schild-zeile`).
+- **Knöpfe** schwarz mit LED-Kante (`--knopf-grund`, `--knopf-kante`),
+  nie gefüllt gold.
+- **Travertin** hinter den Stimmen ist echter Stein aus der Fassade der
+  Vorlage (`schleife/bilder/travertin.webp`, nahtlos), hell überlegt.
 - **Extensions** als eigener Abschnitt `#extensions` direkt nach dem
   Auftakt, mit fünf Werten aus der Vorlage (ohne Zahlen).
 - **Das Farbregal** (`form.regal`): zehn Haarstränge an Klammern unter
   einer LED-Leiste, dazu Länge und Wunsch; daraus entsteht ein Satz, der
   kopiert werden kann, und die Beratung bei Planity in beiden Salons.
   Ohne Skript bleibt es eine Auswahl mit Buchungsknöpfen.
-- `recherche/preise.py` schreibt jetzt auch `schleife/`.
+- `recherche/preise.py` schreibt jetzt auch `schleife/`. Stückpreise
+  („pro Strähne“) zählen nicht mehr als Einstieg — die Übersicht zeigte
+  bei Haarverlängerung „ab 7 €“, jetzt „ab 50 €“ (die Beratung), auch in
+  der Hauptfassung und unter /alt/.
 - Detektor: 5 Meldungen, alle zum LED-Schein (gewollt, er ist das Licht
   aus der Vorlage). Kontrast über der Grenze, keine Überbreite bei 390
   und 360 px, keine Konsolenfehler.

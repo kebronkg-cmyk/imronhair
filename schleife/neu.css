@@ -46,6 +46,7 @@
   --weiss:        oklch(19.5% .012 55);   /* Satin: Tafeln und Karten */
   --travertin:      oklch(88% .022 78);
   --travertin-tief: oklch(80% .026 74);
+  --travertin-stein: url("bilder/travertin.webp");
 
   /* ── Schrift: Creme, drei Stufen ────────────────────────────────── */
   --tinte:        oklch(94% .014 85);
@@ -72,8 +73,10 @@
   --linie-gold:  oklch(84% .1 84 / .5);
 
   /* Der Hauptknopf leuchtet wie die Kante — die Schrift darauf ist Nacht. */
-  --knopf-grund:  var(--gold);
-  --knopf-schrift: oklch(15% .01 55);
+  /* Knöpfe wie das Schild: schwarzer Grund, das Licht nur als Kante. */
+  --knopf-grund:  oklch(10.5% .006 55);
+  --knopf-schrift: var(--tinte);
+  --knopf-kante:  oklch(89% .095 86);
 
   /* Stern für Bewertungen, als Maske — die Farbe kommt aus dem Grund. */
   --stern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 20'%3E%3Cpath d='M11 1l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L11 14.7l-5.66 3.6 1.66-6.46L1.88 7.58l6.65-.4z'/%3E%3C/svg%3E");
@@ -1283,11 +1286,11 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
   .knopf-still:hover { background: oklch(84% .1 84 / .08); }
   .pille:hover { background: oklch(84% .1 84 / .08); }
 }
-/* Der Hauptknopf ist die zweite Stelle, an der das Licht brennt. */
-.knopf { box-shadow: 0 0 0 1px oklch(92% .08 88 / .5) inset; }
+/* Der Hauptknopf ist schwarz wie das Schild; das Licht läuft als Kante. */
+.knopf { border-color: var(--knopf-kante); }
 .knopf::after { display: none; }
 @media (hover: hover) and (pointer: fine) {
-  .knopf:hover { background: oklch(89% .09 86); }
+  .knopf:hover { background: oklch(22% .03 70); }
 }
 
 .leiste { background: oklch(14.5% .008 55 / .82); }
@@ -1348,40 +1351,33 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
     inset 0 0 22px oklch(84% .1 84 / .28);
 }
 .spiegel-wahl { background: var(--weiss); border-color: var(--linie-gold); }
-.spiegel-wahl button { color: var(--tinte-leise); }
-.spiegel-wahl button[aria-pressed="true"] { background: var(--gold); color: var(--knopf-schrift); }
+.spiegel-wahl button { color: var(--tinte-leise); border: 1px solid transparent; }
+.spiegel-wahl button[aria-pressed="true"] { background: var(--knopf-grund); color: var(--tinte); border-color: var(--knopf-kante); }
 
 .schleife {
   position: absolute; z-index: 6;
-  width: 50%; left: -21%; top: -11%;
+  width: 56%; left: -24%; top: -12%;
   overflow: visible;
   rotate: -9deg;
   filter: drop-shadow(0 22px 26px oklch(0% 0 0 / .65));
   pointer-events: none;
 }
-.schleife-schein { opacity: .55; }
+/* Flaches schwarzes Schild, das Licht nur an der Kante — wie die Schleife
+   an der Fassade. Jedes Band trägt seine Kante selbst, damit das vordere
+   die des hinteren verdeckt. */
+.schleife .led { fill: none; stroke: url(#sch-led); stroke-width: 1.6; stroke-linejoin: round; }
+.schleife .schein { fill: none; stroke: #f3cf86; stroke-width: 5; filter: url(#sch-glut); opacity: .55; }
 @media (prefers-reduced-motion: no-preference) {
   /* Beim Laden zieht sich das Licht einmal um die Schleife, dann glimmt
      der Schein auf. Danach steht sie still. */
-  .schleife-led use { stroke-dasharray: 1; stroke-dashoffset: 1; animation: led-zieht 1.8s var(--kurve) .5s forwards; }
-  .schleife-schein { opacity: 0; animation: schein-an 1.2s var(--kurve) 1.6s forwards; }
+  .schleife .led { stroke-dasharray: 1; stroke-dashoffset: 1; animation: led-zieht 1.8s var(--kurve) .5s forwards; }
+  .schleife .schein { opacity: 0; animation: schein-an 1.2s var(--kurve) 1.6s forwards; }
   .schleife { animation: schleife-da 1s var(--kurve) .2s both; }
 }
 @keyframes led-zieht { to { stroke-dashoffset: 0; } }
 @keyframes schein-an { to { opacity: .55; } }
 @keyframes schleife-da { from { opacity: 0; translate: -10px -14px; } to { opacity: 1; translate: 0 0; } }
 @media (max-width: 59.99rem) { .schleife { width: 40%; left: -3%; top: -9%; } }
-/* Am Handy steht der Spiegel unter dem Satz — damit die Schleife trotzdem
-   im ersten Bildschirm ist, hängt eine kleine über dem Namen. */
-.schleife-klein { display: none; }
-@media (max-width: 59.99rem) {
-  .schleife-klein {
-    display: block; width: 74px; height: auto; margin: 0 0 .6rem -.4rem;
-    rotate: -8deg; overflow: visible;
-    filter: drop-shadow(0 10px 12px oklch(0% 0 0 / .6));
-  }
-  .schleife-k-schein { opacity: .5; }
-}
 
 /* ── Überschriften ───────────────────────────────────────────────────── */
 .gross { font-weight: 300; letter-spacing: -.01em; }
@@ -1413,6 +1409,12 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
 .ext-bau { display: grid; gap: var(--a5); align-items: start; }
 @media (min-width: 64rem) { .ext-bau { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(3rem, 6vw, 6rem); } }
 .ext-spruch { margin-top: var(--a3); }
+/* Zweite Stimme unter dem Schild: die Handschrift aus dem Fenster, kleiner. */
+.schild-zeile { margin-top: var(--a3); font-size: clamp(1.9rem, 1.5rem + 1.2vw, 2.6rem); }
+.schild-zeile + .lauf { margin-top: var(--a2); }
+.stimmen .schild { color: oklch(20% .012 60); }
+.stimmen .schild::after { background: linear-gradient(90deg, oklch(46% .09 66), transparent); }
+.stimmen .schild-zeile { color: oklch(40% .085 64); }
 .ext-kopf .lauf { color: var(--tinte-leise); }
 
 /* Wie die Folie im Fenster: Kreis mit Zeichen, daneben Versalzeile. */
@@ -1465,7 +1467,8 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
 }
 .strang {
   position: relative; display: block;
-  height: clamp(9.5rem, 16vw, 13.5rem);
+  /* Lang hängende Bündel wie im Fenster: gut sechsmal so hoch wie breit. */
+  aspect-ratio: 1 / 6.2;
   cursor: pointer;
   transform-origin: 50% 0;
   transition: transform .6s var(--kurve), filter .4s var(--kurve);
@@ -1490,10 +1493,12 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
     linear-gradient(100deg, transparent 28%, oklch(100% 0 0 / .2) 44%, transparent 58%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='400'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55 .006' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 -.38'/%3E%3C/filter%3E%3Crect width='80' height='400' filter='url(%23h)'/%3E%3C/svg%3E") 0 0 / 100% 100%,
     linear-gradient(180deg, var(--wurzel), var(--ton) 42%, var(--spitze));
-  clip-path: polygon(5% 0, 95% 0, 99% 52%, 91% 86%, 70% 100%, 30% 100%, 9% 86%, 1% 52%);
+  /* Weich auslaufende Spitze statt Schnittkante: Maske mit Verjüngung und Verlauf. */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 80 39 140 35 182C31 214 25 232 20 240C15 231 9 213 5 182C1 140 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 80 39 140 35 182C31 214 25 232 20 240C15 231 9 213 5 182C1 140 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
 }
-.strang:nth-child(3n+2)::after { clip-path: polygon(5% 0, 95% 0, 98% 60%, 88% 92%, 62% 100%, 36% 97%, 10% 88%, 2% 56%); }
-.strang:nth-child(3n)::after   { clip-path: polygon(5% 0, 95% 0, 99% 48%, 93% 82%, 74% 96%, 40% 100%, 12% 90%, 1% 58%); }
+.strang:nth-child(3n+2)::after { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 90 38 150 33 190C29 216 26 230 24 240C19 234 12 220 8 196C3 160 0 96 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 90 38 150 33 190C29 216 26 230 24 240C19 234 12 220 8 196C3 160 0 96 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); }
+.strang:nth-child(3n)::after   { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 84 39 146 36 186C33 212 22 230 16 238C13 226 8 206 5 180C1 138 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 84 39 146 36 186C33 212 22 230 16 238C13 226 8 206 5 180C1 138 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); }
 @media (hover: hover) and (pointer: fine) {
   .strang:hover { transform: rotate(1.6deg); }
   .strang:nth-child(even):hover { transform: rotate(-1.6deg); }
@@ -1533,10 +1538,10 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
 .regal-still { margin: 1rem 0 0; font-size: .85rem; color: var(--tinte-still); }
 
 @media (max-width: 40rem) {
-  /* Am Handy hängen die zehn Strähnen in zwei Reihen zu fünf. */
-  .regal-reihe { grid-template-columns: repeat(5, minmax(0, 1fr)); row-gap: 1.4rem; }
+  /* Am Handy bleiben alle zehn in einer Reihe — schmaler, aber lang. */
+  .regal-reihe { gap: .22rem; }
   .regal-nische { padding-top: 1.4rem; }
-  .strang { height: 8.5rem; }
+  .strang::before { left: 12%; right: 12%; }
 }
 
 /* ═══ Leistungen, Salons ═════════════════════════════════════════════ */
@@ -1552,12 +1557,14 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
 .stimmen {
   background-color: var(--travertin);
   color: oklch(22% .012 60);
-  --stimme-still: oklch(38% .02 65);
+  --stimme-still: oklch(29% .018 62);
 }
 .stimmen::before {
+  /* Echter Stein aus der Fassade der Vorlage, hell überlegt, damit die
+     Schrift ihre Reserve behält. */
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .09' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .36 0 0 0 0 .28 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23t)'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, oklch(91% .02 80), var(--travertin) 40%, var(--travertin-tief));
+    linear-gradient(180deg, oklch(93% .018 80 / .76), oklch(89% .022 78 / .7) 40%, oklch(85% .024 76 / .66)),
+    var(--travertin-stein) 0 0 / 350px 190px;
   opacity: 1;
 }
 .stimmen .gross { color: oklch(20% .012 60); }
@@ -1568,11 +1575,11 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
 .stimmen .note-sterne, .stimmen .stimme-sterne {
   background: linear-gradient(90deg, oklch(56% .11 70) var(--voll, 100%), oklch(30% .02 60 / .18) var(--voll, 100%));
 }
-.stimmen .stimme { border-color: oklch(30% .02 60 / .16); background: oklch(97% .01 80 / .45); }
+.stimmen .stimme { border-color: oklch(30% .02 60 / .16); background: oklch(95% .012 80 / .8); }
 .stimmen .stimme-gross { background: none; }
 .stimmen .stimme blockquote p { color: oklch(24% .012 60); }
 .stimmen .stimme-gross blockquote p { color: oklch(18% .012 60); font-family: var(--marke); font-style: italic; font-weight: 300; }
-.stimmen .stimme-wer { color: oklch(44% .09 66); }
+.stimmen .stimme-wer { color: oklch(34% .08 62); }
 .stimmen .knopf-still { color: oklch(20% .012 60); border-color: oklch(30% .02 60 / .35); }
 @media (hover: hover) and (pointer: fine) {
   .stimmen .knopf-still:hover { background: oklch(100% 0 0 / .3); border-color: oklch(30% .02 60 / .7); }
@@ -1580,13 +1587,13 @@ html { scrollbar-color: oklch(38% .03 70) var(--papier); }
 .stimmen :focus-visible { outline-color: oklch(30% .02 60); }
 
 /* ═══ Standorte ═════════════════════════════════════════════════════ */
-.ort-naeher { background: var(--gold); color: var(--knopf-schrift); }
+.ort-naeher { background: var(--knopf-grund); color: var(--tinte); border: 1px solid var(--knopf-kante); }
 
 /* ═══ Preisliste ════════════════════════════════════════════════════ */
 .wegweiser { background: oklch(14.5% .008 55 / .92); }
 @media (hover: hover) and (pointer: fine) {
   .wegweiser a:not([aria-current="true"]):hover { background: oklch(84% .1 84 / .1); }
 }
-.salonwahl input:checked + label { background: var(--gold); color: var(--knopf-schrift); border-color: var(--gold); }
-.salonwahl input:checked + label .salonwahl-ort { color: oklch(28% .02 60); }
-.salonwahl input:checked + label::before { border-color: var(--knopf-schrift); box-shadow: inset 0 0 0 3px var(--gold), inset 0 0 0 10px var(--knopf-schrift); }
+.salonwahl input:checked + label { background: var(--knopf-grund); color: var(--tinte); border-color: var(--knopf-kante); }
+.salonwahl input:checked + label .salonwahl-ort { color: var(--tinte-leise); }
+.salonwahl input:checked + label::before { border-color: var(--knopf-kante); box-shadow: inset 0 0 0 3px var(--knopf-grund), inset 0 0 0 10px var(--gold); }

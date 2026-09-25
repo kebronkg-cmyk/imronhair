@@ -128,3 +128,9 @@ stellt Extensions nach vorn. Vor dem Umstellen auf die Hauptadresse:
 - **Tape-Technik und Bondings** stehen bei Planity nur für Pasing — bitte
   bestätigen, dass Großhadern beides ebenso anbietet.
 - **Beratung 50 €** stammt aus Planity (beide Salons).
+- **„Premium-Qualität“** steht wörtlich auf ihrem Schild und deshalb auch
+  auf der Seite. Wenn es dafür keinen Beleg gibt (Herkunft, Hersteller),
+  lieber streichen.
+- **Ein Foto einer Arbeit** — lange Extensions, von hinten, wie das Plakat
+  im Fenster — gehört in den Extensions-Abschnitt. Die Seite zeigt bisher
+  nur leere Salonräume; ein echtes Ergebnisfoto wäre der stärkste Beweis.

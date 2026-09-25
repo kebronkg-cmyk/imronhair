@@ -359,8 +359,9 @@ def wegweiser_html(salon, gruppen):
 
 
 def ab_preis(posten):
-    # Zusatzleistungen (Heiße Schere, Glossing als Zusatz) sind kein Einstieg.
-    zahlen = [s['preis'][2] for p in posten if not (p['zusatz'] or '').startswith('als Zusatz')
+    # Zusatzleistungen (Heiße Schere, Glossing als Zusatz) und Stückpreise
+    # (Extensions pro Strähne) sind kein Einstieg.
+    zahlen = [s['preis'][2] for p in posten if not (p['zusatz'] or '').startswith(('als Zusatz', 'pro '))
               for s in p['stufen'] if s['preis'][2] is not None]
     return euro(min(zahlen)) if zahlen else None
 
