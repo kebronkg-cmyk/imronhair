@@ -384,6 +384,87 @@ def uebersicht_html(pas, gro):
     return '<ol class="angebote">' + ''.join(zeilen) + '</ol>'
 
 
+
+# ── Fassung /fenster/: Karte statt Kästen ──────────────────────────────
+# Jede Leistung ist eine Zeile: Name und Angaben links, Preis rechts. Die
+# Längen tragen `data-l`, damit die Längenwahl oben (Radioknöpfe, :has())
+# nur den passenden Preis stehen lässt. Gruppen sind <details>, von denen
+# immer nur eine offen ist (name="gruppe").
+LAENGEN = {'kurz': 'kurz', 'mittel': 'mittel', 'lang': 'lang', 'kurz–mittel': 'kurz mittel'}
+PLANITY = {'pasing': 'https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen',
+           'grosshadern': 'https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen'}
+ORT = {'pasing': 'Pasing', 'grosshadern': 'Großhadern'}
+
+
+def zeile_html(p):
+    stufen = p['stufen']
+    dauern = sorted({s['dauer'] for s in stufen if s['dauer']})
+    meta = []
+    if p['zusatz']:
+        meta.append(E(p['zusatz']))
+    if dauern:
+        meta.append(dauer(dauern[0]) if len(dauern) == 1 else f'{dauer(dauern[0])} – {dauer(dauern[-1])}')
+    if len(stufen) > 1 and all(s['preis'][2] is None for s in stufen) and len({s['preis'][0] for s in stufen}) == 1:
+        stufen = [dict(stufen[0], laenge=None)]
+    abgedeckt = set()
+    zellen = []
+    for s in stufen:
+        text, ab, zahl = s['preis']
+        wert = (f'<span class="ab">ab</span> {text}' if ab else text)
+        klasse = '' if zahl is not None else ' class="wort"'
+        l = LAENGEN.get(s['laenge'])
+        if l:
+            abgedeckt.update(l.split())
+            zellen.append(f'<div data-l="{l}"><dt>{E(s["laenge"])}</dt><dd{klasse}>{wert}</dd></div>')
+        elif s['laenge']:
+            zellen.append(f'<div data-l="immer"><dt>{E(s["laenge"])}</dt><dd{klasse}>{wert}</dd></div>')
+        else:
+            zellen.append(f'<div data-l="immer"><dt class="nurlesen">Preis</dt><dd{klasse}>{wert}</dd></div>')
+    marke = '<span class="zeile-marke">telefonisch buchen</span>' if p.get('telefonisch') else ''
+    return (f'<li class="zeile" data-hat="{" ".join(sorted(abgedeckt))}">'
+            f'<div class="zeile-text"><h4 class="zeile-name">{E(p["name"])}</h4>'
+            + (f'<p class="zeile-meta">{" · ".join(meta)}</p>' if meta else '') + marke + '</div>'
+            f'<dl class="zeile-preise">{"".join(zellen)}</dl></li>')
+
+
+def karte_html(salon, gruppen):
+    teile = []
+    for i, (gid, titel, lauf) in enumerate(GRUPPEN, 1):
+        posten = gruppen[gid]
+        if not posten:
+            continue
+        a = ab_preis(posten)
+        n = len(posten)
+        teile.append(
+            f'<details class="gruppe" name="gruppe-{salon}" id="{salon}-{gid}">'
+            f'<summary><span class="gruppe-nr" aria-hidden="true">{i:02d}</span>'
+            f'<h3 class="gruppe-titel">{E(titel)}</h3><span class="gruppe-lauf">{E(lauf)}</span>'
+            f'<span class="gruppe-ab">{"ab " + a if a else "auf Anfrage"}<small>{n} {"Leistung" if n == 1 else "Leistungen"}</small></span></summary>'
+            f'<ul class="zeilen">{"".join(zeile_html(p) for p in posten)}</ul>'
+            f'<p class="gruppe-schluss"><a class="knopf-still" href="{PLANITY[salon]}" target="_blank" rel="noopener">'
+            f'{E(titel)} in {ORT[salon]} buchen</a></p></details>')
+    return '\n'.join(teile)
+
+
+def etiketten_html(pas, gro):
+    """Preisvorschau als Etiketten an der Stange: je Gruppe ein Etikett mit
+    dem Einstiegspreis beider Salons; der Umschalter darüber zeigt einen."""
+    teile = []
+    for i, (gid, titel, _) in enumerate(GRUPPEN, 1):
+        def wert(g):
+            a = ab_preis(g[gid])
+            return f'ab {a}' if a else ('auf Anfrage' if g[gid] else '—')
+        teile.append(
+            f'<li><a class="etikett" href="leistungen.html?salon=pasing#{gid}" data-gruppe="{gid}">'
+            f'<span class="etikett-loch" aria-hidden="true"></span>'
+            f'<span class="etikett-nr" aria-hidden="true">{i:02d}</span>'
+            f'<span class="etikett-name">{E(titel)}</span>'
+            f'<span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>{wert(pas)}</span>'
+            f'<span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>{wert(gro)}</span>'
+            f'</a></li>')
+    return '<ul class="etiketten">' + ''.join(teile) + '</ul>'
+
+
 def einsetzen(datei, marke, inhalt):
     pfad = WURZEL / datei
     text = pfad.read_text()
@@ -412,5 +493,11 @@ if __name__ == '__main__':
                           ('weg-pasing', wegweiser_html('pasing', pas)), ('weg-grosshadern', wegweiser_html('grosshadern', gro))]:
         einsetzen('schleife/leistungen.html', marke, inhalt)
     einsetzen('schleife/index.html', 'uebersicht', uebersicht_html(pas, gro))
+    # /fenster/: Karte mit Längenwahl, Vorschau als Etiketten (Handy) und
+    # die bisherige Übersicht (ab Tablet).
+    einsetzen('fenster/leistungen.html', 'pasing', karte_html('pasing', pas))
+    einsetzen('fenster/leistungen.html', 'grosshadern', karte_html('grosshadern', gro))
+    einsetzen('fenster/index.html', 'uebersicht', uebersicht_html(pas, gro))
+    einsetzen('fenster/index.html', 'etiketten', etiketten_html(pas, gro))
     n = sum(len(v) for v in pas.values()) + sum(len(v) for v in gro.values())
     print(f'{n} Posten gesetzt, Stand {DATEN["pasing"]["gelesen"]}')

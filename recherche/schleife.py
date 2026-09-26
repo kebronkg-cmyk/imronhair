@@ -6,12 +6,13 @@ Schwarzer Satin mit Volumen: jede Fläche trägt einen eigenen Verlauf
 die LED läuft als Kante um jedes Teil. Gezeichnet wird von hinten nach
 vorn, damit das vordere Band die Kante des hinteren verdeckt.
 
-    python3 recherche/schleife.py     # setzt die Schleife in schleife/*.html
+    python3 recherche/schleife.py     # setzt die Schleife in schleife/ und fenster/
 
 Einsatzstellen (Marken im HTML):
     <!-- schleife:gross -->   Auftakt, am Spiegel
     <!-- schleife:vorhang --> Ladebildschirm
     <!-- schleife:zeichen --> Logo in der Leiste (ohne Schein, ohne Glanz)
+    <!-- schleife:fenster --> /fenster/: Ecke des Handy-Schaufensters
 """
 import re
 import sys
@@ -139,19 +140,24 @@ if __name__ == '__main__':
             '<style>svg{width:560px;overflow:visible}.led{fill:none;stroke-width:2.6;stroke-linecap:round}.led-hauch{stroke-width:1.2;opacity:.28}.schein{fill:none;stroke:#f3cf86;stroke-width:9;opacity:.7}.wand{opacity:.22}</style>'
             + schleife('v', 'x') + '</body>')
         sys.exit()
-    for seite in ('index.html', 'leistungen.html', 'impressum.html', 'datenschutz.html'):
-        text = (WURZEL / 'schleife' / seite).read_text()
-        if '<!-- schleife:zeichen -->' in text:
-            einsetzen(f'schleife/{seite}', 'zeichen', schleife('sz', 'zeichen-schleife', schein=False, glanz=False, ausschnitt=True))
-        if '<!-- schleife:vorhang -->' in text:
-            einsetzen(f'schleife/{seite}', 'vorhang', schleife('sv', 'vorhang-schleife'))
-        if '<!-- schleife:gross -->' in text:
-            einsetzen(f'schleife/{seite}', 'gross', schleife('sg', 'schleife'))
+    for ordner in ('schleife', 'fenster'):
+        for seite in ('index.html', 'leistungen.html', 'impressum.html', 'datenschutz.html'):
+            text = (WURZEL / ordner / seite).read_text()
+            if '<!-- schleife:zeichen -->' in text:
+                einsetzen(f'{ordner}/{seite}', 'zeichen', schleife('sz', 'zeichen-schleife', schein=False, glanz=False, ausschnitt=True))
+            if '<!-- schleife:vorhang -->' in text:
+                einsetzen(f'{ordner}/{seite}', 'vorhang', schleife('sv', 'vorhang-schleife'))
+            if '<!-- schleife:gross -->' in text:
+                einsetzen(f'{ordner}/{seite}', 'gross', schleife('sg', 'schleife'))
+            # /fenster/: die Schleife auf der Ecke des Handy-Schaufensters
+            if '<!-- schleife:fenster -->' in text:
+                einsetzen(f'{ordner}/{seite}', 'fenster', schleife('sf2', 'fenster-schleife'))
     # Eigenständig als Favicon: dunkler Grund, damit sie im hellen Tab steht.
     zeichen = schleife('sf', 'x', schein=False, glanz=False, ausschnitt=True)
     zeichen = zeichen.replace('<svg class="x" ', '<svg xmlns="http://www.w3.org/2000/svg" ', 1)
     zeichen = zeichen.replace('<defs>', '<style>.led{fill:none;stroke-width:14;stroke-linejoin:round}.led-hauch{display:none}</style>'
                               '<rect x="-6" y="-114" width="572" height="572" rx="90" fill="#0d0907"/><defs>', 1)
     zeichen = zeichen.replace('viewBox="-6 -6 572 356"', 'viewBox="-6 -114 572 572"', 1)
-    (WURZEL / 'schleife' / 'logo-schleife.svg').write_text(zeichen + '\n')
+    for ordner in ('schleife', 'fenster'):
+        (WURZEL / ordner / 'logo-schleife.svg').write_text(zeichen + '\n')
     print('Schleife gesetzt')

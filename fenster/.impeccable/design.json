@@ -1,0 +1,620 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-25T21:21:16.684Z",
+  "title": "Design System: Irmonhair — Fassung „Schleife“",
+  "extensions": {
+    "colorMeta": {
+      "papier": {
+        "role": "neutral",
+        "displayName": "Nacht",
+        "canonical": "oklch(14.5% .008 55)",
+        "tonalRamp": [
+          "oklch(15% 0.008 55)",
+          "oklch(25% 0.008 55)",
+          "oklch(35% 0.008 55)",
+          "oklch(45% 0.008 55)",
+          "oklch(55% 0.008 55)",
+          "oklch(65% 0.008 55)",
+          "oklch(80% 0.008 55)",
+          "oklch(95% 0.008 55)"
+        ]
+      },
+      "papier-tief": {
+        "role": "neutral",
+        "displayName": "Nische",
+        "canonical": "oklch(17.5% .01 55)",
+        "tonalRamp": [
+          "oklch(15% 0.01 55)",
+          "oklch(25% 0.01 55)",
+          "oklch(35% 0.01 55)",
+          "oklch(45% 0.01 55)",
+          "oklch(55% 0.01 55)",
+          "oklch(65% 0.01 55)",
+          "oklch(80% 0.01 55)",
+          "oklch(95% 0.01 55)"
+        ]
+      },
+      "weiss": {
+        "role": "neutral",
+        "displayName": "Satin (Kartengrund)",
+        "canonical": "oklch(19.5% .012 55)",
+        "tonalRamp": [
+          "oklch(15% 0.012 55)",
+          "oklch(25% 0.012 55)",
+          "oklch(35% 0.012 55)",
+          "oklch(45% 0.012 55)",
+          "oklch(55% 0.012 55)",
+          "oklch(65% 0.012 55)",
+          "oklch(80% 0.012 55)",
+          "oklch(95% 0.012 55)"
+        ]
+      },
+      "knopf-grund": {
+        "role": "neutral",
+        "displayName": "Schildschwarz",
+        "canonical": "oklch(10.5% .006 55)",
+        "tonalRamp": [
+          "oklch(15% 0.006 55)",
+          "oklch(25% 0.006 55)",
+          "oklch(35% 0.006 55)",
+          "oklch(45% 0.006 55)",
+          "oklch(55% 0.006 55)",
+          "oklch(65% 0.006 55)",
+          "oklch(80% 0.006 55)",
+          "oklch(95% 0.006 55)"
+        ]
+      },
+      "nacht": {
+        "role": "neutral",
+        "displayName": "Tiefe Nacht",
+        "canonical": "oklch(11% .006 55)",
+        "tonalRamp": [
+          "oklch(15% 0.006 55)",
+          "oklch(25% 0.006 55)",
+          "oklch(35% 0.006 55)",
+          "oklch(45% 0.006 55)",
+          "oklch(55% 0.006 55)",
+          "oklch(65% 0.006 55)",
+          "oklch(80% 0.006 55)",
+          "oklch(95% 0.006 55)"
+        ]
+      },
+      "nacht-tief": {
+        "role": "neutral",
+        "displayName": "Tiefste Nacht (Fuss)",
+        "canonical": "oklch(9.5% .005 55)",
+        "tonalRamp": [
+          "oklch(15% 0.005 55)",
+          "oklch(25% 0.005 55)",
+          "oklch(35% 0.005 55)",
+          "oklch(45% 0.005 55)",
+          "oklch(55% 0.005 55)",
+          "oklch(65% 0.005 55)",
+          "oklch(80% 0.005 55)",
+          "oklch(95% 0.005 55)"
+        ]
+      },
+      "tinte": {
+        "role": "neutral",
+        "displayName": "Creme",
+        "canonical": "oklch(94% .014 85)",
+        "tonalRamp": [
+          "oklch(15% 0.014 85)",
+          "oklch(25% 0.014 85)",
+          "oklch(35% 0.014 85)",
+          "oklch(45% 0.014 85)",
+          "oklch(55% 0.014 85)",
+          "oklch(65% 0.014 85)",
+          "oklch(80% 0.014 85)",
+          "oklch(95% 0.014 85)"
+        ]
+      },
+      "tinte-leise": {
+        "role": "neutral",
+        "displayName": "Creme leise",
+        "canonical": "oklch(84% .016 82)",
+        "tonalRamp": [
+          "oklch(15% 0.016 82)",
+          "oklch(25% 0.016 82)",
+          "oklch(35% 0.016 82)",
+          "oklch(45% 0.016 82)",
+          "oklch(55% 0.016 82)",
+          "oklch(65% 0.016 82)",
+          "oklch(80% 0.016 82)",
+          "oklch(95% 0.016 82)"
+        ]
+      },
+      "tinte-still": {
+        "role": "neutral",
+        "displayName": "Creme still",
+        "canonical": "oklch(74% .02 80)",
+        "tonalRamp": [
+          "oklch(15% 0.02 80)",
+          "oklch(25% 0.02 80)",
+          "oklch(35% 0.02 80)",
+          "oklch(45% 0.02 80)",
+          "oklch(55% 0.02 80)",
+          "oklch(65% 0.02 80)",
+          "oklch(80% 0.02 80)",
+          "oklch(95% 0.02 80)"
+        ]
+      },
+      "nacht-schrift": {
+        "role": "neutral",
+        "displayName": "Fuss-Creme",
+        "canonical": "oklch(95% .01 85)",
+        "tonalRamp": [
+          "oklch(15% 0.01 85)",
+          "oklch(25% 0.01 85)",
+          "oklch(35% 0.01 85)",
+          "oklch(45% 0.01 85)",
+          "oklch(55% 0.01 85)",
+          "oklch(65% 0.01 85)",
+          "oklch(80% 0.01 85)",
+          "oklch(95% 0.01 85)"
+        ]
+      },
+      "nacht-still": {
+        "role": "neutral",
+        "displayName": "Fuss-Creme still",
+        "canonical": "oklch(78% .02 80)",
+        "tonalRamp": [
+          "oklch(15% 0.02 80)",
+          "oklch(25% 0.02 80)",
+          "oklch(35% 0.02 80)",
+          "oklch(45% 0.02 80)",
+          "oklch(55% 0.02 80)",
+          "oklch(65% 0.02 80)",
+          "oklch(80% 0.02 80)",
+          "oklch(95% 0.02 80)"
+        ]
+      },
+      "gold": {
+        "role": "primary",
+        "displayName": "LED-Gold",
+        "canonical": "oklch(85% .1 84)",
+        "tonalRamp": [
+          "oklch(15% 0.1 84)",
+          "oklch(25% 0.1 84)",
+          "oklch(35% 0.1 84)",
+          "oklch(45% 0.1 84)",
+          "oklch(55% 0.1 84)",
+          "oklch(65% 0.1 84)",
+          "oklch(80% 0.1 84)",
+          "oklch(95% 0.1 84)"
+        ]
+      },
+      "gold-tief": {
+        "role": "primary",
+        "displayName": "Tiefes Gold",
+        "canonical": "oklch(76% .1 80)",
+        "tonalRamp": [
+          "oklch(15% 0.1 80)",
+          "oklch(25% 0.1 80)",
+          "oklch(35% 0.1 80)",
+          "oklch(45% 0.1 80)",
+          "oklch(55% 0.1 80)",
+          "oklch(65% 0.1 80)",
+          "oklch(80% 0.1 80)",
+          "oklch(95% 0.1 80)"
+        ]
+      },
+      "gold-wort": {
+        "role": "primary",
+        "displayName": "Handschrift-Gold",
+        "canonical": "oklch(86% .09 84)",
+        "tonalRamp": [
+          "oklch(15% 0.09 84)",
+          "oklch(25% 0.09 84)",
+          "oklch(35% 0.09 84)",
+          "oklch(45% 0.09 84)",
+          "oklch(55% 0.09 84)",
+          "oklch(65% 0.09 84)",
+          "oklch(80% 0.09 84)",
+          "oklch(95% 0.09 84)"
+        ]
+      },
+      "gold-schrift": {
+        "role": "primary",
+        "displayName": "Marken-Gold",
+        "canonical": "oklch(83% .095 84)",
+        "tonalRamp": [
+          "oklch(15% 0.095 84)",
+          "oklch(25% 0.095 84)",
+          "oklch(35% 0.095 84)",
+          "oklch(45% 0.095 84)",
+          "oklch(55% 0.095 84)",
+          "oklch(65% 0.095 84)",
+          "oklch(80% 0.095 84)",
+          "oklch(95% 0.095 84)"
+        ]
+      },
+      "gold-hell": {
+        "role": "primary",
+        "displayName": "Helles Gold (Fuss)",
+        "canonical": "oklch(88% .07 88)",
+        "tonalRamp": [
+          "oklch(15% 0.07 88)",
+          "oklch(25% 0.07 88)",
+          "oklch(35% 0.07 88)",
+          "oklch(45% 0.07 88)",
+          "oklch(55% 0.07 88)",
+          "oklch(65% 0.07 88)",
+          "oklch(80% 0.07 88)",
+          "oklch(95% 0.07 88)"
+        ]
+      },
+      "knopf-kante": {
+        "role": "primary",
+        "displayName": "Kantenlicht",
+        "canonical": "oklch(89% .095 86)",
+        "tonalRamp": [
+          "oklch(15% 0.095 86)",
+          "oklch(25% 0.095 86)",
+          "oklch(35% 0.095 86)",
+          "oklch(45% 0.095 86)",
+          "oklch(55% 0.095 86)",
+          "oklch(65% 0.095 86)",
+          "oklch(80% 0.095 86)",
+          "oklch(95% 0.095 86)"
+        ]
+      },
+      "led-schein": {
+        "role": "primary",
+        "displayName": "LED-Schein",
+        "canonical": "oklch(84% .1 84 / .45)",
+        "tonalRamp": [
+          "oklch(15% 0.1 84)",
+          "oklch(25% 0.1 84)",
+          "oklch(35% 0.1 84)",
+          "oklch(45% 0.1 84)",
+          "oklch(55% 0.1 84)",
+          "oklch(65% 0.1 84)",
+          "oklch(80% 0.1 84)",
+          "oklch(95% 0.1 84)"
+        ]
+      },
+      "linie": {
+        "role": "neutral",
+        "displayName": "Haarlinie",
+        "canonical": "oklch(92% .02 80 / .14)",
+        "tonalRamp": [
+          "oklch(15% 0.02 80)",
+          "oklch(25% 0.02 80)",
+          "oklch(35% 0.02 80)",
+          "oklch(45% 0.02 80)",
+          "oklch(55% 0.02 80)",
+          "oklch(65% 0.02 80)",
+          "oklch(80% 0.02 80)",
+          "oklch(95% 0.02 80)"
+        ]
+      },
+      "linie-stark": {
+        "role": "neutral",
+        "displayName": "Haarlinie stark",
+        "canonical": "oklch(92% .02 80 / .3)",
+        "tonalRamp": [
+          "oklch(15% 0.02 80)",
+          "oklch(25% 0.02 80)",
+          "oklch(35% 0.02 80)",
+          "oklch(45% 0.02 80)",
+          "oklch(55% 0.02 80)",
+          "oklch(65% 0.02 80)",
+          "oklch(80% 0.02 80)",
+          "oklch(95% 0.02 80)"
+        ]
+      },
+      "linie-gold": {
+        "role": "primary",
+        "displayName": "Goldfaden",
+        "canonical": "oklch(84% .1 84 / .5)",
+        "tonalRamp": [
+          "oklch(15% 0.1 84)",
+          "oklch(25% 0.1 84)",
+          "oklch(35% 0.1 84)",
+          "oklch(45% 0.1 84)",
+          "oklch(55% 0.1 84)",
+          "oklch(65% 0.1 84)",
+          "oklch(80% 0.1 84)",
+          "oklch(95% 0.1 84)"
+        ]
+      },
+      "travertin": {
+        "role": "tertiary",
+        "displayName": "Travertin",
+        "canonical": "oklch(88% .022 78)",
+        "tonalRamp": [
+          "oklch(15% 0.022 78)",
+          "oklch(25% 0.022 78)",
+          "oklch(35% 0.022 78)",
+          "oklch(45% 0.022 78)",
+          "oklch(55% 0.022 78)",
+          "oklch(65% 0.022 78)",
+          "oklch(80% 0.022 78)",
+          "oklch(95% 0.022 78)"
+        ]
+      },
+      "travertin-tinte": {
+        "role": "tertiary",
+        "displayName": "Travertin-Tinte",
+        "canonical": "oklch(20% .012 60)",
+        "tonalRamp": [
+          "oklch(15% 0.012 60)",
+          "oklch(25% 0.012 60)",
+          "oklch(35% 0.012 60)",
+          "oklch(45% 0.012 60)",
+          "oklch(55% 0.012 60)",
+          "oklch(65% 0.012 60)",
+          "oklch(80% 0.012 60)",
+          "oklch(95% 0.012 60)"
+        ]
+      },
+      "travertin-gold": {
+        "role": "tertiary",
+        "displayName": "Travertin-Gold (Umbra)",
+        "canonical": "oklch(46% .09 66)",
+        "tonalRamp": [
+          "oklch(15% 0.09 66)",
+          "oklch(25% 0.09 66)",
+          "oklch(35% 0.09 66)",
+          "oklch(45% 0.09 66)",
+          "oklch(55% 0.09 66)",
+          "oklch(65% 0.09 66)",
+          "oklch(80% 0.09 66)",
+          "oklch(95% 0.09 66)"
+        ]
+      },
+      "travertin-hand": {
+        "role": "tertiary",
+        "displayName": "Travertin-Handschrift",
+        "canonical": "oklch(40% .085 64)",
+        "tonalRamp": [
+          "oklch(15% 0.085 64)",
+          "oklch(25% 0.085 64)",
+          "oklch(35% 0.085 64)",
+          "oklch(45% 0.085 64)",
+          "oklch(55% 0.085 64)",
+          "oklch(65% 0.085 64)",
+          "oklch(80% 0.085 64)",
+          "oklch(95% 0.085 64)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Name am Fenster",
+        "purpose": "Nur IRMONHAIR im ersten Bildschirm."
+      },
+      "headline": {
+        "displayName": "Schild",
+        "purpose": "Ein Wort pro Abschnitt, Versalien, darunter Goldlinie."
+      },
+      "handschrift": {
+        "displayName": "Handschrift",
+        "purpose": "Ein Satz unter dem Schild, in gold-wort; auf Travertin travertin-hand."
+      },
+      "title": {
+        "displayName": "Titel",
+        "purpose": "Leistungsgruppen, Salonnamen, Gruppenköpfe der Preisliste."
+      },
+      "body": {
+        "displayName": "Lauftext",
+        "purpose": "Fliesstext in tinte-leise, max. 36rem."
+      },
+      "label": {
+        "displayName": "Beschriftung",
+        "purpose": "Orte, Stufen, Legende, Navigation. Untergrenze .72rem."
+      },
+      "button": {
+        "displayName": "Knopfschrift",
+        "purpose": "Alle Pillenknöpfe."
+      },
+      "preis": {
+        "displayName": "Preis",
+        "purpose": "Preise in festen rechtsbündigen Spalten, tabellarische Ziffern."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hauptknopf-schein",
+        "value": "0 0 10px -1px oklch(84% .1 84 / .45)",
+        "purpose": "Nur am Hauptknopf einer Gruppe."
+      },
+      {
+        "name": "spiegel-led-kante",
+        "value": "0 0 0 1.5px oklch(90% .09 86), 0 0 16px 2px oklch(84% .1 84 / .45), inset 0 0 22px oklch(84% .1 84 / .28)",
+        "purpose": "Leuchtende Fuge zwischen schwarzem Spiegelrahmen und Glas."
+      },
+      {
+        "name": "klammerglut",
+        "value": "0 2px 14px 1px oklch(84% .1 84 / .45)",
+        "purpose": "Gewählte Strähne im Farbregal."
+      },
+      {
+        "name": "fenstertiefe",
+        "value": "0 50px 90px -40px oklch(0% 0 0 / .85), 0 0 90px -30px oklch(70% .1 75 / .35)",
+        "purpose": "Unter dem Spiegelrahmen."
+      },
+      {
+        "name": "schleifenschatten",
+        "value": "drop-shadow(0 22px 26px oklch(0% 0 0 / .65))",
+        "purpose": "filter der Schleife."
+      }
+    ],
+    "motion": [
+      {
+        "name": "kurve",
+        "value": "cubic-bezier(.22, .61, .36, 1)",
+        "purpose": "Auftritt und Zustandswechsel: bremst aus."
+      },
+      {
+        "name": "kurve-weich",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Lange, weiche Fahrten (Kamerafahrt im Spiegel, Foto-Zoom)."
+      },
+      {
+        "name": "kurve-fort",
+        "value": "cubic-bezier(.55, 0, .78, .4)",
+        "purpose": "Abgang: beschleunigt (Leiste weicht, Vorhang, Menü zu)."
+      },
+      {
+        "name": "t1",
+        "value": ".3s",
+        "purpose": "Hover, Knöpfe, Chips."
+      },
+      {
+        "name": "t2",
+        "value": ".6s",
+        "purpose": "Linien, die einlaufen."
+      },
+      {
+        "name": "t3",
+        "value": ".9s",
+        "purpose": "Auftritt beim Scrollen."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "klein",
+        "value": "30rem"
+      },
+      {
+        "name": "handy",
+        "value": "40rem"
+      },
+      {
+        "name": "tablet",
+        "value": "48rem"
+      },
+      {
+        "name": "zweispaltig",
+        "value": "60rem"
+      },
+      {
+        "name": "breit",
+        "value": "64rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Hauptknopf",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Schwarzes Schild mit LED-Kante; höchstens einer pro Gruppe.",
+      "html": "<a class=\"ds-knopf\" href=\"#\">Termin buchen</a>",
+      "css": ".ds-knopf{display:inline-flex;align-items:center;justify-content:center;min-height:3.1rem;padding:.85rem 1.65rem;border-radius:999px;background:oklch(10.5% .006 55);color:oklch(94% .014 85);border:1px solid oklch(89% .095 86);box-shadow:0 0 10px -1px oklch(84% .1 84 / .45);font:500 .8rem/1.2 Jost,Mulish,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:background-color .3s cubic-bezier(.22,.61,.36,1),transform .3s cubic-bezier(.22,.61,.36,1)}.ds-knopf:hover{background:oklch(22% .03 70)}.ds-knopf:focus-visible{outline:2px solid oklch(76% .1 80);outline-offset:3px}.ds-knopf:active{transform:scale(.98)}"
+    },
+    {
+      "name": "Stiller Knopf",
+      "kind": "button",
+      "refersTo": "button-still",
+      "description": "Transparent mit Haarlinie; alle Nebenwege.",
+      "html": "<a class=\"ds-knopf-still\" href=\"#\">Extensions entdecken</a>",
+      "css": ".ds-knopf-still{display:inline-flex;align-items:center;justify-content:center;min-height:3.1rem;padding:.85rem 1.65rem;border-radius:999px;background:transparent;color:oklch(94% .014 85);border:1px solid oklch(92% .02 80 / .3);font:500 .8rem/1.2 Jost,Mulish,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:border-color .3s cubic-bezier(.22,.61,.36,1),background-color .3s cubic-bezier(.22,.61,.36,1)}.ds-knopf-still:hover{border-color:oklch(76% .1 80);background:oklch(84% .1 84 / .08)}.ds-knopf-still:focus-visible{outline:2px solid oklch(76% .1 80);outline-offset:3px}"
+    },
+    {
+      "name": "Wahl-Chip",
+      "kind": "chip",
+      "refersTo": "chip-wahl",
+      "description": "Länge und Wunsch im Farbregal.",
+      "html": "<label class=\"ds-chip\"><input type=\"radio\" name=\"ds\" checked><span>Brustlang</span></label><label class=\"ds-chip\"><input type=\"radio\" name=\"ds\"><span>Taillenlang</span></label>",
+      "css": ".ds-chip{position:relative;cursor:pointer;margin-right:.5rem}.ds-chip input{position:absolute;opacity:0}.ds-chip span{display:inline-flex;align-items:center;min-height:2.75rem;padding:.6rem 1.15rem;border:1px solid oklch(92% .02 80 / .3);border-radius:999px;font:500 .84rem/1 Jost,Mulish,sans-serif;letter-spacing:.06em;color:oklch(84% .016 82);transition:border-color .3s,background-color .3s}.ds-chip input:checked+span{border-color:oklch(85% .1 84);background:oklch(84% .1 84 / .12);color:oklch(94% .014 85)}.ds-chip:hover span{border-color:oklch(76% .1 80)}.ds-chip input:focus-visible+span{outline:2px solid oklch(85% .1 84);outline-offset:3px}"
+    },
+    {
+      "name": "Schild mit Handschrift",
+      "kind": "custom",
+      "description": "Abschnittskopf: ein Wort in gesperrten Versalien, Goldlinie, Sacramento-Zeile.",
+      "html": "<div class=\"ds-kopf\"><h2 class=\"ds-schild\">Salons</h2><p class=\"ds-hand\">Schwarzes Leder, goldene Rahmen.</p></div>",
+      "css": ".ds-kopf{background:oklch(14.5% .008 55);padding:2rem}.ds-schild{margin:0;font:300 clamp(2.1rem,1.3rem + 2.6vw,3.3rem)/1 Jost,Mulish,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:oklch(94% .014 85)}.ds-schild::after{content:\"\";display:block;width:4.5rem;height:1px;margin-top:1.4rem;background:linear-gradient(90deg,oklch(85% .1 84),transparent)}.ds-hand{margin:1.75rem 0 0;font:400 clamp(1.9rem,1.5rem + 1.2vw,2.6rem)/1.05 Sacramento,\"Segoe Script\",cursive;color:oklch(86% .09 84)}"
+    },
+    {
+      "name": "Standortkarte",
+      "kind": "card",
+      "refersTo": "karte-satin",
+      "description": "Gerade Satinkarte mit Haarlinie, ohne Schatten.",
+      "html": "<article class=\"ds-karte\"><h3>Pasing</h3><p>Irmonherstraße 7, 81241 München</p><a href=\"tel:+49898211164\">089 821 116 4</a></article>",
+      "css": ".ds-karte{background:oklch(19.5% .012 55);border:1px solid oklch(92% .02 80 / .14);padding:1.75rem;color:oklch(94% .014 85);font:400 1.0625rem/1.65 Mulish,system-ui,sans-serif}.ds-karte h3{margin:0;font:300 2.6rem/1 Jost,sans-serif}.ds-karte p{margin:.7rem 0 0;color:oklch(84% .016 82)}.ds-karte a{display:inline-block;margin-top:1rem;font:400 1.8rem/1.1 Jost,sans-serif;color:inherit;text-decoration:underline 1px oklch(76% .1 80);text-underline-offset:7px}"
+    },
+    {
+      "name": "Stimme auf Travertin",
+      "kind": "card",
+      "description": "Der einzige helle Raum; Farben von der hellen Seite neu gemessen.",
+      "html": "<div class=\"ds-stein\"><figure class=\"ds-stimme\"><blockquote>Momo liefert wie immer Top Arbeit ab</blockquote><figcaption>Großhadern</figcaption></figure></div>",
+      "css": ".ds-stein{background:oklch(88% .022 78);padding:2rem}.ds-stimme{margin:0;padding:1.75rem;background:oklch(95% .012 80 / .8);border:1px solid oklch(30% .02 60 / .16)}.ds-stimme blockquote{margin:0;font:400 1rem/1.6 Mulish,sans-serif;color:oklch(24% .012 60)}.ds-stimme figcaption{margin-top:1.75rem;font:500 .72rem/1.3 Jost,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:oklch(34% .08 62)}"
+    },
+    {
+      "name": "Leiste",
+      "kind": "nav",
+      "refersTo": "leiste",
+      "description": "Nacht zu 82 % mit Weichzeichner; Goldunterstrich läuft von links ein.",
+      "html": "<nav class=\"ds-leiste\"><a href=\"#\" aria-current=\"page\">Extensions</a><a href=\"#\">Salons</a><a class=\"ds-pille\" href=\"tel:+49898211164\"><span>Pasing</span> 089 821 116 4</a></nav>",
+      "css": ".ds-leiste{display:flex;align-items:center;gap:2rem;height:72px;padding:0 2rem;background:oklch(14.5% .008 55 / .82);backdrop-filter:blur(14px);border-bottom:1px solid oklch(92% .02 80 / .14)}.ds-leiste>a:not(.ds-pille){position:relative;padding-block:.6rem;font:500 .74rem/1 Jost,sans-serif;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:oklch(84% .016 82)}.ds-leiste>a:not(.ds-pille)::after{content:\"\";position:absolute;left:0;right:0;bottom:.25rem;height:1px;background:oklch(76% .1 80);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.22,.61,.36,1)}.ds-leiste>a[aria-current]{color:oklch(94% .014 85)}.ds-leiste>a[aria-current]::after,.ds-leiste>a:hover::after{transform:none}.ds-pille{margin-left:auto;padding:.62rem 1.05rem;border:1px solid oklch(84% .1 84 / .5);border-radius:999px;font:500 .86rem/1 Jost,sans-serif;color:oklch(94% .014 85);text-decoration:none}.ds-pille span{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:oklch(83% .095 84)}.ds-pille:hover{border-color:oklch(76% .1 80);background:oklch(84% .1 84 / .08)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Das Schaufenster bei Nacht",
+    "overview": "Die Seite ist das Fenster der Irmonherstraße nach Ladenschluss: eine warme schwarze Fläche, in der Licht nur dort sitzt, wo ein Ding eine Kante hat. Gold leuchtet nicht flächig, es läuft als LED-Linie um die Schleife, den Spiegel, den Hauptknopf und die gewählte Strähne. Alles andere bleibt Satin, Creme-Schrift und dunkle Haarlinien.\n\nDie Stimme hat zwei Register, wie die Beschriftung am Fenster: gesperrte, dünne Jost-Versalien als Schild, darunter eine Zeile in Sacramento wie die Handschrift der Inhaberin. Lauftext in Mulish bleibt ruhig und hell. Einmal auf der Seite öffnet sich ein heller Raum — Travertin, die Steinfassade um das Fenster —, und dort tragen die Stimmen der Kundschaft.\n\nDie Dichte ist die eines Schaufensters: große Abstände (bis 10rem zwischen Abschnitten), wenige Elemente pro Ansicht, jedes mit Luft. Die eigene Idee der Seite ist räumlich und gehört dem Laden: die leuchtende Schleife am Spiegel im ersten Bildschirm und das Farbregal mit zehn lang hängenden Haarsträngen.",
+    "keyCharacteristics": [
+      "Warmes Schwarz (Hue 55) als Grund, drei Stufen Satin darüber, der Fuß noch tiefer.",
+      "LED-Gold als Kante, Linie, Schein — nie als Fläche.",
+      "Travertin als einzige helle Fläche, mit echter Steintextur.",
+      "Schild in Jost 300 mit weiter Sperrung, darunter Handschrift in Sacramento.",
+      "Knöpfe schwarz mit Pillenform; nur der Hauptknopf trägt Licht.",
+      "Zeichnungen (Schleife, Herz) als feine Linie, flach, ohne Volumen."
+    ],
+    "rules": [
+      {
+        "name": "Die Kantenlicht-Regel",
+        "body": "Gold ist Licht, und Licht sitzt an Kanten. Es erscheint als Linie, Rand, Unterstrich oder Schein — nie als gefüllte Fläche, nie als Knopfgrund.",
+        "section": "colors"
+      },
+      {
+        "name": "Die Eine-Lampe-Regel",
+        "body": "In jeder Knopfgruppe leuchtet höchstens ein Knopf (Kante `knopf-kante` plus Schein `0 0 10px -1px led-schein`). Alle anderen sind still: transparent mit Haarlinie.",
+        "section": "colors"
+      },
+      {
+        "name": "Die Neu-gemessen-Regel",
+        "body": "Auf Travertin wird Gold nicht übernommen, sondern von der hellen Seite neu gemessen (`travertin-gold`, `travertin-hand`); Creme wird zu `travertin-tinte`. Kein Element aus der Nacht wird auf Stein invertiert.",
+        "section": "colors"
+      },
+      {
+        "name": "Die Handschrift-Ausnahme",
+        "body": "Gold als Schriftfarbe gibt es nur in der Sacramento-Zeile und in kleinen Ordnungsmarken. Schild, Titel und Lauftext bleiben Creme.",
+        "section": "colors"
+      },
+      {
+        "name": "Die Schild-und-Hand-Regel",
+        "body": "Jeder Abschnitt öffnet mit genau einem Schild-Wort und darunter einer Handschriftzeile. Keine zusätzliche Zeile über dem Schild.",
+        "section": "typography"
+      },
+      {
+        "name": "Die Dünn-bleibt-dünn-Regel",
+        "body": "Große Jost-Schrift steht in 300. Gewicht 500 gibt es nur klein (Labels, Knöpfe, Preise, Posten).",
+        "section": "typography"
+      },
+      {
+        "name": "Die Licht-statt-Lift-Regel",
+        "body": "Karten, Knöpfe und Chips haben keinen Schlagschatten. Wer hervortreten soll, bekommt eine Kante, keinen Schatten.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** Gold als 1–1,6 px Kante, Linie oder Schein setzen — und nur an dem Element, das gerade im Fokus steht.",
+      "**Do** jeden Abschnitt mit einem Schild-Wort (Jost 300, .28em, Versalien) und einer Sacramento-Zeile öffnen.",
+      "**Do** Knöpfe auf `knopf-grund` bauen; pro Gruppe genau ein Hauptknopf mit Kante und Schein.",
+      "**Do** auf Travertin jede Farbe von der hellen Seite neu setzen (`travertin-tinte`, `travertin-gold`, `travertin-hand`).",
+      "**Do** Bewegung nur mit `--kurve` / `--kurve-weich` für Auftritte und `--kurve-fort` für Abgänge, 0,3/0,6/0,9 s, bei `prefers-reduced-motion` abgeschaltet.",
+      "**Do** Zeichnungen als feine Linie auf Schwarz halten, wie die Schleife und das Herz."
+    ],
+    "donts": [
+      "**Don't** Gold als Fläche verwenden — kein goldener Knopfgrund, kein Goldverlauf in Schrift, keine goldene Karte.",
+      "**Don't** mehr als einen leuchtenden Knopf in eine Gruppe stellen.",
+      "**Don't** eine zweite helle Fläche neben Travertin einführen; Karten, Tafeln und gewählte Zustände bleiben dunkel.",
+      "**Don't** Schild oder Lauftext in Gold setzen; Gold in Schrift nur in der Handschriftzeile und in kleinen Ordnungsmarken.",
+      "**Don't** Karten mit Schlagschatten anheben oder Ecken runden; rund ist nur, was man antippt, und der Spiegelbogen.",
+      "**Don't** unter .72rem gehen."
+    ]
+  }
+}

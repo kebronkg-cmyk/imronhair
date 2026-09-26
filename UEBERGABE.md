@@ -147,3 +147,49 @@ Inhaberin. Die Hauptadresse bleibt die Spiegel-Fassung.
 - Die Norm für weitere Salons: `.claude/skills/salon-website/`.
 - Kontrast über der Grenze, keine Überbreite bei 390
   und 360 px, keine Konsolenfehler.
+
+## Vierte Fassung unter /fenster/ (26.09.2026) — das Handy als Schaufenster
+
+https://kebronkg-cmyk.github.io/imronhair/fenster/ — Kopie von /schleife/
+(die bleibt unverändert). Nur die Handy-Ansicht (< 48rem) ist neu
+komponiert; Desktop (1440) und iPad (820) der Startseite sind gemessen
+pixelgleich mit /schleife/. Die Preisliste ist auf allen Größen neu.
+
+- **Erster Bildschirm:**
+  - Der Bildschirm ist das Fenster. Die LED-Kante zieht sich beim Laden links hinauf, oben quer und rechts hinab; die Schleife sitzt auf der Ecke (`<!-- schleife:fenster -->`).
+  - Auf dem Glas steht die Beschriftung aus der Vorlage (Extensions, Haarverlängerung, Haarverdichtung, Beratung, ♡).
+  - Unten stehen Name, Handschrift, genau ein leuchtender Knopf und die zwei Telefonnummern als Schilder.
+  - Der Satz über die Leistungen steht unter dem Spiegel.
+  - Die untere Kante (`.fenster-fuge`) wandert über die ersten 320 px Scrollweg hinab, wird schmaler und geht in die Lichtkante des Spiegels über (`--glut`).
+- **Kapitel:** Die Nummer steht über jedem Schild (`data-nr`). Eine LED-Fuge leuchtet beim Hereinscrollen auf, und in der Leiste steht das aktuelle Kapitel (`.leiste-kapitel`). Der Grund wechselt: Preise auf tieferem Schwarz.
+- **Schrifttreppe am Handy:** Schild 1,95 rem, Handschrift 1,75 rem, Unterüberschrift 1,5 rem, Text 1 rem, Angaben 0,72–0,8 rem.
+- **Extensions:** Schild, Spruch, eine Zeile zum Aufklappen, dann gleich das Regal; die fünf Werte als Wischreihe.
+- **Preisvorschau:** Die acht Gruppen hängen als Preisetiketten an einer Lichtstange (`preise.py` → `<!-- preise:etiketten -->`). Ein Umschalter wählt den Salon; ein Tipp führt nach `leistungen.html?salon=…#gruppe`.
+- **Stimmen:** am Handy wischbar.
+- **Preisliste (alle Größen):**
+  - Eine klebende Steuerleiste mit Salon und „Meine Haare sind kurz / mittel / lang / alle Längen“. Ohne Wahl ist die Frage gold hervorgehoben; die Wahl wird gemerkt.
+  - Die Gruppen sind `<details name>`, immer nur eine offen, ihr Kopf klebt unter der Leiste.
+  - Eine Zeile pro Leistung, der Preis rechts. Die Längenfilterung läuft per `:has()`, also auch ohne Skript.
+  - Am Ende jeder Gruppe steht „… in Pasing buchen“.
+  - Erzeugt mit `karte_html()` in `recherche/preise.py`.
+
+Gemessen am Handy (390 × 844), alt → neu:
+
+| Messgröße | alt | neu |
+|---|---|---|
+| Wörter im ersten Bildschirm | 50 | 24 |
+| Knöpfe im ersten Bildschirm | 2 | 1 |
+| Startseite | 11 301 px | 8 690 px |
+| Extensions bis zum Regal | 971 px | 422 px |
+| Preisvorschau | 1 803 px | 716 px |
+| Stimmen | 2 357 px | 1 155 px |
+| Kapitelmarken | 0 | 5 |
+| Preisliste | 9 427 px, 106 Kästen | 3 017 px zugeklappt, 0 Kästen |
+| Preise pro Leistung | bis zu 3 | 1 bei gewählter Länge (38 statt 69 Preisangaben in Pasing) |
+| Schriftgröße Gruppe : Leistung : Angaben | — | 1,51 : 1,41; dazu das Gewicht 500 bei Leistungen gegen 400 bei den Angaben |
+
+- Detektor: 10 × dark-glow (gewollt, wie /schleife/).
+- Kontrast überall über der Grenze.
+- Keine Überbreite bei 390 und 360 px; die Schleife ragt bewusst über die Bildschirmkante und wird abgeschnitten.
+- Keine Konsolenfehler.
+- Verhalten getestet: Etikett → Preisliste, alter Direktlink, ohne Skript, reduzierte Bewegung, Farbregal.

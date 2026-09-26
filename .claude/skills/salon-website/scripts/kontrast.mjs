@@ -22,7 +22,8 @@ const p = await b.newPage({viewport:{width:W,height:H}});
 //
 await p.goto((datei.startsWith('http') ? datei : 'http://127.0.0.1:8099/'+datei),{waitUntil:'load'});
 await p.evaluate(()=>{for(const i of document.querySelectorAll('img'))i.loading='eager';});
-await p.evaluate(()=>{ for (const d of document.querySelectorAll('details')) d.open = true; });
+// Alle <details> öffnen — ohne `name`, sonst schliesst jede die andere.
+await p.evaluate(()=>{ for (const d of document.querySelectorAll('details')) { d.removeAttribute('name'); d.open = true; } });
 if (await p.$('#hebel')) { await p.focus('#hebel'); await p.keyboard.press('End'); }
 await p.waitForTimeout(2500);
 
@@ -40,6 +41,8 @@ const felder = await p.evaluate((sel)=>{
                   const d=g.getImageData(0,0,1,1).data;return [d[0],d[1],d[2]];};
   const out=[];
   for (const s of sel) for (const el of document.querySelectorAll(s)) {
+    // Nicht gerendert (geschlossenes <details>, content-visibility): überspringen.
+    if (el.checkVisibility && !el.checkVisibility({ visibilityProperty: true })) continue;
     const r=el.getBoundingClientRect();
     if (!r.width||!r.height||r.top<0) continue;
     const st=getComputedStyle(el);

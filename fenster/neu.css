@@ -1,0 +1,2007 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Irmonhair — Fassung „Schleife“
+
+   Das Schaufenster an der Irmonherstraße bei Nacht, nach den Fotos der
+   Inhaberin: warmes Schwarz, schwarzer Satin, LED-Gold nur als Kante am
+   Element im Fokus (Schleife, gewählter Ton, Hauptknopf), Travertin als
+   heller Gegenraum für die Stimmen, Creme für die Schrift.
+
+   Schriften, alle lokal: Jost in gesperrten Versalien wie die Beschriftung
+   am Fenster und für alle Überschriften, Sacramento als Handschrift für
+   die beiden Sätze der Inhaberin, Mulish für den Lauftext.
+   Aufbau und Verhalten erbt diese Datei von der Spiegel-Fassung; die
+   eigene Schicht steht am Ende.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Jost';
+  src: url('schrift/Jost-Italic.woff2') format('woff2');
+  font-weight: 100 900; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Sacramento';
+  src: url('schrift/Sacramento.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Jost';
+  src: url('schrift/Jost.woff2') format('woff2');
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Mulish';
+  src: url('schrift/Mulish.woff2') format('woff2');
+  font-weight: 300 800; font-style: normal; font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* ── Die Nacht vor dem Schaufenster ─────────────────────────────── *
+     Aus den Fotos der Inhaberin: warmes Schwarz der Fassade, schwarzer
+     Satin der Schleife, das LED-Gold der Kanten, Travertin der Mauer,
+     das Creme der Blumen für die Schrift. */
+  --papier:       oklch(14.5% .008 55);   /* Grund: die Nacht */
+  --papier-tief:  oklch(17.5% .01 55);    /* Nische */
+  --weiss:        oklch(19.5% .012 55);   /* Satin: Tafeln und Karten */
+  --travertin:      oklch(88% .022 78);
+  --travertin-tief: oklch(80% .026 74);
+  --travertin-stein: url("bilder/travertin.webp");
+  /* Auf dem Stein neu gemessen: Tinte, Linie, Handschrift, Namen, Sterne. */
+  --travertin-hell:  oklch(93% .018 80);
+  --travertin-tinte: oklch(20% .012 60);
+  --travertin-still: oklch(29% .018 62);
+  --travertin-linie: oklch(30% .02 60);
+  --travertin-gold:  oklch(46% .09 66);
+  --travertin-hand:  oklch(34% .08 62);
+  --sterne:          oklch(56% .11 70);
+  /* Licht und Schatten: Glanz auf Glas, Schlagschatten, warme Bronze
+     für Vignetten und die Regalstange, die helle Goldlinie auf Bildern. */
+  --weiss-licht:     oklch(100% 0 0);
+  --schatten:        oklch(0% 0 0);
+  --bronze:          oklch(36% .04 70);
+  --linie-gold-hell: oklch(86% .075 88);
+  /* Zustand: geöffnet. */
+  --offen:           oklch(62% .15 150);
+
+  /* ── Schrift: Creme, drei Stufen ────────────────────────────────── */
+  --tinte:        oklch(94% .014 85);
+  --tinte-leise:  oklch(84% .016 82);
+  --tinte-still:  oklch(74% .02 80);
+
+  /* ── LED-Gold: nur an Kanten und am Element im Fokus ────────────── */
+  --gold:         oklch(85% .1 84);
+  --gold-tief:    oklch(76% .1 80);
+  --gold-schrift: oklch(83% .095 84);
+  --gold-hell:    oklch(88% .07 88);
+  --gold-wort:    oklch(86% .09 84);
+  --gold-metall:  linear-gradient(150deg, #2c2521, #0e0b0a 42%, #241e1b 68%, #0b0908);
+  --led-schein:   oklch(84% .1 84 / .45);
+
+  /* ── Tiefste Nacht: Fuss ────────────────────────────────────────── */
+  --nacht:        oklch(11% .006 55);
+  --nacht-tief:   oklch(9.5% .005 55);
+  --nacht-schrift: oklch(95% .01 85);
+  --nacht-still:  oklch(78% .02 80);
+
+  --linie:       oklch(92% .02 80 / .14);
+  --linie-stark: oklch(92% .02 80 / .3);
+  --linie-gold:  oklch(84% .1 84 / .5);
+
+  /* Der Hauptknopf leuchtet wie die Kante — die Schrift darauf ist Nacht. */
+  /* Knöpfe wie das Schild: schwarzer Grund, das Licht nur als Kante. */
+  --knopf-grund:  oklch(10.5% .006 55);
+  --knopf-schrift: var(--tinte);
+  --knopf-kante:  oklch(89% .095 86);
+
+  /* Stern für Bewertungen, als Maske — die Farbe kommt aus dem Grund. */
+  --stern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 20'%3E%3Cpath d='M11 1l2.47 6.18 6.65.4-5.12 4.26 1.66 6.46L11 14.7l-5.66 3.6 1.66-6.46L1.88 7.58l6.65-.4z'/%3E%3C/svg%3E");
+
+  /* ── Schrift ────────────────────────────────────────────────────── */
+  --serif:  'Jost', 'Mulish', system-ui, sans-serif;   /* die Beschriftung am Fenster */
+  --hand:   'Sacramento', 'Segoe Script', cursive;
+  --marke:  'Jost', 'Mulish', system-ui, sans-serif;
+  --lauf:   'Mulish', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --t-titel: clamp(3.05rem, 1.9rem + 4.2vw, 5.6rem);
+  --t-gross: clamp(2.1rem, 1.5rem + 2.5vw, 3.6rem);
+  --t-mittel: clamp(1.45rem, 1.25rem + .8vw, 1.9rem);
+  --t-lauf:  1.0625rem;
+  --t-klein: .9375rem;
+  --t-mini:  .72rem;   /* 11,5 px — kleiner wird nichts */
+
+  --a1: .5rem;  --a2: 1rem;  --a3: 1.75rem;
+  --a4: 3rem;   --a5: 5rem;  --a6: 8rem;
+
+  --rand: 1.25rem;
+  --spalte: 76rem;
+  --lese: 36rem;
+  --leiste: 64px;
+
+  /* Auftritt bremst aus, Abgang beschleunigt. */
+  --kurve: cubic-bezier(.22, .61, .36, 1);
+  --kurve-weich: cubic-bezier(.16, 1, .3, 1);
+  --kurve-fort: cubic-bezier(.55, 0, .78, .4);
+  --t1: .3s; --t2: .6s; --t3: .9s;
+}
+
+@media (min-width: 48rem) {
+  :root { --rand: 2rem; --leiste: 72px; }
+}
+@media (min-width: 64rem) {
+  :root { --rand: 2.75rem; --a6: 10rem; }
+}
+
+/* ── Grundlagen ───────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--leiste) + 1rem);
+  background: var(--papier);
+}
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--tinte);
+  font: 400 var(--t-lauf)/1.65 var(--lauf);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+img, svg { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+::selection { background: color-mix(in oklch, var(--linie-gold-hell) 60%, transparent); color: var(--tinte); }
+
+:focus-visible {
+  outline: 2px solid var(--gold-tief);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.nurlesen {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+}
+
+.sprung {
+  position: fixed; left: var(--rand); top: -4rem; z-index: 120;
+  padding: .6rem 1rem; border-radius: 2px;
+  background: var(--tinte); color: var(--papier);
+  font: 600 var(--t-klein)/1 var(--lauf); text-decoration: none;
+  transition: transform var(--t1) var(--kurve);
+}
+.sprung:focus-visible { transform: translateY(calc(4rem + var(--rand))); }
+
+.mitte {
+  width: 100%;
+  max-width: calc(var(--spalte) + 2 * var(--rand));
+  margin-inline: auto;
+  padding-inline: var(--rand);
+}
+
+/* ── Schriftbilder ────────────────────────────────────────────────────── */
+
+.augenzeile {
+  display: flex; align-items: center; gap: .9rem;
+  margin: 0 0 var(--a3);
+  font: 500 var(--t-mini)/1.4 var(--marke);
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--tinte-still);
+}
+/* Der feine Goldstrich davor ist der Haarstrich aus dem Logo. */
+.augenzeile::before {
+  content: ''; flex: none; width: 2.6rem; height: 1px;
+  background: linear-gradient(90deg, var(--gold-tief), var(--gold));
+}
+.augenzeile span:first-child { color: var(--gold-schrift); font-weight: 600; }
+@media (max-width: 40rem) {
+  .augenzeile { letter-spacing: .22em; gap: .7rem; }
+  .augenzeile::before { width: 1.6rem; }
+}
+
+.titel, .gross {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  color: var(--tinte);
+  text-wrap: balance;
+}
+.titel {
+  font-size: var(--t-titel);
+  line-height: 1.02;
+  letter-spacing: -.012em;
+}
+.gross {
+  font-size: var(--t-gross);
+  line-height: 1.08;
+  letter-spacing: -.008em;
+}
+
+/* Das goldene Wort: kursiv, in der Farbe der Rahmen — eine volle Farbe,
+   kein Verlauf in der Schrift. Der Glanz gehört dem Spiegel. */
+.gold {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-wort);
+}
+
+.lauf {
+  margin: var(--a3) 0 0;
+  max-width: var(--lese);
+  color: var(--tinte-leise);
+  text-wrap: pretty;
+}
+
+.kopfzeile { max-width: 46rem; margin-bottom: var(--a5); }
+
+/* ── Knöpfe ───────────────────────────────────────────────────────────── */
+
+.wahl { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: var(--a3); }
+
+.knopf, .knopf-still {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 3.1rem; padding: .85rem 1.65rem;
+  border-radius: 999px;
+  font: 500 .8rem/1.2 var(--marke);
+  letter-spacing: .16em; text-transform: uppercase;
+  text-decoration: none; text-align: center;
+  cursor: pointer;
+  transition: background-color var(--t1) var(--kurve), color var(--t1) var(--kurve),
+              border-color var(--t1) var(--kurve), transform var(--t1) var(--kurve);
+}
+.knopf {
+  background: var(--knopf-grund); color: var(--knopf-schrift);
+  border: 1px solid var(--knopf-grund);
+}
+/* Innen ein Goldfaden, wie die Kante eines Rahmens. */
+.knopf::after {
+  content: ''; position: absolute; inset: 3px;
+  border-radius: inherit;
+  border: 1px solid color-mix(in oklch, var(--gold-tief) 0%, transparent);
+  transition: border-color var(--t1) var(--kurve);
+  pointer-events: none;
+}
+.knopf-still {
+  background: transparent; color: var(--tinte);
+  border: 1px solid var(--linie-stark);
+}
+@media (hover: hover) and (pointer: fine) {
+  .knopf:hover::after { border-color: color-mix(in oklch, var(--gold-tief) 75%, transparent); }
+  .knopf-still:hover { border-color: var(--gold-tief); background: color-mix(in oklch, var(--tinte) 8%, transparent); }
+}
+.knopf:active, .knopf-still:active { transform: scale(.98); }
+
+/* ═══ Leiste ══════════════════════════════════════════════════════════ */
+
+.leiste {
+  position: fixed; inset: 0 0 auto; z-index: 60;
+  height: var(--leiste);
+  display: flex; align-items: center; gap: var(--a2);
+  padding-inline: var(--rand);
+  background: color-mix(in oklch, var(--papier) 88%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--linie);
+  transition: transform .45s var(--kurve), background-color var(--t2) var(--kurve);
+}
+.leiste.weg { transform: translateY(-101%); transition-timing-function: var(--kurve-fort); }
+
+.marke {
+  display: flex; align-items: center; gap: .8rem;
+  margin-right: auto;
+  text-decoration: none; color: var(--tinte);
+}
+.marke-text { display: grid; gap: .15rem; }
+.marke-wort {
+  font: 500 1rem/1 var(--marke);
+  letter-spacing: .34em; text-transform: uppercase;
+  margin-right: -.34em;
+}
+.marke-zusatz {
+  font: 500 var(--t-mini)/1 var(--marke);
+  letter-spacing: .24em; text-transform: uppercase;
+  color: var(--tinte-still);
+}
+
+/* ── Das Zeichen ──────────────────────────────────────────────────────
+   Medaillon aus drei Ringen wie ein Spiegelrahmen: Aussenring, Perlen,
+   Innenring. Beim Laden ziehen sich die Ringe, das I setzt sich auf den
+   Haarstrich, der Schwung fällt. Beim Überfahren dreht sich die
+   Perlenreihe ein Stück — mehr nicht. */
+.zeichen { flex: none; width: 42px; height: 42px; overflow: visible; }
+.zeichen-ring { fill: none; stroke: url(#zeichen-gold); stroke-width: 1.5; }
+.zeichen-ring-innen { stroke-width: .55; }
+.zeichen-perlen {
+  fill: none; stroke: url(#zeichen-gold); stroke-width: .95;
+  stroke-dasharray: .01 2.17; stroke-linecap: round;
+  transform-origin: 32px 32px;
+  transition: transform 1.2s var(--kurve-weich);
+}
+.zeichen-i { fill: currentColor; }
+.zeichen-gold { fill: url(#zeichen-gold); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .zeichen-ring { stroke-dasharray: 100; stroke-dashoffset: 100; animation: ring-zieht 1.1s var(--kurve) .15s forwards; }
+  .zeichen-ring-innen { animation-delay: .3s; }
+  .zeichen-perlen { opacity: 0; animation: da .8s var(--kurve) .55s forwards; }
+  .zeichen-i { opacity: 0; transform: translateY(-3px); animation: setzt .7s var(--kurve) .5s forwards; }
+  .zeichen-strich { transform-origin: 11px 38px; transform: scaleX(0); animation: strich .8s var(--kurve) .7s forwards; }
+  .zeichen-schwung { clip-path: inset(0 0 100% 0); animation: faellt .8s var(--kurve) 1s forwards; }
+}
+@keyframes ring-zieht { to { stroke-dashoffset: 0; } }
+@keyframes da { to { opacity: 1; } }
+@keyframes setzt { to { opacity: 1; transform: none; } }
+@keyframes strich { to { transform: none; } }
+@keyframes faellt { to { clip-path: inset(0 0 0 0); } }
+@media (hover: hover) and (pointer: fine) {
+  .marke:hover .zeichen-perlen { transform: rotate(40deg); }
+}
+
+/* ── Wege ─────────────────────────────────────────────────────────── */
+
+.wege { display: flex; align-items: center; gap: 2rem; }
+.wege a {
+  position: relative;
+  font: 500 .74rem/1 var(--marke);
+  letter-spacing: .18em; text-transform: uppercase;
+  text-decoration: none; color: var(--tinte-leise);
+  padding-block: .6rem;
+}
+.wege a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: .25rem;
+  height: 1px; background: var(--gold-tief);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--t1) var(--kurve);
+}
+.wege a[aria-current="page"] { color: var(--tinte); }
+.wege a[aria-current="page"]::after { transform: none; }
+@media (hover: hover) and (pointer: fine) {
+  .wege a:not(.wege-termin):hover { color: var(--tinte); }
+  .wege a:hover::after { transform: none; }
+}
+.wege .wege-termin { display: none; }
+
+.pille {
+  display: inline-flex; align-items: baseline; gap: .5rem;
+  padding: .62rem 1.05rem;
+  border: 1px solid var(--linie-gold); border-radius: 999px;
+  font: 500 .86rem/1 var(--marke); letter-spacing: .04em;
+  text-decoration: none; white-space: nowrap;
+  transition: background-color var(--t1) var(--kurve), border-color var(--t1) var(--kurve);
+}
+.pille-ort {
+  font-size: var(--t-mini); letter-spacing: .24em; text-transform: uppercase;
+  color: var(--gold-schrift);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pille:hover { border-color: var(--gold-tief); background: color-mix(in oklch, var(--tinte) 8%, transparent); }
+}
+
+.klapp {
+  display: none;
+  width: 44px; height: 44px; margin-right: -10px;
+  border: 0; background: none; cursor: pointer;
+  flex-direction: column; align-items: center; justify-content: center; gap: 7px;
+}
+.klapp span {
+  display: block; width: 22px; height: 1.5px; background: var(--tinte);
+  transition: transform var(--t1) var(--kurve);
+}
+.klapp[aria-expanded="true"] span:first-child { transform: translateY(4.25px) rotate(45deg); }
+.klapp[aria-expanded="true"] span:last-child  { transform: translateY(-4.25px) rotate(-45deg); }
+
+@media (max-width: 63.99rem) {
+  .klapp { display: flex; }
+  .wege {
+    position: fixed; inset: var(--leiste) 0 auto; z-index: -1;
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding: var(--a2) var(--rand) var(--a4);
+    background: var(--papier);
+    border-bottom: 1px solid var(--linie);
+    box-shadow: 0 30px 60px -30px color-mix(in oklch, var(--schatten) 25%, transparent);
+    transform: translateY(-110%);
+    visibility: hidden;
+    transition: transform .45s var(--kurve-fort), visibility 0s .45s;
+  }
+  .wege.auf {
+    transform: none; visibility: visible;
+    transition: transform .5s var(--kurve), visibility 0s;
+  }
+  .wege a {
+    padding: 1.05rem 0;
+    font-size: .85rem;
+    border-bottom: 1px solid var(--linie);
+  }
+  .wege a::after { display: none; }
+  .wege .wege-termin {
+    display: flex; justify-content: center;
+    margin-top: var(--a3); padding: 1.1rem;
+    border: 0; border-radius: 999px;
+    background: var(--tinte); color: var(--papier);
+  }
+}
+@media (max-width: 30rem) {
+  .marke-zusatz { display: none; }
+  .pille-ort { display: none; }
+  .pille { padding: .6rem .85rem; font-size: .82rem; }
+  .marke-wort { font-size: .92rem; letter-spacing: .28em; margin-right: -.28em; }
+  .zeichen { width: 36px; height: 36px; }
+  .marke { gap: .6rem; }
+}
+@media (max-width: 22.5rem) {
+  .marke-wort { display: none; }
+}
+
+/* ═══ Vorhang ═════════════════════════════════════════════════════════
+   Kurz, hell, das eigene Logo. Der Goldstrich des Logos zieht sich
+   von links durch, dann hebt sich der Vorhang. */
+
+.vorhang {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  background: var(--papier);
+  transition: opacity .6s var(--kurve-fort), visibility 0s .6s;
+  animation: vorhang-notaus .6s var(--kurve-fort) 4s forwards;
+}
+.vorhang-siegel {
+  width: min(64vw, 320px);
+  animation: siegel 1s var(--kurve) both;
+}
+.vorhang.geht { opacity: 0; visibility: hidden; pointer-events: none; }
+.vorhang.fort { display: none; }
+@keyframes siegel {
+  from { opacity: 0; clip-path: inset(0 100% 0 0); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+/* Notausgang ohne Skript. `visibility` allein genügt nicht — Chrome hält
+   sie hier auf „visible“, und der unsichtbare Vorhang finge jeden Klick.
+   Deshalb wird er am Ende zusätzlich aus dem Bild geschoben. */
+@keyframes vorhang-notaus {
+  99%  { opacity: 0; transform: none; }
+  100% { opacity: 0; visibility: hidden; transform: translateY(-200vh); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vorhang { display: none; }
+}
+
+/* ═══ Auftakt ═════════════════════════════════════════════════════════ */
+
+.auftakt {
+  position: relative;
+  display: grid;
+  gap: var(--a4);
+  align-items: center;
+  max-width: calc(var(--spalte) + 2 * var(--rand));
+  margin-inline: auto;
+  padding: calc(var(--leiste) + var(--a4)) var(--rand) var(--a5);
+  min-height: min(100svh, 62rem);
+}
+/* Ein warmer Schein hinter dem Spiegel, wie Licht aus dem Salon. */
+.auftakt::before {
+  content: ''; position: absolute; z-index: -1;
+  inset: 0 0 0 35%;
+  background: radial-gradient(closest-side at 62% 58%, color-mix(in oklch, var(--bronze) 28%, transparent), color-mix(in oklch, var(--bronze) 12%, transparent) 55%, transparent);
+  pointer-events: none;
+}
+@media (min-width: 60rem) {
+  .auftakt {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+    gap: var(--a5);
+    padding-top: calc(var(--leiste) + var(--a3));
+    padding-bottom: var(--a4);
+  }
+}
+
+.auftakt-satz { max-width: 40rem; }
+
+/* Der Name, klassisch: gesperrte Versalien in der Garamond, darunter
+   der Ort kursiv. Edel und deutlich, aber nicht laut — Grösse und
+   Gewicht bleiben unter dem, was ein Plakat täte. */
+.wortmarke {
+  display: grid; gap: .5rem;
+  margin: 0;
+  font-family: var(--serif);
+  color: var(--tinte);
+}
+.wortmarke-name {
+  font-weight: 500;
+  font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.6rem);
+  line-height: 1;
+  letter-spacing: .16em;
+  margin-right: -.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.wortmarke-ort {
+  font-style: italic; font-weight: 400;
+  font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2.2rem);
+  line-height: 1.15;
+  color: var(--gold-wort);
+}
+.auftakt .auftakt-lauf { margin-top: var(--a3); }
+.auftakt-lauf {
+  margin: var(--a2) 0 0;
+  max-width: 33rem;
+  font-size: 1.075rem;
+  color: var(--tinte-leise);
+  text-wrap: pretty;
+}
+
+/* Die beiden Nummern — wer anrufen will, soll nicht suchen. */
+.rufe {
+  display: grid; grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: var(--a2) var(--a4);
+  margin: var(--a4) 0 0; padding: var(--a3) 0 0;
+  list-style: none;
+  border-top: 1px solid var(--linie);
+}
+.rufe a { display: grid; gap: .3rem; text-decoration: none; }
+.rufe-ort {
+  font: 500 var(--t-mini)/1 var(--marke);
+  letter-spacing: .26em; text-transform: uppercase;
+  color: var(--tinte-still);
+}
+.rufe-nr {
+  font: 400 1.55rem/1.1 var(--serif);
+  letter-spacing: .01em;
+  font-variant-numeric: lining-nums;
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--t2) var(--kurve);
+}
+@media (hover: hover) and (pointer: fine) {
+  .rufe a:hover .rufe-nr { text-decoration-color: var(--gold); }
+}
+.rufe .stand { display: flex; margin-top: .55rem; }
+@media (max-width: 30rem) {
+  .rufe { grid-template-columns: 1fr 1fr; gap: var(--a2); }
+  .rufe-nr { font-size: 1.25rem; }
+}
+
+/* ── Öffnungsstand ────────────────────────────────────────────────── */
+.stand {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font: 500 .76rem/1.3 var(--marke);
+  letter-spacing: .06em;
+  color: var(--tinte-still);
+}
+.stand:empty { display: none; }
+.stand::before {
+  content: ''; flex: none; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--tinte-still);
+}
+.stand.offen::before {
+  background: var(--offen);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--offen) 18%, transparent);
+}
+
+/* ═══ Der Spiegel ═════════════════════════════════════════════════════
+   Ein Rahmen wie die Spiegel in Pasing: aussen ein feiner Goldfaden,
+   dann der Goldrahmen, innen das Glas mit Rundbogen. Im Glas der Blick
+   in den Salon. Über dem Glas liegt das Licht: ein Glanzpunkt und ein
+   schräger Streifen, beide folgen dem Zeiger (am Handy dem Scrollen).
+   Kein Schleier über dem Bild — das Licht ist nur ein Glanz. */
+
+.spiegel {
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 27rem);
+}
+@media (min-width: 60rem) { .spiegel { width: min(100%, 30rem); justify-self: end; } }
+
+.spiegel-rahmen {
+  --lx: 68%; --ly: 22%;
+  position: relative;
+  aspect-ratio: 3 / 4;
+  padding: clamp(9px, 1.1vw, 13px);
+  border-radius: 999px 999px 6px 6px;
+  background: var(--gold-metall);
+  box-shadow:
+    0 1px 0 color-mix(in oklch, var(--weiss-licht) 60%, transparent) inset,
+    0 40px 70px -40px color-mix(in oklch, var(--schatten) 55%, transparent),
+    0 12px 24px -16px color-mix(in oklch, var(--schatten) 35%, transparent);
+}
+/* Der äussere Goldfaden — die zweite Kante des Rahmens. */
+.spiegel-rahmen::before {
+  content: ''; position: absolute; inset: -9px;
+  border-radius: 999px 999px 10px 10px;
+  border: 1px solid var(--linie-gold);
+  pointer-events: none;
+}
+/* Eine feine dunkle Fuge zwischen Rahmen und Glas. */
+.spiegel-rahmen::after {
+  content: ''; position: absolute; inset: clamp(9px, 1.1vw, 13px);
+  border-radius: 999px 999px 3px 3px;
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--bronze) 55%, transparent), inset 0 0 0 1px color-mix(in oklch, var(--weiss-licht) 12%, transparent);
+  pointer-events: none;
+}
+
+.spiegel-glas {
+  position: relative; height: 100%;
+  overflow: hidden;
+  border-radius: 999px 999px 3px 3px;
+  /* Der Bogen als harte Maske: `overflow` mit Rundung schneidet in
+     Safari nicht, solange ein Bild darin animiert wird — dann stand das
+     Foto beim Wechsel kurz als Rechteck im Rahmen. */
+  clip-path: inset(0 round 999px 999px 3px 3px);
+  background: var(--nacht);
+  isolation: isolate;
+}
+.spiegel-bild {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 1.1s var(--kurve), transform 9s var(--kurve-weich);
+}
+/* Kamerafahrt heran, nicht heraus: das sichtbare Bild wächst langsam. */
+.spiegel[data-salon="pasing"] .spiegel-bild-pasing,
+.spiegel[data-salon="grosshadern"] .spiegel-bild-grosshadern {
+  opacity: 1; transform: scale(1.0);
+}
+.spiegel-bild-pasing { object-position: 50% 50%; }
+.spiegel-bild-grosshadern { object-position: 50% 50%; }
+/* Großhadern ist ein Ausschnitt aus einem Querformat und schon nah —
+   die Kamerafahrt beginnt hier kaum vergrössert. */
+.spiegel-bild.spiegel-bild-grosshadern { transform: scale(1.02); }
+
+.spiegel-licht {
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--lx) var(--ly), color-mix(in oklch, var(--weiss-licht) 34%, transparent), color-mix(in oklch, var(--weiss-licht) 8%, transparent) 22%, transparent 46%),
+    linear-gradient(118deg, transparent calc(var(--lx) - 32%), color-mix(in oklch, var(--weiss-licht) 13%, transparent) calc(var(--lx) - 22%),
+                    color-mix(in oklch, var(--weiss-licht) 3%, transparent) calc(var(--lx) - 14%), transparent calc(var(--lx) - 8%));
+  mix-blend-mode: screen;
+}
+/* Beim Wechsel läuft einmal ein Lichtstreif über das Glas. */
+.spiegel-glas::after {
+  content: ''; position: absolute; inset: -10% -60%; z-index: 3;
+  background: linear-gradient(105deg, transparent 40%, color-mix(in oklch, var(--weiss-licht) 32%, transparent) 50%, transparent 60%);
+  transform: translateX(-70%);
+  opacity: 0;
+  pointer-events: none;
+}
+.spiegel.wechsel .spiegel-glas::after { animation: streif 1s var(--kurve) both; }
+@keyframes streif {
+  0%   { transform: translateX(-70%); opacity: 1; }
+  100% { transform: translateX(70%);  opacity: 0; }
+}
+
+.spiegel-fuss {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: .75rem 1rem;
+  margin-top: var(--a3);
+}
+.spiegel-wahl {
+  display: inline-flex; padding: 3px;
+  border: 1px solid var(--linie-gold); border-radius: 999px;
+  background: var(--weiss);
+}
+.spiegel-wahl button {
+  min-height: 2.5rem; padding: .5rem 1.05rem;
+  border: 0; border-radius: 999px; background: transparent;
+  font: 500 var(--t-mini)/1 var(--marke); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--tinte-leise);
+  cursor: pointer;
+  transition: background-color var(--t1) var(--kurve), color var(--t1) var(--kurve);
+}
+.spiegel-wahl button[aria-pressed="true"] { background: var(--tinte); color: var(--papier); }
+.spiegel-ort {
+  font: italic 400 1.15rem/1.2 var(--serif);
+  color: var(--tinte-leise);
+}
+/* Ohne Skript gibt es keinen Umschalter — nur Pasing. */
+html:not(.js) .spiegel-wahl { display: none; }
+
+/* ═══ Das Band ════════════════════════════════════════════════════════
+   Die Strähne, einmal: schmal, an den Enden ausgeblendet, mit Glanz. */
+
+.band {
+  position: relative;
+  height: clamp(64px, 8vw, 118px);
+  margin: var(--a2) 0 0;
+  overflow: hidden;
+}
+.band-straehne {
+  position: absolute; inset: -30% -5%;
+  background: url('bilder/straehne-glanz-quer.webp') 50% 46% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+}
+.band::before, .band::after {
+  content: ''; position: absolute; left: 0; right: 0; z-index: 1; height: 38%;
+  pointer-events: none;
+}
+.band::before { top: 0;    background: linear-gradient(var(--papier), transparent); }
+.band::after  { bottom: 0; background: linear-gradient(transparent, var(--papier)); }
+
+/* ═══ Abschnitte ══════════════════════════════════════════════════════ */
+
+.stufe, .salons, .kontakt { padding-block: var(--a6); }
+.stufe { padding-top: var(--a5); }
+
+/* ── Leistungen: die Übersicht ────────────────────────────────────── */
+
+.angebote {
+  display: grid;
+  margin: 0; padding: 0; list-style: none;
+}
+.angebote li:last-child .angebot { border-bottom: 1px solid var(--linie); }
+@media (min-width: 60rem) {
+  .angebote { grid-template-columns: 1fr 1fr; column-gap: var(--a5); }
+  .angebote li:nth-last-child(2) .angebot { border-bottom: 1px solid var(--linie); }
+}
+.angebot {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr) auto;
+  gap: .25rem 1rem;
+  align-items: baseline;
+  padding: 1.5rem .25rem 1.5rem 0;
+  border-top: 1px solid var(--linie);
+  text-decoration: none;
+}
+.angebot::after {
+  content: ''; position: absolute; left: 0; top: -1px; height: 1px; width: 100%;
+  background: linear-gradient(90deg, var(--gold-tief), var(--gold), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--t2) var(--kurve);
+}
+.angebot-nr {
+  font: italic 400 1.15rem/1 var(--serif);
+  color: var(--gold-schrift);
+}
+.angebot-text { display: grid; gap: .3rem; }
+.angebot-name {
+  font: 500 1.7rem/1.1 var(--serif);
+  transition: transform var(--t1) var(--kurve);
+}
+.angebot-lauf { font-size: .92rem; color: var(--tinte-still); line-height: 1.45; }
+.angebot-preise {
+  display: grid; gap: .3rem; justify-items: end;
+  font: 500 .95rem/1.2 var(--marke);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.angebot-preise i {
+  font-style: normal;
+  font-size: var(--t-mini); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--tinte-still);
+  margin-right: .35rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .angebot:hover::after { transform: none; }
+  .angebot:hover .angebot-name { transform: translateX(4px); }
+}
+@media (max-width: 36rem) {
+  .angebot { grid-template-columns: 2rem minmax(0, 1fr); }
+  .angebot-preise {
+    grid-column: 2;
+    display: flex; flex-wrap: wrap; gap: .3rem 1.25rem;
+    margin-top: .5rem;
+  }
+  .angebot-name { font-size: 1.5rem; }
+}
+
+.mehr { margin: var(--a4) 0 0; }
+
+/* ── Salons: die Fotos ────────────────────────────────────────────── */
+/* Ein Raster mit einheitlichem 3:2: in Spalten standen die Fotos je
+   nach Format versetzt (die Spiegelreihe sass höher als ihre Nachbarn).
+   Die 4:3-Aufnahmen verlieren oben und unten je ein Zwanzigstel. */
+.salons { background: var(--papier-tief); }
+.bilder {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--a3);
+  margin: 0; padding: 0; list-style: none;
+}
+@media (min-width: 40rem) { .bilder { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 64rem) { .bilder { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.bild { margin: 0; }
+.bild-knopf {
+  position: relative; display: block; width: 100%;
+  padding: 0; border: 0; background: var(--nacht);
+  overflow: hidden; cursor: zoom-in;
+}
+.bild-knopf img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; transition: transform 1.2s var(--kurve-weich); }
+.bild-knopf::after {
+  content: ''; position: absolute; inset: 10px;
+  border: 1px solid color-mix(in oklch, var(--linie-gold-hell) 0%, transparent);
+  transition: border-color var(--t2) var(--kurve), inset var(--t2) var(--kurve);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .bild-knopf:hover img { transform: scale(1.035); }
+  .bild-knopf:hover::after { border-color: color-mix(in oklch, var(--linie-gold-hell) 80%, transparent); }
+}
+.bild p {
+  margin: .8rem 0 0;
+  font: 500 var(--t-mini)/1.3 var(--marke);
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--tinte-still);
+}
+
+/* Das grosse Bild */
+.gross-bild {
+  width: min(94vw, 1400px); max-width: none; max-height: 94svh;
+  padding: 0; border: 0; background: transparent; overflow: visible;
+}
+.gross-bild::backdrop { background: color-mix(in oklch, var(--nacht-tief) 90%, transparent); }
+.gross-bild img {
+  width: auto; max-width: 100%; max-height: 84svh; margin: 0 auto;
+  box-shadow: 0 30px 80px -20px color-mix(in oklch, var(--schatten) 60%, transparent);
+}
+.gross-bild-text {
+  margin: 1rem 0 0; text-align: center;
+  font: 500 var(--t-mini)/1.3 var(--marke); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--nacht-still);
+}
+.gross-bild-zu {
+  position: absolute; top: -3.2rem; right: 0;
+  width: 44px; height: 44px; border: 1px solid color-mix(in oklch, var(--linie-gold-hell) 50%, transparent); border-radius: 50%;
+  background: transparent; cursor: pointer;
+}
+.gross-bild-zu span, .gross-bild-zu span::after {
+  position: absolute; left: 50%; top: 50%; width: 18px; height: 1.5px;
+  background: var(--nacht-schrift);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.gross-bild-zu span::after { content: ''; transform: translate(-50%, -50%) rotate(90deg); }
+.gross-bild[open] { animation: auf .5s var(--kurve) both; }
+.gross-bild[open]::backdrop { animation: da .4s var(--kurve) both; }
+@keyframes auf { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+
+/* ── Stimmen: auf dem schwarzen Leder ─────────────────────────────── */
+
+.stimmen {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--a6);
+  background-color: var(--nacht);
+  color: var(--nacht-schrift);
+}
+.stimmen::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(60rem 40rem at 0% 0%, color-mix(in oklch, var(--bronze) 45%, transparent), transparent 60%);
+  pointer-events: none;
+}
+.stimmen .augenzeile { color: var(--nacht-still); }
+.stimmen .augenzeile::before { background: linear-gradient(90deg, var(--gold), var(--gold-hell)); }
+.stimmen .gross { color: var(--nacht-schrift); }
+.stimmen .gold { color: var(--gold-hell); }
+.stimmen .knopf-still { color: var(--nacht-schrift); border-color: color-mix(in oklch, var(--linie-gold-hell) 35%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .stimmen .knopf-still:hover { background: color-mix(in oklch, var(--weiss-licht) 6%, transparent); border-color: var(--gold); }
+}
+
+.stimmen-bau { display: grid; gap: var(--a5); }
+@media (min-width: 64rem) {
+  .stimmen-bau { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--a6); align-items: start; }
+  .stimmen-kopf { position: sticky; top: calc(var(--leiste) + var(--a3)); }
+}
+
+.noten { display: grid; gap: var(--a3); margin-top: var(--a4); }
+.note {
+  display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto;
+  column-gap: 1.25rem; align-items: center;
+  margin: 0; padding-top: var(--a3);
+  border-top: 1px solid color-mix(in oklch, var(--linie-gold-hell) 20%, transparent);
+}
+.note-wert {
+  grid-row: span 2;
+  font: 300 3.6rem/1 var(--serif);
+  font-variant-numeric: lining-nums;
+}
+.note-sterne, .stimme-sterne {
+  display: block;
+  width: calc(5 * 1.1rem); height: 1rem;
+  background: linear-gradient(90deg, var(--gold) var(--voll, 100%), color-mix(in oklch, var(--weiss-licht) 18%, transparent) var(--voll, 100%));
+  -webkit-mask: var(--stern) 0 0 / 1.1rem 1rem repeat-x;
+          mask: var(--stern) 0 0 / 1.1rem 1rem repeat-x;
+}
+.note-text {
+  font: 500 var(--t-mini)/1.5 var(--marke); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--nacht-still);
+}
+
+.stimmen-liste {
+  display: grid; gap: var(--a3);
+}
+@media (min-width: 40rem) { .stimmen-liste { grid-template-columns: 1fr 1fr; } }
+.stimme {
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--a3);
+  margin: 0; padding: var(--a3);
+  border: 1px solid color-mix(in oklch, var(--linie-gold-hell) 16%, transparent);
+  background: color-mix(in oklch, var(--weiss-licht) 2%, transparent);
+}
+.stimme blockquote { margin: 0; }
+.stimme blockquote p { margin: 0; font-size: 1rem; line-height: 1.6; color: var(--tinte-leise); }
+.stimme blockquote p::before { content: '„'; }
+.stimme blockquote p::after  { content: '“'; }
+.stimme-gross { border: 0; padding: 0 0 var(--a3); background: none; }
+@media (min-width: 40rem) { .stimme-gross { grid-column: 1 / -1; } }
+.stimme-gross blockquote p {
+  font: italic 400 clamp(1.65rem, 1.2rem + 1.6vw, 2.5rem)/1.22 var(--serif);
+  color: var(--nacht-schrift);
+  text-wrap: pretty;
+}
+.stimme figcaption {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .9rem;
+  font: 500 var(--t-mini)/1.3 var(--marke); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--nacht-still);
+}
+.stimme-sterne { width: calc(5 * .85rem); height: .78rem; -webkit-mask-size: .85rem .78rem; mask-size: .85rem .78rem; }
+.stimme-wer { color: var(--gold-hell); }
+
+/* ── Standorte ────────────────────────────────────────────────────── */
+
+.orte { display: grid; gap: var(--a3); }
+@media (min-width: 52rem) { .orte { grid-template-columns: 1fr 1fr; } }
+.ort {
+  display: flex; flex-direction: column;
+  background: var(--weiss);
+  border: 1px solid var(--linie);
+}
+.ort-bild { width: 100%; }
+.ort-inhalt { display: flex; flex-direction: column; flex: 1; padding: var(--a3) var(--a3) var(--a3); }
+@media (min-width: 64rem) { .ort-inhalt { padding: var(--a4); } }
+.ort h3 { margin: 0; font: 300 2.6rem/1 var(--serif); }
+.anschrift { margin: .7rem 0 0; font-style: normal; color: var(--tinte-leise); }
+.rufnummer {
+  align-self: flex-start;
+  margin-top: var(--a2);
+  font: 400 1.8rem/1.1 var(--serif);
+  text-decoration: underline 1px var(--gold-tief);
+  text-underline-offset: 7px;
+}
+.zeiten { margin: var(--a3) 0 0; padding: 0; }
+.zeiten div {
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid var(--linie);
+  font-size: .92rem;
+}
+.zeiten dt { color: var(--tinte-leise); }
+.zeiten dd { margin: 0; font-family: var(--marke); font-variant-numeric: tabular-nums; }
+.ort-stand { margin: var(--a2) 0 0; }
+.ort .wahl { margin-top: auto; padding-top: var(--a3); }
+
+/* ── Welcher Salon liegt näher? ───────────────────────────────────────
+   Ein stiller Knopf über den Karten; der nähere Salon bekommt ein
+   Schild und einen Goldfaden um die Karte, beide die Entfernung. */
+.finder {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem;
+  margin: calc(-1 * var(--a3)) 0 var(--a4);
+}
+.finder-knopf { gap: .6rem; }
+.finder-knopf::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  border: 1.5px solid var(--gold);
+}
+.finder-knopf:disabled { opacity: .6; cursor: progress; }
+.finder-text { margin: 0; max-width: 32rem; font-size: .92rem; color: var(--tinte-still); }
+.ort-naeher {
+  align-self: flex-start;
+  margin: 0 0 .8rem; padding: .45rem .8rem;
+  border-radius: 999px;
+  background: var(--tinte); color: var(--papier);
+  font: 500 var(--t-mini)/1 var(--marke); letter-spacing: .18em; text-transform: uppercase;
+}
+.ort-weg {
+  margin: .7rem 0 0;
+  font: 500 .9rem/1.3 var(--marke); letter-spacing: .04em;
+  color: var(--gold-schrift);
+}
+.ort-naeher[hidden], .ort-weg[hidden] { display: none; }
+.ort.ist-naeher { border-color: var(--gold); }
+
+/* ═══ Fuss ════════════════════════════════════════════════════════════ */
+
+.fuss {
+  position: relative;
+  padding: var(--a5) 0 var(--a4);
+  background: var(--nacht-tief);
+  color: var(--nacht-still);
+  text-align: center;
+  overflow: hidden;
+}
+/* Dunkle Strähne, nur als Ahnung. */
+.fuss::before {
+  content: ''; position: absolute; inset: 0;
+  background: url('bilder/straehne-schwarz.webp') 50% 50% / cover no-repeat;
+  opacity: .45;
+  pointer-events: none;
+}
+.fuss .mitte { position: relative; }
+.fuss-siegel { width: 230px; margin: 0 auto; }
+.fuss-marke {
+  margin: var(--a2) 0 0;
+  font: italic 400 1.3rem/1.3 var(--serif);
+  color: var(--nacht-schrift);
+}
+.fuss-wege { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 2rem; margin-top: var(--a3); }
+.fuss-wege a {
+  color: var(--nacht-schrift); text-decoration: none;
+  font: 500 .8rem/2.4 var(--marke); letter-spacing: .12em;
+  border-bottom: 1px solid color-mix(in oklch, var(--linie-gold-hell) 35%, transparent);
+}
+@media (hover: hover) and (pointer: fine) { .fuss-wege a:hover { border-color: var(--gold-hell); } }
+.fuss-recht { margin: var(--a3) 0 0; font-size: .8rem; color: var(--tinte-still); }
+
+/* ═══ Preisliste ══════════════════════════════════════════════════════ */
+
+.preise-kopf { padding: calc(var(--leiste) + var(--a5)) 0 var(--a4); }
+.preise-kopf .lauf { max-width: 40rem; }
+
+/* ── Salonwahl ────────────────────────────────────────────────────── */
+.salonwahl {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .75rem;
+  max-width: 44rem;
+  margin: 0; padding: 0; border: 0;
+}
+.salonwahl input { position: absolute; opacity: 0; pointer-events: none; }
+.salonwahl label {
+  position: relative;
+  display: grid; gap: .35rem;
+  padding: 1.15rem 1.4rem 1.2rem 3.3rem;
+  border: 1px solid var(--linie-stark);
+  background: var(--weiss);
+  cursor: pointer;
+  transition: background-color var(--t1) var(--kurve), color var(--t1) var(--kurve), border-color var(--t1) var(--kurve);
+}
+/* Der Kreis links: leer oder mit Goldpunkt — ein echtes Auswahlfeld. */
+.salonwahl label::before {
+  content: ''; position: absolute; left: 1.2rem; top: 1.45rem;
+  width: 1.1rem; height: 1.1rem; border-radius: 50%;
+  border: 1px solid var(--linie-stark);
+  transition: border-color var(--t1) var(--kurve), box-shadow var(--t1) var(--kurve);
+}
+.salonwahl-name { font: 400 1.75rem/1 var(--serif); }
+.salonwahl-ort {
+  font: 500 var(--t-mini)/1.3 var(--marke); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tinte-still);
+}
+.salonwahl input:checked + label {
+  background: var(--tinte); color: var(--papier); border-color: var(--tinte);
+}
+.salonwahl input:checked + label .salonwahl-ort { color: var(--nacht-still); }
+.salonwahl input:checked + label::before {
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 3px var(--tinte), inset 0 0 0 10px var(--gold);
+}
+.salonwahl input:focus-visible + label { outline: 2px solid var(--gold-tief); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .salonwahl input:not(:checked) + label:hover { border-color: var(--gold-tief); }
+}
+@media (max-width: 30rem) {
+  .salonwahl label { padding: 1rem .9rem 1rem 2.7rem; }
+  .salonwahl label::before { left: .9rem; top: 1.25rem; width: 1rem; height: 1rem; }
+  .salonwahl-name { font-size: 1.5rem; }
+  .salonwahl-ort { letter-spacing: .02em; text-transform: none; font-size: .8rem; }
+}
+
+/* Nur die gewählte Liste steht da. Ohne `:has()` stehen beide
+   untereinander — auch das ist lesbar. */
+.preise:has(#wahl-grosshadern:checked) .salon-pasing,
+.preise:has(#wahl-pasing:checked) .salon-grosshadern { display: none; }
+
+/* ── Gruppen und Zeilen: siehe Schicht „Fenster“ am Ende. ─────────── */
+.preise .mitte { max-width: calc(62rem + 2 * var(--rand)); }
+
+.salon-schluss {
+  margin-top: var(--a5); padding: var(--a4) var(--a3);
+  border: 1px solid var(--linie-gold);
+  background: var(--weiss);
+  text-align: center;
+}
+.salon-schluss p { margin: 0 auto; max-width: 30rem; font: italic 400 1.45rem/1.3 var(--serif); }
+.salon-schluss .wahl { justify-content: center; }
+
+.hinweise { padding-bottom: var(--a6); }
+.legende {
+  display: grid; gap: var(--a3);
+  margin: 0; padding-top: var(--a4);
+  border-top: 1px solid var(--linie);
+}
+@media (min-width: 52rem) { .legende { grid-template-columns: repeat(3, 1fr); } }
+.legende dt {
+  font: 500 var(--t-mini)/1.3 var(--marke); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold-schrift);
+}
+.legende dt .ab { font-size: 1.25rem; letter-spacing: 0; text-transform: none; color: var(--gold-schrift); }
+.legende dd { margin: .5rem 0 0; font-size: .92rem; color: var(--tinte-leise); }
+
+/* ═══ Rechtliches ═════════════════════════════════════════════════════ */
+
+.recht { padding: calc(var(--leiste) + var(--a5)) 0 var(--a6); }
+.recht .mitte { max-width: calc(46rem + 2 * var(--rand)); }
+.riesen { margin: 0 0 var(--a4); font: 300 var(--t-titel)/1.02 var(--serif); }
+.recht h2 { margin: var(--a4) 0 var(--a2); font: 400 1.7rem/1.2 var(--serif); }
+.recht h3 { margin: var(--a3) 0 .5rem; font: 500 1.25rem/1.3 var(--serif); }
+.recht p, .recht li { color: var(--tinte-leise); }
+.recht a { text-decoration-color: var(--gold-tief); text-underline-offset: 3px; }
+.daten { margin: 0; }
+.daten div { display: grid; grid-template-columns: minmax(10rem, 15rem) 1fr; gap: 1rem; padding: .6rem 0; border-bottom: 1px solid var(--linie); }
+.daten dt { font: 500 var(--t-mini)/1.8 var(--marke); letter-spacing: .18em; text-transform: uppercase; color: var(--tinte-still); }
+.daten dd { margin: 0; }
+@media (max-width: 30rem) { .daten div { grid-template-columns: 1fr; gap: .2rem; } }
+
+/* ═══ Auftritt ════════════════════════════════════════════════════════
+   Die Klassen setzt das Skript. Ohne Skript steht alles sofort da. */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.vorlauf .auftakt-satz > *, html.vorlauf .spiegel { opacity: 0; }
+
+  .auftritt {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity var(--t3) var(--kurve), transform var(--t3) var(--kurve);
+  }
+  .auftritt-gross { opacity: 0; transform: translateY(18px); filter: blur(6px);
+    transition: opacity 1s var(--kurve), transform 1s var(--kurve), filter 1s var(--kurve); }
+  .auftritt.auftritt-da, .auftritt-gross.auftritt-da { opacity: 1; transform: none; filter: none; }
+
+  /* Der Spiegel steigt langsamer. */
+  .spiegel.auftritt-gross { transform: translateY(28px) scale(.985); transition-duration: 1.3s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .spiegel-bild { transition: opacity .01s; transform: none !important; }
+  .spiegel.wechsel .spiegel-glas::after { animation: none; }
+  *, *::before, *::after { transition-duration: .01s !important; }
+}
+
+/* Die letzte kleine Stimme steht bei ungerader Zahl allein — dann breit. */
+@media (min-width: 40rem) {
+  .stimmen-liste > .stimme:last-child:nth-child(even) { grid-column: 1 / -1; }
+}
+
+/* Abschnitte mit eigener Fläche tragen den Seitenrand selbst, nicht erst
+   ihr Inhalt — sonst liegt der Inhalt rechnerisch an der Kante der
+   Fläche an. */
+.salons, .stimmen { padding: var(--a6) var(--rand); }
+.salons > .mitte, .stimmen > .mitte { max-width: var(--spalte); padding-inline: 0; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Schicht „Schleife“
+   ═══════════════════════════════════════════════════════════════════════ */
+
+html { scrollbar-color: var(--bronze) var(--papier); }
+::selection { background: color-mix(in oklch, var(--gold) 32%, transparent); color: var(--tinte); }
+@media (hover: hover) and (pointer: fine) {
+  .knopf-still:hover { background: color-mix(in oklch, var(--gold) 8%, transparent); }
+  .pille:hover { background: color-mix(in oklch, var(--gold) 8%, transparent); }
+}
+/* Der Hauptknopf ist schwarz wie das Schild; das Licht läuft als Kante. */
+/* Nur der Hauptknopf leuchtet — wie die Schleife, mit engem Schein.
+   Die stillen Knöpfe daneben behalten die dunkle Linie. */
+.knopf { border-color: var(--knopf-kante); box-shadow: 0 0 10px -1px var(--led-schein); }
+.knopf::after { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .knopf:hover { background: color-mix(in oklch, var(--gold) 12%, var(--knopf-grund)); }
+}
+
+.leiste { background: color-mix(in oklch, var(--papier) 82%, transparent); }
+
+/* ── Der Name wie am Fenster ─────────────────────────────────────────── */
+.wortmarke { display: inline-grid; justify-items: stretch; gap: .9rem; }
+.wortmarke-name {
+  font-family: var(--marke);
+  font-weight: 300;
+  font-size: clamp(2.25rem, 1.2rem + 4vw, 4.8rem);
+  letter-spacing: .3em;
+  margin-right: -.3em;
+  color: var(--tinte);
+}
+.wortmarke-linie {
+  display: flex; align-items: center; gap: 1.1rem;
+  font: 400 clamp(.78rem, .7rem + .3vw, .95rem)/1 var(--marke);
+  letter-spacing: .42em; text-transform: uppercase;
+  margin-right: -.42em;
+  color: var(--tinte-leise);
+  white-space: nowrap;
+}
+.wortmarke-linie::before, .wortmarke-linie::after {
+  content: ''; flex: 1; min-width: 1.5rem; height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklch, var(--gold-hell) 70%, transparent));
+}
+.wortmarke-linie::after { background: linear-gradient(90deg, color-mix(in oklch, var(--gold-hell) 70%, transparent), transparent); margin-right: .42em; }
+
+/* Die Handschrift der Inhaberin, mit dem kleinen Herz aus ihrem Fenster. */
+.handschrift {
+  margin: 0;
+  font-family: var(--hand); font-weight: 400;
+  font-size: clamp(2.1rem, 1.6rem + 1.6vw, 3rem);
+  line-height: 1.05;
+  color: var(--gold-wort);
+}
+.herz {
+  display: inline-block; width: .42em; height: .42em;
+  margin-left: .12em; vertical-align: -.02em;
+  fill: none; stroke: currentColor; stroke-width: 1.4;
+}
+.auftakt-spruch { margin-top: var(--a3); }
+.auftakt .auftakt-lauf { margin-top: var(--a2); }
+
+
+/* ── Der Spiegel: schwarzer Rahmen, LED-Kante, Schleife ─────────────── */
+.spiegel-rahmen {
+  background: var(--gold-metall);
+  box-shadow:
+    0 50px 90px -40px color-mix(in oklch, var(--schatten) 85%, transparent),
+    0 0 90px -30px color-mix(in oklch, var(--gold-tief) 35%, transparent);
+}
+.spiegel-rahmen::before { border-color: color-mix(in oklch, var(--gold) 22%, transparent); }
+.spiegel-rahmen::after {
+  box-shadow:
+    0 0 0 1.5px var(--knopf-kante),
+    0 0 16px 2px var(--led-schein),
+    inset 0 0 22px color-mix(in oklch, var(--gold) 28%, transparent);
+}
+.spiegel-wahl { background: var(--weiss); border-color: var(--linie-gold); }
+.spiegel-wahl button { color: var(--tinte-leise); border: 1px solid transparent; }
+.spiegel-wahl button[aria-pressed="true"] { background: var(--knopf-grund); color: var(--tinte); border-color: var(--knopf-kante); }
+
+/* Die Schleife aus der Vorlage (recherche/schleife.py): schwarzer Satin
+   mit Volumen, hinterleuchtet, das LED-Licht an den Aussen- und
+   Unterkanten. Sie hängt oben rechts am Spiegel wie an der Fassade über
+   dem Fenster — gespiegelt, damit das lange Band aussen herabfällt. */
+.schleife {
+  position: absolute; z-index: 6;
+  width: 60%; left: 52%; top: -9%;
+  overflow: visible;
+  scale: -1 1; rotate: 6deg;
+  filter: drop-shadow(0 26px 30px color-mix(in oklch, var(--schatten) 60%, transparent));
+  pointer-events: none;
+}
+.schleife .led, .vorhang-schleife .led, .zeichen-schleife .led {
+  fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
+}
+.schleife .led-hauch, .vorhang-schleife .led-hauch { stroke-width: 2; opacity: .3; }
+.schleife .schein, .vorhang-schleife .schein { fill: none; stroke: #f3cf86; stroke-width: 14; opacity: .7; }
+.schleife .wand, .vorhang-schleife .wand { opacity: .3; }
+@media (prefers-reduced-motion: no-preference) {
+  /* Beim Laden zieht sich das Licht einmal an den Kanten entlang, dann
+     glimmt die Wand dahinter auf. Danach steht sie still. */
+  .schleife .led, .vorhang-schleife .led { stroke-dasharray: 1; stroke-dashoffset: 1; animation: led-zieht 1.6s var(--kurve) .4s forwards; }
+  .schleife .schein, .vorhang-schleife .schein { opacity: 0; animation: schein-an 1s var(--kurve) 1.3s forwards; }
+  .schleife .wand, .vorhang-schleife .wand { opacity: 0; animation: wand-an 1.2s var(--kurve) 1.3s forwards; }
+  .schleife { animation: schleife-da .9s var(--kurve) .15s both; }
+  .vorhang-schleife .led { animation-duration: 1.1s; animation-delay: .1s; }
+  .vorhang-schleife .schein, .vorhang-schleife .wand { animation-delay: .7s; }
+}
+@keyframes led-zieht { to { stroke-dashoffset: 0; } }
+@keyframes schein-an { to { opacity: .7; } }
+@keyframes wand-an { to { opacity: .3; } }
+@keyframes schleife-da { from { opacity: 0; translate: 0 -14px; } to { opacity: 1; translate: 0 0; } }
+@media (max-width: 59.99rem) { .schleife { width: 44%; left: 58%; top: -7%; } }
+
+/* Ladebildschirm: die Schleife über dem Schriftzug. */
+.vorhang { align-content: center; gap: 1.2rem; }
+.vorhang-schleife { width: min(40vw, 180px); height: auto; overflow: visible; justify-self: center; }
+
+/* Das Zeichen in der Leiste: dieselbe Schleife, klein, ohne Schein. */
+.zeichen-schleife { flex: none; width: 50px; height: 31px; overflow: visible; }
+.zeichen-schleife .led { stroke-width: 12; }
+.zeichen-schleife .led-hauch { display: none; }
+@media (max-width: 47.99rem) { .zeichen-schleife { width: 44px; height: 27px; } }
+
+/* ── Überschriften ───────────────────────────────────────────────────── */
+.gross { font-weight: 300; letter-spacing: -.01em; }
+.gold { font-style: italic; font-weight: 300; }
+/* Das Schild: ein Wort in gesperrten Versalien, darunter die Linie. */
+.schild {
+  margin: 0;
+  font: 300 clamp(2.1rem, 1.3rem + 2.6vw, 3.3rem)/1 var(--marke);
+  letter-spacing: .28em; margin-right: -.28em;
+  text-transform: uppercase;
+  color: var(--tinte);
+}
+.schild::after {
+  content: ''; display: block; width: 4.5rem; height: 1px; margin-top: 1.4rem;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* ═══ Extensions ═════════════════════════════════════════════════════ */
+
+.extensions {
+  position: relative;
+  padding: 5.5rem 0;
+  border-top: 1px solid var(--linie);
+  background:
+    radial-gradient(50rem 26rem at 72% 0%, color-mix(in oklch, var(--bronze) 22%, transparent), transparent 70%),
+    var(--papier);
+}
+@media (min-width: 64rem) { .extensions { padding: 8.5rem 0; } }
+.ext-bau { display: grid; gap: var(--a5); align-items: start; }
+@media (min-width: 64rem) { .ext-bau { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(3rem, 6vw, 6rem); } }
+.ext-spruch { margin-top: var(--a3); }
+/* Zweite Stimme unter dem Schild: die Handschrift aus dem Fenster, kleiner. */
+.schild-zeile { margin-top: var(--a3); font-size: clamp(1.9rem, 1.5rem + 1.2vw, 2.6rem); }
+.schild-zeile + .lauf { margin-top: var(--a2); }
+.stimmen .schild { color: var(--travertin-tinte); }
+.stimmen .schild::after { background: linear-gradient(90deg, var(--travertin-gold), transparent); }
+.stimmen .schild-zeile { color: var(--travertin-hand); }
+.ext-kopf .lauf { color: var(--tinte-leise); }
+
+/* Wie die Folie im Fenster: Kreis mit Zeichen, daneben Versalzeile. */
+.ext-werte { display: grid; gap: 1.15rem; margin: var(--a4) 0 0; padding: 0; list-style: none; }
+.ext-werte li { display: flex; align-items: center; gap: 1.1rem; }
+.ext-werte svg {
+  flex: none; width: 46px; height: 46px; padding: 10px;
+  border: 1px solid color-mix(in oklch, var(--tinte) 38%, transparent); border-radius: 50%;
+  fill: none; stroke: var(--gold); stroke-width: 1.3; stroke-linejoin: round; stroke-linecap: round;
+}
+.ext-werte span { display: grid; gap: .15rem; color: var(--tinte-still); font-size: .92rem; }
+.ext-werte b { font: 500 .78rem/1.3 var(--marke); letter-spacing: .2em; text-transform: uppercase; color: var(--tinte); }
+
+/* ── Das Farbregal ───────────────────────────────────────────────────── */
+.regal { margin: 0; padding: 0; }
+.regal-titel { margin: 0 0 var(--a3); font: 300 1.5rem/1.2 var(--marke); letter-spacing: .01em; }
+.regal-schritt { margin: 0; padding: 0; border: 0; min-width: 0; }
+.regal-schritt + .regal-schritt { margin-top: var(--a3); }
+.regal legend {
+  display: flex; align-items: center; gap: .7rem; padding: 0; margin-bottom: .9rem;
+  font: 500 .78rem/1 var(--marke); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--tinte);
+}
+/* Die Schritte sind eine echte Reihenfolge — deshalb Ziffern. */
+.regal-nr {
+  display: grid; place-items: center; width: 1.7rem; height: 1.7rem;
+  border: 1px solid var(--linie-gold); border-radius: 50%;
+  font-size: .78rem; letter-spacing: 0; color: var(--gold-schrift);
+}
+
+/* Die Nische mit Lichtleiste und Stange, wie im Laden. */
+.regal-nische {
+  position: relative;
+  padding: 1.5rem clamp(.6rem, 1.5vw, 1.2rem) 1.1rem;
+  border-radius: 3px;
+  background:
+    linear-gradient(to bottom, color-mix(in oklch, var(--bronze) 90%, transparent), var(--papier-tief) 32%, var(--nacht));
+  box-shadow: inset 0 1px 0 color-mix(in oklch, var(--gold-hell) 75%, transparent), inset 0 18px 30px -18px color-mix(in oklch, var(--gold) 50%, transparent);
+  overflow: hidden;
+}
+.regal-nische::before {
+  content: ''; position: absolute; left: 4%; right: 4%; top: .9rem; height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--bronze), var(--gold-hell), var(--bronze));
+}
+.regal-reihe {
+  position: relative;
+  display: grid; grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: clamp(.25rem, .8vw, .55rem);
+}
+.strang {
+  position: relative; display: block;
+  /* Lang hängende Bündel wie im Fenster: gut sechsmal so hoch wie breit. */
+  aspect-ratio: 1 / 6.2;
+  cursor: pointer;
+  transform-origin: 50% 0;
+  transition: transform .6s var(--kurve), filter .4s var(--kurve);
+}
+.strang input {
+  position: absolute; inset: 0; z-index: 2; margin: 0;
+  opacity: 0; cursor: pointer;
+}
+/* Das Etikett oben: die schwarze Klammer, an der die Strähne hängt. */
+.strang::before {
+  content: ''; position: absolute; top: 0; left: 18%; right: 18%; height: 16px; z-index: 1;
+  border-radius: 2px 2px 1px 1px;
+  background: linear-gradient(#26201c, #0b0908);
+  border: 1px solid color-mix(in oklch, var(--tinte-still) 25%, transparent);
+  transition: box-shadow .4s var(--kurve), border-color .4s var(--kurve);
+}
+/* Die Strähne: Farbe von der Wurzel zur Spitze, Glanz, Fasern, Rundung. */
+.strang::after {
+  content: ''; position: absolute; top: 12px; left: 0; right: 0; bottom: 0;
+  background:
+    linear-gradient(90deg, color-mix(in oklch, var(--schatten) 32%, transparent), transparent 20%, transparent 78%, color-mix(in oklch, var(--schatten) 34%, transparent)),
+    linear-gradient(100deg, transparent 28%, color-mix(in oklch, var(--weiss-licht) 20%, transparent) 44%, transparent 58%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='400'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55 .006' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 -.38'/%3E%3C/filter%3E%3Crect width='80' height='400' filter='url(%23h)'/%3E%3C/svg%3E") 0 0 / 100% 100%,
+    linear-gradient(180deg, var(--wurzel), var(--ton) 42%, var(--spitze));
+  /* Weich auslaufende Spitze statt Schnittkante: Maske mit Verjüngung und Verlauf. */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 80 39 140 35 182C31 214 25 232 20 240C15 231 9 213 5 182C1 140 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 80 39 140 35 182C31 214 25 232 20 240C15 231 9 213 5 182C1 140 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+}
+.strang:nth-child(3n+2)::after { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 90 38 150 33 190C29 216 26 230 24 240C19 234 12 220 8 196C3 160 0 96 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 90 38 150 33 190C29 216 26 230 24 240C19 234 12 220 8 196C3 160 0 96 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); }
+.strang:nth-child(3n)::after   { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 84 39 146 36 186C33 212 22 230 16 238C13 226 8 206 5 180C1 138 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 84 39 146 36 186C33 212 22 230 16 238C13 226 8 206 5 180C1 138 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); }
+@media (hover: hover) and (pointer: fine) {
+  .strang:hover { transform: rotate(1.6deg); }
+  .strang:nth-child(even):hover { transform: rotate(-1.6deg); }
+}
+/* Gewählt: die Strähne hebt sich, ihre Klammer leuchtet. */
+.strang:has(input:checked) { transform: translateY(-7px); filter: brightness(1.08); }
+.strang:has(input:checked)::before {
+  border-color: var(--knopf-kante);
+  box-shadow: 0 2px 14px 1px var(--led-schein);
+}
+.strang:has(input:focus-visible) { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 3px; }
+
+.regal-name { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1rem; margin: 1rem 0 0; }
+.regal-ton { font: 300 1.5rem/1.1 var(--marke); color: var(--tinte); }
+.regal-hinweis { font-size: .82rem; color: var(--tinte-still); }
+
+.regal-wahl { display: flex; flex-wrap: wrap; gap: .5rem; }
+.regal-wahl label { position: relative; cursor: pointer; }
+.regal-wahl input { position: absolute; opacity: 0; pointer-events: none; }
+.regal-wahl span {
+  display: inline-flex; align-items: center; min-height: 2.75rem; padding: .6rem 1.15rem;
+  border: 1px solid var(--linie-stark); border-radius: 999px;
+  font: 500 .84rem/1 var(--marke); letter-spacing: .06em;
+  color: var(--tinte-leise);
+  transition: border-color var(--t1) var(--kurve), background-color var(--t1) var(--kurve), color var(--t1) var(--kurve);
+}
+.regal-wahl input:checked + span { border-color: var(--gold); background: color-mix(in oklch, var(--gold) 12%, transparent); color: var(--tinte); }
+.regal-wahl input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .regal-wahl label:hover span { border-color: var(--gold-tief); color: var(--tinte); }
+}
+
+.regal-ergebnis { margin-top: var(--a4); padding-top: var(--a3); border-top: 1px solid var(--linie); }
+.regal-satz { margin: 0; font: 300 clamp(1.25rem, 1.1rem + .5vw, 1.55rem)/1.35 var(--marke); color: var(--tinte); }
+.regal-satz b { font-weight: 400; color: var(--gold-wort); }
+.regal-ergebnis .wahl { margin-top: var(--a2); }
+.regal-still { margin: 1rem 0 0; font-size: .85rem; color: var(--tinte-still); }
+
+@media (max-width: 40rem) {
+  /* Am Handy bleiben alle zehn in einer Reihe — schmaler, aber lang. */
+  .regal-reihe { gap: .22rem; }
+  .regal-nische { padding-top: 1.4rem; }
+  .strang::before { left: 12%; right: 12%; }
+}
+
+/* ═══ Leistungen, Salons ═════════════════════════════════════════════ */
+/* Die Nummern trugen keine Information — die Reihenfolge steht für sich. */
+.angebot-nr { display: none; }
+.angebot { grid-template-columns: minmax(0, 1fr) auto; }
+@media (max-width: 36rem) { .angebot { grid-template-columns: minmax(0, 1fr); } .angebot-preise { grid-column: 1; } }
+.angebot-name { font-weight: 300; }
+.salons { border-top: 1px solid var(--linie); }
+
+/* ═══ Stimmen auf Travertin ══════════════════════════════════════════ *
+   Der einzige helle Raum der Seite: die Steinfassade um das Fenster. */
+.stimmen {
+  background-color: var(--travertin);
+  color: var(--travertin-tinte);
+  --stimme-still: var(--travertin-still);
+}
+.stimmen::before {
+  /* Echter Stein aus der Fassade der Vorlage, hell überlegt, damit die
+     Schrift ihre Reserve behält. */
+  background:
+    linear-gradient(180deg, color-mix(in oklch, var(--travertin-hell) 76%, transparent), color-mix(in oklch, var(--travertin) 70%, transparent) 40%, color-mix(in oklch, var(--travertin-tief) 66%, transparent)),
+    var(--travertin-stein) 0 0 / 350px 190px;
+  opacity: 1;
+}
+.stimmen .gross { color: var(--travertin-tinte); }
+.stimmen .gold { color: var(--travertin-gold); }
+.stimmen .note { border-top-color: color-mix(in oklch, var(--travertin-linie) 20%, transparent); }
+.stimmen .note-wert { color: var(--travertin-tinte); }
+.stimmen .note-text, .stimmen .stimme figcaption { color: var(--stimme-still); }
+.stimmen .note-sterne, .stimmen .stimme-sterne {
+  background: linear-gradient(90deg, var(--sterne) var(--voll, 100%), color-mix(in oklch, var(--travertin-linie) 18%, transparent) var(--voll, 100%));
+}
+.stimmen .stimme { border-color: color-mix(in oklch, var(--travertin-linie) 16%, transparent); background: color-mix(in oklch, var(--travertin-hell) 80%, transparent); }
+.stimmen .stimme-gross { background: none; }
+.stimmen .stimme blockquote p { color: var(--travertin-tinte); }
+.stimmen .stimme-gross blockquote p { color: var(--travertin-tinte); font-family: var(--marke); font-style: italic; font-weight: 300; }
+.stimmen .stimme-wer { color: var(--travertin-hand); }
+.stimmen .knopf-still { color: var(--travertin-tinte); border-color: color-mix(in oklch, var(--travertin-linie) 35%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .stimmen .knopf-still:hover { background: color-mix(in oklch, var(--weiss-licht) 30%, transparent); border-color: color-mix(in oklch, var(--travertin-linie) 70%, transparent); }
+}
+.stimmen :focus-visible { outline-color: var(--travertin-linie); }
+
+/* ═══ Standorte ═════════════════════════════════════════════════════ */
+.ort-naeher { background: var(--knopf-grund); color: var(--tinte); border: 1px solid var(--knopf-kante); }
+
+/* ═══ Preisliste ════════════════════════════════════════════════════ */
+.salonwahl input:checked + label { background: var(--knopf-grund); color: var(--tinte); border-color: var(--knopf-kante); }
+.salonwahl input:checked + label .salonwahl-ort { color: var(--tinte-leise); }
+.salonwahl input:checked + label::before { border-color: var(--knopf-kante); box-shadow: inset 0 0 0 3px var(--knopf-grund), inset 0 0 0 10px var(--gold); }
+
+/* Gewählt und Termin im Menü: schwarz mit LED-Kante statt heller Füllung —
+   die einzige helle Fläche der Seite bleibt der Travertin. */
+@media (max-width: 63.99rem) {
+  .wege .wege-termin { background: var(--knopf-grund); color: var(--tinte); border: 1px solid var(--knopf-kante); }
+}
+
+/* Galerie am Handy: immer zwei nebeneinander, weiter antippbar. Die
+   Beschriftung rückt enger, damit „Grosshadern · Eingang“ umbricht statt
+   die Spalte zu sprengen. */
+@media (max-width: 39.99rem) {
+  .bilder { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem .6rem; }
+  .bild p { margin-top: .5rem; font-size: .72rem; letter-spacing: .12em; }
+  .bild-knopf::after { inset: 6px; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Schicht „Fenster“ — Fassung /fenster/
+   Das Handy bekommt eine eigene Komposition statt des gestapelten
+   Desktops: der erste Bildschirm ist das Schaufenster, Kapitel sind
+   klar markiert, Extensions zeigen zuerst das Regal, die Preise hängen
+   als Etiketten an der Stange. Die Preisliste ist auf allen Grössen eine
+   ruhige Karte mit Salon- und Längenwahl. Ab 48rem bleibt die Startseite
+   wie in /schleife/.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Nur-Handy-Bausteine ab Tablet aus. */
+@media (min-width: 48rem) {
+  .fenster-rahmen, .fenster-schrift, .fenster-fuge, .auftakt-lauf-handy,
+  .ext-mehr, .preisregal, .kapitel-fuge, .leiste-kapitel { display: none; }
+}
+
+/* ── Preisliste (alle Grössen) ─────────────────────────────────────── */
+
+/* Die Steuerleiste: Salon und Länge, klebt unter der Kopfleiste und
+   weicht mit ihr aus. */
+.preis-steuer {
+  position: sticky; top: var(--leiste); z-index: 40;
+  padding: .75rem var(--rand);
+  border-block: 1px solid var(--linie);
+  background: color-mix(in oklch, var(--papier) 94%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  transition: transform var(--t2) var(--kurve);
+}
+html.leiste-weg .preis-steuer { transform: translateY(calc(-1 * var(--leiste))); }
+.preis-steuer-bau { display: grid; gap: .7rem; align-items: center; padding-inline: 0; }
+@media (min-width: 48rem) {
+  .preis-steuer-bau { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); gap: var(--a3); }
+}
+.preis-steuer .salonwahl { gap: .5rem; max-width: none; }
+.preis-steuer .salonwahl label {
+  display: flex; align-items: baseline; justify-content: center; gap: .6rem;
+  padding: .6rem .9rem;
+  border-radius: 999px;
+  background: transparent;
+}
+.preis-steuer .salonwahl label::before { display: none; }
+.preis-steuer .salonwahl-name { font: 500 1rem/1.2 var(--marke); letter-spacing: .06em; }
+.preis-steuer .salonwahl-ort { display: none; }
+
+.laengenwahl {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .45rem;
+  margin: 0; padding: 0; border: 0;
+}
+.laengenwahl legend {
+  float: left; margin-right: .35rem;
+  font: 500 .75rem/1 var(--marke); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--tinte-still);
+}
+/* Solange keine Länge gewählt ist, fragt die Leiste danach. */
+.laengenwahl:not(:has(input:checked)) legend { color: var(--gold-schrift); }
+.laengenwahl label { position: relative; cursor: pointer; }
+.laengenwahl input { position: absolute; opacity: 0; pointer-events: none; }
+.laengenwahl span {
+  display: inline-flex; align-items: center; min-height: 2.5rem; padding: .5rem .95rem;
+  border: 1px solid var(--linie-stark); border-radius: 999px;
+  font: 500 .85rem/1 var(--marke); letter-spacing: .04em;
+  color: var(--tinte-leise);
+  transition: border-color var(--t1) var(--kurve), background-color var(--t1) var(--kurve), color var(--t1) var(--kurve);
+}
+.laengenwahl input:checked + span { background: var(--knopf-grund); border-color: var(--knopf-kante); color: var(--tinte); }
+.laengenwahl input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .laengenwahl label:hover span { border-color: var(--gold-tief); color: var(--tinte); }
+}
+
+/* Die gewählte Länge lässt je Leistung nur ihren Preis stehen. Hat eine
+   Leistung diese Länge nicht, bleiben alle Preise sichtbar. */
+.preise:has(#laenge-kurz:checked) .zeile[data-hat~="kurz"] .zeile-preise > div:not([data-l~="kurz"]):not([data-l="immer"]),
+.preise:has(#laenge-mittel:checked) .zeile[data-hat~="mittel"] .zeile-preise > div:not([data-l~="mittel"]):not([data-l="immer"]),
+.preise:has(#laenge-lang:checked) .zeile[data-hat~="lang"] .zeile-preise > div:not([data-l~="lang"]):not([data-l="immer"]) { display: none; }
+
+.salon-liste { padding-top: var(--a4); padding-bottom: var(--a5); }
+
+/* Gruppen: aufklappbar, immer nur eine offen. Der Kopf der offenen
+   Gruppe klebt unter der Steuerleiste. */
+details.gruppe {
+  border-top: 1px solid var(--linie);
+  scroll-margin-top: calc(var(--leiste) + var(--kleb, 7rem));
+}
+details.gruppe:last-of-type { border-bottom: 1px solid var(--linie); }
+details.gruppe > summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto 1.1rem;
+  grid-template-areas: "nr titel ab zu" "nr lauf ab zu";
+  column-gap: 1rem; row-gap: .3rem; align-items: center;
+  padding: 1.3rem 0;
+  list-style: none; cursor: pointer;
+  background: var(--papier);
+}
+details.gruppe > summary::-webkit-details-marker { display: none; }
+details.gruppe[open] > summary {
+  position: sticky; top: calc(var(--leiste) + var(--kleb, 7rem)); z-index: 20;
+  border-bottom: 1px solid var(--linie);
+  transition: transform var(--t2) var(--kurve);
+}
+html.leiste-weg details.gruppe[open] > summary { transform: translateY(calc(-1 * var(--leiste))); }
+.gruppe-nr {
+  grid-area: nr; align-self: start; padding-top: .45rem;
+  font: 500 .75rem/1 var(--marke); letter-spacing: .2em; color: var(--gold-schrift);
+}
+.gruppe-titel { grid-area: titel; margin: 0; font: 300 1.7rem/1.12 var(--marke); letter-spacing: .01em; color: var(--tinte); }
+.gruppe-lauf { grid-area: lauf; font-size: .85rem; line-height: 1.4; color: var(--tinte-still); }
+.gruppe-ab {
+  grid-area: ab; display: grid; justify-items: end; gap: .3rem;
+  font: 500 1rem/1 var(--marke); color: var(--tinte); white-space: nowrap;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.gruppe-ab small { font: 500 .72rem/1 var(--marke); letter-spacing: .12em; text-transform: uppercase; color: var(--tinte-still); }
+/* Plus, das beim Öffnen zum Kreuz dreht. */
+details.gruppe > summary::after {
+  content: ''; grid-area: zu; width: 1.1rem; height: 1.1rem;
+  background:
+    linear-gradient(var(--gold-hell), var(--gold-hell)) center / 100% 1px no-repeat,
+    linear-gradient(var(--gold-hell), var(--gold-hell)) center / 1px 100% no-repeat;
+  transition: transform var(--t2) var(--kurve);
+}
+details.gruppe[open] > summary::after { transform: rotate(45deg); }
+details.gruppe > summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) {
+  details.gruppe > summary:hover .gruppe-titel { color: var(--gold-hell); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  details.gruppe[open] > .zeilen { animation: zeilen-da .45s var(--kurve) both; }
+}
+@keyframes fuge-an { from { opacity: 0; } }
+@keyframes kante-x { to { transform: scaleX(1); } }
+@keyframes kante-y { to { transform: scaleY(1); } }
+@keyframes zeilen-da { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* Eine Leistung = eine Zeile: Name und Angaben links, Preis rechts. */
+.zeilen { margin: 0; padding: 0 0 .5rem; list-style: none; }
+.zeile {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1.25rem; align-items: start;
+  padding: 1.1rem 0;
+  border-top: 1px solid color-mix(in oklch, var(--tinte) 8%, transparent);
+}
+.zeile:first-child { border-top: 0; }
+.zeile-name { margin: 0; font: 500 1.125rem/1.3 var(--marke); letter-spacing: .01em; color: var(--tinte); }
+.zeile-meta { margin: .35rem 0 0; font-size: .8rem; line-height: 1.45; color: var(--tinte-still); }
+.zeile-marke {
+  display: inline-block; margin-top: .45rem;
+  font: 500 .72rem/1 var(--marke); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--gold-schrift);
+}
+.zeile-preise { display: grid; gap: .35rem; margin: 0; padding-top: .1rem; justify-items: end; text-align: right; }
+.zeile-preise > div { display: flex; align-items: baseline; justify-content: flex-end; gap: .6rem; }
+.zeile-preise dt {
+  font: 500 .72rem/1 var(--marke); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tinte-still); white-space: nowrap;
+}
+.zeile-preise dd {
+  margin: 0; font: 500 1.125rem/1.2 var(--marke); color: var(--tinte); white-space: nowrap;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.zeile-preise dd.wort { font: italic 400 1rem/1.2 var(--marke); color: var(--tinte-leise); }
+.zeile-preise .ab { font-size: .75rem; letter-spacing: .06em; color: var(--tinte-still); }
+.gruppe-schluss { margin: .75rem 0 1.75rem; }
+/* Der Buchungsweg am Ende der Gruppe: ruhig, in normaler Schrift. */
+.gruppe-schluss .knopf-still { text-transform: none; letter-spacing: .02em; font-size: .92rem; }
+
+/* ── Kopfleiste: das Kapitel ─────────────────────────────────────────── */
+.leiste-kapitel {
+  max-width: 11rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font: 500 .72rem/1 var(--marke); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--gold-schrift);
+}
+.leiste-kapitel:empty { display: none; }
+
+
+/* ═══ Handy ═══════════════════════════════════════════════════════════ */
+@media (max-width: 47.99rem) {
+
+  /* ── Schrifttreppe: klare Sprünge statt Nuancen ─────────────────── */
+  .schild { font-size: 1.95rem; letter-spacing: .26em; margin-right: -.26em; }
+  .schild::after { margin-top: 1.1rem; }
+  .schild-zeile { margin-top: 1.1rem; font-size: 1.75rem; }
+  .lauf { font-size: 1rem; line-height: 1.65; }
+  .kopfzeile { margin-bottom: var(--a4); }
+  .kopfzeile .lauf { margin-top: 1.1rem; }
+
+  /* ── Kapitel: Nummer über dem Schild, Fuge über dem Abschnitt ───── */
+  .schild[data-nr]::before {
+    content: attr(data-nr);
+    display: block; margin-bottom: .9rem;
+    font: 500 .75rem/1 var(--marke); letter-spacing: .3em;
+    color: var(--gold-schrift);
+  }
+  .stimmen .schild[data-nr]::before { color: var(--travertin-gold); }
+  section[data-kapitel] { position: relative; }
+  .kapitel-fuge {
+    position: absolute; z-index: 3; left: var(--rand); right: var(--rand); top: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--knopf-kante) 12%, var(--knopf-kante) 88%, transparent);
+    filter: drop-shadow(0 0 4px var(--led-schein));
+    transform-origin: 0 50%;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .kapitel-fuge { transform: scaleX(0); transition: transform .9s var(--kurve); }
+    .kapitel-an > .kapitel-fuge { transform: none; }
+  }
+  /* Der Grund wechselt spürbar von Kapitel zu Kapitel. */
+  /* Rand am Abschnitt selbst (1.25rem = --rand am Handy), weil er hier eine eigene Fläche hat. */
+  .stufe { background: var(--nacht); padding-left: 1.25rem; padding-right: 1.25rem; }
+  .stufe > .mitte { padding-left: 0; padding-right: 0; }
+  .extensions, .stufe, .salons, .kontakt { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+
+  /* ── Leiste: Name, darunter das Kapitel ─────────────────────────── */
+  .marke-text { gap: .35rem; }
+
+  /* ── Der erste Bildschirm: das Schaufenster ─────────────────────── */
+  .auftakt { padding: var(--leiste) 0 var(--a5); gap: var(--a4); min-height: 0; overflow-x: clip; }
+  .auftakt::before { display: none; }
+  .auftakt-satz {
+    position: relative; isolation: isolate;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    max-width: none;
+    min-height: calc(100svh - var(--leiste));
+    padding: 0 calc(var(--rand) + 10px) calc(1.5rem + 10px);
+  }
+  .fenster-rahmen {
+    position: absolute; inset: 10px; z-index: -1;
+    pointer-events: none;
+    /* Das Licht im Laden hinter dem Glas: warm von oben, unten Nacht. */
+    background:
+      radial-gradient(95% 55% at 25% 0%, color-mix(in oklch, var(--bronze) 45%, transparent), transparent 72%),
+      linear-gradient(to bottom, transparent 55%, color-mix(in oklch, var(--nacht-tief) 70%, transparent));
+  }
+  /* Drei Kanten; die vierte ist die Fuge, die später auf den Spiegel wandert. */
+  .fk { position: absolute; background: var(--knopf-kante); filter: drop-shadow(0 0 5px var(--led-schein)); }
+  .fk-links  { left: 0; top: 0; bottom: 0; width: 1.5px; transform-origin: 50% 100%; }
+  .fk-oben   { left: 0; right: 0; top: 0; height: 1.5px; transform-origin: 0 50%; }
+  .fk-rechts { right: 0; top: 0; bottom: 0; width: 1.5px; transform-origin: 50% 0; }
+  .fenster-schleife {
+    position: absolute; top: -22px; right: -16px;
+    width: 47%; max-width: 15rem; height: auto;
+    overflow: visible;
+    scale: -1 1; rotate: 4deg;
+    filter: drop-shadow(0 18px 22px color-mix(in oklch, var(--schatten) 60%, transparent));
+  }
+  .fenster-schleife .led { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+  .fenster-schleife .led-hauch { stroke-width: 2; opacity: .3; }
+  .fenster-schleife .schein { fill: none; stroke: var(--gold); stroke-width: 14; opacity: .7; }
+  .fenster-schleife .wand { opacity: .3; }
+
+  /* Die Beschriftung auf dem Glas, oben links neben der Schleife. */
+  .fenster-schrift {
+    position: absolute; top: calc(10px + 1.9rem); left: calc(10px + var(--rand));
+    margin: 0; padding: 0; list-style: none;
+    font: 400 .75rem/2.1 var(--marke); letter-spacing: .22em; text-transform: uppercase;
+    color: var(--tinte-leise);
+  }
+  .fenster-schrift .herz { width: .95rem; height: .95rem; margin: .35rem 0 0 .2rem; }
+
+  .wortmarke { gap: .75rem; }
+  .wortmarke-name { font-size: min(9.2vw, 2.5rem); }
+  .wortmarke-linie { font-size: .72rem; letter-spacing: .36em; margin-right: -.36em; }
+  .auftakt-spruch { margin-top: 1.4rem; font-size: min(2.2rem, 8.2vw); white-space: nowrap; }
+  .auftakt-satz .auftakt-lauf { display: none; }
+  .auftakt .wahl { margin-top: 1.6rem; }
+  .auftakt .wahl .knopf { width: 100%; min-height: 3.25rem; }
+  .auftakt .wahl .knopf-still { display: none; }
+
+  /* Die Telefonnummern als zwei kleine Leuchtschilder. */
+  .rufe { grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1rem; padding-top: 0; border-top: 0; }
+  .rufe li {
+    padding: .7rem .85rem;
+    border: 1px solid color-mix(in oklch, var(--gold) 32%, transparent);
+    background: color-mix(in oklch, var(--knopf-grund) 80%, transparent);
+  }
+  .rufe a { gap: .35rem; }
+  .rufe-ort { font-size: .72rem; color: var(--gold-schrift); }
+  .rufe-nr { font-size: 1rem; }
+  .rufe .stand { display: none; }
+
+  /* Die untere Kante des Fensters wandert beim Scrollen auf den Spiegel. */
+  .fenster-fuge {
+    position: absolute; z-index: 5;
+    top: calc(100svh - 11px); left: 10px; right: 10px; height: 1.5px;
+    background: var(--knopf-kante);
+    filter: drop-shadow(0 0 5px var(--led-schein));
+    transform-origin: 50% 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  .spiegel { margin-inline: var(--rand); }
+  .spiegel .schleife { display: none; }
+  .spiegel-rahmen::after { opacity: calc(.35 + .65 * var(--glut, 1)); }
+  .auftakt-lauf-handy { margin: 0; padding-inline: var(--rand); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Die LED zieht sich einmal um das Fenster: links hinauf, oben quer, rechts hinab. */
+    .fk-links  { transform: scaleY(0); animation: kante-y .55s var(--kurve) .3s forwards; }
+    .fk-oben   { transform: scaleX(0); animation: kante-x .6s var(--kurve) .8s forwards; }
+    .fk-rechts { transform: scaleY(0); animation: kante-y .55s var(--kurve) 1.35s forwards; }
+    /* Nur die Wartezeit abdecken (backwards): danach führt das Skript die Deckkraft. */
+    .fenster-fuge { animation: fuge-an .6s var(--kurve) 1.6s backwards; }
+    .fenster-schrift li { opacity: 0; animation: da .6s var(--kurve) forwards; }
+    .fenster-schrift li:nth-child(1) { animation-delay: 1s; }
+    .fenster-schrift li:nth-child(2) { animation-delay: 1.09s; }
+    .fenster-schrift li:nth-child(3) { animation-delay: 1.18s; }
+    .fenster-schrift li:nth-child(4) { animation-delay: 1.27s; }
+    .fenster-schrift li:nth-child(5) { animation-delay: 1.36s; }
+    .fenster-schleife .led { stroke-dasharray: 1; stroke-dashoffset: 1; animation: led-zieht 1.6s var(--kurve) .5s forwards; }
+    .fenster-schleife .schein { opacity: 0; animation: schein-an 1s var(--kurve) 1.4s forwards; }
+    .fenster-schleife .wand { opacity: 0; animation: wand-an 1.2s var(--kurve) 1.4s forwards; }
+  }
+
+  /* ── Extensions: zuerst das Regal, dann der Rest ────────────────── */
+  .ext-bau { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .ext-kopf { display: contents; }
+  .ext-kopf .schild { order: 1; }
+  .ext-spruch { order: 2; margin-top: 1.1rem; font-size: 1.75rem; }
+  .ext-mehr { order: 3; margin-top: 1.25rem; }
+  .regal { order: 4; margin-top: 2.25rem; }
+  .ext-werte { order: 5; }
+  .ext-lauf { display: none; }
+
+  .ext-mehr summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: .85rem 0;
+    border-block: 1px solid var(--linie);
+    font: 500 .85rem/1.35 var(--marke); letter-spacing: .04em;
+    color: var(--tinte-leise);
+    list-style: none; cursor: pointer;
+  }
+  .ext-mehr summary::-webkit-details-marker { display: none; }
+  .ext-mehr summary::after {
+    content: ''; flex: none; width: .9rem; height: .9rem;
+    background:
+      linear-gradient(var(--gold-hell), var(--gold-hell)) center / 100% 1px no-repeat,
+      linear-gradient(var(--gold-hell), var(--gold-hell)) center / 1px 100% no-repeat;
+    transition: transform var(--t2) var(--kurve);
+  }
+  .ext-mehr[open] summary::after { transform: rotate(45deg); }
+  .ext-mehr p { margin: 1rem 0 0; color: var(--tinte-leise); line-height: 1.65; }
+
+  .regal-titel { font-size: 1.5rem; }
+  .regal-ergebnis .wahl { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .regal-ergebnis .wahl .knopf, .regal-ergebnis .wahl .knopf-still { padding-inline: .8rem; min-width: 0; }
+  .regal-ergebnis .regal-kopie { grid-column: 1 / -1; }
+
+  /* Die fünf Werte als wischbare Reihe kleiner Karten. */
+  .ext-werte {
+    display: flex; gap: .7rem;
+    margin: 2.5rem calc(-1 * var(--rand)) 0; padding: 0 var(--rand) .25rem;
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--rand);
+    scrollbar-width: none;
+  }
+  .ext-werte::-webkit-scrollbar { display: none; }
+  .ext-werte li {
+    flex: 0 0 9.75rem; scroll-snap-align: start;
+    flex-direction: column; align-items: flex-start; gap: .85rem;
+    padding: 1.1rem 1rem;
+    border: 1px solid var(--linie);
+    background: var(--weiss);
+  }
+
+  /* ── Preise: die Etiketten an der Stange ────────────────────────── */
+  .angebote { display: none; }
+  .preisregal { margin-top: calc(-1 * var(--a2)); }
+  .etiketten-wahl {
+    display: inline-flex; gap: .25rem; margin: 0; padding: .25rem;
+    border: 1px solid var(--linie-gold); border-radius: 999px;
+  }
+  .etiketten-wahl label { position: relative; cursor: pointer; }
+  .etiketten-wahl input { position: absolute; opacity: 0; pointer-events: none; }
+  .etiketten-wahl span {
+    display: inline-flex; align-items: center; min-height: 2.5rem; padding: .5rem 1.1rem;
+    border: 1px solid transparent; border-radius: 999px;
+    font: 500 .8rem/1 var(--marke); letter-spacing: .16em; text-transform: uppercase;
+    color: var(--tinte-leise);
+  }
+  .etiketten-wahl input:checked + span { background: var(--knopf-grund); border-color: var(--knopf-kante); color: var(--tinte); }
+  .etiketten-wahl input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* Die Stange mit Lichtleiste, wie über den Haarbündeln im Laden: eine
+     helle Kante, darunter fällt das Licht auf die Etiketten. */
+  .etiketten-stange {
+    margin: 1.5rem 0 0;
+    border-top: 2px solid var(--gold-hell);
+    background: linear-gradient(to bottom, color-mix(in oklch, var(--gold) 16%, transparent), transparent 5rem);
+  }
+  .etiketten {
+    display: flex; gap: .85rem;
+    margin: 0; padding: 1.75rem 0 1.25rem;
+    list-style: none;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    /* Rechts weich ausblenden: hier geht es weiter. */
+    -webkit-mask: linear-gradient(90deg, var(--schatten) 82%, transparent);
+            mask: linear-gradient(90deg, var(--schatten) 82%, transparent);
+  }
+  .etiketten::-webkit-scrollbar { display: none; }
+  .etiketten li { position: relative; flex: none; scroll-snap-align: start; }
+  /* Die Schnur vom Etikett zur Stange. */
+  .etiketten li::before {
+    content: ''; position: absolute; left: 50%; top: -1.75rem; width: 1px; height: 2.35rem;
+    background: linear-gradient(var(--gold-tief), color-mix(in oklch, var(--gold-tief) 40%, transparent));
+  }
+  .etikett {
+    position: relative;
+    display: grid; grid-template-rows: auto auto 1fr auto; gap: .45rem;
+    width: 8.75rem; height: 11rem;
+    padding: 1.6rem 1rem 1rem;
+    background: linear-gradient(170deg, var(--weiss), var(--knopf-grund) 70%);
+    border: 1px solid color-mix(in oklch, var(--gold) 28%, transparent);
+    clip-path: polygon(20% 0, 80% 0, 100% 11%, 100% 100%, 0 100%, 0 11%);
+    text-decoration: none; color: var(--tinte);
+    transform-origin: 50% 0;
+    transition: transform var(--t2) var(--kurve), border-color var(--t1) var(--kurve);
+  }
+  .etikett:active { transform: rotate(-2deg); }
+  .etikett:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .etikett-loch {
+    position: absolute; left: calc(50% - 5px); top: .55rem; width: 10px; height: 10px;
+    border: 1px solid var(--gold-tief); border-radius: 50%;
+    background: var(--papier);
+  }
+  .etikett-nr { font: 500 .72rem/1 var(--marke); letter-spacing: .2em; color: var(--gold-schrift); }
+  .etikett-name { font: 400 1rem/1.25 var(--marke); letter-spacing: .01em; }
+  .etikett-preis {
+    align-self: end;
+    font: 500 1.25rem/1 var(--marke); font-variant-numeric: tabular-nums lining-nums;
+    padding-top: .7rem; border-top: 1px solid var(--linie);
+  }
+  .etikett-preis[data-salon="grosshadern"] { display: none; }
+  .preisregal:has(input[value="grosshadern"]:checked) .etikett-preis[data-salon="pasing"] { display: none; }
+  .preisregal:has(input[value="grosshadern"]:checked) .etikett-preis[data-salon="grosshadern"] { display: block; }
+  .etiketten-hinweis {
+    margin: 0; text-align: center;
+    font: 500 .72rem/1 var(--marke); letter-spacing: .2em; text-transform: uppercase;
+    color: var(--tinte-still);
+  }
+  .stufe .mehr { margin-top: var(--a3); }
+  /* Etiketten und Umschalter erklären sich selbst. */
+  .stufe .kopfzeile .lauf { display: none; }
+
+  /* ── Stimmen: wischbar statt einer langen Säule ─────────────────── */
+  .stimmen-liste {
+    display: flex; gap: .75rem;
+    margin-inline: calc(-1 * var(--rand)); padding: 0 var(--rand) .25rem;
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--rand);
+    scrollbar-width: none;
+  }
+  .stimmen-liste::-webkit-scrollbar { display: none; }
+  .stimmen-liste .stimme { flex: 0 0 84%; scroll-snap-align: start; }
+  .stimmen-liste .stimme-gross {
+    padding: var(--a3);
+    border: 1px solid color-mix(in oklch, var(--travertin-linie) 16%, transparent);
+    background: color-mix(in oklch, var(--travertin-hell) 80%, transparent);
+  }
+  .stimme-gross blockquote p { font-size: 1.25rem; line-height: 1.45; }
+
+  /* ── Preisliste am Handy ─────────────────────────────────────────── */
+  .preise-kopf { padding: calc(var(--leiste) + var(--a4)) 0 var(--a3); }
+  .preis-steuer .salonwahl label { min-height: 2.75rem; padding: .5rem .6rem; }
+  .laengenwahl { flex-wrap: nowrap; }
+  .laengenwahl legend { float: none; width: 100%; margin: 0 0 .45rem; font-size: .72rem; }
+  .laengenwahl span { min-height: 2.5rem; padding: .45rem .85rem; font-size: .85rem; white-space: nowrap; }
+  details.gruppe > summary {
+    grid-template-columns: auto minmax(0, 1fr) auto 1.1rem;
+    grid-template-areas: "nr titel titel zu" "nr lauf ab ab";
+    column-gap: .8rem; row-gap: .45rem; padding: 1.15rem 0;
+  }
+  .gruppe-ab { align-self: end; }
+  .zeile { column-gap: 1rem; }
+}
+@media (max-width: 23rem) {
+  .laengenwahl span { padding-inline: .65rem; }
+}

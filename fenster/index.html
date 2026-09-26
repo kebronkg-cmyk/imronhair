@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Irmonhair &mdash; Friseur in M&uuml;nchen-Pasing und Gro&szlig;hadern</title>
+<meta name="description" content="Irmonhair, Friseur mit zwei Salons in M&uuml;nchen: Irmonherstra&szlig;e 7 in Pasing (089 821 116 4) und W&uuml;rmtalstra&szlig;e 119 in Gro&szlig;hadern (089 785 977 70). Schnitt, Farbe, Str&auml;hnen und Balayage, Haarverl&auml;ngerung, Augenbrauen und Permanent Make-up.">
+<meta name="theme-color" content="#0d0907">
+<link rel="icon" href="logo-schleife.svg" type="image/svg+xml">
+<link rel="stylesheet" href="neu.css">
+<!-- Verhindert, dass der Auftakt kurz steht und dann von vorn beginnt.
+     Die Klasse nimmt sich selbst zurück, falls das Skript nie ankommt. -->
+<script>var d=document.documentElement;d.className+=' vorlauf';setTimeout(function(){d.classList.remove('vorlauf')},1600)</script>
+<link rel="preload" href="schrift/Jost.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="schrift/Sacramento.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="schrift/Mulish.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="bilder/spiegel-pasing.webp" as="image" type="image/webp">
+</head>
+<body>
+<!-- IMPECCABLE · Richtungsvertrag (Seed 1b5d0fd1)
+THESIS: Die Seite ist das Schaufenster an der Irmonherstraße bei Nacht, nicht eine Friseur-Vorlage: schwarzer Satin, warmes LED-Licht, eine leuchtende Schleife; Extensions stehen im Fenster.
+OWN-WORLD: Nachtschwarz und Satin als Fläche, LED-Gold nur als Kante am Element im Fokus, Travertin als heller Gegenraum, Creme für Schrift; gesperrte Jost-Versalien wie die Beschriftung, Sacramento als Handschrift, dünne Herz- und Liniensymbole.
+STORY: Zwei Salons, eine neue Richtung: Extensions aus Echthaar. Sie wählen im Farbregal ihren Ton, Länge und Wunsch und buchen die Beratung.
+FIRST VIEWPORT: links IRMONHAIR gross, darunter „Extensions · Friseur“ zwischen Haarlinien, Handschrift „More Hair. More You.“, Termin-Knopf in LED-Gold, beide Nummern; rechts der Spiegel im schwarzen Rahmen mit LED-Kante, oben links die leuchtende Schleife.
+FORM: Nacht-Schaufenster, von der Inhaberin vorgegeben (Vorgabe schlägt den Wurf).
+HANDY (/fenster/): eigene Komposition unter 48rem — der Bildschirm ist das Schaufenster (LED-Rahmen, Schleife auf der Ecke, ein Knopf), Kapitel mit Nummer und Lichtfuge, Regal vor Text, Preisetiketten statt Liste; Desktop/Tablet unverändert.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+
+<!-- ══ Der Vorhang ═══════════════════════════════════════════════════════
+     Beim Betreten steht kurz der Schriftzug, der Haarstrich zieht sich
+     durch — dann öffnet sich die Seite. Frühestens nach 0,9 s,
+     spätestens nach 1,8 s; ohne Skript holt ihn die CSS nach 4 s weg. -->
+<div class="vorhang" aria-hidden="true">
+  <!-- schleife:vorhang --><svg class="vorhang-schleife" viewBox="0 0 560 900" aria-hidden="true" focusable="false"><defs><linearGradient id="sv-band" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#221d1b"/><stop offset="0.3" stop-color="#0b0909"/><stop offset="0.58" stop-color="#35302d"/><stop offset="0.72" stop-color="#0e0c0b"/><stop offset="1" stop-color="#060505"/></linearGradient><linearGradient id="sv-fahne" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3330"/><stop offset="0.45" stop-color="#121010"/><stop offset="1" stop-color="#040303"/></linearGradient><linearGradient id="sv-vorn" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="#4a423d"/><stop offset="0.22" stop-color="#141211"/><stop offset="0.5" stop-color="#3b3431"/><stop offset="0.66" stop-color="#0f0d0c"/><stop offset="1" stop-color="#040303"/></linearGradient><linearGradient id="sv-sl" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#514742"/><stop offset="0.28" stop-color="#1e1a18"/><stop offset="0.58" stop-color="#0a0808"/><stop offset="0.86" stop-color="#2a2522"/><stop offset="1" stop-color="#141110"/></linearGradient><linearGradient id="sv-sr" x1="1" y1="0" x2="0.2" y2="1"><stop offset="0" stop-color="#1a1614"/><stop offset="0.35" stop-color="#48403b"/><stop offset="0.62" stop-color="#100e0d"/><stop offset="1" stop-color="#050404"/></linearGradient><linearGradient id="sv-knoten" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#554b45"/><stop offset="0.25" stop-color="#1a1715"/><stop offset="0.62" stop-color="#0b0909"/><stop offset="1" stop-color="#2e2826"/></linearGradient><linearGradient id="sv-led" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3d6"/><stop offset=".5" stop-color="#f7d99c"/><stop offset="1" stop-color="#eab96a"/></linearGradient><filter id="sv-glut" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter><filter id="sv-weich" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter><filter id="sv-wand" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="22"/></filter></defs><g class="wand" filter="url(#sv-wand)" fill="#f0c67a"><path d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z"/><path d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z"/><path d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z"/><path d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z"/><path d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z"/></g><path d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z" fill="url(#sv-band)"/><path class="led led-hauch" d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z" pathLength="1" stroke="url(#sv-led)"/><path class="schein" d="M178 578C160 660 138 776 120 886L262 764" filter="url(#sv-glut)"/><path class="led" d="M178 578C160 660 138 776 120 886L262 764" pathLength="1" stroke="url(#sv-led)"/><path class="schein" d="M262 300C263 460 263 620 262 764" filter="url(#sv-glut)"/><path class="led" d="M262 300C263 460 263 620 262 764" pathLength="1" stroke="url(#sv-led)"/><path d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z" fill="url(#sv-fahne)"/><path class="led led-hauch" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z" pathLength="1" stroke="url(#sv-led)"/><path class="schein" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348" filter="url(#sv-glut)"/><path class="led" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348" pathLength="1" stroke="url(#sv-led)"/><path d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z" fill="url(#sv-vorn)"/><path class="led led-hauch" d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z" pathLength="1" stroke="url(#sv-led)"/><path class="schein" d="M96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640" filter="url(#sv-glut)"/><path class="led" d="M96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640" pathLength="1" stroke="url(#sv-led)"/><path d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z" fill="url(#sv-sl)"/><path class="led led-hauch" d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z" pathLength="1" stroke="url(#sv-led)"/><path class="schein" d="M40 14C18 30 8 80 10 130C12 150 16 160 24 168" filter="url(#sv-glut)"/><path class="led" d="M40 14C18 30 8 80 10 130C12 150 16 160 24 168" pathLength="1" stroke="url(#sv-led)"/><path d="M14 140C60 120 170 128 246 150L248 168C170 172 70 168 14 146Z" fill="#030202"/><path class="schein" d="M14 146C70 168 170 172 248 168" filter="url(#sv-glut)"/><path class="led" d="M14 146C70 168 170 172 248 168" pathLength="1" stroke="url(#sv-led)"/><path d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z" fill="url(#sv-sr)"/><path class="led led-hauch" d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z" pathLength="1" stroke="url(#sv-led)"/><path class="schein" d="M540 36C552 64 550 110 546 140C544 158 540 168 532 176" filter="url(#sv-glut)"/><path class="led" d="M540 36C552 64 550 110 546 140C544 158 540 168 532 176" pathLength="1" stroke="url(#sv-led)"/><path d="M546 136C500 120 400 128 344 150L342 168C400 172 490 166 546 146Z" fill="#030202"/><path class="schein" d="M546 146C490 166 400 172 342 168" filter="url(#sv-glut)"/><path class="led" d="M546 146C490 166 400 172 342 168" pathLength="1" stroke="url(#sv-led)"/><g filter="url(#sv-weich)" fill="#fff" opacity=".16"><path d="M56 24C120 20 196 58 238 104C190 78 120 50 52 46Z"/><path d="M40 70C90 76 150 96 200 128C140 110 90 100 36 96Z"/><path d="M500 26C452 30 392 64 352 108C400 82 452 54 506 46Z"/><path d="M112 268C140 330 150 400 148 470C166 400 160 330 132 262Z"/><path d="M200 250C214 330 214 420 206 520C224 420 226 330 214 246Z"/><path d="M236 330C244 460 246 600 240 740C256 600 256 460 248 326Z"/><path d="M290 92C294 130 294 170 290 206C304 170 306 130 302 94Z"/></g><path d="M244 98C276 86 316 86 346 100L338 206C310 216 276 216 252 208Z" fill="url(#sv-knoten)"/><path class="led led-hauch" d="M244 98C276 86 316 86 346 100L338 206C310 216 276 216 252 208Z" pathLength="1" stroke="url(#sv-led)"/><path class="led" d="M244 98L252 208" pathLength="1" stroke="url(#sv-led)" opacity=".75"/><path d="M258 104C262 140 262 176 258 206M330 106C326 140 326 176 330 206" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="3"/></svg><!-- /schleife:vorhang -->
+  <img class="vorhang-siegel" src="logo-schriftzug-hell.svg" alt="" width="280" height="124">
+</div>
+
+<a class="sprung" href="#auftakt-titel">Zum Inhalt springen</a>
+
+<header class="leiste">
+  <a class="marke" href="index.html" aria-label="Irmonhair, zur Startseite">
+    <!-- schleife:zeichen --><svg class="zeichen-schleife" viewBox="-6 -6 572 356" aria-hidden="true" focusable="false"><defs><linearGradient id="sz-band" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#221d1b"/><stop offset="0.3" stop-color="#0b0909"/><stop offset="0.58" stop-color="#35302d"/><stop offset="0.72" stop-color="#0e0c0b"/><stop offset="1" stop-color="#060505"/></linearGradient><linearGradient id="sz-fahne" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3330"/><stop offset="0.45" stop-color="#121010"/><stop offset="1" stop-color="#040303"/></linearGradient><linearGradient id="sz-vorn" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="#4a423d"/><stop offset="0.22" stop-color="#141211"/><stop offset="0.5" stop-color="#3b3431"/><stop offset="0.66" stop-color="#0f0d0c"/><stop offset="1" stop-color="#040303"/></linearGradient><linearGradient id="sz-sl" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#514742"/><stop offset="0.28" stop-color="#1e1a18"/><stop offset="0.58" stop-color="#0a0808"/><stop offset="0.86" stop-color="#2a2522"/><stop offset="1" stop-color="#141110"/></linearGradient><linearGradient id="sz-sr" x1="1" y1="0" x2="0.2" y2="1"><stop offset="0" stop-color="#1a1614"/><stop offset="0.35" stop-color="#48403b"/><stop offset="0.62" stop-color="#100e0d"/><stop offset="1" stop-color="#050404"/></linearGradient><linearGradient id="sz-knoten" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#554b45"/><stop offset="0.25" stop-color="#1a1715"/><stop offset="0.62" stop-color="#0b0909"/><stop offset="1" stop-color="#2e2826"/></linearGradient><linearGradient id="sz-led" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3d6"/><stop offset=".5" stop-color="#f7d99c"/><stop offset="1" stop-color="#eab96a"/></linearGradient><linearGradient id="sz-aus" x1="0" y1="0" x2="0" y2="1"><stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="sz-maske" maskUnits="userSpaceOnUse" x="-20" y="-20" width="600" height="420"><rect x="-20" y="-20" width="600" height="420" fill="url(#sz-aus)"/></mask></defs><g mask="url(#sz-maske)"><path d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z" fill="url(#sz-band)"/><path class="led led-hauch" d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z" pathLength="1" stroke="url(#sz-led)"/><path class="led" d="M178 578C160 660 138 776 120 886L262 764" pathLength="1" stroke="url(#sz-led)"/><path class="led" d="M262 300C263 460 263 620 262 764" pathLength="1" stroke="url(#sz-led)"/><path d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z" fill="url(#sz-fahne)"/><path class="led led-hauch" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z" pathLength="1" stroke="url(#sz-led)"/><path class="led" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348" pathLength="1" stroke="url(#sz-led)"/><path d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z" fill="url(#sz-vorn)"/><path class="led led-hauch" d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z" pathLength="1" stroke="url(#sz-led)"/><path class="led" d="M96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640" pathLength="1" stroke="url(#sz-led)"/><path d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z" fill="url(#sz-sl)"/><path class="led led-hauch" d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z" pathLength="1" stroke="url(#sz-led)"/><path class="led" d="M40 14C18 30 8 80 10 130C12 150 16 160 24 168" pathLength="1" stroke="url(#sz-led)"/><path d="M14 140C60 120 170 128 246 150L248 168C170 172 70 168 14 146Z" fill="#030202"/><path class="led" d="M14 146C70 168 170 172 248 168" pathLength="1" stroke="url(#sz-led)"/><path d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z" fill="url(#sz-sr)"/><path class="led led-hauch" d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z" pathLength="1" stroke="url(#sz-led)"/><path class="led" d="M540 36C552 64 550 110 546 140C544 158 540 168 532 176" pathLength="1" stroke="url(#sz-led)"/><path d="M546 136C500 120 400 128 344 150L342 168C400 172 490 166 546 146Z" fill="#030202"/><path class="led" d="M546 146C490 166 400 172 342 168" pathLength="1" stroke="url(#sz-led)"/><path d="M244 98C276 86 316 86 346 100L338 206C310 216 276 216 252 208Z" fill="url(#sz-knoten)"/><path class="led led-hauch" d="M244 98C276 86 316 86 346 100L338 206C310 216 276 216 252 208Z" pathLength="1" stroke="url(#sz-led)"/><path class="led" d="M244 98L252 208" pathLength="1" stroke="url(#sz-led)" opacity=".75"/><path d="M258 104C262 140 262 176 258 206M330 106C326 140 326 176 330 206" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="3"/></g></svg><!-- /schleife:zeichen -->
+    <span class="marke-text">
+      <span class="marke-wort">Irmonhair</span>
+      <span class="marke-zusatz">Friseur &middot; M&uuml;nchen</span>
+      <span class="leiste-kapitel" aria-hidden="true"></span>
+    </span>
+  </a>
+  <nav class="wege" id="wege" aria-label="Hauptmen&uuml;">
+    <a href="#extensions">Extensions</a>
+    <a href="#leistungen">Leistungen</a>
+    <a href="#salons">Salons</a>
+    <a href="#bewertungen">Bewertungen</a>
+    <a href="leistungen.html">Preisliste</a>
+    <a class="wege-termin" href="#standorte">Termin buchen</a>
+  </nav>
+  <a class="pille" href="tel:+49898211164"><span class="pille-ort">Pasing</span> 089&nbsp;821&nbsp;116&nbsp;4</a>
+  <button class="klapp" id="klapp" type="button"
+          aria-expanded="false" aria-controls="wege" aria-label="Men&uuml; &ouml;ffnen">
+    <span aria-hidden="true"></span><span aria-hidden="true"></span>
+  </button>
+</header>
+
+<main>
+
+<!-- ══ Auftakt: das Schaufenster ════════════════════════════════════════
+     Links der Name wie auf der Beschriftung, rechts der Spiegel im
+     schwarzen Rahmen mit LED-Kante; oben links hält ihn die Schleife.
+     Der Spiegel zeigt beide Salons, das Licht folgt dem Zeiger.
+     ═══════════════════════════════════════════════════════════
+     Links der Satz, rechts der Spiegel: ein Rahmen wie die goldenen
+     Spiegel in Pasing, darin der Blick in den Salon. Das Licht auf dem
+     Glas folgt dem Zeiger; der Umschalter wechselt den Salon. Beide
+     Telefonnummern stehen im ersten Bildschirm.                      -->
+<section class="auftakt">
+  <div class="auftakt-satz">
+    <!-- Am Handy ist der Bildschirm das Schaufenster: die LED-Kante zieht
+         sich einmal um den Rand, auf der Ecke sitzt die Schleife. -->
+    <div class="fenster-rahmen" aria-hidden="true">
+      <span class="fk fk-links"></span><span class="fk fk-oben"></span><span class="fk fk-rechts"></span>
+      <!-- schleife:fenster --><svg class="fenster-schleife" viewBox="0 0 560 900" aria-hidden="true" focusable="false"><defs><linearGradient id="sf2-band" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#221d1b"/><stop offset="0.3" stop-color="#0b0909"/><stop offset="0.58" stop-color="#35302d"/><stop offset="0.72" stop-color="#0e0c0b"/><stop offset="1" stop-color="#060505"/></linearGradient><linearGradient id="sf2-fahne" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3330"/><stop offset="0.45" stop-color="#121010"/><stop offset="1" stop-color="#040303"/></linearGradient><linearGradient id="sf2-vorn" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="#4a423d"/><stop offset="0.22" stop-color="#141211"/><stop offset="0.5" stop-color="#3b3431"/><stop offset="0.66" stop-color="#0f0d0c"/><stop offset="1" stop-color="#040303"/></linearGradient><linearGradient id="sf2-sl" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#514742"/><stop offset="0.28" stop-color="#1e1a18"/><stop offset="0.58" stop-color="#0a0808"/><stop offset="0.86" stop-color="#2a2522"/><stop offset="1" stop-color="#141110"/></linearGradient><linearGradient id="sf2-sr" x1="1" y1="0" x2="0.2" y2="1"><stop offset="0" stop-color="#1a1614"/><stop offset="0.35" stop-color="#48403b"/><stop offset="0.62" stop-color="#100e0d"/><stop offset="1" stop-color="#050404"/></linearGradient><linearGradient id="sf2-knoten" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#554b45"/><stop offset="0.25" stop-color="#1a1715"/><stop offset="0.62" stop-color="#0b0909"/><stop offset="1" stop-color="#2e2826"/></linearGradient><linearGradient id="sf2-led" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3d6"/><stop offset=".5" stop-color="#f7d99c"/><stop offset="1" stop-color="#eab96a"/></linearGradient><filter id="sf2-glut" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter><filter id="sf2-weich" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter><filter id="sf2-wand" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="22"/></filter></defs><g class="wand" filter="url(#sf2-wand)" fill="#f0c67a"><path d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z"/><path d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z"/><path d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z"/><path d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z"/><path d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z"/></g><path d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z" fill="url(#sf2-band)"/><path class="led led-hauch" d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z" pathLength="1" stroke="url(#sf2-led)"/><path class="schein" d="M178 578C160 660 138 776 120 886L262 764" filter="url(#sf2-glut)"/><path class="led" d="M178 578C160 660 138 776 120 886L262 764" pathLength="1" stroke="url(#sf2-led)"/><path class="schein" d="M262 300C263 460 263 620 262 764" filter="url(#sf2-glut)"/><path class="led" d="M262 300C263 460 263 620 262 764" pathLength="1" stroke="url(#sf2-led)"/><path d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z" fill="url(#sf2-fahne)"/><path class="led led-hauch" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z" pathLength="1" stroke="url(#sf2-led)"/><path class="schein" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348" filter="url(#sf2-glut)"/><path class="led" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348" pathLength="1" stroke="url(#sf2-led)"/><path d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z" fill="url(#sf2-vorn)"/><path class="led led-hauch" d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z" pathLength="1" stroke="url(#sf2-led)"/><path class="schein" d="M96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640" filter="url(#sf2-glut)"/><path class="led" d="M96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640" pathLength="1" stroke="url(#sf2-led)"/><path d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z" fill="url(#sf2-sl)"/><path class="led led-hauch" d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z" pathLength="1" stroke="url(#sf2-led)"/><path class="schein" d="M40 14C18 30 8 80 10 130C12 150 16 160 24 168" filter="url(#sf2-glut)"/><path class="led" d="M40 14C18 30 8 80 10 130C12 150 16 160 24 168" pathLength="1" stroke="url(#sf2-led)"/><path d="M14 140C60 120 170 128 246 150L248 168C170 172 70 168 14 146Z" fill="#030202"/><path class="schein" d="M14 146C70 168 170 172 248 168" filter="url(#sf2-glut)"/><path class="led" d="M14 146C70 168 170 172 248 168" pathLength="1" stroke="url(#sf2-led)"/><path d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z" fill="url(#sf2-sr)"/><path class="led led-hauch" d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z" pathLength="1" stroke="url(#sf2-led)"/><path class="schein" d="M540 36C552 64 550 110 546 140C544 158 540 168 532 176" filter="url(#sf2-glut)"/><path class="led" d="M540 36C552 64 550 110 546 140C544 158 540 168 532 176" pathLength="1" stroke="url(#sf2-led)"/><path d="M546 136C500 120 400 128 344 150L342 168C400 172 490 166 546 146Z" fill="#030202"/><path class="schein" d="M546 146C490 166 400 172 342 168" filter="url(#sf2-glut)"/><path class="led" d="M546 146C490 166 400 172 342 168" pathLength="1" stroke="url(#sf2-led)"/><g filter="url(#sf2-weich)" fill="#fff" opacity=".16"><path d="M56 24C120 20 196 58 238 104C190 78 120 50 52 46Z"/><path d="M40 70C90 76 150 96 200 128C140 110 90 100 36 96Z"/><path d="M500 26C452 30 392 64 352 108C400 82 452 54 506 46Z"/><path d="M112 268C140 330 150 400 148 470C166 400 160 330 132 262Z"/><path d="M200 250C214 330 214 420 206 520C224 420 226 330 214 246Z"/><path d="M236 330C244 460 246 600 240 740C256 600 256 460 248 326Z"/><path d="M290 92C294 130 294 170 290 206C304 170 306 130 302 94Z"/></g><path d="M244 98C276 86 316 86 346 100L338 206C310 216 276 216 252 208Z" fill="url(#sf2-knoten)"/><path class="led led-hauch" d="M244 98C276 86 316 86 346 100L338 206C310 216 276 216 252 208Z" pathLength="1" stroke="url(#sf2-led)"/><path class="led" d="M244 98L252 208" pathLength="1" stroke="url(#sf2-led)" opacity=".75"/><path d="M258 104C262 140 262 176 258 206M330 106C326 140 326 176 330 206" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="3"/></svg><!-- /schleife:fenster -->
+    </div>
+    <!-- Die Beschriftung auf dem Glas, wie im Fenster der Vorlage. -->
+    <ul class="fenster-schrift" aria-label="Leistungen">
+      <li>Extensions</li><li>Haarverl&auml;ngerung</li><li>Haarverdichtung</li><li>Beratung</li>
+      <li aria-hidden="true"><svg class="herz" viewBox="0 0 24 22" aria-hidden="true" focusable="false"><path d="M12 20.5C6 16 1.5 12.2 1.5 7.4 1.5 4.2 4 1.8 7 1.8c2 0 3.8 1 5 2.8 1.2-1.8 3-2.8 5-2.8 3 0 5.5 2.4 5.5 5.6 0 4.8-4.5 8.6-10.5 13.1Z"/></svg></li>
+    </ul>
+    <h1 class="wortmarke" id="auftakt-titel">
+      <span class="wortmarke-name">Irmonhair</span>
+      <span class="wortmarke-linie">Extensions &middot; Friseur</span>
+      <span class="nurlesen"> in M&uuml;nchen, Pasing und Gro&szlig;hadern</span>
+    </h1>
+    <p class="handschrift auftakt-spruch">More Hair. More You. <svg class="herz" viewBox="0 0 24 22" aria-hidden="true" focusable="false"><path d="M12 20.5C6 16 1.5 12.2 1.5 7.4 1.5 4.2 4 1.8 7 1.8c2 0 3.8 1 5 2.8 1.2-1.8 3-2.8 5-2.8 3 0 5.5 2.4 5.5 5.6 0 4.8-4.5 8.6-10.5 13.1Z"/></svg></p>
+    <p class="auftakt-lauf">
+      In M&uuml;nchen, in Pasing und Gro&szlig;hadern: Haarverl&auml;ngerung und
+      Haarverdichtung mit Echthaar, dazu Schnitt, Farbe, Str&auml;hnen und
+      Balayage mit Goldwell, Olaplex und Illumina.
+    </p>
+
+    <div class="wahl">
+      <a class="knopf" href="#standorte">Termin buchen</a>
+      <a class="knopf-still" href="#extensions">Extensions entdecken</a>
+    </div>
+
+    <ul class="rufe" aria-label="Direkt anrufen">
+      <li><a href="tel:+49898211164"><span class="rufe-ort">Pasing</span><span class="rufe-nr">089&nbsp;821&nbsp;116&nbsp;4</span></a>
+        <span class="stand" data-ort="pasing"></span></li>
+      <li><a href="tel:+498978597770"><span class="rufe-ort">Gro&szlig;hadern</span><span class="rufe-nr">089&nbsp;785&nbsp;977&nbsp;70</span></a>
+        <span class="stand" data-ort="grosshadern"></span></li>
+    </ul>
+  </div>
+
+  <figure class="spiegel" data-salon="pasing">
+    <div class="spiegel-rahmen">
+      <!-- schleife:gross --><svg class="schleife" viewBox="0 0 560 900" aria-hidden="true" focusable="false"><defs><linearGradient id="sg-band" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#221d1b"/><stop offset="0.3" stop-color="#0b0909"/><stop offset="0.58" stop-color="#35302d"/><stop offset="0.72" stop-color="#0e0c0b"/><stop offset="1" stop-color="#060505"/></linearGradient><linearGradient id="sg-fahne" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3330"/><stop offset="0.45" stop-color="#121010"/><stop offset="1" stop-color="#040303"/></linearGradient><linearGradient id="sg-vorn" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0" stop-color="#4a423d"/><stop offset="0.22" stop-color="#141211"/><stop offset="0.5" stop-color="#3b3431"/><stop offset="0.66" stop-color="#0f0d0c"/><stop offset="1" stop-color="#040303"/></linearGradient><linearGradient id="sg-sl" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#514742"/><stop offset="0.28" stop-color="#1e1a18"/><stop offset="0.58" stop-color="#0a0808"/><stop offset="0.86" stop-color="#2a2522"/><stop offset="1" stop-color="#141110"/></linearGradient><linearGradient id="sg-sr" x1="1" y1="0" x2="0.2" y2="1"><stop offset="0" stop-color="#1a1614"/><stop offset="0.35" stop-color="#48403b"/><stop offset="0.62" stop-color="#100e0d"/><stop offset="1" stop-color="#050404"/></linearGradient><linearGradient id="sg-knoten" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#554b45"/><stop offset="0.25" stop-color="#1a1715"/><stop offset="0.62" stop-color="#0b0909"/><stop offset="1" stop-color="#2e2826"/></linearGradient><linearGradient id="sg-led" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3d6"/><stop offset=".5" stop-color="#f7d99c"/><stop offset="1" stop-color="#eab96a"/></linearGradient><filter id="sg-glut" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter><filter id="sg-weich" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter><filter id="sg-wand" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="22"/></filter></defs><g class="wand" filter="url(#sg-wand)" fill="#f0c67a"><path d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z"/><path d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z"/><path d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z"/><path d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z"/><path d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z"/></g><path d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z" fill="url(#sg-band)"/><path class="led led-hauch" d="M262 214C262 360 263 560 262 764L120 886C138 776 160 660 178 578C200 480 226 330 246 214Z" pathLength="1" stroke="url(#sg-led)"/><path class="schein" d="M178 578C160 660 138 776 120 886L262 764" filter="url(#sg-glut)"/><path class="led" d="M178 578C160 660 138 776 120 886L262 764" pathLength="1" stroke="url(#sg-led)"/><path class="schein" d="M262 300C263 460 263 620 262 764" filter="url(#sg-glut)"/><path class="led" d="M262 300C263 460 263 620 262 764" pathLength="1" stroke="url(#sg-led)"/><path d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z" fill="url(#sg-fahne)"/><path class="led led-hauch" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348C394 336 360 318 334 298C308 276 294 240 298 204Z" pathLength="1" stroke="url(#sg-led)"/><path class="schein" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348" filter="url(#sg-glut)"/><path class="led" d="M298 204C338 198 362 214 382 250C400 282 412 316 420 348" pathLength="1" stroke="url(#sg-led)"/><path d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z" fill="url(#sg-vorn)"/><path class="led led-hauch" d="M252 196C196 214 128 236 96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640C242 520 252 390 262 302C268 256 280 224 296 206Z" pathLength="1" stroke="url(#sg-led)"/><path class="schein" d="M96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640" filter="url(#sg-glut)"/><path class="led" d="M96 252C116 300 138 352 146 404C152 470 142 534 130 592L182 580L234 640" pathLength="1" stroke="url(#sg-led)"/><path d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z" fill="url(#sg-sl)"/><path class="led led-hauch" d="M246 100C215 70 170 30 120 12C90 2 50 0 30 20C12 40 6 90 10 130C12 150 16 160 24 168C90 190 180 196 252 186Z" pathLength="1" stroke="url(#sg-led)"/><path class="schein" d="M40 14C18 30 8 80 10 130C12 150 16 160 24 168" filter="url(#sg-glut)"/><path class="led" d="M40 14C18 30 8 80 10 130C12 150 16 160 24 168" pathLength="1" stroke="url(#sg-led)"/><path d="M14 140C60 120 170 128 246 150L248 168C170 172 70 168 14 146Z" fill="#030202"/><path class="schein" d="M14 146C70 168 170 172 248 168" filter="url(#sg-glut)"/><path class="led" d="M14 146C70 168 170 172 248 168" pathLength="1" stroke="url(#sg-led)"/><path d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z" fill="url(#sg-sr)"/><path class="led led-hauch" d="M342 106C372 76 420 30 470 16C500 8 530 14 540 36C552 64 550 110 546 140C544 158 540 168 532 176C470 192 400 196 338 184Z" pathLength="1" stroke="url(#sg-led)"/><path class="schein" d="M540 36C552 64 550 110 546 140C544 158 540 168 532 176" filter="url(#sg-glut)"/><path class="led" d="M540 36C552 64 550 110 546 140C544 158 540 168 532 176" pathLength="1" stroke="url(#sg-led)"/><path d="M546 136C500 120 400 128 344 150L342 168C400 172 490 166 546 146Z" fill="#030202"/><path class="schein" d="M546 146C490 166 400 172 342 168" filter="url(#sg-glut)"/><path class="led" d="M546 146C490 166 400 172 342 168" pathLength="1" stroke="url(#sg-led)"/><g filter="url(#sg-weich)" fill="#fff" opacity=".16"><path d="M56 24C120 20 196 58 238 104C190 78 120 50 52 46Z"/><path d="M40 70C90 76 150 96 200 128C140 110 90 100 36 96Z"/><path d="M500 26C452 30 392 64 352 108C400 82 452 54 506 46Z"/><path d="M112 268C140 330 150 400 148 470C166 400 160 330 132 262Z"/><path d="M200 250C214 330 214 420 206 520C224 420 226 330 214 246Z"/><path d="M236 330C244 460 246 600 240 740C256 600 256 460 248 326Z"/><path d="M290 92C294 130 294 170 290 206C304 170 306 130 302 94Z"/></g><path d="M244 98C276 86 316 86 346 100L338 206C310 216 276 216 252 208Z" fill="url(#sg-knoten)"/><path class="led led-hauch" d="M244 98C276 86 316 86 346 100L338 206C310 216 276 216 252 208Z" pathLength="1" stroke="url(#sg-led)"/><path class="led" d="M244 98L252 208" pathLength="1" stroke="url(#sg-led)" opacity=".75"/><path d="M258 104C262 140 262 176 258 206M330 106C326 140 326 176 330 206" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="3"/></svg><!-- /schleife:gross -->
+      <div class="spiegel-glas">
+        <img class="spiegel-bild spiegel-bild-pasing" src="bilder/spiegel-pasing.webp"
+             alt="Salon Pasing: schwarze Kroko-Sessel vor goldgerahmten Spiegeln, hinten der Waschplatz"
+             width="900" height="1200" fetchpriority="high" decoding="async">
+        <img class="spiegel-bild spiegel-bild-grosshadern" src="bilder/spiegel-grosshadern.webp"
+             alt="Salon Gro&szlig;hadern: schwarze Sessel auf dunklem Holzboden, hinten die Waschpl&auml;tze vor der Fensterfront"
+             width="900" height="1200" decoding="async">
+        <span class="spiegel-licht" aria-hidden="true"></span>
+      </div>
+    </div>
+    <figcaption class="spiegel-fuss">
+      <span class="spiegel-wahl" role="group" aria-label="Blick in den Salon">
+        <button type="button" data-salon="pasing" aria-pressed="true">Pasing</button>
+        <button type="button" data-salon="grosshadern" aria-pressed="false">Gro&szlig;hadern</button>
+      </span>
+      <span class="spiegel-ort" aria-live="polite">Irmonherstra&szlig;e&nbsp;7</span>
+    </figcaption>
+  </figure>
+
+  <!-- Am Handy steht der Satz unter dem Spiegel; oben bleibt das Fenster. -->
+  <p class="auftakt-lauf auftakt-lauf-handy">
+    In M&uuml;nchen, in Pasing und Gro&szlig;hadern: Haarverl&auml;ngerung und
+    Haarverdichtung mit Echthaar, dazu Schnitt, Farbe, Str&auml;hnen und
+    Balayage mit Goldwell, Olaplex und Illumina.
+  </p>
+  <span class="fenster-fuge" aria-hidden="true"></span>
+</section>
+
+<!-- ══ Extensions: das Farbregal ═══════════════════════════════════════
+     Die neue Richtung. Links, was die Inhaberin ins Fenster schreibt;
+     rechts das Regal mit zehn Strähnen wie in ihrem Laden: Ton wählen,
+     Länge, Wunsch, daraus entsteht der Text für die Beratung. Ohne
+     Skript bleiben es Radioknöpfe; die Farben sind am Bildschirm
+     angenähert und so beschriftet.                                    -->
+<section class="extensions" id="extensions" aria-labelledby="ext-titel" data-kapitel="Extensions">
+  <span class="kapitel-fuge" aria-hidden="true"></span>
+  <div class="mitte ext-bau">
+    <div class="ext-kopf">
+      <h2 class="schild" id="ext-titel" data-nr="01">Extensions</h2>
+      <p class="handschrift ext-spruch">Sch&ouml;nheit beginnt mit starken Haaren. <svg class="herz" viewBox="0 0 24 22" aria-hidden="true" focusable="false"><path d="M12 20.5C6 16 1.5 12.2 1.5 7.4 1.5 4.2 4 1.8 7 1.8c2 0 3.8 1 5 2.8 1.2-1.8 3-2.8 5-2.8 3 0 5.5 2.4 5.5 5.6 0 4.8-4.5 8.6-10.5 13.1Z"/></svg></p>
+      <details class="ext-mehr">
+        <summary>Echthaar &middot; Tape oder Bondings &middot; Beratung 50&nbsp;&euro;</summary>
+        <p>
+          Haarverl&auml;ngerung und Haarverdichtung mit Echthaar, eingearbeitet in
+          Tape-Technik oder mit Bondings. Am Anfang steht die Beratung: Farbton,
+          L&auml;nge und Menge legen wir gemeinsam fest. Beratung in beiden Salons,
+          50&nbsp;&euro; bei Planity.
+        </p>
+      </details>
+      <p class="lauf ext-lauf">
+        Haarverl&auml;ngerung und Haarverdichtung mit Echthaar, eingearbeitet in
+        Tape-Technik oder mit Bondings. Am Anfang steht die Beratung: Farbton,
+        L&auml;nge und Menge legen wir gemeinsam fest. Beratung in beiden Salons,
+        50&nbsp;&euro; bei Planity.
+      </p>
+      <ul class="ext-werte">
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 6h14l5 7-12 14L4 13z"/><path d="M4 13h24M12 6l4 21 4-21"/></svg><span><b>Echthaar</b> f&uuml;r L&auml;nge und Dichte</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 4c0 9 0 17-2 24M16 4c0 9 0 17 0 24M23 4c0 9 0 17 2 24"/></svg><span><b>Gro&szlig;e Farbauswahl</b> vom hellen Platin bis Espresso</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="11" r="5.5"/><path d="M5.5 28c1.5-6 5.5-9 10.5-9s9 3 10.5 9"/></svg><span><b>Individuelle Beratung</b> f&uuml;r Ihren Look</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="24" r="4"/><circle cx="23" cy="24" r="4"/><path d="M11.5 21 24 4M20.5 21 8 4"/></svg><span><b>Professionelle Einarbeitung</b> Tape-Technik oder Bondings</span></li>
+        <li><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 27C9 22 4 18 4 12.4 4 8.8 6.8 6 10.2 6c2.4 0 4.4 1.2 5.8 3.2C17.4 7.2 19.4 6 21.8 6 25.2 6 28 8.8 28 12.4 28 18 23 22 16 27Z"/></svg><span><b>L&auml;nge. Volumen. Traumhaare.</b> so, wie Sie es sich w&uuml;nschen</span></li>
+      </ul>
+    </div>
+
+    <form class="regal" id="regal" aria-labelledby="regal-titel">
+      <h3 class="regal-titel" id="regal-titel">Ihr Wunsch, in drei Schritten</h3>
+      <fieldset class="regal-schritt regal-toene">
+        <legend><span class="regal-nr">1</span> Farbton</legend>
+        <div class="regal-nische">
+          <div class="regal-reihe">
+            <label class="strang" style="--wurzel:#e9dfc9;--ton:#f2ead8;--spitze:#faf5ea;--i:0"><input type="radio" name="ton" value="Platin"><span class="nurlesen">Platin</span></label>
+            <label class="strang" style="--wurzel:#dccaa6;--ton:#e6d6b4;--spitze:#f1e5c9;--i:1"><input type="radio" name="ton" value="Perlblond"><span class="nurlesen">Perlblond</span></label>
+            <label class="strang" style="--wurzel:#c9ab7c;--ton:#d8bd8e;--spitze:#e6cfa4;--i:2"><input type="radio" name="ton" value="Champagner"><span class="nurlesen">Champagner</span></label>
+            <label class="strang" style="--wurzel:#a97a45;--ton:#c39258;--spitze:#d6aa6f;--i:3"><input type="radio" name="ton" value="Honigblond" checked><span class="nurlesen">Honigblond</span></label>
+            <label class="strang" style="--wurzel:#7f5430;--ton:#9a683c;--spitze:#b27d4c;--i:4"><input type="radio" name="ton" value="Karamell"><span class="nurlesen">Karamell</span></label>
+            <label class="strang" style="--wurzel:#5e3d26;--ton:#74492c;--spitze:#8a5a37;--i:5"><input type="radio" name="ton" value="Haselnuss"><span class="nurlesen">Haselnuss</span></label>
+            <label class="strang" style="--wurzel:#3e2a1f;--ton:#4f3526;--spitze:#62432f;--i:6"><input type="radio" name="ton" value="Schokobraun"><span class="nurlesen">Schokobraun</span></label>
+            <label class="strang" style="--wurzel:#2e211a;--ton:#3a2a20;--spitze:#4a3628;--i:7"><input type="radio" name="ton" value="Mokka"><span class="nurlesen">Mokka</span></label>
+            <label class="strang" style="--wurzel:#1f1712;--ton:#281e18;--spitze:#35281f;--i:8"><input type="radio" name="ton" value="Espresso"><span class="nurlesen">Espresso</span></label>
+            <label class="strang" style="--wurzel:#0f0d0c;--ton:#161312;--spitze:#221d1a;--i:9"><input type="radio" name="ton" value="Schwarz"><span class="nurlesen">Schwarz</span></label>
+          </div>
+        </div>
+        <p class="regal-name" aria-live="polite"><span class="regal-ton">Honigblond</span> <span class="regal-hinweis">Farbbeispiel, am Bildschirm angen&auml;hert</span></p>
+      </fieldset>
+      <fieldset class="regal-schritt">
+        <legend><span class="regal-nr">2</span> L&auml;nge</legend>
+        <div class="regal-wahl">
+          <label><input type="radio" name="laenge" value="schulterlang"><span>Schulterlang</span></label>
+          <label><input type="radio" name="laenge" value="brustlang" checked><span>Brustlang</span></label>
+          <label><input type="radio" name="laenge" value="taillenlang"><span>Taillenlang</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="regal-schritt">
+        <legend><span class="regal-nr">3</span> Wunsch</legend>
+        <div class="regal-wahl">
+          <label><input type="radio" name="ziel" value="mehr L&auml;nge"><span>Mehr L&auml;nge</span></label>
+          <label><input type="radio" name="ziel" value="mehr Volumen"><span>Mehr Volumen</span></label>
+          <label><input type="radio" name="ziel" value="L&auml;nge und Volumen" checked><span>Beides</span></label>
+        </div>
+      </fieldset>
+      <div class="regal-ergebnis">
+        <p class="regal-satz" aria-live="polite">Honigblond, brustlang, mit mehr L&auml;nge und Volumen.</p>
+        <div class="wahl">
+          <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Beratung in Pasing buchen</a>
+          <a class="knopf-still" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Beratung in Gro&szlig;hadern</a>
+          <button type="button" class="knopf-still regal-kopie" hidden>Wunsch kopieren</button>
+        </div>
+        <p class="regal-still" aria-live="polite">Den genauen Ton bestimmen wir mit Ihnen im Salon, am echten Haar.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ══ Leistungen ═══════════════════════════════════════════════════════
+     Acht Gruppen in der Reihenfolge des Ablaufs, jede mit dem Einstiegs-
+     preis beider Salons. Die Zahlen setzt recherche/preise.py aus den
+     Planity-Daten — nicht von Hand ändern.                           -->
+<section class="stufe" id="leistungen" aria-labelledby="leistungen-titel" data-kapitel="Preise">
+  <span class="kapitel-fuge" aria-hidden="true"></span>
+  <div class="mitte">
+    <div class="kopfzeile">
+      <h2 class="schild" id="leistungen-titel" data-nr="02">Preise</h2>
+      <p class="handschrift schild-zeile">Was hier gemacht wird &ndash; und was es kostet.</p>
+      <p class="lauf">
+        Beide Salons haben eigene Preise. Hier steht der Einstieg je Gruppe;
+        die vollst&auml;ndige Liste mit L&auml;ngen und Dauer finden Sie in der Preisliste.
+      </p>
+    </div>
+<!-- preise:uebersicht -->
+<ol class="angebote"><li><a class="angebot" href="leistungen.html#schnitt" data-gruppe="schnitt"><span class="angebot-nr" aria-hidden="true">01</span><span class="angebot-text"><span class="angebot-name">Schnitt &amp; Styling</span><span class="angebot-lauf">Waschen, Schneiden, Föhnen — und Frisuren ohne Schnitt.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 35 €</span><span><i>Großhadern</i> ab 37 €</span></span></a></li><li><a class="angebot" href="leistungen.html#farbe" data-gruppe="farbe"><span class="angebot-nr" aria-hidden="true">02</span><span class="angebot-text"><span class="angebot-name">Farbe &amp; Glossing</span><span class="angebot-lauf">Ansatz, Färben, Glossing und Tönung.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 40 €</span><span><i>Großhadern</i> ab 82 €</span></span></a></li><li><a class="angebot" href="leistungen.html#straehnen" data-gruppe="straehnen"><span class="angebot-nr" aria-hidden="true">03</span><span class="angebot-text"><span class="angebot-name">Strähnen &amp; Balayage</span><span class="angebot-lauf">Oberkopf, halber oder ganzer Kopf — und Balayage.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 110 €</span><span><i>Großhadern</i> ab 147 €</span></span></a></li><li><a class="angebot" href="leistungen.html#pflege" data-gruppe="pflege"><span class="angebot-nr" aria-hidden="true">04</span><span class="angebot-text"><span class="angebot-name">Pflege &amp; Dauerwelle</span><span class="angebot-lauf">Haarkur, Olaplex, Kältebehandlung und Dauerwelle.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 5 €</span><span><i>Großhadern</i> ab 6 €</span></span></a></li><li><a class="angebot" href="leistungen.html#herren" data-gruppe="herren"><span class="angebot-nr" aria-hidden="true">05</span><span class="angebot-text"><span class="angebot-name">Herren</span><span class="angebot-lauf">Schnitt, Bart und Farbe für Herren.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 44 €</span><span><i>Großhadern</i> ab 15 €</span></span></a></li><li><a class="angebot" href="leistungen.html#kinder" data-gruppe="kinder"><span class="angebot-nr" aria-hidden="true">06</span><span class="angebot-text"><span class="angebot-name">Kinder</span><span class="angebot-lauf">Haarschnitte für Mädchen und Jungen.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 30 €</span><span><i>Großhadern</i> ab 30 €</span></span></a></li><li><a class="angebot" href="leistungen.html#verlaengerung" data-gruppe="verlaengerung"><span class="angebot-nr" aria-hidden="true">07</span><span class="angebot-text"><span class="angebot-name">Haarverlängerung</span><span class="angebot-lauf">Extensions und Verdichtung — zuerst die Beratung.</span></span><span class="angebot-preise"><span><i>Pasing</i> ab 50 €</span><span><i>Großhadern</i> ab 50 €</span></span></a></li><li><a class="angebot" href="leistungen.html#gesicht" data-gruppe="gesicht"><span class="angebot-nr" aria-hidden="true">08</span><span class="angebot-text"><span class="angebot-name">Augenbrauen &amp; Make-up</span><span class="angebot-lauf">Brauen, Wimpern, Permanent Make-up.</span></span><span class="angebot-preise"><span><i>Pasing</i> auf Anfrage</span><span><i>Großhadern</i> ab 15 €</span></span></a></li></ol>
+<!-- /preise:uebersicht -->
+    <!-- Am Handy: die Gruppen als Preisetiketten an der Stange, wie die
+         schwarzen Etiketten an den Haarbündeln im Laden. Wischen,
+         antippen führt in die Preisliste — mit dem gewählten Salon. -->
+    <div class="preisregal">
+      <fieldset class="etiketten-wahl">
+        <legend class="nurlesen">Preise zeigen f&uuml;r</legend>
+        <label><input type="radio" name="etikett-salon" value="pasing" checked><span>Pasing</span></label>
+        <label><input type="radio" name="etikett-salon" value="grosshadern"><span>Gro&szlig;hadern</span></label>
+      </fieldset>
+      <div class="etiketten-stange">
+<!-- preise:etiketten -->
+<ul class="etiketten"><li><a class="etikett" href="leistungen.html?salon=pasing#schnitt" data-gruppe="schnitt"><span class="etikett-loch" aria-hidden="true"></span><span class="etikett-nr" aria-hidden="true">01</span><span class="etikett-name">Schnitt &amp; Styling</span><span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>ab 35 €</span><span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>ab 37 €</span></a></li><li><a class="etikett" href="leistungen.html?salon=pasing#farbe" data-gruppe="farbe"><span class="etikett-loch" aria-hidden="true"></span><span class="etikett-nr" aria-hidden="true">02</span><span class="etikett-name">Farbe &amp; Glossing</span><span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>ab 40 €</span><span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>ab 82 €</span></a></li><li><a class="etikett" href="leistungen.html?salon=pasing#straehnen" data-gruppe="straehnen"><span class="etikett-loch" aria-hidden="true"></span><span class="etikett-nr" aria-hidden="true">03</span><span class="etikett-name">Strähnen &amp; Balayage</span><span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>ab 110 €</span><span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>ab 147 €</span></a></li><li><a class="etikett" href="leistungen.html?salon=pasing#pflege" data-gruppe="pflege"><span class="etikett-loch" aria-hidden="true"></span><span class="etikett-nr" aria-hidden="true">04</span><span class="etikett-name">Pflege &amp; Dauerwelle</span><span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>ab 5 €</span><span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>ab 6 €</span></a></li><li><a class="etikett" href="leistungen.html?salon=pasing#herren" data-gruppe="herren"><span class="etikett-loch" aria-hidden="true"></span><span class="etikett-nr" aria-hidden="true">05</span><span class="etikett-name">Herren</span><span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>ab 44 €</span><span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>ab 15 €</span></a></li><li><a class="etikett" href="leistungen.html?salon=pasing#kinder" data-gruppe="kinder"><span class="etikett-loch" aria-hidden="true"></span><span class="etikett-nr" aria-hidden="true">06</span><span class="etikett-name">Kinder</span><span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>ab 30 €</span><span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>ab 30 €</span></a></li><li><a class="etikett" href="leistungen.html?salon=pasing#verlaengerung" data-gruppe="verlaengerung"><span class="etikett-loch" aria-hidden="true"></span><span class="etikett-nr" aria-hidden="true">07</span><span class="etikett-name">Haarverlängerung</span><span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>ab 50 €</span><span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>ab 50 €</span></a></li><li><a class="etikett" href="leistungen.html?salon=pasing#gesicht" data-gruppe="gesicht"><span class="etikett-loch" aria-hidden="true"></span><span class="etikett-nr" aria-hidden="true">08</span><span class="etikett-name">Augenbrauen &amp; Make-up</span><span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>auf Anfrage</span><span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>ab 15 €</span></a></li></ul>
+<!-- /preise:etiketten -->
+      </div>
+      <p class="etiketten-hinweis" aria-hidden="true">Wischen &middot; Etikett antippen</p>
+    </div>
+    <p class="mehr"><a class="knopf-still" href="leistungen.html">Zur vollst&auml;ndigen Preisliste</a></p>
+  </div>
+</section>
+
+<!-- ══ Salons ════════════════════════════════════════════════════════════
+     Die Fotos stammen aus den Planity-Einträgen der Salons. Antippen
+     vergrössert; auf der Kachel steht kein Symbol, die Beschriftung
+     darunter sagt, wo es ist.                                          -->
+<section class="salons" id="salons" aria-labelledby="salons-titel" data-kapitel="Salons">
+  <span class="kapitel-fuge" aria-hidden="true"></span>
+  <div class="mitte">
+    <div class="kopfzeile">
+      <h2 class="schild" id="salons-titel" data-nr="03">Salons</h2>
+      <p class="handschrift schild-zeile">Schwarzes Leder, goldene Rahmen.</p>
+      <p class="lauf">
+        In Pasing sitzen Sie in Kroko-Sesseln vor barock gerahmten Spiegeln,
+        in Gro&szlig;hadern auf Holzboden mit Blick auf die W&uuml;rmtalstra&szlig;e.
+      </p>
+    </div>
+    <ul class="bilder">
+      <li class="bild bild-breit"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-tiefe.webp" aria-label="Pasing, der Salon mit Waschplatz und goldenen Spiegeln, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-tiefe-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; der Salon</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-grosshadern-raum.webp" aria-label="Gro&szlig;hadern, der Salon, gro&szlig; ansehen">
+        <img src="bilder/salon-grosshadern-raum-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
+        <p>Gro&szlig;hadern &middot; der Salon</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-kroko.webp" aria-label="Pasing, Kroko-Leder am Waschplatz, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-kroko-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; Kroko-Leder</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-waschplatz.webp" aria-label="Pasing, der Waschplatz, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-waschplatz-klein.webp" alt="" width="720" height="540" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; Waschplatz</p></li>
+      <li class="bild"><button type="button" class="bild-knopf" data-gross="bilder/salon-pasing-spiegel.webp" aria-label="Pasing, Spiegelreihe, gro&szlig; ansehen">
+        <img src="bilder/salon-pasing-spiegel-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
+        <p>Pasing &middot; Spiegelreihe</p></li>
+      <li class="bild bild-breit"><button type="button" class="bild-knopf" data-gross="bilder/salon-grosshadern-eingang.webp" aria-label="Gro&szlig;hadern, Blick zum Eingang, gro&szlig; ansehen">
+        <img src="bilder/salon-grosshadern-eingang-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async"></button>
+        <p>Gro&szlig;hadern &middot; Eingang</p></li>
+    </ul>
+  </div>
+</section>
+
+<dialog class="gross-bild" id="gross-bild" aria-label="Foto vergr&ouml;&szlig;ert">
+  <p class="gross-bild-text"></p>
+  <button type="button" class="gross-bild-zu" aria-label="Schlie&szlig;en"><span aria-hidden="true"></span></button>
+</dialog>
+
+<!-- ══ Stimmen ═══════════════════════════════════════════════════════════
+     Echt und wörtlich aus den Planity-Einträgen beider Salons (gelesen
+     am 24.09.2026). Planity zeigt keine Namen, nur den Salon und das
+     Datum — so steht es auch hier. Schreibweise unverändert. Der dunkle
+     Grund ist das schwarze Leder der Sessel.                          -->
+<section class="stimmen" id="bewertungen" aria-labelledby="stimmen-titel" data-kapitel="Stimmen">
+  <span class="kapitel-fuge" aria-hidden="true"></span>
+  <div class="mitte stimmen-bau">
+    <div class="stimmen-kopf">
+      <h2 class="schild" id="stimmen-titel" data-nr="04">Stimmen</h2>
+      <p class="handschrift schild-zeile">Das sagen die, die schon da waren.</p>
+      <div class="noten">
+        <p class="note"><span class="note-wert">4,86</span><span class="note-sterne" style="--voll: 97%" aria-hidden="true"></span><span class="note-text">Gro&szlig;hadern<br>31 Bewertungen</span><span class="nurlesen">, 4,86 von 5 Sternen</span></p>
+        <p class="note"><span class="note-wert">5,0</span><span class="note-sterne" style="--voll: 100%" aria-hidden="true"></span><span class="note-text">Pasing<br>5 Bewertungen</span><span class="nurlesen">, 5,0 von 5 Sternen</span></p>
+      </div>
+      <div class="wahl">
+        <a class="knopf-still" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Gro&szlig;hadern bei Planity</a>
+        <a class="knopf-still" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Pasing bei Planity</a>
+      </div>
+    </div>
+
+    <div class="stimmen-liste">
+      <figure class="stimme stimme-gross">
+        <blockquote><p>Bin voll und ganz zufrieden, der Preis ist absolut gerechtfertigt f&uuml;r die Leistung und es wurde genau das umgesetzt, was zuvor besprochen wurde :)</p></blockquote>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Pasing</span><time datetime="2026-09-10">10. September 2026</time></figcaption>
+      </figure>
+      <figure class="stimme">
+        <blockquote><p>Ich lasse mir schon seit mehreren Jahren meine Haare von Momo schneiden und war jedes Mal super zufrieden. Man merkt einfach, dass Momo sein Handwerk versteht. Kann ich wirklich jedem empfehlen!</p></blockquote>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Gro&szlig;hadern</span><time datetime="2026-08-04">4. August 2026</time></figcaption>
+      </figure>
+      <figure class="stimme">
+        <blockquote><p>Der Empfang war sehr herzlich,Mira war wie immer super nett der Haarschnitt passte wie immer,Der Salon war wie immer sehr sauber</p></blockquote>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Gro&szlig;hadern</span><time datetime="2026-09-22">22. September 2026</time></figcaption>
+      </figure>
+      <figure class="stimme">
+        <blockquote><p>Der Friseur Salon ist sch&ouml;n eingerichtet und sauber. Ich wurde herzlichst empfangen und professionell beraten. Die Salon Besitzerin hat mir die Haare gemacht und die sitzn ein Tag sp&auml;ter immer noch!</p></blockquote>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Pasing</span><time datetime="2026-02-28">28. Februar 2026</time></figcaption>
+      </figure>
+      <figure class="stimme">
+        <blockquote><p>Super kompetent, super Arbeit, super Team, super Service, super sauber... Bis zum n&auml;chsten Mal!</p></blockquote>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Pasing</span><time datetime="2026-08-21">21. August 2026</time></figcaption>
+      </figure>
+      <figure class="stimme">
+        <blockquote><p>Momo liefert wie immer Top Arbeit ab</p></blockquote>
+        <figcaption><span class="stimme-sterne" role="img" aria-label="5 von 5 Sternen"></span><span class="stimme-wer">Gro&szlig;hadern</span><time datetime="2026-07-25">25. Juli 2026</time></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Standorte ═════════════════════════════════════════════════════════
+     Zwei Salons, zwei Karten — jede mit Foto, Anschrift, Nummer zum
+     Antippen, Öffnungszeiten, Live-Stand und dem Weg zu Planity. Der
+     Finder misst auf Wunsch die Entfernung zu beiden Salons (neu.js);
+     der Standort verlässt den Browser nicht.                          -->
+<section class="kontakt" id="standorte" aria-labelledby="standorte-titel" data-kapitel="Termin">
+  <span class="kapitel-fuge" aria-hidden="true"></span>
+  <div class="mitte">
+    <div class="kopfzeile">
+      <h2 class="schild" id="standorte-titel" data-nr="05">Termin</h2>
+      <p class="handschrift schild-zeile">Zwei Salons in M&uuml;nchen.</p>
+      <p class="lauf">
+        Online buchen Sie rund um die Uhr bei Planity &mdash; dort sehen Sie
+        die freien Zeiten. Wenn Sie lieber sprechen, rufen Sie den Salon an,
+        der Ihnen n&auml;her liegt.
+      </p>
+    </div>
+    <div class="finder">
+      <button type="button" class="knopf-still finder-knopf" id="finder">Welcher Salon liegt n&auml;her?</button>
+      <p class="finder-text" id="finder-text" aria-live="polite">Ihr Standort wird nur in Ihrem Browser verrechnet und nirgends gespeichert.</p>
+    </div>
+    <div class="orte">
+      <article class="ort" id="salon-pasing" aria-labelledby="ort-pasing">
+        <img class="ort-bild" src="bilder/salon-pasing-rahmen.webp" alt="" width="720" height="480" loading="lazy" decoding="async">
+        <div class="ort-inhalt">
+          <p class="ort-naeher" data-ort="pasing" hidden>N&auml;her an Ihnen</p>
+          <h3 id="ort-pasing">Pasing</h3>
+          <address class="anschrift">Irmonherstra&szlig;e&nbsp;7, 81241&nbsp;M&uuml;nchen</address>
+          <a class="rufnummer" href="tel:+49898211164">089&nbsp;821&nbsp;116&nbsp;4</a>
+          <p class="ort-weg" data-ort="pasing" hidden></p>
+          <dl class="zeiten"><div><dt>Montag</dt><dd>geschlossen</dd></div><div><dt>Dienstag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
+          <p class="ort-stand"><span class="stand" data-ort="pasing"></span></p>
+          <div class="wahl">
+            <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen" target="_blank" rel="noopener">Termin in Pasing buchen</a>
+            <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=Irmonherstra%C3%9Fe+7%2C+81241+M%C3%BCnchen" target="_blank" rel="noopener">Route</a>
+          </div>
+        </div>
+      </article>
+      <article class="ort" id="salon-grosshadern" aria-labelledby="ort-grosshadern">
+        <img class="ort-bild" src="bilder/salon-grosshadern-raum-klein.webp" alt="" width="720" height="480" loading="lazy" decoding="async">
+        <div class="ort-inhalt">
+          <p class="ort-naeher" data-ort="grosshadern" hidden>N&auml;her an Ihnen</p>
+          <h3 id="ort-grosshadern">Gro&szlig;hadern</h3>
+          <address class="anschrift">W&uuml;rmtalstra&szlig;e&nbsp;119, 81375&nbsp;M&uuml;nchen</address>
+          <a class="rufnummer" href="tel:+498978597770">089&nbsp;785&nbsp;977&nbsp;70</a>
+          <p class="ort-weg" data-ort="grosshadern" hidden></p>
+          <dl class="zeiten"><div><dt>Montag&ndash;Freitag</dt><dd>09:00&ndash;18:30</dd></div><div><dt>Samstag</dt><dd>09:00&ndash;16:00</dd></div><div><dt>Sonntag</dt><dd>geschlossen</dd></div></dl>
+          <p class="ort-stand"><span class="stand" data-ort="grosshadern"></span></p>
+          <div class="wahl">
+            <a class="knopf" href="https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen" target="_blank" rel="noopener">Termin in Gro&szlig;hadern buchen</a>
+            <a class="knopf-still" href="https://www.google.com/maps/search/?api=1&amp;query=W%C3%BCrmtalstra%C3%9Fe+119%2C+81375+M%C3%BCnchen" target="_blank" rel="noopener">Route</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="fuss">
+  <div class="mitte">
+    <img class="fuss-siegel" src="logo-schriftzug-hell.svg" alt="Irmonhair" width="280" height="124" loading="lazy" decoding="async">
+    <p class="fuss-marke">Friseur in M&uuml;nchen &middot; Pasing &amp; Gro&szlig;hadern</p>
+    <nav class="fuss-wege" aria-label="Weitere Seiten">
+      <a href="leistungen.html">Preisliste</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </nav>
+    <p class="fuss-recht">&copy; 2026 Irmonhair &middot; Irmonherstra&szlig;e&nbsp;7, 81241 M&uuml;nchen &middot; W&uuml;rmtalstra&szlig;e&nbsp;119, 81375 M&uuml;nchen</p>
+  </div>
+</footer>
+
+<script src="neu.js" defer></script>
+</body>
+</html>

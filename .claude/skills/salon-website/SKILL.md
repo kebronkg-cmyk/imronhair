@@ -69,6 +69,17 @@ Hauptadresse wechselt erst auf Zuruf.
 - **Galerie:** am Handy zwei Bilder nebeneinander, am Desktop drei;
   einheitliches 3:2, Kachel ohne Symbol und ohne Text darauf, Klick
   öffnet eine Ansicht mit Blättern, Esc und Rückkehr an dieselbe Stelle.
+- **Handy eigenständig komponieren**, nicht den Desktop stapeln:
+  - erster Bildschirm als Bild (ein Knopf, die Nummern als kleine Schilder, der Fließtext unter dem ersten Bild),
+  - Kapitel mit Nummer, Lichtfuge und Namen in der Leiste,
+  - das Anschauliche vor dem Text, Wischreihen statt Säulen,
+  - eine Vorschau statt einer Liste (Preisetiketten).
+  Desktop/Tablet dabei per Pixelvergleich unverändert halten.
+- **Preisliste als Karte:**
+  - Salon und Haarlänge oben wählen, gemerkt in `localStorage`, mit `?salon=` und `#gruppe` in der Adresse;
+  - Gruppen als `<details name>` (immer eine offen, der Kopf klebt);
+  - eine Zeile pro Leistung;
+  - Längen als `data-l`, gefiltert per `:has()`, sodass alles auch ohne Skript läuft.
 - **Material echt statt gemalt.** Stein aus einem Fotoausschnitt
   (nahtlos gemacht, hell überlegt), Haar aus einer Textur mit weich
   auslaufender Maske — keine Rauschmuster, die „Stoff“ oder „Wasser“
@@ -151,6 +162,11 @@ Skripte in `scripts/` (Playwright; Pfad über `PLAYWRIGHT_PFAD`):
 | Konsole | `pageerror` + `console.error` abfangen | leer |
 | Verhalten | eigener Kurztest: Umschalter, Auswahl, Ansicht, Tastatur, ohne Skript | alles grün |
 
+**Verbesserung belegen:** Vor dem Umbau die alte Fassung vermessen
+(Wörter im ersten Bildschirm, Abschnittshöhen, Abstand bis zum ersten Bild,
+Kästen, Größenverhältnis Überschrift : Text), danach dieselben Werte der
+neuen. Unveränderte Größen per Pixelvergleich absichern (`ImageChops.difference`).
+
 Behauptungen über Größe, Tempo, Richtung **messen**. Die kleinste Zeile
 über Bild oder Stein scheitert zuerst — sie wird dunkler oder an eine
 dichtere Stelle gesetzt, nicht der Schleier gedreht.
@@ -169,6 +185,12 @@ dichtere Stelle gesetzt, nicht der Schleier gedreht.
 | Stückpreis als „ab“-Einstieg | `pro …` beim Minimum ausschließen |
 | Polygon-Spitzen an organischen Formen (Haar) | Maske mit Verjüngung und Alpha-Verlauf |
 | Zwei gleich wichtige Knöpfe nebeneinander | nur der Hauptknopf leuchtet |
+| Ein Element mit `z-index: -1` verschwindet hinter dem Hintergrund von `body` | Dem Elternteil `isolation: isolate` geben |
+| Eine Wischreihe (`overflow-x: auto`) in einer Flex-Spalte mit `align-items: start` wird so breit wie ihr Inhalt — die Seite wird 879 px breit | In der Spalte `align-items: stretch` |
+| `pathLength` zusammen mit `vector-effect: non-scaling-stroke` strichelt in Chrome falsch — der Rahmen erscheint lückenhaft | Gerade Kanten als Elemente, die per `transform: scale` einwachsen |
+| Eine CSS-Animation mit `forwards` überschreibt Inline-Stile aus dem Skript | Nur die Wartezeit abdecken (`backwards`) oder eine andere Eigenschaft animieren |
+| `<details name>` schließt beim Aufklappen aller Gruppen jede andere — Messungen und Prüfskripte sehen nur eine | Zum Messen `name` entfernen; Elemente in geschlossenen `<details>` haben trotzdem ein Rechteck → `checkVisibility()` |
+| Eine Polsterung wie `padding: x 0 y` auf einem Element mit `.mitte` löscht dessen seitlichen Rand | Nur `padding-top`/`padding-bottom` setzen |
 
 Die älteren Fallen (sticky, Pointer-Capture, `[hidden]`, Grid-Stapel,
 Hysterese, WebView-Textaufblähung …) stehen in `vorlagen/CLAUDE.md`.

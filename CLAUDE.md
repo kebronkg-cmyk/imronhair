@@ -103,6 +103,19 @@ Kurven, Muster (als SVG-Daten-URI) — alles an einer Stelle.
 - **Dasselbe Foto nie zweimal auf einer Seite.** Nach jedem Bildtausch
   alle `src` vergleichen.
 - **Galerie am Handy zwei nebeneinander**, weiter antippbar.
+- **Das Handy ist keine gestapelte Desktop-Seite.** Es bekommt eine eigene
+  Komposition: ein erster Bildschirm, der ein Bild ist (hier: das Schaufenster
+  mit LED-Rahmen und Schleife, genau ein leuchtender Knopf), Kapitel mit
+  Nummer und Lichtfuge, das Anschauliche vor dem Text, Reihen zum Wischen
+  statt Säulen, Vorschauen statt Listen. Desktop und Tablet bleiben dabei
+  pixelgleich — das wird gemessen, nicht angenommen.
+- **Eine Verbesserung wird gemessen, alt gegen neu:** Wörter im ersten
+  Bildschirm, Höhe je Abschnitt, Abstand bis zum Anschaulichen, Anzahl
+  Kästen, Größenverhältnis Überschrift : Text. Wo eine Zahl schlechter
+  wird, wird nachgebessert, bevor es „fertig“ heißt.
+- **Preislisten: fragen statt alles zeigen.** Salon und Haarlänge oben
+  wählen (gemerkt), Gruppen zum Aufklappen, eine Zeile pro Leistung, Preis
+  rechts, am Gruppenende der Buchungsweg.
 - Impressum und Datenschutz als eigene Seite. Copyright in den Footer.
   Telefonnummer schon auf dem ersten Bildschirm.
 
@@ -193,6 +206,12 @@ schlimmer als ein unbeschriftetes.
 | Mehrere Inline-Kopien desselben SVG teilen sich IDs — Verläufe greifen auf die falsche Kopie | ID-Präfix je Einsatz |
 | Helle Hover-Flächen und `theme-color` aus einer hellen Vorgängerfassung | Beim Umfärben gezielt nach hohen Hellwerten suchen |
 | Stückpreis („pro Strähne“) landet als „ab“-Preis in der Übersicht | Beim Minimum `pro …` ausschließen |
+| Ein Element mit `z-index: -1` verschwindet hinter dem Hintergrund von `body` | Dem Elternteil `isolation: isolate` geben |
+| Eine Wischreihe (`overflow-x: auto`) in einer Flex-Spalte mit `align-items: start` wird so breit wie ihr Inhalt — die Seite wird 879 px breit | In der Spalte `align-items: stretch` |
+| `pathLength` zusammen mit `vector-effect: non-scaling-stroke` strichelt in Chrome falsch — der Rahmen erscheint lückenhaft | Gerade Kanten als Elemente, die per `transform: scale` einwachsen |
+| Eine CSS-Animation mit `forwards` überschreibt Inline-Stile aus dem Skript | Nur die Wartezeit abdecken (`backwards`) oder eine andere Eigenschaft animieren |
+| `<details name>` schließt beim Aufklappen aller Gruppen jede andere — Messungen und Prüfskripte sehen nur eine | Zum Messen `name` entfernen; Elemente in geschlossenen `<details>` haben trotzdem ein Rechteck → `checkVisibility()` |
+| Eine Polsterung wie `padding: x 0 y` auf einem Element mit `.mitte` löscht dessen seitlichen Rand | Nur `padding-top`/`padding-bottom` setzen |
 
 ## Zugänglichkeit
 
