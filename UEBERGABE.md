@@ -214,3 +214,17 @@ Bewusst nicht übernommen: die Kapitelnummern 01–05 über den Schildern zu str
 - **Nebenbei behoben:** Bei 1024–1280 px ließ sich die Seite seitlich schieben, weil Telefonpille und Schleife über den Rand ragten. Dieser Fehler besteht in /schleife/ weiterhin.
 - **Handy (< 48rem): gemessen pixelgleich** mit dem Stand davor, Startseite und Preisliste.
 - **Zurück („back“):** den Commit dieser Änderung rückgängig machen (`git revert`). Alles steht in der Schicht „Schrank“ am Ende von `fenster/neu.css` und in wenigen Zeilen in `neu.js`.
+
+### /fenster/ Extensions: Details und WhatsApp-Nachricht (26.09.2026)
+
+- **Details, ohne die Seite zu strecken:**
+  - Die Werte-Liste trägt jetzt die echten Angaben: Beratung 30 Min. · 50 € in beiden Salons (Planity), Tape-Technik oder Bondings (Planity Pasing), ab 7 € pro Strähne und Überlänge extra (Preisliste der Salon-Website), Farben von Platin bis Espresso.
+  - Am Handy stehen diese Fakten in der aufklappbaren Einstiegszeile statt als eigene Liste.
+- **Vier Schritte:** Farbton, Länge, Wunsch, Methode (Tape / Bondings / Beraten Sie mich). Zu Wunsch und Methode erscheint nur die Erklärung zur gewählten Option (`.regal-tipp`, per `:has()`, auch ohne Skript).
+- **Nachricht statt Planity:**
+  - Die Auswahl baut eine WhatsApp-Nachricht, Zeile für Zeile. Der Salon wird als kleiner Umschalter im Kopf der Nachricht gewählt.
+  - Der Text ist vor dem Senden änderbar. Eigene Änderungen bleiben erhalten; eine neue Wahl ersetzt nur ihre Zeile.
+  - „Per WhatsApp senden“ öffnet `wa.me` mit dem fertigen Text; „Text kopieren“ ist der Ausweg.
+  - **Die Nummer steht nur an einer Stelle:** `data-whatsapp` am Knopf in `fenster/index.html` (dazu das `href` für Besucher ohne Skript).
+- **Am Desktop** wird links unter den Werten gewählt und rechts daneben die Nachricht als Live-Vorschau gezeigt. Sie füllt dort den Platz, statt den Abschnitt zu verlängern.
+- **Höhe des Abschnitts, alt → neu:** Handy 1669 → 1890 px (+13 %), iPad 1983 → 2111 px (+6 %), Desktop 1296 → 1455 px (+12 %). Sichtbare Wörter am Handy 108 → 103.

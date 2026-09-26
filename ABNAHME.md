@@ -134,3 +134,12 @@ stellt Extensions nach vorn. Vor dem Umstellen auf die Hauptadresse:
 - **Ein Foto einer Arbeit** — lange Extensions, von hinten, wie das Plakat
   im Fenster — gehört in den Extensions-Abschnitt. Die Seite zeigt bisher
   nur leere Salonräume; ein echtes Ergebnisfoto wäre der stärkste Beweis.
+
+## 9. WhatsApp für Extensions-Anfragen (/fenster/)
+
+- **Welche Nummer hat WhatsApp?**
+  - Öffentlich ist keine WhatsApp- oder Handynummer zu finden. Gesucht auf irmonhair-muenchen.de, im Stadtportal, bei Planity und Instagram. Das Symbol im Fensterentwurf ist ein Telefonhörer.
+  - Die Seite nutzt vorläufig die Hauptnummer Pasing, **+49 89 821 116 4**. Ist sie nicht bei WhatsApp (etwa als WhatsApp Business auf dem Festnetz), zeigt WhatsApp „Nummer nicht bei WhatsApp“.
+  - Bitte die richtige Nummer nennen; sie steht an genau einer Stelle (`data-whatsapp`).
+- **Die Erklärungen zu Tape-Technik und Bondings** sind allgemein gehalten, ohne Haltbarkeit und ohne Zahlen. Bitte gegenlesen, ob sie zur Arbeitsweise im Salon passen.
+- **Großhadern:** Tape und Bondings stehen bei Planity nur für Pasing (siehe Punkt 8). Die Nachricht lässt trotzdem beide Salons zu.

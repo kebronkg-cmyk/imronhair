@@ -407,41 +407,67 @@
   });
 })();
 
-/* ── Das Farbregal ────────────────────────────────────────────────────────
-   Ton, Länge und Wunsch sind Radioknöpfe; hier wird daraus der Satz, der
-   unter dem Regal steht, und auf Wunsch der Text für eine Nachricht an
-   den Salon. Ohne Skript bleibt die Auswahl sichtbar, nur der Satz ruht. */
+/* ── Das Farbregal: der Wunsch als WhatsApp-Nachricht ─────────────────────
+   Ton, Länge, Wunsch, Methode und Salon sind Radioknöpfe. Daraus wird die
+   Nachricht im Textfeld — Zeile für Zeile, so wie der Salon sie lesen
+   will — und der Link „Per WhatsApp senden“ (wa.me, Nummer aus
+   data-whatsapp). Hat die Besucherin den Text selbst geändert, schreibt
+   die Auswahl ihn nicht mehr über; eine neue Wahl fragt nicht, sie setzt
+   nur die betroffene Zeile neu. Ohne Skript stehen ein fertiger Text und
+   ein Link mit dem Anfang der Nachricht da. */
 (function () {
   const regal = document.getElementById('regal');
   if (!regal) return;
   const tonFeld = regal.querySelector('.regal-ton');
-  const satz = regal.querySelector('.regal-satz');
+  const feld = regal.querySelector('#nachricht');
+  const senden = regal.querySelector('.nachricht-senden');
   const kopie = regal.querySelector('.regal-kopie');
   const still = regal.querySelector('.regal-still');
   const ruhe = still ? still.textContent : '';
+  const nummer = senden ? senden.dataset.whatsapp : '';
   const wert = (name) => (regal.querySelector('input[name="' + name + '"]:checked') || {}).value || '';
-  const ZIEL = { 'mehr Länge': 'mit mehr Länge', 'mehr Volumen': 'mit mehr Volumen', 'Länge und Volumen': 'mit mehr Länge und Volumen' };
+  const ZIEL = { laenge: 'mehr Länge', volumen: 'mehr Volumen', beides: 'mehr Länge und Volumen' };
+  const METHODE = { tape: 'Tape-Technik', bondings: 'Bondings', offen: 'bitte beraten Sie mich' };
 
-  function setzen() {
-    const ton = wert('ton'), laenge = wert('laenge'), ziel = wert('ziel');
-    if (tonFeld) tonFeld.textContent = ton;
-    satz.replaceChildren();
-    const b = document.createElement('b'); b.textContent = ton;
-    satz.append(b, ', ' + laenge + ', ' + (ZIEL[ziel] || ziel) + '.');
+  // Die Zeilen der Nachricht, mit festem Schlüssel — so lässt sich eine
+  // einzelne Zeile ersetzen, auch wenn der Rest von Hand geändert wurde.
+  const zeilen = () => ({
+    'Farbton': wert('ton') + ' (Beispiel von der Website)',
+    'Länge': wert('laenge'),
+    'Wunsch': ZIEL[wert('ziel')] || wert('ziel'),
+    'Methode': METHODE[wert('methode')] || wert('methode'),
+    'Salon': wert('salon'),
+  });
+  const vorlage = () => ['Hallo Irmonhair, ich interessiere mich für Extensions.',
+    ...Object.entries(zeilen()).map(([k, v]) => k + ': ' + v),
+    'Ich hätte gern einen Termin zur Beratung.'].join('\n');
+
+  let vonHand = false;
+  function link() {
+    if (senden && nummer) senden.href = 'https://wa.me/' + nummer + '?text=' + encodeURIComponent(feld.value.trim());
   }
-  regal.addEventListener('change', setzen);
+  function setzen(e) {
+    if (tonFeld) tonFeld.textContent = wert('ton');
+    if (!vonHand) feld.value = vorlage();
+    else if (e && e.target && e.target.name) {
+      // Nur die Zeile der geänderten Wahl ersetzen; fehlt sie, bleibt der Text.
+      const z = zeilen();
+      const schluessel = { ton: 'Farbton', laenge: 'Länge', ziel: 'Wunsch', methode: 'Methode', salon: 'Salon' }[e.target.name];
+      if (schluessel) feld.value = feld.value.replace(new RegExp('^' + schluessel + ': .*$', 'm'), schluessel + ': ' + z[schluessel]);
+    }
+    link();
+  }
+  regal.addEventListener('change', (e) => { if (e.target !== feld) setzen(e); });
   regal.addEventListener('submit', (e) => e.preventDefault());
+  feld.addEventListener('input', () => { vonHand = feld.value !== vorlage(); link(); });
   setzen();
 
-  /* Den Wunsch als fertigen Text kopieren — für eine Nachricht an den Salon. */
+  /* Ausweg: den Text kopieren, etwa für SMS oder E-Mail. */
   if (kopie && navigator.clipboard) {
     kopie.hidden = false;
     kopie.addEventListener('click', async () => {
-      const text = 'Hallo Irmonhair, ich interessiere mich für Extensions: Farbton ' + wert('ton') +
-        ' (Farbbeispiel von der Website), ' + wert('laenge') + ', ' + (ZIEL[wert('ziel')] || wert('ziel')) +
-        '. Ich hätte gern einen Termin zur Beratung.';
       try {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(feld.value.trim());
         still.textContent = 'Kopiert — fügen Sie den Text in Ihre Nachricht an den Salon ein.';
       } catch (err) {
         still.textContent = 'Kopieren ging gerade nicht. Rufen Sie gern an: 089 821 116 4.';

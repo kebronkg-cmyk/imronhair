@@ -1451,8 +1451,6 @@ html { scrollbar-color: var(--bronze) var(--papier); }
 }
 
 .regal-ergebnis { margin-top: var(--a4); padding-top: var(--a3); border-top: 1px solid var(--linie); }
-.regal-satz { margin: 0; font: 300 clamp(1.25rem, 1.1rem + .5vw, 1.55rem)/1.35 var(--marke); color: var(--tinte); }
-.regal-satz b { font-weight: 400; color: var(--gold-wort); }
 .regal-ergebnis .wahl { margin-top: var(--a2); }
 .regal-still { margin: 1rem 0 0; font-size: .85rem; color: var(--tinte-still); }
 
@@ -2208,3 +2206,85 @@ details.gruppe > summary:focus-visible { outline: 2px solid var(--gold); outline
    Auftakt schneidet die Schleife am Bildrand ab. */
 @media (min-width: 64rem) and (max-width: 79.99rem) { .pille-ort { display: none; } }
 @media (min-width: 48rem) { .auftakt { overflow-x: clip; } }
+
+
+/* ═══ Extensions: fünf Schritte und die Nachricht ════════════════════════
+   Schritte paarweise nebeneinander, sobald Platz ist; zu jeder Wahl eine
+   Zeile Erklärung, nur zur gewählten (per :has(), ohne Skript). Am Ende
+   die fertige Nachricht als Sprechblase — änderbar, dann per WhatsApp. */
+.regal-paar { display: grid; gap: var(--a3); margin-top: var(--a3); }
+@media (min-width: 40rem) { .regal-paar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 2rem; } }
+.regal-paar .regal-schritt + .regal-schritt { margin-top: 0; }
+
+.regal-tipp {
+  display: none;
+  margin: .75rem 0 0; max-width: 34rem;
+  font-size: .85rem; line-height: 1.5; color: var(--tinte-still);
+}
+.regal-tipp b { font-weight: 600; color: var(--tinte-leise); }
+.regal-schritt:has(input[value="laenge"]:checked) .regal-tipp[data-fuer="laenge"],
+.regal-schritt:has(input[value="volumen"]:checked) .regal-tipp[data-fuer="volumen"],
+.regal-schritt:has(input[value="beides"]:checked) .regal-tipp[data-fuer="beides"],
+.regal-schritt:has(input[value="tape"]:checked) .regal-tipp[data-fuer="tape"],
+.regal-schritt:has(input[value="bondings"]:checked) .regal-tipp[data-fuer="bondings"],
+.regal-schritt:has(input[value="offen"]:checked) .regal-tipp[data-fuer="offen"] { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .regal-tipp { animation: da .4s var(--kurve) both; opacity: 0; }
+}
+
+.regal-paar-einzeln { grid-template-columns: minmax(0, 1fr); }
+/* Kopf der Nachricht: „Ihre Nachricht an“ und der Salon als kleiner Umschalter. */
+.nachricht-kopf { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem .9rem; margin-bottom: .75rem; }
+.nachricht-kopf > label {
+  font: 500 .75rem/1 var(--marke); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--tinte-still);
+}
+.nachricht-salon { display: inline-flex; gap: .2rem; margin: 0; padding: .2rem; border: 1px solid var(--linie-gold); border-radius: 999px; }
+.nachricht-salon label { position: relative; cursor: pointer; }
+.nachricht-salon input { position: absolute; opacity: 0; pointer-events: none; }
+.nachricht-salon span {
+  display: inline-flex; align-items: center; min-height: 2.25rem; padding: .35rem .95rem;
+  border: 1px solid transparent; border-radius: 999px;
+  font: 500 .75rem/1 var(--marke); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tinte-leise);
+}
+.nachricht-salon input:checked + span { background: var(--knopf-grund); border-color: var(--knopf-kante); color: var(--tinte); }
+.nachricht-salon input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+.nachricht textarea {
+  width: 100%; min-height: 11.5rem; resize: vertical;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--linie-gold);
+  border-radius: 10px 10px 10px 3px;
+  background: var(--weiss);
+  font: 400 .92rem/1.6 var(--lauf); color: var(--tinte);
+  field-sizing: content;
+}
+.nachricht textarea:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.regal-ergebnis .wahl { margin-top: var(--a2); }
+
+/* Handy: Fakten in der aufklappbaren Zeile statt als eigene Liste. */
+.ext-fakten { display: grid; gap: .55rem; margin: 1rem 0 0; }
+.ext-fakten div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .75rem; }
+.ext-fakten dt { font: 500 .72rem/1.6 var(--marke); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-schrift); }
+.ext-fakten dd { margin: 0; font-size: .92rem; line-height: 1.5; color: var(--tinte-leise); }
+@media (max-width: 47.99rem) {
+  .ext-werte { display: none; }
+  .nachricht textarea { min-height: 10rem; font-size: .92rem; }
+}
+
+/* Desktop: rechts wählen, links die Nachricht als Live-Vorschau — sie
+   füllt den Platz unter den Werten, statt den Abschnitt zu verlängern.
+   Das Formular gibt sein Raster an .ext-bau ab (display: contents). */
+@media (min-width: 64rem) {
+  .ext-bau { row-gap: 0; }
+  .ext-bau .regal { display: contents; }
+  .ext-kopf { grid-column: 1; grid-row: 1 / 3; }
+  .regal-oben { grid-column: 2; grid-row: 1; }
+  .regal-paar:not(.regal-paar-einzeln) { grid-column: 2; grid-row: 2; align-self: start; }
+  .regal-paar-einzeln { grid-column: 2; grid-row: 3; align-self: start; }
+  .regal-ergebnis { grid-column: 1; grid-row: 3; align-self: start; }
+}
+/* iPad: die Werte zweispaltig, damit der Abschnitt nicht in die Länge geht. */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .ext-werte { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; }
+}
