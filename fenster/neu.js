@@ -1,3 +1,22 @@
+/* ── Startseite: immer oben beginnen ─────────────────────────────────────
+   Beim Öffnen und Neuladen landet man im Schaufenster, nicht an der
+   zuletzt gescrollten Stelle und nicht an einer Sprungmarke aus einem
+   geteilten Link. Sprungmarken innerhalb der Seite (Menü) bleiben. */
+(() => {
+  if (!document.querySelector('.auftakt')) return;
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const oben = () => {
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    const alt = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+    scrollTo(0, 0);
+    document.documentElement.style.scrollBehavior = alt;
+  };
+  oben();
+  addEventListener('load', oben, { once: true });
+  addEventListener('pageshow', (e) => { if (e.persisted) oben(); });
+})();
+
 /* ═══════════════════════════════════════════════════════════════════════
    Irmonhair — Friseur in München
 
