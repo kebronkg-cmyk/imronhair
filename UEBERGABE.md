@@ -206,3 +206,11 @@ Abschlussprüfung (eine Runde), umgesetzt:
 - die Beratungsknöpfe untereinander.
 
 Bewusst nicht übernommen: die Kapitelnummern 01–05 über den Schildern zu streichen. Sie standen im freigegebenen Plan; nur die doppelten Nummern auf den Etiketten sind weg.
+
+### /fenster/ ab iPad: Kapitel in der Leiste und Preisschrank (26.09.2026)
+
+- **Ab 48rem steht in der Leiste unter „IRMONHAIR“ das aktuelle Kapitel** (Extensions, Preise, Salons, Stimmen, Termin) an Stelle von „Friseur · München“. Beim Wechsel blendet es kurz ein.
+- **Die Preisvorschau ist ab 48rem ein Schrank:** zwei Lichtstangen mit je vier Etiketten und dem Salon-Umschalter. Ab 80rem steht er rechts neben der Überschrift, darunter in voller Breite (max. 46rem).
+- **Nebenbei behoben:** Bei 1024–1280 px ließ sich die Seite seitlich schieben, weil Telefonpille und Schleife über den Rand ragten. Dieser Fehler besteht in /schleife/ weiterhin.
+- **Handy (< 48rem): gemessen pixelgleich** mit dem Stand davor, Startseite und Preisliste.
+- **Zurück („back“):** den Commit dieser Änderung rückgängig machen (`git revert`). Alles steht in der Schicht „Schrank“ am Ende von `fenster/neu.css` und in wenigen Zeilen in `neu.js`.

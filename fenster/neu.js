@@ -474,7 +474,12 @@
         else sichtbar.delete(e.target);
       }
       const oben = abschnitte.find((a) => sichtbar.has(a));
-      if (kapitel) kapitel.textContent = oben ? oben.dataset.kapitel : '';
+      const text = oben ? oben.dataset.kapitel : '';
+      if (kapitel && kapitel.textContent !== text) {
+        kapitel.textContent = text;
+        // Neues Kapitel: kurz einblenden (Animation nur ab Tablet, siehe CSS).
+        kapitel.classList.remove('neu'); void kapitel.offsetWidth; kapitel.classList.add('neu');
+      }
     }, { rootMargin: '-30% 0px -60% 0px' });
     for (const a of abschnitte) beob.observe(a);
   }
