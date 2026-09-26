@@ -158,13 +158,14 @@ pixelgleich mit /schleife/. Die Preisliste ist auf allen Größen neu.
 - **Erster Bildschirm:**
   - Der Bildschirm ist das Fenster. Die LED-Kante zieht sich beim Laden links hinauf, oben quer und rechts hinab; die Schleife sitzt auf der Ecke (`<!-- schleife:fenster -->`).
   - Auf dem Glas steht die Beschriftung aus der Vorlage (Extensions, Haarverlängerung, Haarverdichtung, Beratung, ♡).
+  - Darunter hängt die **Auslage**: sieben Echthaar-Bündel an einer Lichtstange, mit derselben Textur wie das Farbregal. Hier kann später das Porträt der Inhaberin stehen. Unter 720 px Bildschirmhöhe wird sie ausgeblendet.
   - Unten stehen Name, Handschrift, genau ein leuchtender Knopf und die zwei Telefonnummern als Schilder.
   - Der Satz über die Leistungen steht unter dem Spiegel.
   - Die untere Kante (`.fenster-fuge`) wandert über die ersten 320 px Scrollweg hinab, wird schmaler und geht in die Lichtkante des Spiegels über (`--glut`).
 - **Kapitel:** Die Nummer steht über jedem Schild (`data-nr`). Eine LED-Fuge leuchtet beim Hereinscrollen auf, und in der Leiste steht das aktuelle Kapitel (`.leiste-kapitel`). Der Grund wechselt: Preise auf tieferem Schwarz.
 - **Schrifttreppe am Handy:** Schild 1,95 rem, Handschrift 1,75 rem, Unterüberschrift 1,5 rem, Text 1 rem, Angaben 0,72–0,8 rem.
-- **Extensions:** Schild, Spruch, eine Zeile zum Aufklappen, dann gleich das Regal; die fünf Werte als Wischreihe.
-- **Preisvorschau:** Die acht Gruppen hängen als Preisetiketten an einer Lichtstange (`preise.py` → `<!-- preise:etiketten -->`). Ein Umschalter wählt den Salon; ein Tipp führt nach `leistungen.html?salon=…#gruppe`.
+- **Extensions:** Schild, Spruch, eine Zeile zum Aufklappen, dann gleich das Regal; die fünf Werte als kompakte zweispaltige Liste ohne Kästen; die Beratungsknöpfe untereinander.
+- **Preisvorschau:** Die acht Gruppen hängen als Preisetiketten an zwei Lichtstangen zu je vier, alle auf einen Blick (`preise.py` → `<!-- preise:etiketten -->`, kurze Namen in `ETIKETT_KURZ`). Ein Umschalter wählt den Salon; ein Tipp führt nach `leistungen.html?salon=…#gruppe`.
 - **Stimmen:** am Handy wischbar.
 - **Preisliste (alle Größen):**
   - Eine klebende Steuerleiste mit Salon und „Meine Haare sind kurz / mittel / lang / alle Längen“. Ohne Wahl ist die Frage gold hervorgehoben; die Wahl wird gemerkt.
@@ -179,12 +180,12 @@ Gemessen am Handy (390 × 844), alt → neu:
 |---|---|---|
 | Wörter im ersten Bildschirm | 50 | 24 |
 | Knöpfe im ersten Bildschirm | 2 | 1 |
-| Startseite | 11 301 px | 8 690 px |
-| Extensions bis zum Regal | 971 px | 422 px |
-| Preisvorschau | 1 803 px | 716 px |
-| Stimmen | 2 357 px | 1 155 px |
+| Startseite | 11 301 px | 8 898 px |
+| Extensions bis zum Regal | 971 px | 430 px |
+| Preisvorschau | 1 803 px (8 Gruppen untereinander) | 827 px (alle 8 Etiketten auf einen Blick) |
+| Stimmen | 2 357 px | 1 150 px |
 | Kapitelmarken | 0 | 5 |
-| Preisliste | 9 427 px, 106 Kästen | 3 017 px zugeklappt, 0 Kästen |
+| Preisliste | 9 427 px, 106 Kästen | 2 921 px zugeklappt, 0 Kästen |
 | Preise pro Leistung | bis zu 3 | 1 bei gewählter Länge (38 statt 69 Preisangaben in Pasing) |
 | Schriftgröße Gruppe : Leistung : Angaben | — | 1,51 : 1,41; dazu das Gewicht 500 bei Leistungen gegen 400 bei den Angaben |
 
@@ -193,3 +194,15 @@ Gemessen am Handy (390 × 844), alt → neu:
 - Keine Überbreite bei 390 und 360 px; die Schleife ragt bewusst über die Bildschirmkante und wird abgeschnitten.
 - Keine Konsolenfehler.
 - Verhalten getestet: Etikett → Preisliste, alter Direktlink, ohne Skript, reduzierte Bewegung, Farbregal.
+
+Abschlussprüfung (eine Runde), umgesetzt:
+- das leere Fenster mit der Auslage gefüllt;
+- die LED-Fuge als deutliche Schwelle;
+- die Werte als Liste statt als Karussell;
+- alle Etiketten ohne Wischen sichtbar, der Hinweis „Wischen“ entfernt;
+- mehr Luft über den Schildern als darunter;
+- das Kapitel in der Leiste zweizeilig statt abgeschnitten;
+- „telefonisch buchen“ im Ton der Angaben;
+- die Beratungsknöpfe untereinander.
+
+Bewusst nicht übernommen: die Kapitelnummern 01–05 über den Schildern zu streichen. Sie standen im freigegebenen Plan; nur die doppelten Nummern auf den Etiketten sind weg.

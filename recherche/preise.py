@@ -446,6 +446,10 @@ def karte_html(salon, gruppen):
     return '\n'.join(teile)
 
 
+# Auf dem schmalen Etikett kurze Namen; die volle Bezeichnung steht in der Liste.
+ETIKETT_KURZ = {'verlaengerung': 'Extensions', 'gesicht': 'Brauen & Make-up'}
+
+
 def etiketten_html(pas, gro):
     """Preisvorschau als Etiketten an der Stange: je Gruppe ein Etikett mit
     dem Einstiegspreis beider Salons; der Umschalter darüber zeigt einen."""
@@ -457,8 +461,7 @@ def etiketten_html(pas, gro):
         teile.append(
             f'<li><a class="etikett" href="leistungen.html?salon=pasing#{gid}" data-gruppe="{gid}">'
             f'<span class="etikett-loch" aria-hidden="true"></span>'
-            f'<span class="etikett-nr" aria-hidden="true">{i:02d}</span>'
-            f'<span class="etikett-name">{E(titel)}</span>'
+            f'<span class="etikett-name">{E(ETIKETT_KURZ.get(gid, titel))}</span>'
             f'<span class="etikett-preis" data-salon="pasing"><span class="nurlesen">Pasing </span>{wert(pas)}</span>'
             f'<span class="etikett-preis" data-salon="grosshadern"><span class="nurlesen">Großhadern </span>{wert(gro)}</span>'
             f'</a></li>')

@@ -1397,7 +1397,7 @@ html { scrollbar-color: var(--bronze) var(--papier); }
   opacity: 0; cursor: pointer;
 }
 /* Das Etikett oben: die schwarze Klammer, an der die Strähne hängt. */
-.strang::before {
+.strang::before, .bund::before {
   content: ''; position: absolute; top: 0; left: 18%; right: 18%; height: 16px; z-index: 1;
   border-radius: 2px 2px 1px 1px;
   background: linear-gradient(#26201c, #0b0908);
@@ -1405,7 +1405,7 @@ html { scrollbar-color: var(--bronze) var(--papier); }
   transition: box-shadow .4s var(--kurve), border-color .4s var(--kurve);
 }
 /* Die Strähne: Farbe von der Wurzel zur Spitze, Glanz, Fasern, Rundung. */
-.strang::after {
+.strang::after, .bund::after {
   content: ''; position: absolute; top: 12px; left: 0; right: 0; bottom: 0;
   background:
     linear-gradient(90deg, color-mix(in oklch, var(--schatten) 32%, transparent), transparent 20%, transparent 78%, color-mix(in oklch, var(--schatten) 34%, transparent)),
@@ -1416,8 +1416,8 @@ html { scrollbar-color: var(--bronze) var(--papier); }
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 80 39 140 35 182C31 214 25 232 20 240C15 231 9 213 5 182C1 140 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 80 39 140 35 182C31 214 25 232 20 240C15 231 9 213 5 182C1 140 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
 }
-.strang:nth-child(3n+2)::after { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 90 38 150 33 190C29 216 26 230 24 240C19 234 12 220 8 196C3 160 0 96 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 90 38 150 33 190C29 216 26 230 24 240C19 234 12 220 8 196C3 160 0 96 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); }
-.strang:nth-child(3n)::after   { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 84 39 146 36 186C33 212 22 230 16 238C13 226 8 206 5 180C1 138 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 84 39 146 36 186C33 212 22 230 16 238C13 226 8 206 5 180C1 138 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); }
+.strang:nth-child(3n+2)::after, .bund:nth-child(3n+2)::after { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 90 38 150 33 190C29 216 26 230 24 240C19 234 12 220 8 196C3 160 0 96 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 90 38 150 33 190C29 216 26 230 24 240C19 234 12 220 8 196C3 160 0 96 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); }
+.strang:nth-child(3n)::after, .bund:nth-child(3n)::after { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 84 39 146 36 186C33 212 22 230 16 238C13 226 8 206 5 180C1 138 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 240' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.74' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M1 0H39C40 84 39 146 36 186C33 212 22 230 16 238C13 226 8 206 5 180C1 138 0 80 1 0Z' fill='url(%23f)' filter='url(%23w)'/%3E%3C/svg%3E"); }
 @media (hover: hover) and (pointer: fine) {
   .strang:hover { transform: rotate(1.6deg); }
   .strang:nth-child(even):hover { transform: rotate(-1.6deg); }
@@ -1659,6 +1659,7 @@ details.gruppe > summary:focus-visible { outline: 2px solid var(--gold); outline
   details.gruppe[open] > .zeilen { animation: zeilen-da .45s var(--kurve) both; }
 }
 @keyframes fuge-an { from { opacity: 0; } }
+@keyframes bund-da { to { opacity: 1; transform: none; } }
 @keyframes kante-x { to { transform: scaleX(1); } }
 @keyframes kante-y { to { transform: scaleY(1); } }
 @keyframes zeilen-da { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
@@ -2005,3 +2006,91 @@ details.gruppe > summary:focus-visible { outline: 2px solid var(--gold); outline
 @media (max-width: 23rem) {
   .laengenwahl span { padding-inline: .65rem; }
 }
+
+/* ── Nachbesserung nach der Abschlussprüfung ─────────────────────────── */
+@media (min-width: 48rem) { .fenster-auslage { display: none; } }
+@media (max-width: 47.99rem) {
+
+  /* Die Auslage im Fenster: Echthaar-Bündel an einer Lichtstange, das
+     LED-Licht fällt von oben darauf. Füllt den Raum zwischen Beschriftung
+     und Name; hier kann später das Porträt stehen. */
+  .fenster-auslage {
+    position: relative;
+    flex: 1 1 auto; min-height: 9rem; max-height: 22rem;
+    width: min(64%, 15rem);
+    margin: 13.5rem 0 1.75rem;
+    display: flex; align-items: flex-start; gap: .55rem;
+    padding: 1.1rem .6rem 0;
+    border-top: 2px solid var(--gold-hell);
+    /* Ellipse endet genau an den Seiten ihres Kastens — keine harte Kante. */
+    background: radial-gradient(50% 100% at 50% 0%, color-mix(in oklch, var(--gold) 20%, transparent), transparent);
+  }
+  .fenster-auslage { align-items: stretch; }
+  .bund { position: relative; flex: 1 1 0; }
+  .bund::before { left: 14%; right: 14%; }
+  /* Jedes Bündel hängt so weit herab, wie --l es sagt. */
+  .bund::after { bottom: calc((1 - var(--l)) * 100%); }
+  @media (prefers-reduced-motion: no-preference) {
+    .bund { opacity: 0; transform: translateY(-8px); animation: bund-da .7s var(--kurve) forwards; }
+    .bund:nth-child(-n+3) { animation-delay: 1.5s; }
+    .bund:nth-child(n+4):nth-child(-n+6) { animation-delay: 1.59s; }
+    .bund:nth-child(7) { animation-delay: 1.68s; }
+  }
+  @media (max-height: 720px) { .fenster-auslage { display: none; } }
+
+  /* Kapitel: die Fuge ist die Schwelle — heller, breiter, mit Schein. */
+  .kapitel-fuge {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-hell) 10%, var(--knopf-kante) 50%, var(--gold-hell) 90%, transparent);
+    filter: drop-shadow(0 0 7px var(--led-schein)) drop-shadow(0 0 2px var(--led-schein));
+  }
+
+  /* Luft über dem Schild grösser als darunter; klare Stufe Handschrift → Text. */
+  .extensions, .stufe, .salons, .kontakt { padding-top: 5rem; }
+  .schild-zeile { margin-top: .8rem; }
+  .kopfzeile .lauf { margin-top: 1.6rem; color: var(--tinte-still); }
+  .ext-spruch { margin-top: .8rem; }
+
+  /* Werte: kompakte Liste ohne Kästen, zwei Spalten, Symbol und eine Zeile. */
+  .ext-werte {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem .9rem;
+    margin: 2.5rem 0 0; padding: 0; overflow: visible;
+  }
+  .ext-werte li { flex-direction: row; align-items: center; gap: .7rem; padding: 0; border: 0; background: none; }
+  .ext-werte li:last-child { grid-column: 1 / -1; }
+  .ext-werte svg { width: 2.25rem; height: 2.25rem; flex: none; }
+  .ext-werte span { gap: 0; }
+  .ext-werte span > :not(b) { display: none; }
+  .ext-werte b { font-size: .72rem; letter-spacing: .14em; line-height: 1.35; }
+
+  /* Beratungsknöpfe untereinander statt gequetscht nebeneinander. */
+  .regal-ergebnis .wahl { grid-template-columns: 1fr; }
+
+  /* Preisetiketten: alle acht auf einen Blick, zwei Stangen zu vier. */
+  .etiketten-stange { border-top: 0; background: none; }
+  .etiketten {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.6rem .5rem;
+    padding: 1.9rem 0 .5rem; overflow: visible;
+    -webkit-mask: none; mask: none;
+    /* Zwei Lichtstangen: je eine über jeder Reihe. */
+    background:
+      linear-gradient(var(--gold-hell), var(--gold-hell)) 0 0 / 100% 2px no-repeat,
+      linear-gradient(to bottom, color-mix(in oklch, var(--gold) 16%, transparent), transparent 4rem) 0 2px / 100% 4rem no-repeat,
+      linear-gradient(var(--gold-hell), var(--gold-hell)) 0 calc(50% + .45rem) / 100% 2px no-repeat;
+  }
+  .etiketten li::before { top: -1.9rem; height: 2.5rem; }
+  .etikett {
+    width: auto; height: 8.25rem;
+    padding: 1.45rem .5rem .6rem;
+    grid-template-rows: 1fr auto;
+    clip-path: polygon(22% 0, 78% 0, 100% 10%, 100% 100%, 0 100%, 0 10%);
+    text-align: center;
+  }
+  .etikett-name { font-size: .8rem; line-height: 1.3; letter-spacing: 0; align-self: center; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: anywhere; }
+  .etikett-preis { font-size: .92rem; padding-top: .45rem; }
+
+  /* Preisliste: „telefonisch buchen“ im Ton der Angaben, nicht als Marke. */
+  .zeile-marke { margin-top: .3rem; font: 400 .8rem/1.4 var(--lauf); letter-spacing: 0; text-transform: none; color: var(--tinte-still); }
+}
+/* Das Kapitel in der Leiste darf zweizeilig werden statt abgeschnitten. */
+.leiste-kapitel { max-width: 8.5rem; white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.25; }

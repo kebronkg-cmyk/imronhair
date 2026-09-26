@@ -329,12 +329,14 @@ Rundbogen im Seitenverhältnis 3 : 4, schwarzer Rahmen, LED-Innenkante, im Glas 
 
 Unter 48rem ist die Startseite keine gestapelte Desktop-Seite.
 
+- **Auslage:** Zwischen Beschriftung und Name hängen sieben Echthaar-Bündel (`.bund`, dieselbe Textur wie `.strang`) an einer 2-px-Lichtstange, das Licht fällt als Ellipse von oben darauf. Das ist der Platz für ein späteres Porträt.
 - **Erster Bildschirm = Schaufenster.** Die LED-Kanten `.fk` wachsen per `transform` ein, die untere ist `.fenster-fuge`. Die Schleife sitzt auf der Ecke, die Beschriftung aus der Vorlage steht auf dem Glas. Darunter kommt genau ein leuchtender Knopf; die Telefonnummern stehen als Schilder mit Goldlinie.
 - **Übergabe:** Die Fuge wandert beim Scrollen auf den Scheitel des Spiegels. `--glut` (0–1) dimmt dessen Lichtkante, bis sie ankommt.
 - **Kapitel:** `data-nr` über dem Schild (0,75 rem, gold, .3em gesperrt), dazu die LED-Fuge oben im Abschnitt und das Kapitel in der Leiste.
 - **Schrifttreppe Handy:** schild-handy 1,95 rem · hand-handy 1,75 rem · Unterüberschrift 1,5 rem · unter 1,125 rem · Text 1 rem · Angaben 0,8 rem · Marken 0,72 rem.
 - **Wischreihen** (Werte, Etiketten, Stimmen): `scroll-snap`, keine Leiste. Rechts eine weiche Maske als Hinweis, dass es weitergeht.
-- **Preisetikett:** schwarzes Anhängeschild mit abgeschrägten Ecken, Loch und Schnur zur Lichtstange; Nummer, Gruppenname und Einstiegspreis.
+- **Preisetikett:** schwarzes Anhängeschild mit abgeschrägten Ecken, Loch und Schnur zur Lichtstange; kurzer Gruppenname und Einstiegspreis. Zwei Stangen zu vier, alle acht auf einen Blick.
+- **Kapitel-Fuge:** 2 px, Gold → LED → Gold, mit doppeltem Schein; sie ist die Schwelle zwischen den Kapiteln.
 
 ## Preisliste (alle Größen)
 
