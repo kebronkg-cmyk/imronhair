@@ -681,9 +681,16 @@ button { font: inherit; color: inherit; }
 }
 .spiegel-wahl button[aria-pressed="true"] { background: var(--tinte); color: var(--papier); }
 .spiegel-ort {
-  font: italic 400 1.15rem/1.2 var(--serif);
-  color: var(--tinte-leise);
+  display: grid; justify-items: end; gap: .2rem;
+  font: italic 400 1.05rem/1.2 var(--serif);
+  text-align: right;
 }
+/* Gedämpft über die Farbe, nicht über Deckkraft — beide bleiben lesbar (7:1). */
+.spiegel-ort > span { color: var(--tinte-still); transition: color var(--t2) var(--kurve); }
+.spiegel[data-salon="pasing"] .spiegel-ort [data-ort="pasing"],
+.spiegel[data-salon="grosshadern"] .spiegel-ort [data-ort="grosshadern"] { color: var(--tinte); }
+/* Ohne Skript zeigt der Spiegel nur Pasing — dann steht auch nur diese Adresse. */
+html:not(.js) .spiegel-ort [data-ort="grosshadern"] { display: none; }
 /* Ohne Skript gibt es keinen Umschalter — nur Pasing. */
 html:not(.js) .spiegel-wahl { display: none; }
 
@@ -1275,3 +1282,10 @@ html.leiste-weg .wegweiser {
    Fläche an. */
 .salons, .stimmen { padding: var(--a6) var(--rand); }
 .salons > .mitte, .stimmen > .mitte { max-width: var(--spalte); padding-inline: 0; }
+
+/* Handy: Umschalter und beide Adressen in einer Zeile, Adressen rechts. */
+@media (max-width: 30rem) {
+  .spiegel-fuss { flex-wrap: nowrap; gap: .6rem; }
+  .spiegel-wahl button { padding: .5rem .75rem; letter-spacing: .14em; }
+  .spiegel-ort { font-size: .95rem; flex: none; }
+}

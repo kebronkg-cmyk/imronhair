@@ -114,7 +114,12 @@
         <button type="button" data-salon="pasing" aria-pressed="true">Pasing</button>
         <button type="button" data-salon="grosshadern" aria-pressed="false">Gro&szlig;hadern</button>
       </span>
-      <span class="spiegel-ort" aria-live="polite">Irmonherstra&szlig;e&nbsp;7</span>
+      <!-- Beide Adressen stehen fest; der Wechsel hebt nur die gezeigte hervor
+           — so springt beim Umschalten nichts. -->
+      <span class="spiegel-ort">
+        <span data-ort="pasing">Irmonherstra&szlig;e&nbsp;7</span>
+        <span data-ort="grosshadern">W&uuml;rmtalstra&szlig;e&nbsp;119</span>
+      </span>
     </figcaption>
   </figure>
 </section>
