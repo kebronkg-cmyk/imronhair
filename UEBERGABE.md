@@ -261,7 +261,7 @@ Aufbau und Betrieb: **`BUCHUNG.md`**. Offene Fragen an den Salon:
   derselben Abfrage, „Nächster freier Termin“, „Wie gewohnt“, „Wie beim
   letzten Mal“. Im Studio: „Heute noch frei“ für Laufkundschaft, nächster
   Termin im gewohnten Rhythmus der Kundin, fällige Kundinnen.
-- **Tipps bis zum Termin** (Handy): neu 6 Tipps plus Name und Nummer;
+- **Tipps bis zum Termin** (Handy): neu 7 Tipps plus Name und Nummer;
   mit gemerktem Salon und Länge 5; wiederkehrend mit „Wie beim letzten
   Mal“ und gemerkten Angaben 3 (Nochmal, Uhrzeit, Buchen).
 - **Behoben beim Prüfen:**

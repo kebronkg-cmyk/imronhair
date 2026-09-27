@@ -247,8 +247,9 @@ function freie_zeiten(string $salon, array $phasen, array $personIds, string $vo
     for ($d = $vonDatum; $d <= $bisDatum; $d = tag_plus($d, 1)) {
         $ab = 0;
         if ($fruehestens !== null) {
-            if ($fruehestens >= tag_plus($d, 1) . ' 00:00:00') continue;
-            if (substr($fruehestens, 0, 10) === $d) $ab = zeit_zu_min($fruehestens);
+            // Ein Tag, der schon vorbei ist, ist „ausgebucht“, nicht „geschlossen“.
+            if ($fruehestens >= tag_plus($d, 1) . ' 00:00:00') $ab = 1440;
+            elseif (substr($fruehestens, 0, 10) === $d) $ab = zeit_zu_min($fruehestens);
         }
         $tag = [];
         $arbeitet = false;
