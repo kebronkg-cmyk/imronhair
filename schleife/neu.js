@@ -113,8 +113,6 @@
   const spiegel = document.querySelector('.spiegel');
   if (spiegel) {
     const rahmen = spiegel.querySelector('.spiegel-rahmen');
-    const ort = spiegel.querySelector('.spiegel-ort');
-    const ORTE = { pasing: 'Irmonherstraße 7', grosshadern: 'Würmtalstraße 119' };
     const knoepfe = [...spiegel.querySelectorAll('.spiegel-wahl button')];
 
     for (const k of knoepfe) {
@@ -123,7 +121,6 @@
         if (spiegel.dataset.salon === salon) return;
         spiegel.dataset.salon = salon;
         for (const b of knoepfe) b.setAttribute('aria-pressed', String(b === k));
-        if (ort) ort.textContent = ORTE[salon];
         spiegel.classList.remove('wechsel');
         void spiegel.offsetWidth;
         spiegel.classList.add('wechsel');

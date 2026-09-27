@@ -2312,3 +2312,21 @@ details.gruppe > summary:focus-visible { outline: 2px solid var(--gold); outline
 @media (max-width: 47.99rem) and (max-height: 720px) {
   .auftakt-satz .wortmarke { margin-top: calc(min(47vw, 15rem) * 1.5 - 1.5rem); }
 }
+
+/* ── Adresse unter dem Spiegel ───────────────────────────────────────────
+   Beide Adressen liegen in derselben Zelle (grid-area 1 / 1), die Zelle ist
+   so breit wie die längere. Sichtbar ist nur die des gezeigten Salons; der
+   Wechsel blendet an derselben Stelle über: Abgang beschleunigt, Auftritt
+   bremst aus. Nichts verschiebt sich. */
+.spiegel-ort { display: grid; flex: none; text-align: left; }
+.spiegel-ort > span {
+  grid-area: 1 / 1;
+  opacity: 0; visibility: hidden;
+  transition: opacity .22s ease-in, visibility 0s linear .22s;
+}
+.spiegel[data-salon="pasing"] .spiegel-ort [data-ort="pasing"],
+.spiegel[data-salon="grosshadern"] .spiegel-ort [data-ort="grosshadern"] {
+  opacity: 1; visibility: visible;
+  transition: opacity .4s var(--kurve) .12s, visibility 0s;
+}
+@media (prefers-reduced-motion: reduce) { .spiegel-ort > span { transition: none; } }

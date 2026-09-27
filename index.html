@@ -114,9 +114,10 @@
         <button type="button" data-salon="pasing" aria-pressed="true">Pasing</button>
         <button type="button" data-salon="grosshadern" aria-pressed="false">Gro&szlig;hadern</button>
       </span>
-      <!-- Beide Adressen stehen fest; der Wechsel hebt nur die gezeigte hervor
-           — so springt beim Umschalten nichts. -->
-      <span class="spiegel-ort">
+      <!-- Beide Adressen liegen in derselben Zelle übereinander; sichtbar ist
+           nur die des gezeigten Salons. Die Zelle ist so breit wie die längere,
+           beide stehen linksbündig — beim Wechsel springt nichts. -->
+      <span class="spiegel-ort" aria-live="polite">
         <span data-ort="pasing">Irmonherstra&szlig;e&nbsp;7</span>
         <span data-ort="grosshadern">W&uuml;rmtalstra&szlig;e&nbsp;119</span>
       </span>
