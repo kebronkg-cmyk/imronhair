@@ -441,7 +441,8 @@ def karte_html(salon, gruppen):
             f'<h3 class="gruppe-titel">{E(titel)}</h3><span class="gruppe-lauf">{E(lauf)}</span>'
             f'<span class="gruppe-ab">{"ab " + a if a else "auf Anfrage"}<small>{n} {"Leistung" if n == 1 else "Leistungen"}</small></span></summary>'
             f'<ul class="zeilen">{"".join(zeile_html(p) for p in posten)}</ul>'
-            f'<p class="gruppe-schluss"><a class="knopf-still" href="{PLANITY[salon]}" target="_blank" rel="noopener">'
+            # Zur eigenen Buchung, Salon und Gruppe vorgewählt (/fenster/termin.html).
+            f'<p class="gruppe-schluss"><a class="knopf-still" href="termin.html?salon={salon}&amp;gruppe={gid}">'
             f'{E(titel)} in {ORT[salon]} buchen</a></p></details>')
     return '\n'.join(teile)
 
