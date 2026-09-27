@@ -1813,10 +1813,16 @@ details.gruppe > summary:focus-visible { outline: 2px solid var(--gold); outline
     position: absolute; z-index: 5;
     top: calc(100svh - 11px); left: 10px; right: 10px; height: 1.5px;
     background: var(--knopf-kante);
-    filter: drop-shadow(0 0 5px var(--led-schein));
     transform-origin: 50% 50%;
     pointer-events: none;
     will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+  /* Der Schein als vorgerechneter Verlauf statt Filter: beim Gleiten muss
+     der Browser nichts neu weichzeichnen. */
+  .fenster-fuge::after {
+    content: ''; position: absolute; left: 0; right: 0; top: -7px; height: 15.5px;
+    background: radial-gradient(50% 50% at 50% 50%, var(--led-schein), transparent);
   }
   .spiegel { margin-inline: var(--rand); }
   .spiegel .schleife { display: none; }
@@ -2287,4 +2293,22 @@ details.gruppe > summary:focus-visible { outline: 2px solid var(--gold); outline
 /* iPad: die Werte zweispaltig, damit der Abschnitt nicht in die Länge geht. */
 @media (min-width: 48rem) and (max-width: 63.99rem) {
   .ext-werte { grid-template-columns: 1fr 1fr; column-gap: 1.5rem; }
+}
+
+/* ── Handy: das Schild oben ──────────────────────────────────────────────
+   Der Name steht direkt unter der Schleife wie das Schild über dem
+   Schaufenster; darunter hängt die Auslage, unten Knopf und Nummern. Der
+   Abstand oben folgt der Höhe der Schleife (Breite × 1,58, abzüglich
+   ihres Überstands), damit der Name nie unter ihr Band gerät. */
+@media (max-width: 47.99rem) {
+  .auftakt-satz { justify-content: flex-start; }
+  .auftakt-satz .wortmarke { order: 1; margin-top: calc(min(47vw, 15rem) * 1.58 - 1rem); }
+  .auftakt-satz .auftakt-spruch { order: 2; }
+  .fenster-auslage { order: 3; margin: 1.6rem 0 1.4rem; min-height: 7rem; }
+  .auftakt-satz .wahl { order: 4; margin-top: auto; }
+  .auftakt-satz .rufe { order: 5; }
+  .auftakt-satz .wahl .knopf { margin-top: 0; }
+}
+@media (max-width: 47.99rem) and (max-height: 720px) {
+  .auftakt-satz .wortmarke { margin-top: calc(min(47vw, 15rem) * 1.5 - 1.5rem); }
 }

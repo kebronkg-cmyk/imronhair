@@ -529,37 +529,51 @@
     for (const a of abschnitte) beob.observe(a);
   }
 
-  // Die wandernde Fuge
+  // Die wandernde Fuge. Sie folgt dem Scrollen nicht Ereignis für Ereignis,
+  // sondern gleitet mit einer weichen Nachführung hinterher (exponentiell
+  // abklingend, ohne Überschwingen), damit grobe Scroll-Schritte am Handy
+  // nicht als Ruckeln sichtbar werden. Nur transform und opacity; der
+  // Helligkeitswert sitzt am Spiegelrahmen, nicht an der ganzen Seite.
   const fuge = document.querySelector('.fenster-fuge');
   const fenster = document.querySelector('.auftakt-satz');
   const rahmen = document.querySelector('.spiegel-rahmen');
   if (!fuge || !fenster || !rahmen) return;
-  let strecke = 0, start = 0, breite = 1, laeuft = false;
+  const WEG = 320;    // Scrollweg für die ganze Fahrt
+  const TAU = 110;    // Zeitkonstante der Nachführung in ms
+  let strecke = 0, breite = 1, ist = 0, ziel = 0, zuletzt = 0, bild = 0;
 
   function messen() {
-    if (!handy.matches || ruhig) { wurzel.style.removeProperty('--glut'); fuge.style.transform = ''; return; }
+    if (!handy.matches || ruhig) { rahmen.style.removeProperty('--glut'); fuge.style.transform = ''; fuge.style.opacity = ''; return; }
     const y = scrollY;
     const r = rahmen.getBoundingClientRect();
     // Ziel: der Scheitel des Rundbogens, dort ist der Spiegel am schmalsten.
     fuge.style.transform = '';
     const f0 = fuge.getBoundingClientRect();
-    start = f0.top + y;
-    strecke = Math.max(0, r.top + y - start);
+    strecke = Math.max(0, r.top + y - (f0.top + y));
     breite = Math.max(.2, (r.width * .42) / f0.width);
-    zeichnen();
+    ist = ziel = Math.min(1, Math.max(0, y / WEG));
+    setzen(ist);
   }
-  function zeichnen() {
-    laeuft = false;
-    if (!handy.matches || ruhig || !strecke) return;
-    // Die Fuge wandert über die ersten 320 px Scrollweg, damit man sie
-    // hinabgleiten sieht, auch wenn der Spiegel dicht unter dem Fenster steht.
-    const p = Math.min(1, Math.max(0, scrollY / 320));
+  function setzen(p) {
     const s = 1 - (1 - breite) * p;
-    fuge.style.transform = `translateY(${(strecke * p).toFixed(1)}px) scaleX(${s.toFixed(3)})`;
-    fuge.style.opacity = String(p < .8 ? 1 : Math.max(0, (1 - p) / .2));
-    wurzel.style.setProperty('--glut', p.toFixed(3));
+    fuge.style.transform = `translate3d(0, ${(strecke * p).toFixed(2)}px, 0) scaleX(${s.toFixed(4)})`;
+    fuge.style.opacity = String(p < .78 ? 1 : Math.max(0, (1 - p) / .22));
+    rahmen.style.setProperty('--glut', p.toFixed(3));
   }
-  addEventListener('scroll', () => { if (!laeuft) { laeuft = true; requestAnimationFrame(zeichnen); } }, { passive: true });
+  function schritt(t) {
+    const dt = zuletzt ? Math.min(64, t - zuletzt) : 16;
+    zuletzt = t;
+    ist += (ziel - ist) * (1 - Math.exp(-dt / TAU));
+    if (Math.abs(ziel - ist) < .0005) ist = ziel;
+    setzen(ist);
+    bild = ist === ziel ? 0 : requestAnimationFrame(schritt);
+    if (!bild) zuletzt = 0;
+  }
+  addEventListener('scroll', () => {
+    if (!handy.matches || ruhig || !strecke) return;
+    ziel = Math.min(1, Math.max(0, scrollY / WEG));
+    if (!bild) bild = requestAnimationFrame(schritt);
+  }, { passive: true });
   addEventListener('resize', messen);
   handy.addEventListener('change', messen);
   addEventListener('load', messen);

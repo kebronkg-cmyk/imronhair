@@ -228,3 +228,13 @@ Bewusst nicht übernommen: die Kapitelnummern 01–05 über den Schildern zu str
   - **Die Nummer steht nur an einer Stelle:** `data-whatsapp` am Knopf in `fenster/index.html` (dazu das `href` für Besucher ohne Skript).
 - **Am Desktop** wird links unter den Werten gewählt und rechts daneben die Nachricht als Live-Vorschau gezeigt. Sie füllt dort den Platz, statt den Abschnitt zu verlängern.
 - **Höhe des Abschnitts, alt → neu:** Handy 1669 → 1890 px (+13 %), iPad 1983 → 2111 px (+6 %), Desktop 1296 → 1455 px (+12 %). Sichtbare Wörter am Handy 108 → 103.
+
+### /fenster/ Handy: Name höher, LED-Linie glatter (27.09.2026)
+
+- **Name:** Er steht direkt unter der Schleife wie das Schild über dem Fenster (bei 390 px bei ca. 345 statt 545 px); darunter hängt die Auslage, unten Knopf und Nummern. Der Abstand oben folgt der Größe der Schleife.
+- **LED-Linie:**
+  - gleitet mit exponentieller Nachführung (τ = 110 ms, ohne Überschwingen);
+  - Schein als Verlauf statt `drop-shadow`;
+  - `--glut` sitzt am Spiegelrahmen statt an `<html>`.
+- **Gemessen bei groben Scroll-Schritten:** Bewegung in 77 statt 8 Einzelbildern, größter Sprung 1,9 statt 7,4 px.
+- **Gegenprobe:** iPad und Desktop pixelgleich.
