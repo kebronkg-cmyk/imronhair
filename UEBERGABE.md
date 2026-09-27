@@ -238,3 +238,58 @@ Bewusst nicht übernommen: die Kapitelnummern 01–05 über den Schildern zu str
   - `--glut` sitzt am Spiegelrahmen statt an `<html>`.
 - **Gemessen bei groben Scroll-Schritten:** Bewegung in 77 statt 8 Einzelbildern, größter Sprung 1,9 statt 7,4 px.
 - **Gegenprobe:** iPad und Desktop pixelgleich.
+
+## Terminbuchung und Studio (27.09.2026)
+
+Eigene Buchung statt Planity, dazu das Studio für den Salon. Einrichtung,
+Aufbau und Betrieb: **`BUCHUNG.md`**. Offene Fragen an den Salon:
+`ABNAHME.md`, Punkt 10.
+
+- **Bauart:** `api/` in PHP 8 ohne Abhängigkeiten, MySQL (All-Inkl) oder
+  SQLite. Oberflächen bleiben statisch: `fenster/termin.html` und
+  `studio/` (ES-Module, kein Build). Der Katalog stammt aus Planity
+  (`recherche/katalog.py` → `api/katalog.json`): 9 Personen, 125
+  Leistungen (102 online), wer was macht, Abläufe mit Einwirkzeit.
+- **Rückfallebene:** Ohne Schnittstelle (GitHub Pages) zeigt
+  `termin.html` Telefon und Planity; das ist auch der Ladezustand.
+  `?vorschau` rechnet mit ausgedachter Auslastung (`termin-vorschau.js`).
+- **Die eigene Idee der Buchungsseite:** das Etikett an der Lichtstange
+  (wie die Preisetiketten), das sich mit der Wahl füllt; nach dem Buchen
+  hängt es allein da. Schritte mit Nummer und Lichtfuge wie die Kapitel.
+- **Mitdenken:** gemerkte Länge und Salon aus der Preisliste, ein
+  passender Zusatz (Heiße Schere), frühester Termin je Person aus
+  derselben Abfrage, „Nächster freier Termin“, „Wie gewohnt“, „Wie beim
+  letzten Mal“. Im Studio: „Heute noch frei“ für Laufkundschaft, nächster
+  Termin im gewohnten Rhythmus der Kundin, fällige Kundinnen.
+- **Tipps bis zum Termin** (Handy): neu 6 Tipps plus Name und Nummer;
+  mit gemerktem Salon und Länge 5; wiederkehrend mit „Wie beim letzten
+  Mal“ und gemerkten Angaben 3 (Nochmal, Uhrzeit, Buchen).
+- **Behoben beim Prüfen:**
+  - `.zeiten`, `.salons`, `.kontakt` gab es in `neu.css` schon (Falle
+    „schon vergebener Name“) → `.uhrzeiten`, `.salon-wahlen`, `.angaben`;
+  - CSS-Variablen über `Object.assign(style)` werden still ignoriert → `setProperty`;
+  - `backdrop-filter` am Studio-Kopf machte ihn zum Bezugsrahmen der festen
+    Leiste unten → am Handy ohne Filter;
+  - unter MySQL ergab doppelt abgeschickt „vergeben“ statt denselben
+    Termin → Kennung nach dem Sperren erneut prüfen.
+
+### Gemessen
+
+- Schnittstelle: `api/tests/pruefen.mjs` 88 Prüfungen, je dreimal auf
+  SQLite und MariaDB 10.11 bestanden; 20 gleichzeitige Buchungen auf einen
+  Platz → genau 1; 10 × „wer zuerst frei ist“ → jede der drei Personen
+  einmal; 8 × dieselbe Anfrage gleichzeitig → ein Termin.
+- Last: 200 gleichzeitige Buchungen in 0,6–0,8 s, 0 Überschneidungen in
+  der Belegung (SQL-Prüfung), keine Serverfehler.
+- Studio im Browser (`studio-oberflaeche.mjs`): Ziehen, Rückgängig,
+  Abgleich zweier Geräte, Dauer, CSRF, Anlegen, Tastatur — bestanden.
+- Keine Überbreite bei 390 und 360 px in allen Schritten der Buchung und
+  allen Bereichen des Studios; keine Konsolenfehler.
+- Kontrast: schwächstes Schrift-/Grund-Paar 7,6 : 1 (`--tinte-still` auf
+  gewähltem Grund).
+- Detektor über `termin.*` und `studio/*`: nur `dark-glow` (Hauptknopf,
+  Lichtstange, Uhrzeitlinie im Kalender — das LED-Licht wie auf der
+  ganzen Fassung) und `repeating-stripes-gradient` (Schraffur für „nicht
+  verfügbar“ und Einwirkzeit im Kalender; das ist Bedeutung, nicht
+  Schmuck). Farbkanten links (`side-tab`) und breite Schatten sind
+  entfernt; die Person steht als Punkt vor der Uhrzeit.

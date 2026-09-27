@@ -144,8 +144,8 @@ function aktion_anmelden(): array
     methode('POST');
     $name = mb_strtolower((string)text_feld('anmeldename', 80, true));
     $pw = (string)feld('passwort', '');
-    bremse('anmelden', ip(), 30, 900);
-    bremse('anmelden-name', $name, 8, 900);
+    bremse('anmelden', ip(), (int)konfig('bremse_anmelden', 30), 900);
+    bremse('anmelden-name', $name, (int)konfig('bremse_anmelden_name', 8), 900);
     $p = db()->eins('SELECT * FROM {p}person WHERE anmeldename = ? AND aktiv = 1', [$name]);
     // Auch ohne Treffer rechnen, damit die Antwortzeit nichts verrät.
     $hash = $p['pass_hash'] ?? '$2y$12$0p/Avk43Omh5KrQNODyM0.0hBLtmLhmuW2sgUT0/QKkxdIKHgXDeu';

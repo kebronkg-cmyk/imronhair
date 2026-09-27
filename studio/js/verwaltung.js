@@ -282,14 +282,14 @@ export const auswertung = {
         kachel('Neue Kundinnen', String(s.neue_kunden)),
         kachel('Nicht erschienen', String(s.nicht_erschienen), s.termine ? prozent(s.nicht_erschienen / s.termine) : null),
         kachel('Abgesagt', String(s.storniert))),
-      zeilen.length ? el('table', { klasse: 'tabelle' },
+      zeilen.length ? el('div', { klasse: 'tabelle-rahmen' }, el('table', { klasse: 'tabelle' },
         el('thead', {}, el('tr', {}, ['Person', 'Termine', 'Umsatz', 'Auslastung', 'Nicht erschienen'].map((t) => el('th', { scope: 'col', text: t })))),
         el('tbody', {}, zeilen.map(([pid, p]) => el('tr', { stil: { '--farbe': farbe(personVon(pid)?.farbe || 1) } },
           el('th', { scope: 'row' }, el('span', { klasse: 'punkt', 'aria-hidden': 'true' }), personVon(pid)?.name || pid),
           el('td', { klasse: 'zahl', text: String(p.termine) }),
           el('td', { klasse: 'zahl', text: euro(p.umsatz_cent) }),
           el('td', {}, el('span', { klasse: 'balken', stil: { '--anteil': Math.min(1, p.auslastung || 0) } }), el('span', { klasse: 'zahl', text: prozent(p.auslastung) })),
-          el('td', { klasse: 'zahl', text: String(p.nicht_erschienen) }))))) : el('p', { klasse: 'leer', text: 'Keine Termine in diesem Zeitraum.' }));
+          el('td', { klasse: 'zahl', text: String(p.nicht_erschienen) })))))) : el('p', { klasse: 'leer', text: 'Keine Termine in diesem Zeitraum.' }));
   },
 };
 

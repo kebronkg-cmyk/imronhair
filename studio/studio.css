@@ -125,7 +125,8 @@ a { color: inherit; }
 .schalter button[aria-pressed="true"] { background: var(--knopf-grund); border-color: var(--knopf-kante); color: var(--tinte); }
 .schalter button:disabled { opacity: .45; cursor: not-allowed; }
 .schalter-klein button { min-height: 2.1rem; padding: .25rem .8rem; font-size: .82rem; }
-.schalter-umbruch { flex-wrap: wrap; border-radius: 1.3rem; }
+.schalter-umbruch { flex-wrap: wrap; border-radius: 1.3rem; max-width: 100%; }
+.steuer-reihe > .schalter { max-width: 100%; }
 @media (hover: hover) and (pointer: fine) { .schalter button:not([aria-pressed="true"]):not(:disabled):hover { color: var(--tinte); } }
 
 .chip {
@@ -163,7 +164,7 @@ a { color: inherit; }
 .tor-titel { margin: 0; font: 300 1.5rem/1.2 var(--marke); letter-spacing: .06em; }
 .tor-text { margin: 0; color: var(--tinte-leise); font-size: .9rem; }
 .tor-text:empty { display: none; }
-.tor-fehler, .form-fehler { margin: 0; padding: .6rem .8rem; border-left: 2px solid var(--warnung); background: var(--warnung-grund); font-size: .9rem; }
+.tor-fehler, .form-fehler { margin: 0; padding: .6rem .8rem; border: 1px solid var(--warnung); border-radius: 3px; background: var(--warnung-grund); font-size: .9rem; }
 .tor-knopf { width: 100%; min-height: 3rem; }
 
 /* ── Felder ──────────────────────────────────────────────────────────── */
@@ -238,7 +239,6 @@ a { color: inherit; }
 .ich-menue {
   position: absolute; right: 0; top: calc(100% + .5rem); min-width: 14rem; z-index: 50;
   display: grid; padding: .4rem; border: 1px solid var(--linie-stark); border-radius: 4px; background: var(--tafel-grund);
-  box-shadow: 0 18px 40px -10px color-mix(in oklch, var(--schatten) 70%, transparent);
 }
 .ich-menue button { text-align: left; min-height: 2.5rem; padding: .4rem .7rem; border: 0; border-radius: 3px; background: none; cursor: pointer; }
 .ich-menue button:hover, .ich-menue button:focus-visible { background: var(--linie); }
@@ -272,7 +272,8 @@ a { color: inherit; }
 /* ── Fläche und Seiten ───────────────────────────────────────────────── */
 .flaeche { display: block; min-height: calc(100dvh - var(--kopf)); }
 .flaeche:focus { outline: none; }
-.seite { max-width: 72rem; margin: 0 auto; padding: 1.5rem var(--rand) 4rem; display: grid; gap: 1.1rem; align-content: start; }
+.seite { max-width: 72rem; margin: 0 auto; padding: 1.5rem var(--rand) 4rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.1rem; align-content: start; }
+.tabelle-rahmen { overflow-x: auto; }
 .seite-schmal { max-width: 52rem; }
 .seiten-kopf { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .seiten-titel { margin: 0; font: 300 1.65rem/1.1 var(--marke); letter-spacing: .2em; text-transform: uppercase; }
@@ -370,13 +371,16 @@ button.kal-abw { cursor: pointer; }
   position: absolute; z-index: 2; overflow: hidden;
   left: calc(var(--bahn) * 100% / var(--bahnen) + 3px + var(--tiefe) * 14px);
   width: calc(100% / var(--bahnen) - 6px - var(--tiefe) * 14px);
-  padding: 0; border: 1px solid var(--linie-stark); border-left: 3px solid var(--farbe); border-radius: 3px;
+  padding: 0; border: 1px solid var(--linie-stark); border-radius: 3px;
   background: var(--weiss); cursor: pointer; touch-action: manipulation;
   transition: border-color var(--t1) var(--kurve), opacity var(--t1) var(--kurve);
 }
 .termin.in-pause { z-index: 3; box-shadow: -6px 0 14px -6px color-mix(in oklch, var(--schatten) 80%, transparent); }
 .termin-inhalt { position: relative; z-index: 1; display: grid; align-content: start; padding: .22rem .45rem; overflow: hidden; }
-.termin-zeit { font: 500 .7rem/1.25 var(--marke); color: var(--tinte-still); font-variant-numeric: tabular-nums; }
+/* Die Person als Punkt vor der Uhrzeit — die Spalte sagt es am Tag schon,
+   in der Woche mit allen braucht man ihn. */
+.termin-zeit { display: flex; align-items: center; gap: .35rem; font: 500 .7rem/1.25 var(--marke); color: var(--tinte-still); font-variant-numeric: tabular-nums; }
+.termin-zeit::before { content: ''; flex: none; width: .45rem; height: .45rem; border-radius: 50%; background: var(--farbe); }
 .termin-name { font-weight: 600; font-size: .82rem; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .termin-was { font-size: .74rem; line-height: 1.3; color: var(--tinte-leise); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Kurze Termine: Zeit und Name in einer Zeile; mittlere ohne Leistung. */
@@ -398,16 +402,16 @@ button.kal-abw { cursor: pointer; }
 .termin-haken { position: absolute; right: .3rem; top: .25rem; color: var(--gold-schrift); }
 .termin-haken .zeichen { width: .85rem; height: .85rem; }
 .termin.ist-erschienen { opacity: .72; }
-.termin.ist-nicht_erschienen { border-left-color: var(--warnung); opacity: .7; }
+.termin.ist-nicht_erschienen { border-color: var(--warnung); opacity: .7; }
 .termin.ist-nicht_erschienen .termin-name { text-decoration: line-through; text-decoration-color: var(--warnung); }
 .termin-griff { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; z-index: 4; cursor: ns-resize; }
 .termin-griff::after { content: ''; position: absolute; left: 50%; bottom: 2px; width: 22px; height: 2px; margin-left: -11px; border-radius: 1px; background: var(--linie-stark); opacity: 0; transition: opacity var(--t1) var(--kurve); }
 @media (hover: hover) and (pointer: fine) {
   .termin { cursor: grab; }
-  .termin:hover { border-color: var(--gold-tief); border-left-color: var(--farbe); }
+  .termin:hover { border-color: var(--gold-tief); }
   .termin:hover .termin-griff::after { opacity: 1; }
 }
-.termin.ist-gezogen { z-index: 20; opacity: .92; cursor: grabbing; transition: none; box-shadow: 0 14px 30px -10px color-mix(in oklch, var(--schatten) 90%, transparent); border-color: var(--gold); border-left-color: var(--farbe); }
+.termin.ist-gezogen { z-index: 20; opacity: .92; cursor: grabbing; transition: none; box-shadow: 0 14px 30px -10px color-mix(in oklch, var(--schatten) 90%, transparent); border-color: var(--gold); }
 .termin[data-neu]::after {
   content: attr(data-neu); position: absolute; right: .3rem; bottom: .3rem; z-index: 5;
   padding: .15rem .45rem; border-radius: 999px; background: var(--knopf-grund); border: 1px solid var(--knopf-kante);
@@ -436,7 +440,7 @@ button.kal-abw { cursor: pointer; }
 .agenda-zeile { display: flex; align-items: stretch; border-bottom: 1px solid var(--linie); }
 .agenda-haupt {
   flex: 1; min-width: 0; display: grid; grid-template-columns: 3.6rem minmax(0, 1fr) auto; gap: .9rem; align-items: start;
-  padding: .85rem 0 .85rem .75rem; border: 0; border-left: 3px solid var(--farbe); background: none; text-align: left; cursor: pointer;
+  padding: .85rem 0 .85rem .4rem; border: 0; background: none; text-align: left; cursor: pointer;
 }
 .agenda-zeit { display: grid; font-family: var(--marke); font-variant-numeric: tabular-nums; }
 .agenda-zeit strong { font-weight: 500; font-size: 1rem; }
@@ -446,6 +450,7 @@ button.kal-abw { cursor: pointer; }
 .agenda-was { color: var(--tinte-leise); font-size: .88rem; }
 .agenda-notiz { color: var(--tinte-still); font-size: .85rem; font-style: italic; }
 .agenda-person { display: inline-flex; align-items: center; gap: .4rem; font-size: .85rem; color: var(--tinte-leise); white-space: nowrap; }
+.agenda-person .punkt { width: .65rem; height: .65rem; }
 .agenda-da { flex: none; width: 3.2rem; border: 0; border-left: 1px solid var(--linie); background: none; color: var(--tinte-still); cursor: pointer; display: grid; place-items: center; }
 .agenda-da .zeichen { width: 1.25rem; height: 1.25rem; }
 @media (hover: hover) and (pointer: fine) { .agenda-da:hover { color: var(--gold); } .agenda-haupt:hover .agenda-name { text-decoration: underline; text-underline-offset: .2em; } }
@@ -460,7 +465,6 @@ button.kal-abw { cursor: pointer; }
   position: fixed; z-index: 61; top: 0; right: 0; bottom: 0; width: min(100%, 31rem);
   display: flex; flex-direction: column; overflow: hidden;
   background: var(--tafel-grund); border-left: 1px solid var(--linie-stark);
-  box-shadow: -24px 0 60px -20px color-mix(in oklch, var(--schatten) 80%, transparent);
   transform: translateX(24px); opacity: 0;
   transition: transform var(--t2) var(--kurve-weich), opacity var(--t1) var(--kurve);
 }
@@ -530,7 +534,7 @@ button.kal-abw { cursor: pointer; }
 .gewaehlt-info { color: var(--tinte-leise); font-size: .85rem; }
 .gewaehlt-karte .text-link { margin-left: auto; }
 .gewaehlt-liste { margin: 0; padding: 0; list-style: none; display: grid; gap: .3rem; }
-.gewaehlt-liste li { grid-template-columns: minmax(0, 1fr) auto auto; padding: .4rem 0 .4rem .7rem; border-left: 2px solid var(--gold-tief); }
+.gewaehlt-liste li { grid-template-columns: minmax(0, 1fr) auto auto; padding: .35rem .2rem .35rem .8rem; border: 1px solid var(--linie-gold); border-radius: 3px; background: var(--wahl-grund); }
 .gewaehlt-liste .zahl { font-size: .82rem; color: var(--tinte-leise); }
 .leistung-auswahl { display: grid; gap: .6rem; }
 .reiter { display: flex; gap: .3rem; overflow-x: auto; scrollbar-width: none; }
@@ -611,8 +615,13 @@ details.az-salon > summary { cursor: pointer; padding: .3rem 0; }
 .az-tag { font: 500 .78rem/1 var(--marke); letter-spacing: .08em; }
 .az-spannen { display: flex; flex-wrap: wrap; gap: .3rem .8rem; align-items: center; }
 .az-spanne { display: inline-flex; align-items: center; gap: .3rem; }
-.az-spanne input { width: 7.4rem; min-height: 2.2rem; padding: .25rem .4rem; font-size: max(16px, .9rem); }
+.az-spanne input { width: 6.8rem; min-height: 2.2rem; padding: .25rem .4rem; font-size: max(16px, .9rem); }
 .az-frei { color: var(--tinte-still); font-size: .85rem; }
+@media (max-width: 30rem) {
+  .az-zeile { grid-template-columns: 2rem minmax(0, 1fr); padding: .3rem 0; }
+  .az-zeile > .text-link { grid-column: 2; justify-self: start; padding-top: 0; }
+  .az-spanne input { width: 6.4rem; }
+}
 .leistungs-wahl { display: grid; gap: .5rem; }
 .lw-salon { border: 1px solid var(--linie); border-radius: 4px; padding: .5rem .9rem; }
 .lw-salon summary { cursor: pointer; padding: .3rem 0; font-weight: 600; }
@@ -635,7 +644,7 @@ details.az-salon > summary { cursor: pointer; padding: .3rem 0; }
 .kachel dt { font: 500 .66rem/1.3 var(--marke); letter-spacing: .14em; text-transform: uppercase; color: var(--tinte-still); }
 .kachel dd { margin: .35rem 0 0; font: 300 1.9rem/1 var(--marke); font-variant-numeric: tabular-nums lining-nums; }
 .kachel-unter { margin: .35rem 0 0; font-size: .8rem; color: var(--tinte-still); }
-.tabelle { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tabelle { width: 100%; min-width: 34rem; border-collapse: collapse; font-size: .9rem; }
 .tabelle th, .tabelle td { padding: .65rem .5rem; border-bottom: 1px solid var(--linie); text-align: left; }
 .tabelle thead th { font: 500 .66rem/1.3 var(--marke); letter-spacing: .12em; text-transform: uppercase; color: var(--tinte-still); }
 .tabelle tbody th { font-weight: 600; display: flex; align-items: center; gap: .5rem; }
@@ -652,11 +661,11 @@ details.az-salon > summary { cursor: pointer; padding: .3rem 0; }
 @media (max-width: 47.99rem) { .meldungen { bottom: calc(4.6rem + env(safe-area-inset-bottom)); } }
 .meldung {
   display: flex; align-items: center; justify-content: space-between; gap: 1rem; pointer-events: auto;
-  padding: .75rem 1rem; border: 1px solid var(--linie-stark); border-left: 2px solid var(--gold); border-radius: 4px;
-  background: var(--tafel-grund); box-shadow: 0 14px 30px -10px color-mix(in oklch, var(--schatten) 85%, transparent);
+  padding: .75rem 1rem; border: 1px solid var(--linie-gold); border-radius: 4px;
+  background: var(--tafel-grund);
   font-size: .9rem; animation: meldung-auf .35s var(--kurve) backwards;
 }
-.meldung.ist-fehler { border-left-color: var(--warnung); }
+.meldung.ist-fehler { border-color: var(--warnung); }
 .meldung.geht { opacity: 0; transform: translateY(6px); transition: opacity .25s cubic-bezier(.55, 0, .78, .4), transform .25s cubic-bezier(.55, 0, .78, .4); }
 .meldung-aktion { flex: none; border: 0; background: none; color: var(--gold-schrift); cursor: pointer; font: 500 .72rem/1 var(--marke); letter-spacing: .12em; text-transform: uppercase; padding: .4rem 0; }
 @keyframes meldung-auf { from { opacity: 0; transform: translateY(8px); } }

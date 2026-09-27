@@ -492,7 +492,7 @@
         neuerMonat ? el('span', { klasse: 'tag-monat', text: MONAT[dt.getMonth()] }) : null,
         el('span', { klasse: 'tag-name', text: d === heute() ? 'heute' : TAG[dt.getDay()] }),
         el('span', { klasse: 'tag-zahl', text: String(dt.getDate()) }),
-        el('span', { klasse: 'tag-punkte', 'data-n': String(punkte), 'aria-hidden': 'true' })));
+        el('span', { klasse: 'tag-punkte', 'data-n': String(punkte), 'aria-hidden': 'true' }, el('i'), el('i'), el('i'))));
     }
     if (Z.frei.bis < Z.frei.letzter) {
       f.append(el('button', { type: 'button', klasse: 'tag tag-mehr', onclick: (e) => { e.currentTarget.disabled = true; freiLaden(true); } },

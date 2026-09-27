@@ -143,3 +143,41 @@ stellt Extensions nach vorn. Vor dem Umstellen auf die Hauptadresse:
   - Bitte die richtige Nummer nennen; sie steht an genau einer Stelle (`data-whatsapp`).
 - **Die Erklärungen zu Tape-Technik und Bondings** sind allgemein gehalten, ohne Haltbarkeit und ohne Zahlen. Bitte gegenlesen, ob sie zur Arbeitsweise im Salon passen.
 - **Großhadern:** Tape und Bondings stehen bei Planity nur für Pasing (siehe Punkt 8). Die Nachricht lässt trotzdem beide Salons zu.
+
+## 10. Eigene Terminbuchung und Studio (27.09.2026)
+
+Gebaut und geprüft, aber erst nutzbar, wenn es auf dem Webspace liegt
+(Anleitung: `BUCHUNG.md`). Vorher mit dem Salon zu klären:
+
+- **Planity abschalten oder nicht?** Beide Buchungen parallel offen zu
+  lassen führt zu Doppelbuchungen — sie wissen nichts voneinander. Wann
+  wird umgestellt, und werden die schon bei Planity gebuchten Termine
+  übertragen (von Hand im Studio oder als Liste)?
+- **Arbeitszeiten.** Öffentlich steht nur, wann die Salons geöffnet
+  sind. Bis sie eingetragen sind, gilt für jede Person: Öffnungszeiten
+  ihres Salons. **Bedia** steht bei Planity in beiden Salons — bitte ihre
+  Tage je Salon nennen (doppelt belegt wird sie trotzdem nie).
+- **Team:** Übernommen aus Planity: Pasing Bedia, Tina, Csilla, Benny;
+  Großhadern Zeynep, Benny Scheer, Mira, Carola, Momo (und Bedia). Benny
+  und Benny Scheer sind bei Planity für die Online-Buchung ausgeblendet —
+  hier ebenso (nur im Studio buchbar). Stimmt das noch? Liza ist bei
+  Planity gelöscht und fehlt hier.
+- **Wer macht was:** übernommen aus Planity (je Leistung die Personen).
+  Bitte unter *Team* gegenlesen.
+- **E-Mail:** Welche Absenderadresse (z. B. termine@irmonhair-muenchen.de)
+  und wer bekommt die Hinweise zu Online-Buchungen je Salon?
+- **Regeln:** Vorgaben sind frühestens 60 Minuten ab jetzt, 90 Tage im
+  Voraus, Absagen online bis 24 Stunden vorher, höchstens drei offene
+  Online-Termine je Nummer. Alles unter *Einstellungen* änderbar.
+- **Nicht online:** in Pasing Augenbrauen und Permanent Make-up (bei
+  Planity „Preis auf Anfrage“), in Großhadern Permanent Make-up Korrektur
+  und Rekonstruktion („nur auf Anfrage“) und Balayage („vor der
+  Online-Buchung beraten lassen“), dazu alle Posten, die nur auf der alten
+  Website stehen. Im Studio sind sie buchbar. Soll davon etwas online
+  gehen?
+- **Datenschutz:** Abschnitt 2 nennt noch GitHub Pages. Mit dem Umzug
+  All-Inkl eintragen und den Vertrag zur Auftragsverarbeitung mit
+  All-Inkl abschließen (KAS). Die neue Erklärung zur Online-Buchung
+  (Abschnitt 4 und 5) bitte rechtlich gegenlesen lassen.
+- **Fotos des Teams** fehlen weiter; die Buchung zeigt Initialen. Mit
+  Porträts wird die Personenwahl persönlicher.
