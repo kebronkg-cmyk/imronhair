@@ -375,8 +375,10 @@ function aktion_kunden(): array
     anmeldung_pflicht(false);
     $db = db();
     $q = trim((string)(text_feld('q', 100) ?? ''));
-    $werte = [];
-    $sql = 'SELECT k.*, (SELECT MAX(start) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status <> \'storniert\') AS letzter,
+    $jetzt = jetzt();
+    $werte = [$jetzt, $jetzt];
+    $sql = 'SELECT k.*, (SELECT MAX(start) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status NOT IN (\'storniert\', \'nicht_erschienen\') AND t.start < ?) AS letzter,
+        (SELECT MIN(start) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status = \'gebucht\' AND t.start >= ?) AS naechster,
         (SELECT COUNT(*) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status <> \'storniert\') AS besuche
         FROM {p}kunde k WHERE k.geloescht = 0';
     if ($q !== '') {
@@ -395,6 +397,7 @@ function aktion_kunden(): array
     foreach ($db->alle($sql, $werte) as $k) {
         $aus[] = ['id' => (int)$k['id'], 'vorname' => $k['vorname'], 'nachname' => $k['nachname'], 'telefon' => $k['telefon'],
             'telefon_text' => telefon_anzeige($k['telefon']), 'email' => $k['email'], 'letzter' => $k['letzter'] ? substr($k['letzter'], 0, 10) : null,
+            'naechster' => $k['naechster'] ? substr($k['naechster'], 0, 16) : null,
             'besuche' => (int)$k['besuche']];
     }
     $gesamt = (int)$db->wert('SELECT COUNT(*) FROM {p}kunde WHERE geloescht = 0');

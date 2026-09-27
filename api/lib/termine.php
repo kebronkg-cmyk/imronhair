@@ -81,6 +81,12 @@ function termin_anlegen(array $o): array
         }
         if (!$kandidaten) throw new Fehler('Für diese Auswahl gibt es niemanden.', 422, 'person');
         $db->personenSperren($kandidaten);
+        // Nach dem Warten auf die Sperre noch einmal: Hat dieselbe Anfrage
+        // (doppelt abgeschickt) inzwischen gebucht, ist das unser Termin.
+        if (!empty($o['anfrage_id'])) {
+            $alt = $db->eins('SELECT id FROM {p}termin WHERE anfrage_id = ?', [$o['anfrage_id']]);
+            if ($alt) return termin_lesen((int)$alt['id']) + ['wiederholt' => true];
+        }
 
         if ($online) {
             $e = einstellungen();

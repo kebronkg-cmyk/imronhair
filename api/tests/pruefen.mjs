@@ -91,8 +91,8 @@ pruefe(r.status === 200, 'Buchung in der Einwirkzeit klappt');
 
 // ── Doppelt abgeschickt ─────────────────────────────────────────────
 const doppel = buchung({ salon: 'pasing', leistungen: [schnitt.id], person: 'bedia', start: `${tag} 15:00` });
-const [d1, d2] = await Promise.all([rufe('buchen', { post: doppel }), rufe('buchen', { post: doppel })]);
-pruefe(d1.status === 200 && d2.status === 200 && d1.json.id === d2.json.id, 'Zweimal abgeschickt (gleichzeitig) = ein Termin', [d1.json, d2.json]);
+const mehrfach = await Promise.all(Array.from({ length: 8 }, () => rufe('buchen', { post: doppel })));
+pruefe(mehrfach.every((x) => x.status === 200 && x.json.id === mehrfach[0].json.id), 'Achtmal gleichzeitig abgeschickt = ein Termin', mehrfach.map((x) => x.json.id || x.json.code));
 
 // ── Gleichzeitig: 20 wollen denselben Platz ─────────────────────────
 const wett = await Promise.all(Array.from({ length: 20 }, (_, i) => rufe('buchen', {
