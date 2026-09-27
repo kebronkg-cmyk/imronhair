@@ -1,0 +1,2802 @@
+{
+ "gelesen": "2026-09-27",
+ "pasing": {
+  "team": {
+   "-OkiC6OrjVXKYKRGON0i": {
+    "name": "Bedia",
+    "sort": 1,
+    "online": true
+   },
+   "-OkiXn9tP7psoRAG7gNe": {
+    "name": "Tina",
+    "sort": 2,
+    "online": true
+   },
+   "-OkiXtxlbo0BJV9hT8LW": {
+    "name": "Csilla",
+    "sort": 3,
+    "online": true
+   },
+   "-OkiXwjwMw_3GhKBKt-0": {
+    "name": "Benny",
+    "sort": 4,
+    "online": false
+   }
+  },
+  "leistungen": [
+   {
+    "planity_id": "-OkiK8Ekg9FG9_YqWseN",
+    "name": "Damen Waschen-Schneiden-Fönen - kurz-mittel",
+    "kategorie": "DAMEN | SCHNITT | STYLING",
+    "dauer": 60,
+    "preise": {
+     "default": 7000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiK8Ekg9FG9_YqWseP",
+    "name": "Damen - Waschen-Schneiden Fönen- lang",
+    "kategorie": "DAMEN | SCHNITT | STYLING",
+    "dauer": 75,
+    "preise": {
+     "default": 8000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      75
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiK8Ekg9FG9_YqWseQ",
+    "name": "Damen | Waschen-Fönen  - kurz",
+    "kategorie": "DAMEN | SCHNITT | STYLING",
+    "dauer": 30,
+    "preise": {
+     "default": 3500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiK8Ekg9FG9_YqWseR",
+    "name": "Damen | Waschen-Fönen- mittel",
+    "kategorie": "DAMEN | SCHNITT | STYLING",
+    "dauer": 30,
+    "preise": {
+     "default": 4500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiK8Ekg9FG9_YqWseS",
+    "name": "Damen | Waschen-Fönen - lang",
+    "kategorie": "DAMEN | SCHNITT | STYLING",
+    "dauer": 45,
+    "preise": {
+     "default": 5000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      45
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiK8Ekg9FG9_YqWseT",
+    "name": "Damen -  Heiße Schere Zusatz Buchung",
+    "kategorie": "DAMEN | SCHNITT | STYLING",
+    "dauer": 5,
+    "preise": {
+     "default": 1500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      5
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiK8Ekg9FG9_YqWseU",
+    "name": "Damen | | Dauerwelle - Preis je nach länge und Menge",
+    "kategorie": "DAMEN | SCHNITT | STYLING",
+    "dauer": 100,
+    "preise": {
+     "min": 8000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      10
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OpgwzENVe7ZZvy34Z08",
+    "name": "Damen | | Dauerwelle - Preis je nach länge und Menge",
+    "kategorie": "DAMEN | SCHNITT | STYLING",
+    "dauer": 135,
+    "preise": {
+     "min": 14000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      15
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF7XqzPUWcKGZlJ",
+    "name": "Damen | Conditioner",
+    "kategorie": "HAARKUR | PFLEGE",
+    "dauer": 5,
+    "preise": {
+     "default": 500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      5
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3l",
+    "name": "Damen  | Haarkur kurz",
+    "kategorie": "HAARKUR | PFLEGE",
+    "dauer": 10,
+    "preise": {
+     "default": 1000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      10
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3m",
+    "name": "Damen  | Haarkur mittel",
+    "kategorie": "HAARKUR | PFLEGE",
+    "dauer": 10,
+    "preise": {
+     "default": 1500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      10
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3n",
+    "name": "Damen | Haarkur lang",
+    "kategorie": "HAARKUR | PFLEGE",
+    "dauer": 10,
+    "preise": {
+     "default": 1700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      10
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3o",
+    "name": "Damen | Crioukur Kältebehandlung und Föhnen|kurz",
+    "kategorie": "HAARKUR | PFLEGE",
+    "dauer": 60,
+    "preise": {
+     "default": 7500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3p",
+    "name": "Damen | Crioukur Kältebehandlung und Föhnen | mittel",
+    "kategorie": "HAARKUR | PFLEGE",
+    "dauer": 60,
+    "preise": {
+     "default": 9000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3q",
+    "name": "Damen | Crioukur Kältebehandlung und Föhnen  | lang",
+    "kategorie": "HAARKUR | PFLEGE",
+    "dauer": 75,
+    "preise": {
+     "default": 11000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      75
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3v",
+    "name": "Herren Cut | Styling",
+    "kategorie": "HERREN | SCHNITT | STYLING",
+    "dauer": 60,
+    "preise": {
+     "default": 4400
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3x",
+    "name": "Herren | Cut | Tonic Massage | Styling",
+    "kategorie": "HERREN | SCHNITT | STYLING",
+    "dauer": 60,
+    "preise": {
+     "default": 6000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ3z",
+    "name": "Kinder | Haarschnitt bis 6 Jahre",
+    "kategorie": "KINDER | SCHNITT | STYLING",
+    "dauer": 30,
+    "preise": {
+     "default": 3000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ40",
+    "name": "Haarverdichtung Beratung",
+    "kategorie": "HAARVERLÄNGERUNG",
+    "dauer": 30,
+    "preise": {
+     "default": 5000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKBF8_vRra_I2GZ41",
+    "name": "Extensions Haarverlängerung Beratung",
+    "kategorie": "HAARVERLÄNGERUNG",
+    "dauer": 30,
+    "preise": {
+     "default": 5000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-Ol2hRbf-PSeqy1BZOTJ",
+    "name": "Tapetechnik | Bondings ",
+    "kategorie": "HAARVERLÄNGERUNG",
+    "dauer": 30,
+    "preise": {
+     "onQuotation": true
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNC4",
+    "name": "Damen - Strähnen Oberkopf, Schnitt & Föhnen & Pflege - kurz",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": {
+     "min": 16000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNC5",
+    "name": "Damen - Strähnen Oberkopf, Schnitt & Föhnen & Pflege - mittel",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": {
+     "min": 17000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNC6",
+    "name": "Damen - Strähnen Oberkopf, Schnitt & Föhnen & Pflege - lang",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": {
+     "min": 18500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNC7",
+    "name": "Damen - Strähnen Oberkopf & Föhnen - kurz",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 120,
+    "preise": {
+     "min": 11000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNC8",
+    "name": "Damen - Strähnen Oberkopf & Föhnen - mittel",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 120,
+    "preise": {
+     "min": 12000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNC9",
+    "name": "Damen - Strähnen Oberkopf & Föhnen - lang",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 130,
+    "preise": {
+     "min": 13500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      40
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNCA",
+    "name": "Damen - Strähnen halber Kopf, Schnitt & Föhnen - kurz",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": {
+     "min": 15500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNCB",
+    "name": "Damen - Strähnen halber Kopf, Schnitt & Föhnen - mittel",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": {
+     "min": 16500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNCC",
+    "name": "Damen - Strähnen halber Kopf, Schnitt & Föhnen - lang",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 165,
+    "preise": {
+     "min": 18500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      75
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNCD",
+    "name": "Damen - Strähnen halber Kopf & Föhnen - kurz",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 120,
+    "preise": {
+     "min": 11000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNCE",
+    "name": "Damen - Strähnen halber Kopf & Föhnen - mittel",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 120,
+    "preise": {
+     "min": 14000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNCF",
+    "name": "Damen - Strähnen halber Kopf & Föhnen - lang",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 120,
+    "preise": {
+     "min": 17000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY0",
+    "name": "Damen - Strähnchen ganzer Kopf, Schnitt & Föhnen - kurz",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 180,
+    "preise": {
+     "min": 15500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY1",
+    "name": "Damen - Strähnchen ganzer Kopf, Schnitt & Föhnen - mittel",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 180,
+    "preise": {
+     "min": 16000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY2",
+    "name": "Damen - Strähnchen ganzer Kopf, Schnitt & Föhnen - lang",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 180,
+    "preise": {
+     "min": 17000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY3",
+    "name": "Damen - Strähnchen ganzer Kopf & Föhnen - kurz",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": {
+     "min": 13000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY4",
+    "name": "Damen - Strähnchen ganzer Kopf & Föhnen - mittel",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": {
+     "min": 13500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY5",
+    "name": "Damen - Strähnchen ganzer Kopf & Föhnen - lang",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": {
+     "min": 15000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-Ol2dSPO68-gzds-_Ev1",
+    "name": "Färben | Schneiden | Fönen| kurz",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": null,
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-Ol2e0ttRYEriMrZrKpo",
+    "name": "Färben | Schneiden | Föhnen | mittel",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": null,
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-Ol2e16hl5HW_p7rVIqt",
+    "name": "Färben |Schneiden | Fönen | lang",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 150,
+    "preise": null,
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OlKwJ0Q0_3bPJTwKsw-",
+    "name": "Färben | Föhnen | kurz",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 120,
+    "preise": null,
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OlKwX0Zy9Ncz0-CNh6M",
+    "name": "Färben | Föhnen | mittel ",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 120,
+    "preise": null,
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OlKwXGxJAs-tGFTCD1R",
+    "name": "Färben | Föhnen | lang",
+    "kategorie": "DAMEN | FÄRBEN | SCHNITT | STRÄHNEN ",
+    "dauer": 130,
+    "preise": null,
+    "phasen": [
+     [
+      "arbeit",
+      40
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY6",
+    "name": "Damen - Balayage, Schnitt & Styling - kurz",
+    "kategorie": "DAMEN | BALAYAGE",
+    "dauer": 150,
+    "preise": {
+     "default": 22500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY7",
+    "name": "Damen - Balayage, Schnitt & Styling - mittel",
+    "kategorie": "DAMEN | BALAYAGE",
+    "dauer": 150,
+    "preise": {
+     "default": 24000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY8",
+    "name": "Damen - Balayage, Schnitt & Styling - lang",
+    "kategorie": "DAMEN | BALAYAGE",
+    "dauer": 150,
+    "preise": {
+     "default": 25000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKY9",
+    "name": "Damen - Balayage & Styling - kurz",
+    "kategorie": "DAMEN | BALAYAGE",
+    "dauer": 150,
+    "preise": {
+     "default": 21000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKYA",
+    "name": "Damen - Balayage & Styling - mittel",
+    "kategorie": "DAMEN | BALAYAGE",
+    "dauer": 150,
+    "preise": {
+     "default": 21500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKOyyxf_xddkGjKYB",
+    "name": "Damen - Balayage & Styling - lang",
+    "kategorie": "DAMEN | BALAYAGE",
+    "dauer": 150,
+    "preise": {
+     "default": 22000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKHPiNZKItIVHJylN",
+    "name": "Damen - Glossing |Schneiden | Fönen | Haarkur  - kurz",
+    "kategorie": "DAMEN | GLOSS | TÖNUNGEN",
+    "dauer": 70,
+    "preise": {
+     "min": 10500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "arbeit",
+      40
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKHPiNZKItIVHJylO",
+    "name": "Damen - Glossing |Schneiden | Fönen | Haarkur  - mittel",
+    "kategorie": "DAMEN | GLOSS | TÖNUNGEN",
+    "dauer": 75,
+    "preise": {
+     "min": 11000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "arbeit",
+      45
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKHPjGRL7RPQK5JnP",
+    "name": "Damen - Glossing | Schneiden |Fönen| Haarkur  - lang",
+    "kategorie": "DAMEN | GLOSS | TÖNUNGEN",
+    "dauer": 90,
+    "preise": {
+     "min": 12000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKHPjGRL7RPQK5JnQ",
+    "name": "Damen - Glossing | Fönen | Haarkur - kurz",
+    "kategorie": "DAMEN | GLOSS | TÖNUNGEN",
+    "dauer": 60,
+    "preise": {
+     "min": 7000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKHPjGRL7RPQK5JnR",
+    "name": "Damen - Glossing | Fönen| Haarkur - mittel",
+    "kategorie": "DAMEN | GLOSS | TÖNUNGEN",
+    "dauer": 60,
+    "preise": {
+     "default": 8000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKHPjGRL7RPQK5JnS",
+    "name": "Damen - Glossing |Fönen | Haarkur - lang",
+    "kategorie": "DAMEN | GLOSS | TÖNUNGEN",
+    "dauer": 60,
+    "preise": {
+     "min": 9000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-OkiKLw0IKkWZCTFQNC1",
+    "name": "Damen | Tönungen | Veredelung",
+    "kategorie": "DAMEN | GLOSS | TÖNUNGEN",
+    "dauer": 15,
+    "preise": {
+     "min": 4000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      10
+     ],
+     [
+      "arbeit",
+      5
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXn9tP7psoRAG7gNe",
+     "-OkiXtxlbo0BJV9hT8LW",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   },
+   {
+    "planity_id": "-Ol2h5-p-x22EtK5d2HW",
+    "name": "Make up | Business | Braut",
+    "kategorie": "KOSMETIK",
+    "dauer": 30,
+    "preise": {
+     "onQuotation": true
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkiC6OrjVXKYKRGON0i",
+     "-OkiXwjwMw_3GhKBKt-0"
+    ]
+   }
+  ],
+  "oeffnung": {
+   "Montag": [],
+   "Dienstag": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Mittwoch": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Donnerstag": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Freitag": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Samstag": [
+    [
+     "09:00",
+     "16:00"
+    ]
+   ],
+   "Sonntag": []
+  }
+ },
+ "grosshadern": {
+  "team": {
+   "-OkicYbb4heGHov4vBJR": {
+    "name": "Zeynep",
+    "sort": 1,
+    "online": true
+   },
+   "-OkicaUFNJNufO6RgxB9": {
+    "name": "Benny Scheer",
+    "sort": 2,
+    "online": false
+   },
+   "-OlAnoIyPxAMYQmeevdv": {
+    "name": "Mira",
+    "sort": 3,
+    "online": true
+   },
+   "-OlBARLeVKxsLiEHJAyw": {
+    "name": "Carola",
+    "sort": 4,
+    "online": true
+   },
+   "-OlBDwg9Z0W3z_f_lYop": {
+    "name": "Momo",
+    "sort": 5,
+    "online": true
+   },
+   "-OlL3ez7mCf23KkZBcC0": {
+    "name": "Bedia",
+    "sort": 6,
+    "online": true
+   }
+  },
+  "leistungen": [
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTP",
+    "name": "Damen Föhnen / Legen - Kurz-Mittel",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 30,
+    "preise": {
+     "default": 3700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTQ",
+    "name": "Damen Föhnen / Legen - Lang",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 45,
+    "preise": {
+     "default": 4700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      45
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTR",
+    "name": "Damen - waschen-Schneiden & Föhnen - Kurz &Mittel",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 60,
+    "preise": {
+     "default": 6200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTS",
+    "name": "Damen - waschen-Schneiden & Föhnen - Lang",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 60,
+    "preise": {
+     "default": 7200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTT",
+    "name": "Damen - Dauerwelle & Styling - Kurz & Mittel",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 120,
+    "preise": {
+     "default": 13500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      120
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTU",
+    "name": "Damen - Dauerwelle & Styling - Lang",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 120,
+    "preise": {
+     "default": 16500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      120
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTX",
+    "name": "Damen - OLAPLEX TREATMENT (60 min) - Kurz & Mittel",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 60,
+    "preise": {
+     "default": 9200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTY",
+    "name": "Damen - OLAPLEX TREATMENT (60 min) - Lang",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 60,
+    "preise": {
+     "default": 10200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTZ",
+    "name": "Herren - Maschinenhaarschnitt",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 20,
+    "preise": {
+     "default": 2800
+    },
+    "phasen": [
+     [
+      "arbeit",
+      20
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFT_",
+    "name": "Damen - Hochsteckfrisur",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 60,
+    "preise": {
+     "default": 8000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTa",
+    "name": "Damen - Dauerwelle & Schnitt& Styling - kurz",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 90,
+    "preise": {
+     "default": 13800
+    },
+    "phasen": [
+     [
+      "arbeit",
+      90
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFOIjwe6xe215QFTb",
+    "name": "Damen - Dauerwelle & Schnitt& Styling - lang",
+    "kategorie": "Damen - Haarschnitte & Stylings",
+    "dauer": 120,
+    "preise": {
+     "default": 14800
+    },
+    "phasen": [
+     [
+      "arbeit",
+      120
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jFv",
+    "name": "Ansatzfarbe, Schnitt & Föhnen inkl. Haarkur - Kurz & Mittel",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 120,
+    "preise": {
+     "min": 14200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      30
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jFw",
+    "name": "Ansatzfarbe, Schnitt & Föhnen inkl. Haarkur- Lang 2 Std.",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 120,
+    "preise": {
+     "min": 15200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      30
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jFx",
+    "name": "Ansatzfarbe & Stylen inkl. Haarkur - Kurz & Mittel ",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 90,
+    "preise": {
+     "min": 11700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      30
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jFy",
+    "name": "Ansatzfarbe & Stylen inkl. Haarkur - Lang ",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 90,
+    "preise": {
+     "min": 13200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      30
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jFz",
+    "name": "Glossing, Schnitt & Stylen - Kurz & Mittel inkl. Haarkur",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 105,
+    "preise": {
+     "min": 11700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      45
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG-",
+    "name": "Glossing, Schnitt & Stylen inkl. Haarkur - Lang ab",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 105,
+    "preise": {
+     "min": 13000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      45
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG0",
+    "name": "Glossing & Stylen - Lang inkl. Haarkur",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 75,
+    "preise": {
+     "min": 10700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      45
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG1",
+    "name": "Glossing & Stylen inkl. Haarkur - Kurz & Mittel ",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 75,
+    "preise": {
+     "min": 8200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      45
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG2",
+    "name": "Strähnen halber Kopf, Schnitt & Stylen inkl. Haarkur - Kurz & Mittel ",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 150,
+    "preise": {
+     "min": 17200
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG4",
+    "name": "Strähnen halber Kopf & Stylen - Kurz & Mittel inkl. Haarkur",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 120,
+    "preise": {
+     "min": 14700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG6",
+    "name": "Strähnen ganzer Kopf, Schnitt & Stylen - Kurz & Mittel inkl. Haarkur",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 180,
+    "preise": {
+     "min": 20700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG7",
+    "name": "Strähnen ganzer Kopf, Schnitt & Stylen - Lang inkl. Haarkur",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 210,
+    "preise": {
+     "min": 21700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      90
+     ],
+     [
+      "pause",
+      30
+     ],
+     [
+      "arbeit",
+      90
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG8",
+    "name": "Strähnen ganzer Kopf & Stylen - Kurz & Mittel inkl. Haarkur",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 160,
+    "preise": {
+     "min": 17700
+    },
+    "phasen": [
+     [
+      "arbeit",
+      90
+     ],
+     [
+      "pause",
+      30
+     ],
+     [
+      "arbeit",
+      40
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jG9",
+    "name": "Strähnen ganzer Kopf & Stylen - Lang inkl. Haarkur",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 150,
+    "preise": {
+     "min": 19300
+    },
+    "phasen": [
+     [
+      "arbeit",
+      90
+     ],
+     [
+      "pause",
+      30
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFTg3NnXPn71A-jGA",
+    "name": "Balayage & Schnitt & Stylen & Glossing inkl. Haarkur",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 220,
+    "preise": {
+     "min": 25000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      70
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OupaNYcl6x-_kLCUc5a",
+    "name": "glossing",
+    "kategorie": "Damen - Farbe & Coloration",
+    "dauer": 20,
+    "preise": {
+     "min": 3500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      20
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5t3",
+    "name": "Herren - Schnitt & Styling",
+    "kategorie": "Herren - Haarschnitte & Stylings",
+    "dauer": 40,
+    "preise": {
+     "default": 3800
+    },
+    "phasen": [
+     [
+      "arbeit",
+      40
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5t4",
+    "name": "Herren - Neuschnitt & Stylen",
+    "kategorie": "Herren - Haarschnitte & Stylings",
+    "dauer": 60,
+    "preise": {
+     "default": 4800
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5t5",
+    "name": "Herren - Bart",
+    "kategorie": "Herren - Haarschnitte & Stylings",
+    "dauer": 15,
+    "preise": {
+     "default": 1500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      15
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5t6",
+    "name": "Herren - Maschinenhaarschnitt",
+    "kategorie": "Herren - Haarschnitte & Stylings",
+    "dauer": 20,
+    "preise": {
+     "default": 2500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      20
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5t7",
+    "name": "Herren - Dauerwelle inkl. Schnitt & Haarkur",
+    "kategorie": "Herren - Haarschnitte & Stylings",
+    "dauer": 120,
+    "preise": {
+     "min": 11500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ],
+     [
+      "pause",
+      60
+     ],
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5t8",
+    "name": "Herren - Grauhaarkaschierung",
+    "kategorie": "Herren - Haarschnitte & Stylings",
+    "dauer": 15,
+    "preise": {
+     "default": 2800
+    },
+    "phasen": [
+     [
+      "arbeit",
+      15
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tA",
+    "name": "Mädchen - Haarschnitt - bis 6 Jahre",
+    "kategorie": "Kinder - Haarschnitte & Stylings",
+    "dauer": 30,
+    "preise": {
+     "default": 4000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlAnoIyPxAMYQmeevdv"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tB",
+    "name": "Mädchen - Haarschnitt - je nach Aufwand ab 6 Jahre",
+    "kategorie": "Kinder - Haarschnitte & Stylings",
+    "dauer": 30,
+    "preise": {
+     "default": 5500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlAnoIyPxAMYQmeevdv"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tC",
+    "name": "Jungen - Haarschnitt bis 10 Jahre",
+    "kategorie": "Kinder - Haarschnitte & Stylings",
+    "dauer": 30,
+    "preise": {
+     "default": 3000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tE",
+    "name": "Permanent Make-Up - Augenbrauen - Korrektur",
+    "kategorie": "Permanent Make-Up",
+    "dauer": 120,
+    "preise": {
+     "default": 45000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      120
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tF",
+    "name": "Permanent Make-Up - Augenbrauen - Rekonstruktion",
+    "kategorie": "Permanent Make-Up",
+    "dauer": 120,
+    "preise": {
+     "default": 55000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      120
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tG",
+    "name": "Permanent Make-Up - Eyeliner Oberlid",
+    "kategorie": "Permanent Make-Up",
+    "dauer": 60,
+    "preise": {
+     "default": 32000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tH",
+    "name": "Permanent Make-Up - Eyeliner Unterlid",
+    "kategorie": "Permanent Make-Up",
+    "dauer": 60,
+    "preise": {
+     "default": 18000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tI",
+    "name": "Permanent Make-Up - Lippen",
+    "kategorie": "Permanent Make-Up",
+    "dauer": 60,
+    "preise": {
+     "default": 55000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      60
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlBDwg9Z0W3z_f_lYop",
+     "-OlL3ez7mCf23KkZBcC0"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tK",
+    "name": "Augenbrauen färben",
+    "kategorie": "Augenbrauen & Wimpernbehandlungen",
+    "dauer": 15,
+    "preise": {
+     "default": 1500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      15
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlAnoIyPxAMYQmeevdv"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tL",
+    "name": "Wimpern färben",
+    "kategorie": "Augenbrauen & Wimpernbehandlungen",
+    "dauer": 20,
+    "preise": {
+     "default": 1500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      20
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OlBARLeVKxsLiEHJAyw",
+     "-OlAnoIyPxAMYQmeevdv"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tM",
+    "name": "Augenbrauen zupfen",
+    "kategorie": "Augenbrauen & Wimpernbehandlungen",
+    "dauer": 15,
+    "preise": {
+     "default": 1500
+    },
+    "phasen": [
+     [
+      "arbeit",
+      15
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tO",
+    "name": "Extensions / Haarverlängerung Beratung",
+    "kategorie": "Haarverlängerung",
+    "dauer": 30,
+    "preise": {
+     "default": 5000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   },
+   {
+    "planity_id": "-OkiFXMq7cKtRZBYE5tP",
+    "name": "Haarverdichtung Beratung",
+    "kategorie": "Haarverlängerung",
+    "dauer": 30,
+    "preise": {
+     "default": 5000
+    },
+    "phasen": [
+     [
+      "arbeit",
+      30
+     ]
+    ],
+    "personen": [
+     "-OkicYbb4heGHov4vBJR",
+     "-OkicaUFNJNufO6RgxB9",
+     "-OlL3ez7mCf23KkZBcC0",
+     "-OlAnoIyPxAMYQmeevdv",
+     "-OlBARLeVKxsLiEHJAyw"
+    ]
+   }
+  ],
+  "oeffnung": {
+   "Montag": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Dienstag": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Mittwoch": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Donnerstag": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Freitag": [
+    [
+     "09:00",
+     "18:30"
+    ]
+   ],
+   "Samstag": [
+    [
+     "09:00",
+     "16:00"
+    ]
+   ],
+   "Sonntag": []
+  }
+ }
+}
