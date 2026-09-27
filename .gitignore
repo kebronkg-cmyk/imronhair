@@ -7,3 +7,8 @@ schuss-*.png
 
 # Python-Zwischendateien
 __pycache__/
+
+# Terminbuchung: Zugangsdaten und Datenbankdatei bleiben auf dem Server
+api/config.php
+api/daten/*
+!api/daten/.htaccess

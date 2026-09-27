@@ -1,0 +1,438 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Irmonhair — Online-Buchung (termin.html)
+
+   Baut auf neu.css auf (Tokens, Leiste, Knöpfe, Schild). Hier nur, was die
+   Buchung braucht: Schritte mit Nummer und Lichtfuge, Wahlflächen, die
+   Tagesleiste, Uhrzeiten, das Formular — und das Etikett, das an der
+   Stange hängt und sich mit der Wahl füllt, wie die Preisetiketten der
+   Startseite.
+
+   Ein Licht je Gruppe: Gewähltes bekommt die Goldkante, leuchten tut nur
+   der eine Knopf, der gerade weiterführt.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Eigene Rollen dieser Seite, aus den Tokens von neu.css abgeleitet. */
+  --wahl-grund:  color-mix(in oklch, var(--gold) 9%, var(--papier));
+  --feld-grund:  var(--papier-tief);
+  --warnung:     oklch(74% .12 40);       /* Fehlerhinweis, warmes Rot auf Nacht */
+  --zu:          var(--tinte-still);
+  --etikett-breite: 19.5rem;
+}
+
+/* ── Kopf ────────────────────────────────────────────────────────────── */
+.buchung-kopf { padding: calc(var(--leiste) + var(--a4)) 0 var(--a3); }
+@media (min-width: 48rem) { .buchung-kopf { padding: calc(var(--leiste) + var(--a5)) 0 var(--a4); } }
+.buchung-lauf { max-width: 34rem; }
+
+.eigene { display: grid; gap: .6rem; margin-top: var(--a3); max-width: 34rem; }
+.eigener {
+  display: grid; gap: .15rem;
+  padding: .9rem 1.1rem .95rem;
+  border: 1px solid var(--linie-gold); border-radius: 3px;
+  background: var(--wahl-grund);
+  text-decoration: none;
+}
+.eigener-zeile, .vorschlag-zeile, .nochmal-zeile {
+  font: 500 var(--t-mini)/1.3 var(--marke); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-schrift);
+}
+.eigener-wann { color: var(--tinte); }
+.eigener-mehr { font-size: .85rem; color: var(--tinte-still); text-decoration: underline; text-underline-offset: .2em; }
+
+/* ── Rückfallebene ───────────────────────────────────────────────────── */
+.rueckfall { padding: 0 0 var(--a5); }
+.rueckfall-hinweis {
+  max-width: 40rem; margin: 0 0 var(--a3); padding: .9rem 1.1rem;
+  border: 1px solid var(--linie-gold); border-radius: 3px; color: var(--tinte-leise);
+}
+.rueckfall-salons { display: grid; gap: var(--a2); }
+@media (min-width: 48rem) { .rueckfall-salons { grid-template-columns: 1fr 1fr; max-width: 56rem; } }
+.rueckfall-salon { padding: 1.5rem; border: 1px solid var(--linie); border-radius: 3px; background: var(--weiss); }
+.rueckfall-salon h3 { margin: 0; font: 300 1.7rem/1.1 var(--marke); letter-spacing: .04em; }
+.rueckfall-salon p { margin: .6rem 0 1.2rem; color: var(--tinte-leise); font-size: .95rem; }
+.rueckfall-wege { display: flex; flex-wrap: wrap; gap: .6rem; }
+.rueckfall-wege .knopf-still { min-height: 2.9rem; padding: .7rem 1.2rem; }
+
+/* ── Der Bogen: Schritte links, Etikett rechts ───────────────────────── */
+.bogen { padding-bottom: var(--a5); }
+@media (min-width: 64rem) {
+  .bogen {
+    display: grid; grid-template-columns: minmax(0, 1fr) var(--etikett-breite);
+    column-gap: clamp(3rem, 5vw, 5.5rem); align-items: start;
+  }
+  .bogen > .vorschau-band, .bogen > .hinweis-band { grid-column: 1 / -1; }
+}
+.vorschau-band, .hinweis-band {
+  margin: 0 0 var(--a3); padding: .75rem 1rem;
+  border: 1px solid var(--linie-gold); border-radius: 3px;
+  font-size: .92rem; color: var(--tinte-leise);
+  animation: auftauchen .45s var(--kurve) backwards;
+}
+
+.schritte { margin: 0; padding: 0; list-style: none; }
+.schritt { position: relative; border-top: 1px solid var(--linie); }
+.schritt:last-child { border-bottom: 1px solid var(--linie); }
+/* Die Lichtfuge: die Kante des offenen Schritts leuchtet — hier ist man. */
+.schritt::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px;
+  background: linear-gradient(90deg, var(--gold), color-mix(in oklch, var(--gold) 40%, transparent) 55%, transparent);
+  opacity: 0; transform-origin: left; transform: scaleX(.3);
+  transition: opacity var(--t2) var(--kurve), transform var(--t3) var(--kurve);
+}
+.schritt.ist-offen::before { opacity: 1; transform: none; }
+
+.schritt-kopf {
+  display: grid; grid-template-columns: 2.4rem minmax(0, 1fr) auto; align-items: baseline;
+  column-gap: .4rem; padding: 1.35rem 0;
+}
+.schritt-nr { font: 500 var(--t-mini)/1 var(--marke); letter-spacing: .16em; color: var(--gold-schrift); }
+.schritt-titel { margin: 0; font: 300 1.55rem/1.15 var(--marke); letter-spacing: .03em; color: var(--tinte); }
+@media (min-width: 48rem) { .schritt-titel { font-size: 1.75rem; } }
+.schritt-wahl {
+  grid-column: 2; grid-row: 2; margin: .3rem 0 0;
+  font-size: .95rem; color: var(--tinte-leise);
+  overflow-wrap: anywhere;
+}
+.schritt-wahl:empty { display: none; }
+.schritt-aendern {
+  grid-column: 3; grid-row: 1 / span 2; align-self: center;
+  min-height: 2.75rem; padding: .5rem .2rem .5rem .9rem;
+  border: 0; background: none; cursor: pointer;
+  font: 500 var(--t-mini)/1 var(--marke); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--tinte-still); text-decoration: underline; text-underline-offset: .35em; text-decoration-color: var(--linie-stark);
+}
+@media (hover: hover) and (pointer: fine) { .schritt-aendern:hover { color: var(--tinte); text-decoration-color: var(--gold-tief); } }
+.schritt.ist-spaeter .schritt-titel { color: var(--tinte-still); }
+.schritt.ist-spaeter .schritt-nr { color: var(--tinte-still); }
+.schritt.ist-fertig .schritt-kopf { padding: 1.05rem 0; }
+.schritt.ist-fertig .schritt-titel { font-size: 1.15rem; color: var(--tinte-leise); }
+.schritt.ist-fertig { cursor: default; }
+
+.schritt-inhalt { padding: 0 0 var(--a4); animation: auftauchen .45s var(--kurve) backwards; }
+@media (min-width: 48rem) { .schritt-inhalt { padding-left: 2.8rem; } }
+@keyframes auftauchen { from { opacity: 0; transform: translateY(6px); } }
+
+.schritt-weiter { margin-top: var(--a3); }
+.schritt-weiter .knopf { min-width: 12rem; }
+
+/* Gemeinsame Wahlfläche: dunkle Linie, gewählt mit Goldkante. */
+.salon-wahl, .person-wahl, .laenge, .gruppe-reiter, .zeit, .tag, .vorschlag, .nochmal-knopf, .dazu-ja, .dazu-nein, .text-knopf {
+  font: inherit; color: inherit; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.salon-wahl, .person-wahl, .laenge, .gruppe-reiter, .zeit, .tag, .vorschlag, .nochmal-knopf {
+  border: 1px solid var(--linie-stark); background: transparent;
+  transition: border-color var(--t1) var(--kurve), background-color var(--t1) var(--kurve), transform var(--t1) var(--kurve);
+}
+.salon-wahl[aria-pressed="true"], .person-wahl[aria-pressed="true"], .laenge[aria-pressed="true"],
+.gruppe-reiter[aria-selected="true"], .zeit[aria-pressed="true"], .tag[aria-pressed="true"] {
+  border-color: var(--knopf-kante); background: var(--wahl-grund);
+}
+.salon-wahl:active, .person-wahl:active, .laenge:active, .zeit:active, .tag:active, .vorschlag:active, .nochmal-knopf:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) {
+  .salon-wahl:hover, .person-wahl:hover, .laenge:hover, .gruppe-reiter:hover, .zeit:hover, .tag:not(:disabled):hover, .vorschlag:hover, .nochmal-knopf:hover {
+    border-color: var(--gold-tief);
+  }
+}
+
+/* ── 1. Salon ────────────────────────────────────────────────────────── */
+.salon-wahlen { display: grid; gap: .75rem; }
+@media (min-width: 30rem) { .salon-wahlen { grid-template-columns: 1fr 1fr; } }
+.salon-wahl {
+  display: grid; gap: .3rem; justify-items: start; text-align: left;
+  padding: 1.25rem 1.3rem 1.2rem; border-radius: 3px;
+}
+.salon-wahl-name { font: 300 1.6rem/1.1 var(--marke); letter-spacing: .03em; }
+.salon-wahl-ort { color: var(--tinte-leise); font-size: .95rem; }
+.salon-wahl-offen { display: inline-flex; align-items: center; gap: .45rem; margin-top: .35rem; font-size: .82rem; color: var(--tinte-still); }
+.salon-wahl-offen::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: var(--tinte-still); }
+.salon-wahl-offen.ist-auf::before { background: var(--offen); }
+
+/* ── 2. Leistung ─────────────────────────────────────────────────────── */
+.nochmal { margin-bottom: var(--a3); }
+.nochmal-knopf, .vorschlag {
+  display: grid; gap: .2rem; justify-items: start; text-align: left;
+  padding: .85rem 1.1rem .9rem; border-radius: 3px; border-color: var(--linie-gold);
+}
+.nochmal-was, .vorschlag-wann { color: var(--tinte); }
+
+.leistung-steuer { display: grid; gap: .9rem; margin-bottom: var(--a2); }
+.gruppen {
+  display: flex; gap: .45rem; overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: none; margin-inline: calc(-1 * var(--rand)); padding: .2rem var(--rand);
+  scroll-padding-inline: var(--rand);
+}
+.gruppen::-webkit-scrollbar { display: none; }
+@media (min-width: 48rem) { .gruppen { flex-wrap: wrap; overflow: visible; margin-inline: 0; padding-inline: 0; } }
+.gruppe-reiter {
+  flex: none; display: inline-flex; align-items: center; gap: .5rem;
+  min-height: 2.75rem; padding: .55rem 1.05rem; border-radius: 999px;
+  font-size: .9rem; color: var(--tinte-leise); white-space: nowrap;
+}
+.gruppe-reiter[aria-selected="true"] { color: var(--tinte); }
+.gruppe-zahl {
+  display: inline-grid; place-items: center; min-width: 1.35rem; height: 1.35rem; padding: 0 .3rem;
+  border-radius: 999px; border: 1px solid var(--gold-tief);
+  font: 500 .72rem/1 var(--marke); color: var(--gold-schrift);
+}
+.suche input {
+  width: 100%; min-height: 2.9rem; padding: .6rem 1rem .6rem 2.6rem;
+  border: 1px solid var(--linie-stark); border-radius: 999px;
+  background: var(--feld-grund) no-repeat 1rem 50% / 1rem
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23b8ac98' stroke-width='1.6'%3E%3Ccircle cx='8.5' cy='8.5' r='6'/%3E%3Cpath d='M13 13l5 5'/%3E%3C/svg%3E");
+  color: var(--tinte); font: inherit; font-size: 1rem;
+}
+.suche input::placeholder { color: var(--tinte-still); }
+.suche input:focus-visible { outline: 2px solid var(--gold-tief); outline-offset: 2px; }
+@media (min-width: 48rem) { .suche { max-width: 22rem; } }
+
+.familien { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--linie); }
+.familie { border-bottom: 1px solid var(--linie); }
+.familie-kopf {
+  display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) auto; align-items: center; gap: .9rem;
+  width: 100%; min-height: 3.6rem; padding: .95rem 0; text-align: left;
+  border: 0; background: none; font: inherit; color: inherit; cursor: pointer;
+}
+/* Die Marke links: ein Ring, der gewählt ein Goldpunkt wird. */
+.familie-marke {
+  width: 1.1rem; height: 1.1rem; border-radius: 50%;
+  border: 1px solid var(--linie-stark);
+  transition: border-color var(--t1) var(--kurve), box-shadow var(--t1) var(--kurve);
+}
+.familie.ist-gewaehlt .familie-marke { border-color: var(--knopf-kante); box-shadow: inset 0 0 0 3px var(--papier), inset 0 0 0 10px var(--gold); }
+.familie-kopf[aria-expanded] .familie-marke { border-radius: 50%; }
+.familie-text { display: grid; gap: .15rem; }
+.familie-name { font-weight: 500; color: var(--tinte); line-height: 1.35; }
+.familie-meta { font-size: .85rem; color: var(--tinte-still); line-height: 1.4; }
+.familie-preis { font: 500 1rem/1.2 var(--marke); font-variant-numeric: tabular-nums lining-nums; color: var(--tinte); white-space: nowrap; }
+@media (hover: hover) and (pointer: fine) { .familie-kopf:hover .familie-marke { border-color: var(--gold-tief); } }
+.familien-leer { padding: 1.2rem 0; color: var(--tinte-leise); }
+
+.laengen { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: 0 0 1.1rem 2.3rem; }
+.laengen-frage { width: 100%; font: 500 var(--t-mini)/1.3 var(--marke); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-schrift); }
+.laenge {
+  display: inline-grid; justify-items: center; gap: .1rem;
+  min-width: 5.2rem; min-height: 3rem; padding: .45rem .95rem; border-radius: 3px;
+}
+.laenge span { font-size: .95rem; }
+.laenge small { font: 500 .8rem/1.2 var(--marke); color: var(--tinte-leise); font-variant-numeric: tabular-nums; }
+/* Die gemerkte Länge aus der Preisliste: nur ein Faden, noch keine Wahl. */
+.laenge.ist-vermutet { border-style: dashed; border-color: var(--gold-tief); }
+
+.dazu {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1.2rem;
+  margin-top: var(--a2); padding: .8rem 0 .8rem 1rem;
+  border-left: 1px solid var(--gold-tief);
+  font-size: .95rem; color: var(--tinte-leise);
+  animation: auftauchen .45s var(--kurve) backwards;
+}
+.dazu strong { font-weight: 600; color: var(--tinte); }
+.dazu-wege { display: flex; gap: .4rem; }
+.dazu-ja, .dazu-nein, .text-knopf {
+  min-height: 2.6rem; padding: .4rem .9rem; border-radius: 999px;
+  border: 1px solid var(--linie-stark); background: none;
+  font: 500 .78rem/1 var(--marke); letter-spacing: .12em; text-transform: uppercase;
+}
+.dazu-nein, .text-knopf { border-color: transparent; color: var(--tinte-still); text-decoration: underline; text-underline-offset: .3em; }
+.text-knopf { padding-inline: .2rem; letter-spacing: .06em; text-transform: none; font: inherit; color: var(--tinte); }
+@media (hover: hover) and (pointer: fine) { .dazu-ja:hover { border-color: var(--gold-tief); } .dazu-nein:hover, .text-knopf:hover { color: var(--tinte); } }
+
+/* ── 3. Person ───────────────────────────────────────────────────────── */
+.personen { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .6rem; }
+.person-wahl {
+  display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); column-gap: .75rem; align-items: center;
+  padding: .85rem .9rem; border-radius: 3px; text-align: left;
+}
+.person-zeichen {
+  grid-row: 1 / span 2; display: grid; place-items: center;
+  width: 2.6rem; height: 2.6rem; border-radius: 50%;
+  border: 1px solid var(--linie-gold);
+  font: 300 1.15rem/1 var(--marke); letter-spacing: .04em; color: var(--gold-schrift);
+}
+/* „Wer zuerst frei ist“: drei kleine Ringe statt eines Buchstabens. */
+.ist-egal .person-zeichen {
+  background:
+    radial-gradient(circle at 30% 60%, transparent .32rem, var(--gold-tief) .34rem, transparent .4rem),
+    radial-gradient(circle at 70% 60%, transparent .32rem, var(--gold-tief) .34rem, transparent .4rem),
+    radial-gradient(circle at 50% 35%, transparent .32rem, var(--gold-tief) .34rem, transparent .4rem);
+}
+.person-name { font-weight: 500; color: var(--tinte); line-height: 1.3; }
+.person-frei { font-size: .8rem; color: var(--tinte-still); line-height: 1.35; }
+.person-wahl[aria-pressed="true"] .person-zeichen { border-color: var(--knopf-kante); }
+.ist-egal { grid-column: 1 / -1; }
+@media (min-width: 40rem) { .ist-egal { grid-column: auto; } }
+
+/* ── 4. Zeit ─────────────────────────────────────────────────────────── */
+.vorschlaege { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: var(--a3); }
+.vorschlaege:empty { display: none; }
+.vorschlag { flex: 1 1 13rem; }
+
+.tage-rahmen { position: relative; margin-inline: calc(-1 * var(--rand)); }
+@media (min-width: 48rem) { .tage-rahmen { margin-inline: 0; } }
+.tage {
+  display: flex; gap: .4rem; overflow-x: auto; overscroll-behavior-x: contain;
+  padding: 1.35rem var(--rand) .6rem; scroll-padding-inline: var(--rand);
+  scrollbar-width: thin; scrollbar-color: var(--bronze) transparent;
+}
+@media (min-width: 48rem) { .tage { padding-inline: 0; } }
+.tag {
+  position: relative; flex: none;
+  display: grid; justify-items: center; align-content: center; gap: .15rem;
+  width: 3.5rem; min-height: 4.4rem; padding: .45rem 0 .5rem; border-radius: 3px;
+}
+.tag-name { font: 500 .72rem/1 var(--marke); letter-spacing: .12em; text-transform: uppercase; color: var(--tinte-still); }
+.tag-zahl { font: 300 1.4rem/1.1 var(--marke); font-variant-numeric: tabular-nums lining-nums; }
+.tag-monat {
+  position: absolute; top: -1.25rem; left: 0;
+  font: 500 .7rem/1 var(--marke); letter-spacing: .12em; text-transform: uppercase; color: var(--gold-schrift); white-space: nowrap;
+}
+/* Drei Punkte: wie viel an dem Tag noch frei ist. */
+.tag-punkte { display: flex; gap: 4px; height: 4px; }
+.tag-punkte i { width: 4px; height: 4px; border-radius: 50%; background: var(--linie-stark); }
+.tag-punkte[data-n="1"] i:nth-child(-n+1),
+.tag-punkte[data-n="2"] i:nth-child(-n+2),
+.tag-punkte[data-n="3"] i { background: var(--gold); }
+.tag:disabled { cursor: default; border-color: transparent; }
+.tag:disabled .tag-zahl, .tag:disabled .tag-name { color: var(--zu); }
+.tag.ist-zu .tag-zahl { text-decoration: line-through; text-decoration-color: var(--linie-stark); text-decoration-thickness: 1px; }
+.tag.ist-voll .tag-punkte { visibility: hidden; }
+.tag.ist-laden { border-color: var(--linie); }
+.tag.ist-laden .tag-zahl, .tag.ist-laden .tag-name { color: var(--tinte-still); }
+.tag-mehr { border-style: dashed; }
+
+.uhrzeiten { min-height: 8rem; padding-top: var(--a2); }
+.zeiten-tag { margin: 0 0 1rem; font: 300 1.2rem/1.2 var(--marke); letter-spacing: .03em; }
+.zeit-gruppe { display: grid; gap: .55rem; margin-bottom: 1.3rem; }
+.zeit-gruppe-name { font: 500 var(--t-mini)/1 var(--marke); letter-spacing: .16em; text-transform: uppercase; color: var(--tinte-still); }
+.zeit-reihe { display: grid; grid-template-columns: repeat(auto-fill, minmax(4.9rem, 1fr)); gap: .45rem; }
+.zeit {
+  min-height: 2.9rem; border-radius: 3px;
+  font: 500 1rem/1 var(--marke); font-variant-numeric: tabular-nums lining-nums; letter-spacing: .02em;
+}
+.zeiten-laden, .zeiten-leer, .zeiten-fuss { margin: 0; color: var(--tinte-leise); font-size: .95rem; }
+.zeiten-fuss { color: var(--tinte-still); font-size: .85rem; }
+.zeiten-laden { color: var(--tinte-still); }
+
+/* ── 5. Angaben ──────────────────────────────────────────────────────── */
+.angaben { display: grid; gap: 1.15rem; max-width: 32rem; }
+.feld { display: grid; gap: .4rem; }
+.feld label { font: 500 var(--t-mini)/1.3 var(--marke); letter-spacing: .16em; text-transform: uppercase; color: var(--tinte-leise); }
+.feld-frei { letter-spacing: .06em; text-transform: none; color: var(--tinte-still); font-weight: 400; font-family: var(--lauf); font-size: .8rem; }
+.feld input, .feld textarea {
+  width: 100%; min-height: 3rem; padding: .7rem .95rem;
+  border: 1px solid var(--linie-stark); border-radius: 3px;
+  background: var(--feld-grund); color: var(--tinte);
+  font: inherit; font-size: 1rem;   /* 16 px: iOS zoomt sonst hinein */
+  transition: border-color var(--t1) var(--kurve);
+}
+.feld textarea { resize: vertical; min-height: 4.2rem; }
+.feld input::placeholder, .feld textarea::placeholder { color: var(--tinte-still); }
+.feld input:focus-visible, .feld textarea:focus-visible { outline: none; border-color: var(--gold); }
+.feld [aria-invalid="true"] { border-color: var(--warnung); }
+.feld-hilfe { margin: 0; font-size: .82rem; color: var(--tinte-still); }
+.falle { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.merken { display: grid; grid-template-columns: 1.4rem 1fr; gap: .7rem; align-items: start; cursor: pointer; color: var(--tinte-leise); font-size: .95rem; }
+.merken small { color: var(--tinte-still); font-size: .85rem; }
+.merken input {
+  appearance: none; width: 1.3rem; height: 1.3rem; margin: .15rem 0 0;
+  border: 1px solid var(--linie-stark); border-radius: 2px; background: var(--feld-grund); cursor: pointer;
+  display: grid; place-items: center;
+}
+.merken input::after { content: ''; width: .35rem; height: .65rem; border: solid var(--gold); border-width: 0 1.5px 1.5px 0; transform: translateY(-1px) rotate(45deg); opacity: 0; transition: opacity var(--t1) var(--kurve); }
+.merken input:checked { border-color: var(--knopf-kante); }
+.merken input:checked::after { opacity: 1; }
+
+.rechtlich { margin: 0; font-size: .82rem; color: var(--tinte-still); }
+.rechtlich a { color: var(--tinte-leise); }
+.fehler { margin: 0; padding: .7rem .9rem; border: 1px solid var(--warnung); border-radius: 3px; color: var(--tinte); font-size: .95rem; }
+.buchen-knopf { width: 100%; min-height: 3.4rem; }
+@media (min-width: 30rem) { .buchen-knopf { width: auto; min-width: 18rem; justify-self: start; } }
+.buchen-knopf:disabled { cursor: progress; opacity: .7; }
+
+/* ── Das Etikett ─────────────────────────────────────────────────────── */
+.etikett-rahmen { display: none; }
+@media (min-width: 64rem) {
+  .etikett-rahmen {
+    display: block; position: sticky; top: calc(var(--leiste) + 1.5rem);
+    padding-top: .1rem;
+  }
+  .etikett-handy { display: none; }
+}
+/* Die Lichtstange, an der das Etikett hängt — wie die Preisetiketten. */
+.etikett-stange {
+  height: 3px; border-radius: 2px; margin-bottom: 1.6rem;
+  background: linear-gradient(90deg, transparent, var(--gold) 18%, var(--gold-hell) 50%, var(--gold) 82%, transparent);
+  box-shadow: 0 0 12px -2px var(--led-schein);
+}
+.beleg {
+  position: relative;
+  padding: 2.1rem 1.5rem 1.4rem;
+  border: 1px solid var(--linie); border-radius: 3px 3px 10px 10px;
+  background: var(--weiss);
+}
+/* Der Faden von der Stange zum Loch. */
+.etikett-rahmen .beleg::before {
+  content: ''; position: absolute; left: 50%; top: -1.6rem; width: 1px; height: 2.25rem;
+  background: linear-gradient(var(--gold-tief), color-mix(in oklch, var(--gold-tief) 40%, transparent));
+}
+.beleg-loch {
+  position: absolute; left: 50%; top: .7rem; width: .7rem; height: .7rem; margin-left: -.35rem;
+  border-radius: 50%; border: 1px solid var(--linie-gold); background: var(--papier);
+}
+.beleg-marke { margin: 0 0 1rem; text-align: center; font: 500 var(--t-mini)/1.3 var(--marke); letter-spacing: .28em; text-transform: uppercase; color: var(--gold-schrift); }
+.beleg-leer { margin: 0; text-align: center; color: var(--tinte-still); font-size: .92rem; }
+.beleg-posten { margin: 0; padding: 0 0 .9rem; list-style: none; display: grid; gap: .55rem; border-bottom: 1px dashed var(--linie-stark); }
+.beleg-posten li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .8rem; font-size: .95rem; line-height: 1.35; }
+.beleg-posten small { color: var(--tinte-still); font-size: .85rem; }
+.beleg-preis { font: 500 .95rem/1.35 var(--marke); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.beleg-daten { display: grid; gap: .45rem; margin: .9rem 0; }
+.beleg-daten div { display: grid; grid-template-columns: 4.2rem 1fr; gap: .6rem; font-size: .92rem; }
+.beleg-daten dt { font: 500 var(--t-mini)/1.6 var(--marke); letter-spacing: .14em; text-transform: uppercase; color: var(--tinte-still); }
+.beleg-daten dd { margin: 0; color: var(--tinte); }
+.beleg-summe { display: flex; justify-content: space-between; align-items: baseline; margin: 0; padding-top: .9rem; border-top: 1px solid var(--linie-stark); }
+.beleg-summe span { font: 500 var(--t-mini)/1 var(--marke); letter-spacing: .16em; text-transform: uppercase; color: var(--tinte-leise); }
+.beleg-summe strong { font: 400 1.45rem/1 var(--marke); font-variant-numeric: tabular-nums lining-nums; }
+.beleg.ist-storniert .beleg-posten, .beleg.ist-storniert .beleg-daten, .beleg.ist-storniert .beleg-summe { opacity: .55; }
+.etikett-handy .beleg, .etikett-handy:not(:empty) { margin-top: .3rem; }
+
+/* Handy: eine Zeile unten mit dem Stand der Wahl. */
+.beleg-zeile {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  padding: .8rem var(--rand) calc(.8rem + env(safe-area-inset-bottom));
+  background: color-mix(in oklch, var(--papier) 90%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--linie-gold);
+  font-size: .88rem; color: var(--tinte-leise);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  animation: auftauchen .45s var(--kurve) backwards;
+}
+.mit-belegzeile .fuss { padding-bottom: 4rem; }
+@media (min-width: 64rem) { .beleg-zeile { display: none; } }
+
+/* ── Gebucht ─────────────────────────────────────────────────────────── */
+.fertig { padding: calc(var(--leiste) + var(--a4)) var(--rand) var(--a5); text-align: center; }
+.fertig:focus { outline: none; }
+.fertig-gruss { font-size: clamp(2.2rem, 1.7rem + 2vw, 3rem); animation: auftauchen .6s var(--kurve) backwards; }
+.fertig-titel { margin: .6rem 0 var(--a4); font: 300 clamp(1.15rem, 1rem + .6vw, 1.5rem)/1.3 var(--marke); letter-spacing: .22em; text-transform: uppercase; color: var(--tinte-leise); animation: auftauchen .6s var(--kurve) .09s backwards; }
+.fertig-bau { display: grid; gap: var(--a4); justify-items: center; text-align: left; animation: auftauchen .6s var(--kurve) .18s backwards; }
+.beleg-fertig { width: 100%; max-width: 24rem; margin-top: 1rem; }
+/* Auch hier hängt es an der Stange. */
+.beleg-fertig::after {
+  content: ''; position: absolute; left: -1rem; right: -1rem; top: -1.6rem; height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold) 18%, var(--gold-hell) 50%, var(--gold) 82%, transparent);
+  box-shadow: 0 0 12px -2px var(--led-schein);
+}
+.beleg-fertig::before {
+  content: ''; position: absolute; left: 50%; top: -1.6rem; width: 1px; height: 2.3rem;
+  background: linear-gradient(var(--gold-tief), color-mix(in oklch, var(--gold-tief) 40%, transparent));
+}
+.fertig-wege { display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; max-width: 32rem; }
+.fertig-notiz { width: 100%; margin: .4rem 0 0; text-align: center; font-size: .92rem; color: var(--tinte-leise); }
+.fertig-notiz a { color: var(--tinte); }
+.knopf-leise { border-color: transparent; color: var(--tinte-still); }
+
+@media (prefers-reduced-motion: reduce) {
+  .schritt-inhalt, .dazu, .vorschau-band, .hinweis-band, .beleg-zeile, .fertig-gruss, .fertig-titel, .fertig-bau { animation: none; }
+  .schritt::before { transition: none; }
+}

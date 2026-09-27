@@ -1,0 +1,4036 @@
+{
+ "stand": "2026-09-27",
+ "gruppen": [
+  {
+   "id": "schnitt",
+   "name": "Schnitt & Styling",
+   "lauf": "Waschen, Schneiden, Föhnen — und Frisuren ohne Schnitt."
+  },
+  {
+   "id": "farbe",
+   "name": "Farbe & Glossing",
+   "lauf": "Ansatz, Färben, Glossing und Tönung."
+  },
+  {
+   "id": "straehnen",
+   "name": "Strähnen & Balayage",
+   "lauf": "Oberkopf, halber oder ganzer Kopf — und Balayage."
+  },
+  {
+   "id": "pflege",
+   "name": "Pflege & Dauerwelle",
+   "lauf": "Haarkur, Olaplex, Kältebehandlung und Dauerwelle."
+  },
+  {
+   "id": "herren",
+   "name": "Herren",
+   "lauf": "Schnitt, Bart und Farbe für Herren."
+  },
+  {
+   "id": "kinder",
+   "name": "Kinder",
+   "lauf": "Haarschnitte für Mädchen und Jungen."
+  },
+  {
+   "id": "verlaengerung",
+   "name": "Haarverlängerung",
+   "lauf": "Extensions und Verdichtung — zuerst die Beratung."
+  },
+  {
+   "id": "gesicht",
+   "name": "Augenbrauen & Make-up",
+   "lauf": "Brauen, Wimpern, Permanent Make-up."
+  }
+ ],
+ "salons": [
+  {
+   "name": "Pasing",
+   "strasse": "Irmonherstraße 7",
+   "ort": "81241 München",
+   "telefon": "+49898211164",
+   "telefon_text": "089 821 116 4",
+   "lat": 48.148562,
+   "lon": 11.4591604,
+   "id": "pasing",
+   "sort": 1,
+   "oeffnung": {
+    "1": [],
+    "2": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "3": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "4": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "5": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "6": [
+     [
+      540,
+      960
+     ]
+    ],
+    "7": []
+   },
+   "planity": "https://www.planity.com/de-DE/irmonhair-pasing-81241-munchen"
+  },
+  {
+   "name": "Großhadern",
+   "strasse": "Würmtalstraße 119",
+   "ort": "81375 München",
+   "telefon": "+498978597770",
+   "telefon_text": "089 785 977 70",
+   "lat": 48.1152757,
+   "lon": 11.477608,
+   "id": "grosshadern",
+   "sort": 2,
+   "oeffnung": {
+    "1": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "2": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "3": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "4": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "5": [
+     [
+      540,
+      1110
+     ]
+    ],
+    "6": [
+     [
+      540,
+      960
+     ]
+    ],
+    "7": []
+   },
+   "planity": "https://www.planity.com/de-DE/irmonhair-grosshadern-81375-munchen"
+  }
+ ],
+ "personen": [
+  {
+   "id": "bedia",
+   "name": "Bedia",
+   "salons": [
+    "pasing",
+    "grosshadern"
+   ],
+   "online": true,
+   "sort": 1
+  },
+  {
+   "id": "tina",
+   "name": "Tina",
+   "salons": [
+    "pasing"
+   ],
+   "online": true,
+   "sort": 2
+  },
+  {
+   "id": "csilla",
+   "name": "Csilla",
+   "salons": [
+    "pasing"
+   ],
+   "online": true,
+   "sort": 3
+  },
+  {
+   "id": "benny",
+   "name": "Benny",
+   "salons": [
+    "pasing"
+   ],
+   "online": false,
+   "sort": 4
+  },
+  {
+   "id": "zeynep",
+   "name": "Zeynep",
+   "salons": [
+    "grosshadern"
+   ],
+   "online": true,
+   "sort": 5
+  },
+  {
+   "id": "bennyscheer",
+   "name": "Benny Scheer",
+   "salons": [
+    "grosshadern"
+   ],
+   "online": false,
+   "sort": 6
+  },
+  {
+   "id": "mira",
+   "name": "Mira",
+   "salons": [
+    "grosshadern"
+   ],
+   "online": true,
+   "sort": 7
+  },
+  {
+   "id": "carola",
+   "name": "Carola",
+   "salons": [
+    "grosshadern"
+   ],
+   "online": true,
+   "sort": 8
+  },
+  {
+   "id": "momo",
+   "name": "Momo",
+   "salons": [
+    "grosshadern"
+   ],
+   "online": true,
+   "sort": 9
+  }
+ ],
+ "leistungen": [
+  {
+   "id": "p001",
+   "salon": "pasing",
+   "gruppe": "schnitt",
+   "familie": "pasing-schnitt-0",
+   "name": "Waschen, Schneiden, Föhnen",
+   "zusatz": null,
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 7000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiK8Ekg9FG9_YqWseN"
+  },
+  {
+   "id": "p002",
+   "salon": "pasing",
+   "gruppe": "schnitt",
+   "familie": "pasing-schnitt-0",
+   "name": "Waschen, Schneiden, Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     75
+    ]
+   ],
+   "preis_cent": 8000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiK8Ekg9FG9_YqWseP"
+  },
+  {
+   "id": "p003",
+   "salon": "pasing",
+   "gruppe": "schnitt",
+   "familie": "pasing-schnitt-2",
+   "name": "Waschen & Föhnen",
+   "zusatz": "ohne Schnitt",
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 3500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiK8Ekg9FG9_YqWseQ"
+  },
+  {
+   "id": "p004",
+   "salon": "pasing",
+   "gruppe": "schnitt",
+   "familie": "pasing-schnitt-2",
+   "name": "Waschen & Föhnen",
+   "zusatz": "ohne Schnitt",
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 4500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiK8Ekg9FG9_YqWseR"
+  },
+  {
+   "id": "p005",
+   "salon": "pasing",
+   "gruppe": "schnitt",
+   "familie": "pasing-schnitt-2",
+   "name": "Waschen & Föhnen",
+   "zusatz": "ohne Schnitt",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     45
+    ]
+   ],
+   "preis_cent": 5000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiK8Ekg9FG9_YqWseS"
+  },
+  {
+   "id": "p006",
+   "salon": "pasing",
+   "gruppe": "schnitt",
+   "familie": "pasing-schnitt-5",
+   "name": "Heiße Schere",
+   "zusatz": "als Zusatz zum Schnitt",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     5
+    ]
+   ],
+   "preis_cent": 1500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": true,
+   "planity_id": "-OkiK8Ekg9FG9_YqWseT"
+  },
+  {
+   "id": "p007",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-6",
+   "name": "Färben, Schneiden, Föhnen",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "nach Beratung",
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-Ol2dSPO68-gzds-_Ev1"
+  },
+  {
+   "id": "p008",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-6",
+   "name": "Färben, Schneiden, Föhnen",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "nach Beratung",
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-Ol2e0ttRYEriMrZrKpo"
+  },
+  {
+   "id": "p009",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-6",
+   "name": "Färben, Schneiden, Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "nach Beratung",
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-Ol2e16hl5HW_p7rVIqt"
+  },
+  {
+   "id": "p010",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-9",
+   "name": "Färben & Föhnen",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "nach Beratung",
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OlKwJ0Q0_3bPJTwKsw-"
+  },
+  {
+   "id": "p011",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-9",
+   "name": "Färben & Föhnen",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "nach Beratung",
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OlKwX0Zy9Ncz0-CNh6M"
+  },
+  {
+   "id": "p012",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-9",
+   "name": "Färben & Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     40
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "nach Beratung",
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OlKwXGxJAs-tGFTCD1R"
+  },
+  {
+   "id": "p013",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-12",
+   "name": "Glossing, Föhnen & Haarkur",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 7000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKHPjGRL7RPQK5JnQ"
+  },
+  {
+   "id": "p014",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-12",
+   "name": "Glossing, Föhnen & Haarkur",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 8000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKHPjGRL7RPQK5JnR"
+  },
+  {
+   "id": "p015",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-12",
+   "name": "Glossing, Föhnen & Haarkur",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 9000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKHPjGRL7RPQK5JnS"
+  },
+  {
+   "id": "p016",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-15",
+   "name": "Glossing, Schneiden, Föhnen & Haarkur",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     70
+    ]
+   ],
+   "preis_cent": 10500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKHPiNZKItIVHJylN"
+  },
+  {
+   "id": "p017",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-15",
+   "name": "Glossing, Schneiden, Föhnen & Haarkur",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     75
+    ]
+   ],
+   "preis_cent": 11000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKHPiNZKItIVHJylO"
+  },
+  {
+   "id": "p018",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-15",
+   "name": "Glossing, Schneiden, Föhnen & Haarkur",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     90
+    ]
+   ],
+   "preis_cent": 12000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKHPjGRL7RPQK5JnP"
+  },
+  {
+   "id": "p019",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-18",
+   "name": "Tönung & Veredelung",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     15
+    ]
+   ],
+   "preis_cent": 4000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNC1"
+  },
+  {
+   "id": "p020",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-19",
+   "name": "Strähnen Oberkopf, Schneiden, Föhnen & Pflege",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 16000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNC4"
+  },
+  {
+   "id": "p021",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-19",
+   "name": "Strähnen Oberkopf, Schneiden, Föhnen & Pflege",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 17000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNC5"
+  },
+  {
+   "id": "p022",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-19",
+   "name": "Strähnen Oberkopf, Schneiden, Föhnen & Pflege",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 18500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNC6"
+  },
+  {
+   "id": "p023",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-22",
+   "name": "Strähnen Oberkopf & Föhnen",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 11000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNC7"
+  },
+  {
+   "id": "p024",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-22",
+   "name": "Strähnen Oberkopf & Föhnen",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 12000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNC8"
+  },
+  {
+   "id": "p025",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-22",
+   "name": "Strähnen Oberkopf & Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     40
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 13500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNC9"
+  },
+  {
+   "id": "p026",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-25",
+   "name": "Strähnen halber Kopf, Schneiden & Föhnen",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 15500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNCA"
+  },
+  {
+   "id": "p027",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-25",
+   "name": "Strähnen halber Kopf, Schneiden & Föhnen",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 16500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNCB"
+  },
+  {
+   "id": "p028",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-25",
+   "name": "Strähnen halber Kopf, Schneiden & Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     75
+    ]
+   ],
+   "preis_cent": 18500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNCC"
+  },
+  {
+   "id": "p029",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-28",
+   "name": "Strähnen halber Kopf & Föhnen",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 11000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNCD"
+  },
+  {
+   "id": "p030",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-28",
+   "name": "Strähnen halber Kopf & Föhnen",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 14000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNCE"
+  },
+  {
+   "id": "p031",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-28",
+   "name": "Strähnen halber Kopf & Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 17000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKLw0IKkWZCTFQNCF"
+  },
+  {
+   "id": "p032",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-31",
+   "name": "Strähnen ganzer Kopf, Schneiden & Föhnen",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 15500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY0"
+  },
+  {
+   "id": "p033",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-31",
+   "name": "Strähnen ganzer Kopf, Schneiden & Föhnen",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 16000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY1"
+  },
+  {
+   "id": "p034",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-31",
+   "name": "Strähnen ganzer Kopf, Schneiden & Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 17000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY2"
+  },
+  {
+   "id": "p035",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-34",
+   "name": "Strähnen ganzer Kopf & Föhnen",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 13000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY3"
+  },
+  {
+   "id": "p036",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-34",
+   "name": "Strähnen ganzer Kopf & Föhnen",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 13500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY4"
+  },
+  {
+   "id": "p037",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-34",
+   "name": "Strähnen ganzer Kopf & Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 15000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY5"
+  },
+  {
+   "id": "p038",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-37",
+   "name": "Balayage, Schneiden & Styling",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 22500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY6"
+  },
+  {
+   "id": "p039",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-37",
+   "name": "Balayage, Schneiden & Styling",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 24000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY7"
+  },
+  {
+   "id": "p040",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-37",
+   "name": "Balayage, Schneiden & Styling",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 25000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY8"
+  },
+  {
+   "id": "p041",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-40",
+   "name": "Balayage & Styling",
+   "zusatz": "ohne Schnitt",
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 21000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKY9"
+  },
+  {
+   "id": "p042",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-40",
+   "name": "Balayage & Styling",
+   "zusatz": "ohne Schnitt",
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 21500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKYA"
+  },
+  {
+   "id": "p043",
+   "salon": "pasing",
+   "gruppe": "straehnen",
+   "familie": "pasing-straehnen-40",
+   "name": "Balayage & Styling",
+   "zusatz": "ohne Schnitt",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 22000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKOyyxf_xddkGjKYB"
+  },
+  {
+   "id": "p044",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-43",
+   "name": "Conditioner",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     5
+    ]
+   ],
+   "preis_cent": 500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF7XqzPUWcKGZlJ"
+  },
+  {
+   "id": "p045",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-44",
+   "name": "Haarkur",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     10
+    ]
+   ],
+   "preis_cent": 1000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3l"
+  },
+  {
+   "id": "p046",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-44",
+   "name": "Haarkur",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     10
+    ]
+   ],
+   "preis_cent": 1500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3m"
+  },
+  {
+   "id": "p047",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-44",
+   "name": "Haarkur",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     10
+    ]
+   ],
+   "preis_cent": 1700,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3n"
+  },
+  {
+   "id": "p048",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-47",
+   "name": "Crio-Kur mit Föhnen",
+   "zusatz": "Kältebehandlung fürs Haar",
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 7500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3o"
+  },
+  {
+   "id": "p049",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-47",
+   "name": "Crio-Kur mit Föhnen",
+   "zusatz": "Kältebehandlung fürs Haar",
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 9000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3p"
+  },
+  {
+   "id": "p050",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-47",
+   "name": "Crio-Kur mit Föhnen",
+   "zusatz": "Kältebehandlung fürs Haar",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     75
+    ]
+   ],
+   "preis_cent": 11000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3q"
+  },
+  {
+   "id": "p051",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-50",
+   "name": "Dauerwelle",
+   "zusatz": "Preis je nach Länge und Menge",
+   "laenge": "1 Std. 40 Min.",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     10
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 8000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiK8Ekg9FG9_YqWseU"
+  },
+  {
+   "id": "p052",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-50",
+   "name": "Dauerwelle",
+   "zusatz": "Preis je nach Länge und Menge",
+   "laenge": "2 Std. 15 Min.",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     15
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 14000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OpgwzENVe7ZZvy34Z08"
+  },
+  {
+   "id": "p053",
+   "salon": "pasing",
+   "gruppe": "herren",
+   "familie": "pasing-herren-52",
+   "name": "Schnitt & Styling",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 4400,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3v"
+  },
+  {
+   "id": "p054",
+   "salon": "pasing",
+   "gruppe": "herren",
+   "familie": "pasing-herren-53",
+   "name": "Schnitt, Tonic-Massage & Styling",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 6000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3x"
+  },
+  {
+   "id": "p055",
+   "salon": "pasing",
+   "gruppe": "kinder",
+   "familie": "pasing-kinder-54",
+   "name": "Haarschnitt bis 6 Jahre",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 3000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "tina",
+    "csilla",
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ3z"
+  },
+  {
+   "id": "p056",
+   "salon": "pasing",
+   "gruppe": "verlaengerung",
+   "familie": "pasing-verlaengerung-55",
+   "name": "Beratung Extensions",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 5000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ41"
+  },
+  {
+   "id": "p057",
+   "salon": "pasing",
+   "gruppe": "verlaengerung",
+   "familie": "pasing-verlaengerung-56",
+   "name": "Beratung Haarverdichtung",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 5000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiKBF8_vRra_I2GZ40"
+  },
+  {
+   "id": "p058",
+   "salon": "pasing",
+   "gruppe": "verlaengerung",
+   "familie": "pasing-verlaengerung-57",
+   "name": "Tape-Technik & Bondings",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "auf Anfrage",
+   "online": true,
+   "personen": [
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-Ol2hRbf-PSeqy1BZOTJ"
+  },
+  {
+   "id": "p059",
+   "salon": "pasing",
+   "gruppe": "gesicht",
+   "familie": "pasing-gesicht-58",
+   "name": "Augenbrauen zupfen & formen",
+   "zusatz": "mit Fadentechnik",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     20
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "auf Anfrage",
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null
+  },
+  {
+   "id": "p060",
+   "salon": "pasing",
+   "gruppe": "gesicht",
+   "familie": "pasing-gesicht-59",
+   "name": "Permanent Make-up",
+   "zusatz": "Augenbrauen, Lippen, Eyeliner",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     120
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "auf Anfrage",
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null
+  },
+  {
+   "id": "p061",
+   "salon": "pasing",
+   "gruppe": "gesicht",
+   "familie": "pasing-gesicht-60",
+   "name": "Make-up",
+   "zusatz": "Business und Braut",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": null,
+   "preis_ab": false,
+   "preis_text": "auf Anfrage",
+   "online": true,
+   "personen": [
+    "bedia",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-Ol2h5-p-x22EtK5d2HW"
+  },
+  {
+   "id": "p062",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-61",
+   "name": "Illumina",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 6000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p063",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-62",
+   "name": "Elumen",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 8000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p064",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-63",
+   "name": "Topchic",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 4000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p065",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-64",
+   "name": "Greyshade",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 4000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p066",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-65",
+   "name": "Olaplex Color",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 4000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p067",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-65",
+   "name": "Olaplex Color",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 6000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p068",
+   "salon": "pasing",
+   "gruppe": "farbe",
+   "familie": "pasing-farbe-65",
+   "name": "Olaplex Color",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 8000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p069",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-68",
+   "name": "Olaplex-Behandlung",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 7000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p070",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-68",
+   "name": "Olaplex-Behandlung",
+   "zusatz": null,
+   "laenge": "mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 9000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p071",
+   "salon": "pasing",
+   "gruppe": "pflege",
+   "familie": "pasing-pflege-68",
+   "name": "Olaplex-Behandlung",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 11000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p072",
+   "salon": "pasing",
+   "gruppe": "kinder",
+   "familie": "pasing-kinder-71",
+   "name": "Mädchen bis 6 Jahre",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 4500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "p073",
+   "salon": "pasing",
+   "gruppe": "verlaengerung",
+   "familie": "pasing-verlaengerung-72",
+   "name": "Extensions",
+   "zusatz": "pro Strähne · Überlänge extra",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 700,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "tina",
+    "csilla",
+    "benny"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "g074",
+   "salon": "grosshadern",
+   "gruppe": "schnitt",
+   "familie": "grosshadern-schnitt-73",
+   "name": "Waschen, Schneiden, Föhnen",
+   "zusatz": null,
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 6200,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTR"
+  },
+  {
+   "id": "g075",
+   "salon": "grosshadern",
+   "gruppe": "schnitt",
+   "familie": "grosshadern-schnitt-73",
+   "name": "Waschen, Schneiden, Föhnen",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 7200,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTS"
+  },
+  {
+   "id": "g076",
+   "salon": "grosshadern",
+   "gruppe": "schnitt",
+   "familie": "grosshadern-schnitt-75",
+   "name": "Föhnen & Legen",
+   "zusatz": "ohne Schnitt",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 3700,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTP"
+  },
+  {
+   "id": "g077",
+   "salon": "grosshadern",
+   "gruppe": "schnitt",
+   "familie": "grosshadern-schnitt-75",
+   "name": "Föhnen & Legen",
+   "zusatz": "ohne Schnitt",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     45
+    ]
+   ],
+   "preis_cent": 4700,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTQ"
+  },
+  {
+   "id": "g078",
+   "salon": "grosshadern",
+   "gruppe": "schnitt",
+   "familie": "grosshadern-schnitt-77",
+   "name": "Hochsteckfrisur",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 8000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFT_"
+  },
+  {
+   "id": "g079",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-78",
+   "name": "Ansatzfarbe, Schneiden & Föhnen",
+   "zusatz": "inkl. Haarkur · bis 1 cm Ansatz, sonst Aufschlag ab 10 €",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     30
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 14200,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jFv"
+  },
+  {
+   "id": "g080",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-78",
+   "name": "Ansatzfarbe, Schneiden & Föhnen",
+   "zusatz": "inkl. Haarkur · bis 1 cm Ansatz, sonst Aufschlag ab 10 €",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     30
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 15200,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jFw"
+  },
+  {
+   "id": "g081",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-80",
+   "name": "Ansatzfarbe & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Produktverbrauch",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     30
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 11700,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jFx"
+  },
+  {
+   "id": "g082",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-80",
+   "name": "Ansatzfarbe & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Produktverbrauch",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     30
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 13200,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jFy"
+  },
+  {
+   "id": "g083",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-82",
+   "name": "Glossing, Schneiden & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Produktverbrauch",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     105
+    ]
+   ],
+   "preis_cent": 11700,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jFz"
+  },
+  {
+   "id": "g084",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-82",
+   "name": "Glossing, Schneiden & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Produktverbrauch",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     105
+    ]
+   ],
+   "preis_cent": 13000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG-"
+  },
+  {
+   "id": "g085",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-84",
+   "name": "Glossing & Stylen",
+   "zusatz": "inkl. Haarkur",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     75
+    ]
+   ],
+   "preis_cent": 8200,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG1"
+  },
+  {
+   "id": "g086",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-84",
+   "name": "Glossing & Stylen",
+   "zusatz": "inkl. Haarkur",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     75
+    ]
+   ],
+   "preis_cent": 10700,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG0"
+  },
+  {
+   "id": "g087",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-86",
+   "name": "Glossing",
+   "zusatz": "als Zusatz",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     20
+    ]
+   ],
+   "preis_cent": 3500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": true,
+   "planity_id": "-OupaNYcl6x-_kLCUc5a"
+  },
+  {
+   "id": "g088",
+   "salon": "grosshadern",
+   "gruppe": "straehnen",
+   "familie": "grosshadern-straehnen-87",
+   "name": "Strähnen halber Kopf, Schneiden & Stylen",
+   "zusatz": "inkl. Haarkur, ohne Glossing",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 17200,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG2"
+  },
+  {
+   "id": "g089",
+   "salon": "grosshadern",
+   "gruppe": "straehnen",
+   "familie": "grosshadern-straehnen-88",
+   "name": "Strähnen halber Kopf & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Aufwand",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 14700,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG4"
+  },
+  {
+   "id": "g090",
+   "salon": "grosshadern",
+   "gruppe": "straehnen",
+   "familie": "grosshadern-straehnen-89",
+   "name": "Strähnen ganzer Kopf, Schneiden & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Aufwand",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 20700,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG6"
+  },
+  {
+   "id": "g091",
+   "salon": "grosshadern",
+   "gruppe": "straehnen",
+   "familie": "grosshadern-straehnen-89",
+   "name": "Strähnen ganzer Kopf, Schneiden & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Aufwand",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     90
+    ],
+    [
+     "pause",
+     30
+    ],
+    [
+     "arbeit",
+     90
+    ]
+   ],
+   "preis_cent": 21700,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG7"
+  },
+  {
+   "id": "g092",
+   "salon": "grosshadern",
+   "gruppe": "straehnen",
+   "familie": "grosshadern-straehnen-91",
+   "name": "Strähnen ganzer Kopf & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Aufwand",
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     90
+    ],
+    [
+     "pause",
+     30
+    ],
+    [
+     "arbeit",
+     40
+    ]
+   ],
+   "preis_cent": 17700,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG8"
+  },
+  {
+   "id": "g093",
+   "salon": "grosshadern",
+   "gruppe": "straehnen",
+   "familie": "grosshadern-straehnen-91",
+   "name": "Strähnen ganzer Kopf & Stylen",
+   "zusatz": "inkl. Haarkur · je nach Aufwand",
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     90
+    ],
+    [
+     "pause",
+     30
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 19300,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jG9"
+  },
+  {
+   "id": "g094",
+   "salon": "grosshadern",
+   "gruppe": "straehnen",
+   "familie": "grosshadern-straehnen-93",
+   "name": "Balayage, Schneiden, Stylen & Glossing",
+   "zusatz": "inkl. Haarkur · Preis nach Länge, Material und Aufwand; vor der Online-Buchung bitte beraten lassen",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     70
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     90
+    ]
+   ],
+   "preis_cent": 25000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFTg3NnXPn71A-jGA"
+  },
+  {
+   "id": "g095",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-94",
+   "name": "Olaplex-Behandlung",
+   "zusatz": null,
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 9200,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTX"
+  },
+  {
+   "id": "g096",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-94",
+   "name": "Olaplex-Behandlung",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 10200,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTY"
+  },
+  {
+   "id": "g097",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-96",
+   "name": "Dauerwelle & Styling",
+   "zusatz": null,
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     120
+    ]
+   ],
+   "preis_cent": 13500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTT"
+  },
+  {
+   "id": "g098",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-96",
+   "name": "Dauerwelle & Styling",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     120
+    ]
+   ],
+   "preis_cent": 16500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTU"
+  },
+  {
+   "id": "g099",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-98",
+   "name": "Dauerwelle, Schneiden & Styling",
+   "zusatz": null,
+   "laenge": "kurz",
+   "phasen": [
+    [
+     "arbeit",
+     90
+    ]
+   ],
+   "preis_cent": 13800,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTa"
+  },
+  {
+   "id": "g100",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-98",
+   "name": "Dauerwelle, Schneiden & Styling",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     120
+    ]
+   ],
+   "preis_cent": 14800,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFOIjwe6xe215QFTb"
+  },
+  {
+   "id": "g101",
+   "salon": "grosshadern",
+   "gruppe": "herren",
+   "familie": "grosshadern-herren-100",
+   "name": "Schnitt & Styling",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     40
+    ]
+   ],
+   "preis_cent": 3800,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "momo",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5t3"
+  },
+  {
+   "id": "g102",
+   "salon": "grosshadern",
+   "gruppe": "herren",
+   "familie": "grosshadern-herren-101",
+   "name": "Neuschnitt & Stylen",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 4800,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "momo",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5t4"
+  },
+  {
+   "id": "g103",
+   "salon": "grosshadern",
+   "gruppe": "herren",
+   "familie": "grosshadern-herren-102",
+   "name": "Maschinenhaarschnitt",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     20
+    ]
+   ],
+   "preis_cent": 2500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "momo",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5t6"
+  },
+  {
+   "id": "g104",
+   "salon": "grosshadern",
+   "gruppe": "herren",
+   "familie": "grosshadern-herren-103",
+   "name": "Bart",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     15
+    ]
+   ],
+   "preis_cent": 1500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "momo",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5t5"
+  },
+  {
+   "id": "g105",
+   "salon": "grosshadern",
+   "gruppe": "herren",
+   "familie": "grosshadern-herren-104",
+   "name": "Grauhaarkaschierung",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     15
+    ]
+   ],
+   "preis_cent": 2800,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "momo",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5t8"
+  },
+  {
+   "id": "g106",
+   "salon": "grosshadern",
+   "gruppe": "herren",
+   "familie": "grosshadern-herren-105",
+   "name": "Dauerwelle mit Schnitt",
+   "zusatz": "inkl. Haarkur",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ],
+    [
+     "pause",
+     60
+    ],
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 11500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5t7"
+  },
+  {
+   "id": "g107",
+   "salon": "grosshadern",
+   "gruppe": "kinder",
+   "familie": "grosshadern-kinder-106",
+   "name": "Mädchen bis 6 Jahre",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 4000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "carola",
+    "mira"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tA"
+  },
+  {
+   "id": "g108",
+   "salon": "grosshadern",
+   "gruppe": "kinder",
+   "familie": "grosshadern-kinder-107",
+   "name": "Mädchen ab 6 Jahre",
+   "zusatz": "je nach Aufwand",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 5500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "carola",
+    "mira"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tB"
+  },
+  {
+   "id": "g109",
+   "salon": "grosshadern",
+   "gruppe": "kinder",
+   "familie": "grosshadern-kinder-108",
+   "name": "Jungen bis 10 Jahre",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 3000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "momo",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tC"
+  },
+  {
+   "id": "g110",
+   "salon": "grosshadern",
+   "gruppe": "verlaengerung",
+   "familie": "grosshadern-verlaengerung-109",
+   "name": "Beratung Extensions",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 5000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tO"
+  },
+  {
+   "id": "g111",
+   "salon": "grosshadern",
+   "gruppe": "verlaengerung",
+   "familie": "grosshadern-verlaengerung-110",
+   "name": "Beratung Haarverdichtung",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 5000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "bedia",
+    "mira",
+    "carola"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tP"
+  },
+  {
+   "id": "g112",
+   "salon": "grosshadern",
+   "gruppe": "gesicht",
+   "familie": "grosshadern-gesicht-111",
+   "name": "Augenbrauen zupfen",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     15
+    ]
+   ],
+   "preis_cent": 1500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tM"
+  },
+  {
+   "id": "g113",
+   "salon": "grosshadern",
+   "gruppe": "gesicht",
+   "familie": "grosshadern-gesicht-112",
+   "name": "Augenbrauen färben",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     15
+    ]
+   ],
+   "preis_cent": 1500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "carola",
+    "mira"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tK"
+  },
+  {
+   "id": "g114",
+   "salon": "grosshadern",
+   "gruppe": "gesicht",
+   "familie": "grosshadern-gesicht-113",
+   "name": "Wimpern färben",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     20
+    ]
+   ],
+   "preis_cent": 1500,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "carola",
+    "mira"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tL"
+  },
+  {
+   "id": "g115",
+   "salon": "grosshadern",
+   "gruppe": "gesicht",
+   "familie": "grosshadern-gesicht-114",
+   "name": "Permanent Make-up: Augenbrauen, Korrektur",
+   "zusatz": "Termin nur auf Anfrage",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     120
+    ]
+   ],
+   "preis_cent": 45000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tE"
+  },
+  {
+   "id": "g116",
+   "salon": "grosshadern",
+   "gruppe": "gesicht",
+   "familie": "grosshadern-gesicht-115",
+   "name": "Permanent Make-up: Augenbrauen, Rekonstruktion",
+   "zusatz": "Termin nur auf Anfrage",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     120
+    ]
+   ],
+   "preis_cent": 55000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tF"
+  },
+  {
+   "id": "g117",
+   "salon": "grosshadern",
+   "gruppe": "gesicht",
+   "familie": "grosshadern-gesicht-116",
+   "name": "Permanent Make-up: Eyeliner",
+   "zusatz": null,
+   "laenge": "Oberlid",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 32000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tG"
+  },
+  {
+   "id": "g118",
+   "salon": "grosshadern",
+   "gruppe": "gesicht",
+   "familie": "grosshadern-gesicht-116",
+   "name": "Permanent Make-up: Eyeliner",
+   "zusatz": null,
+   "laenge": "Unterlid",
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 18000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tH"
+  },
+  {
+   "id": "g119",
+   "salon": "grosshadern",
+   "gruppe": "gesicht",
+   "familie": "grosshadern-gesicht-118",
+   "name": "Permanent Make-up: Lippen",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     60
+    ]
+   ],
+   "preis_cent": 55000,
+   "preis_ab": false,
+   "preis_text": null,
+   "online": true,
+   "personen": [
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo",
+    "bedia"
+   ],
+   "zusatzleistung": false,
+   "planity_id": "-OkiFXMq7cKtRZBYE5tI"
+  },
+  {
+   "id": "g120",
+   "salon": "grosshadern",
+   "gruppe": "farbe",
+   "familie": "grosshadern-farbe-119",
+   "name": "Neufarbe",
+   "zusatz": "je nach Farbverbrauch und Haarlänge",
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 9000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "g121",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-120",
+   "name": "Haarkur",
+   "zusatz": null,
+   "laenge": "kurz–mittel",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 1000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "g122",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-120",
+   "name": "Haarkur",
+   "zusatz": null,
+   "laenge": "lang",
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 1500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "g123",
+   "salon": "grosshadern",
+   "gruppe": "pflege",
+   "familie": "grosshadern-pflege-122",
+   "name": "Conditioner",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 600,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "g124",
+   "salon": "grosshadern",
+   "gruppe": "herren",
+   "familie": "grosshadern-herren-123",
+   "name": "Farbe",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 6000,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  },
+  {
+   "id": "g125",
+   "salon": "grosshadern",
+   "gruppe": "kinder",
+   "familie": "grosshadern-kinder-124",
+   "name": "Jungen ab 10 Jahre",
+   "zusatz": null,
+   "laenge": null,
+   "phasen": [
+    [
+     "arbeit",
+     30
+    ]
+   ],
+   "preis_cent": 3500,
+   "preis_ab": true,
+   "preis_text": null,
+   "online": false,
+   "personen": [
+    "bedia",
+    "zeynep",
+    "bennyscheer",
+    "mira",
+    "carola",
+    "momo"
+   ],
+   "zusatzleistung": false,
+   "planity_id": null,
+   "dauer_offen": true
+  }
+ ]
+}

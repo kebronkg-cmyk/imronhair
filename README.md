@@ -4,7 +4,8 @@ Friseur mit zwei Salons in München: **Pasing** (Irmonherstraße 7) und
 **Großhadern** (Würmtalstraße 119).
 
 Statische Seite: HTML, CSS, Vanilla JS. Kein Build-Schritt, keine
-Abhängigkeiten. Auslieferung über GitHub Pages
+Abhängigkeiten. Die Terminbuchung braucht zusätzlich PHP (All-Inkl,
+siehe `BUCHUNG.md`). Auslieferung der Website über GitHub Pages
 (`.github/workflows/deploy-pages.yml`, bei jedem Push auf `main`).
 
 | Datei | Inhalt |
@@ -14,7 +15,10 @@ Abhängigkeiten. Auslieferung über GitHub Pages
 | `impressum.html`, `datenschutz.html` | Rechtliches |
 | `neu.css`, `neu.js` | Gestaltung und Verhalten |
 | `bilder/` | Salonfotos (aus den Planity-Einträgen), zwei gerechnete Strähnen |
-| `recherche/` | Quellen, Planity-Preisdaten, `preise.py` (Preisliste), `straehne.py` (Strähnen) |
+| `recherche/` | Quellen, Planity-Preisdaten, `preise.py` (Preisliste), `straehne.py` (Strähnen), `katalog.py` (Buchungskatalog) |
+| `fenster/termin.html` | Online-Buchung (braucht PHP auf dem Webspace; sonst Telefon und Planity) |
+| `studio/` | Studio: Kalender und Kartei für den Salon |
+| `api/` | Schnittstelle der Buchung, PHP + MySQL/SQLite — Einrichtung in `BUCHUNG.md` |
 
 Arbeitsweise: `CLAUDE.md`. Offene Punkte für den Salon: `ABNAHME.md`.
 Stand für die nächste Sitzung: `UEBERGABE.md`.
