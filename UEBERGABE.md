@@ -293,3 +293,17 @@ Aufbau und Betrieb: **`BUCHUNG.md`**. Offene Fragen an den Salon:
   verfügbar“ und Einwirkzeit im Kalender; das ist Bedeutung, nicht
   Schmuck). Farbkanten links (`side-tab`) und breite Schatten sind
   entfernt; die Person steht als Punkt vor der Uhrzeit.
+
+## Fenster: Terminknöpfe der Salons auf gleicher Höhe (iPad)
+
+- Ab 48 rem stehen die beiden Salonkarten nebeneinander (vorher erst ab
+  52 rem — auf dem iPad hochkant untereinander).
+- Die Knopfreihe entscheidet über einen Container-Query an der
+  Kartenbreite, ob sie umbricht; beide Karten sind gleich breit, also
+  brechen beide gleich um. Vorher brach nur „Termin in Großhadern buchen“
+  um und stand auf dem iPad quer 61 px höher als Pasing.
+- Unter 21 rem Kartenbreite heißt der Knopf „Termin buchen“ (der Salon
+  steht als Überschrift darüber, `aria-label` nennt ihn weiter).
+- Gemessen, Oberkante beider Knöpfe gleich: 768, 820, 1024, 1180 px.
+  Handy (390) pixelgleich; Desktop (1440) bis auf die Kantenglättung
+  von vier Buchstaben gleich.

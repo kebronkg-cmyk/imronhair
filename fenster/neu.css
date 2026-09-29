@@ -977,6 +977,22 @@ html:not(.js) .spiegel-wahl { display: none; }
 .ort-stand { margin: var(--a2) 0 0; }
 .ort .wahl { margin-top: auto; padding-top: var(--a3); }
 
+/* iPad und größer: beide Karten nebeneinander, Terminknöpfe auf gleicher
+   Höhe. Die Knopfreihe bricht nur dann um, wenn sie es in beiden Karten
+   tut — die Entscheidung fällt an der Kartenbreite (beide gleich breit),
+   nicht an der Länge des Salonnamens. Das Handy bleibt unverändert. */
+@media (min-width: 48rem) {
+  .orte { grid-template-columns: 1fr 1fr; }
+  .ort-inhalt { container-type: inline-size; }
+  @container (max-width: 28rem) {
+    .ort .wahl { flex-direction: column; align-items: stretch; }
+    .ort .wahl .knopf, .ort .wahl .knopf-still { justify-content: center; text-align: center; }
+  }
+  @container (max-width: 21rem) {
+    .ort .wahl .knopf-ort { display: none; }
+  }
+}
+
 /* ── Welcher Salon liegt näher? ───────────────────────────────────────
    Ein stiller Knopf über den Karten; der nähere Salon bekommt ein
    Schild und einen Goldfaden um die Karte, beide die Entfernung. */
