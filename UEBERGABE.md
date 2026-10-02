@@ -307,3 +307,34 @@ Aufbau und Betrieb: **`BUCHUNG.md`**. Offene Fragen an den Salon:
 - Gemessen, Oberkante beider Knöpfe gleich: 768, 820, 1024, 1180 px.
   Handy (390) pixelgleich; Desktop (1440) bis auf die Kantenglättung
   von vier Buchstaben gleich.
+
+## Fenster: Extensions und WhatsApp auf großen Schirmen neu geordnet
+
+Vorher stand die fertige Nachricht links unter den Werten, die Schritte
+rechts — man wählte rechts und las das Ergebnis links weiter oben; rechts
+blieb unter „Methode“ ein Loch von rund 300 px, und die Knöpfe von
+„Länge“ und „Wunsch“ brachen einzeln um.
+
+Jetzt (ab 64 rem) zwei Bänder auf denselben Spaltenkanten:
+
+1. links Titel, Spruch, Text, Werte | rechts das Formular: Farbregal, dann
+   Länge, Wunsch, Methode als Zeilen (Beschriftung in fester Spalte, alle
+   Knöpfe auf einer Kante bei x = 809 px auf 1440, Hinweis darunter)
+2. links „Ihre Nachricht an“ (gleiche Schrift wie „Ihr Wunsch, in vier
+   Schritten“), Salonwahl, Hinweis | rechts die Nachricht und der
+   Sendeknopf — Überschrift und Textfeld beginnen auf derselben Höhe.
+
+Unter 80 rem steht die Beschriftung über den Knöpfen statt daneben.
+
+| | vorher | nachher |
+|---|---|---|
+| Höhe des Abschnitts 1440 px | 1455 px | 1482 px |
+| Höhe 1920 px | 1452 px | 1479 px |
+| größte Lücke rechts | ~300 px (unter Methode) | keine (Spalten enden 846 / 969 px) |
+| umbrechende Knopfreihen | 2 | 0 (1024–1920 px) |
+| Leserichtung | rechts → links zurück | oben → unten, links → rechts |
+
+Handy, iPad hochkant und quer bis 1023 px pixelgleich zu vorher.
+Verhalten getestet (Farbton, Länge, Wunsch, Methode, Salon → Nachricht und
+WhatsApp-Link), keine Konsolenfehler, Kontrast der kleinsten Zeilen
+≥ 8,6 : 1, Detektor unverändert (5 × dark-glow, gewollt).
