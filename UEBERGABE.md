@@ -338,3 +338,28 @@ Handy, iPad hochkant und quer bis 1023 px pixelgleich zu vorher.
 Verhalten getestet (Farbton, Länge, Wunsch, Methode, Salon → Nachricht und
 WhatsApp-Link), keine Konsolenfehler, Kontrast der kleinsten Zeilen
 ≥ 8,6 : 1, Detektor unverändert (5 × dark-glow, gewollt).
+
+## Fenster: Preise auf großen Schirmen — der Schrank nimmt die ganze Breite
+
+Vorher (ab 80 rem) stand links Überschrift, Text und Knopf, rechts der
+Etikettenschrank mit zwei Reihen à vier; links blieb unter dem Text und
+unter dem Knopf eine leere Fläche.
+
+Jetzt (ab 80 rem):
+
+- Kopfzeile in zwei Spalten: Schild und Handschrift links, der Text rechts
+  auf der Grundlinie der Handschrift. Die Handschrift bricht fest hinter
+  dem Gedankenstrich um (`.zeilenrest`, nur ab 80 rem als Block).
+- Der Schrank über die volle Breite: eine durchgehende Stange, alle acht
+  Etiketten in einer Reihe. Oben im Schrank links die Salonwahl, rechts
+  „Zur vollständigen Preisliste“.
+- Beim Hineinscrollen hängen sich die Etiketten nacheinander ein (vom
+  Haken aus, leicht schräg, ausbremsend; 0,6 s, 220 ms versetzt).
+  Gemessen höchstens drei gleichzeitig in Bewegung. Nur wenn der Schrank
+  beim Laden noch nicht im Bild ist; ohne Skript und bei reduzierter
+  Bewegung hängen sie einfach da.
+
+Gemessen: kein Überlauf von Namen oder Preisen bei 1280–1920 px, keine
+Überbreite, keine Konsolenfehler, Kontrast ≥ 12 : 1, Detektor unverändert
+(5 × dark-glow, gewollt). Unter 80 rem (390, 820, 1024, 1180, 1279 px)
+pixelgleich zu vorher. Höhe des Abschnitts 1440 px: 809 → 828 px.

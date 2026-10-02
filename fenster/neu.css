@@ -2211,16 +2211,50 @@ details.gruppe > summary:focus-visible { outline: 2px solid var(--gold); outline
   /* Der Schrank bleibt handlich, auch wenn er die volle Breite hat. */
   .preisregal { max-width: 46rem; }
 }
-/* Grosser Schirm: links Überschrift und Weg zur Liste, rechts der Schrank.
-   Erst ab 80rem — darunter würden die Etiketten zu schmal für ihre Preise. */
+/* Grosser Schirm: der Schrank nimmt die ganze Breite — eine Stange,
+   acht Etiketten in einer Reihe, wie die Stange im Laden. Darüber die
+   Kopfzeile in zwei Spalten (Schild und Handschrift | Text), oben im
+   Schrank links die Salonwahl, rechts der Weg zur ganzen Liste.
+   Erst ab 80rem — darunter würden die Etiketten zu schmal. */
 @media (min-width: 80rem) {
-  .stufe > .mitte {
+  .stufe > .mitte { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .stufe .kopfzeile {
+    grid-row: 1; max-width: none; margin-bottom: var(--a4);
     display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    column-gap: clamp(3rem, 6vw, 6rem); align-items: start;
+    column-gap: clamp(3rem, 6vw, 6rem); align-items: end;
   }
-  .stufe .kopfzeile { grid-column: 1; grid-row: 1; margin-bottom: 0; }
-  .stufe .mehr { grid-column: 1; grid-row: 2; }
-  .stufe .preisregal { grid-column: 2; grid-row: 1 / span 2; }
+  .stufe .kopfzeile .schild { grid-column: 1; grid-row: 1; }
+  .stufe .kopfzeile .schild-zeile { grid-column: 1; grid-row: 2; }
+  .stufe .kopfzeile .zeilenrest { display: block; }
+  .stufe .kopfzeile .lauf { grid-column: 2; grid-row: 1 / 3; margin: 0; max-width: 34rem; }
+
+  .stufe .kopfzeile, .stufe .preisregal, .stufe .mehr { grid-column: 1; }
+  .stufe .preisregal { grid-row: 2; max-width: none; padding-inline: 2.25rem; }
+  .stufe .mehr {
+    grid-row: 2; justify-self: end; align-self: start; z-index: 1;
+    margin: 1.75rem 2.25rem 0 0;
+  }
+  .stufe .etiketten { grid-template-columns: repeat(8, minmax(0, 1fr)); column-gap: .9rem; }
+  /* Eine durchgehende Stange über alle acht. */
+  .stufe .etiketten li::after,
+  .stufe .etiketten li:nth-child(4n+1)::after,
+  .stufe .etiketten li:nth-child(4n)::after { left: -.45rem; right: -.45rem; }
+  .stufe .etiketten li:first-child::after { left: 0; }
+  .stufe .etiketten li:last-child::after { right: 0; }
+  .stufe .etikett { padding-inline: .7rem; }
+  .stufe .etikett-preis { font-size: 1.1rem; }
+
+  /* Beim Hineinscrollen hängen sich die Etiketten nacheinander ein:
+     vom Haken aus, ausbremsend, 220 ms versetzt — so laufen höchstens
+     drei zugleich. Ohne Skript (keine Klasse) hängen sie einfach da. */
+  @media (prefers-reduced-motion: no-preference) {
+    .preisregal.wartet .etikett { opacity: 0; transform: translateY(-8px) rotate(-4deg); }
+    .preisregal.wartet.da .etikett {
+      opacity: 1; transform: none;
+      transition: opacity .45s var(--kurve), transform .6s var(--kurve);
+      transition-delay: calc(var(--i, 0) * 220ms);
+    }
+  }
 }
 @keyframes kapitel-neu { from { opacity: 0; transform: translateY(4px); } }
 /* iPad quer (64–80rem): Pille und Schleife ragten über den Rand, die Seite

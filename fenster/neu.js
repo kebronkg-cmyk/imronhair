@@ -373,6 +373,30 @@
   for (const el of stuecke) beob.observe(el);
 })();
 
+/* ── Preisschrank: die Etiketten hängen sich ein ─────────────────────────
+   Nur auf grossen Schirmen (dort hängen alle acht an einer Stange) und
+   nur, wenn der Schrank beim Laden noch nicht im Bild ist. Die Wartezeit
+   steht im CSS (--i × 220 ms); nach dem Einhängen wird der Übergang
+   wieder freigegeben, damit das Schwingen beim Darüberfahren greift. */
+(() => {
+  const schrank = document.querySelector('.stufe .preisregal');
+  if (!schrank || !('IntersectionObserver' in window)) return;
+  if (!matchMedia('(min-width: 80rem)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (schrank.getBoundingClientRect().top < innerHeight) return;
+  const etiketten = [...schrank.querySelectorAll('.etikett')];
+  etiketten.forEach((e, i) => e.style.setProperty('--i', i));
+  schrank.classList.add('wartet');
+  const beob = new IntersectionObserver((eintraege) => {
+    if (!eintraege.some((e) => e.isIntersecting)) return;
+    beob.disconnect();
+    schrank.classList.add('da');
+    const dauer = 600 + (etiketten.length - 1) * 220 + 50;
+    setTimeout(() => schrank.classList.remove('wartet', 'da'), dauer);
+  }, { rootMargin: '0px 0px -15% 0px' });
+  beob.observe(schrank);
+})();
+
 /* ── Welcher Salon liegt näher? ─────────────────────────────────────────
    Auf Knopfdruck fragt der Browser nach dem Standort; die Entfernung zu
    beiden Salons wird hier gerechnet (Luftlinie) und nirgends hin
