@@ -374,14 +374,14 @@
 })();
 
 /* ── Preisschrank: die Etiketten hängen sich ein ─────────────────────────
-   Nur auf grossen Schirmen (dort hängen alle acht an einer Stange) und
-   nur, wenn der Schrank beim Laden noch nicht im Bild ist. Die Wartezeit
-   steht im CSS (--i × 220 ms); nach dem Einhängen wird der Übergang
-   wieder freigegeben, damit das Schwingen beim Darüberfahren greift. */
+   Ab iPad (dort hängt der Schrank über die ganze Breite) und nur, wenn
+   der Schrank beim Laden noch nicht im Bild ist. Die Wartezeit steht im
+   CSS (--i × 220 ms); nach dem Einhängen wird der Übergang wieder
+   freigegeben, damit das Schwingen beim Darüberfahren greift. */
 (() => {
   const schrank = document.querySelector('.stufe .preisregal');
   if (!schrank || !('IntersectionObserver' in window)) return;
-  if (!matchMedia('(min-width: 80rem)').matches) return;
+  if (!matchMedia('(min-width: 48rem)').matches) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (schrank.getBoundingClientRect().top < innerHeight) return;
   const etiketten = [...schrank.querySelectorAll('.etikett')];

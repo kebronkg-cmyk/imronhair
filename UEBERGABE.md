@@ -363,3 +363,19 @@ Gemessen: kein Überlauf von Namen oder Preisen bei 1280–1920 px, keine
 Überbreite, keine Konsolenfehler, Kontrast ≥ 12 : 1, Detektor unverändert
 (5 × dark-glow, gewollt). Unter 80 rem (390, 820, 1024, 1180, 1279 px)
 pixelgleich zu vorher. Höhe des Abschnitts 1440 px: 809 → 828 px.
+
+### Nachtrag: der Schrank auch auf dem iPad
+
+Die Anordnung galt zuerst erst ab 80 rem; auf dem iPad (768–1366 px) stand
+noch der schmale Schrank mit leerer Fläche daneben und einem einzelnen
+Knopf darunter. Jetzt:
+
+- ab 48 rem (iPad hochkant): Schrank über die volle Breite, zwei Stangen à
+  vier, Salonwahl und „Zur vollständigen Preisliste“ oben im Schrank,
+  die Etiketten hängen sich ein;
+- ab 64 rem (iPad Pro hochkant, iPad quer): Kopfzeile zweispaltig;
+- ab 72 rem (iPad Air/Pro quer, 1180 px und mehr): eine Stange, alle acht.
+
+Gemessen bei 768, 820, 1024 und 1180 px: kein Überlauf, keine Überbreite,
+höchstens drei Etiketten zugleich in Bewegung, keine Konsolenfehler.
+Handy (360, 390) und Desktop (1280, 1440, 1920) pixelgleich zum Stand davor.
