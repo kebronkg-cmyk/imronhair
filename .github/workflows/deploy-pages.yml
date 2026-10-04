@@ -47,12 +47,19 @@ jobs:
           # Dauer, Team) — nur diese eine Datei aus api/.
           cp api/katalog.json _site/api/
 
-          # Die Hauptadresse und die alten Unterseiten leiten auf die
-          # Fenster-Fassung weiter; Anker (#…) und ?salon= bleiben erhalten.
-          for seite in index leistungen impressum datenschutz; do
-            ziel="fenster/${seite}.html"
-            [ "$seite" = index ] && ziel="fenster/"
-            cat > "_site/${seite}.html" <<EOF
+          # Weiterleitungen auf die Fenster-Fassung; Anker (#…) und ?salon=
+          # bleiben erhalten. Erstes Feld: Pfad der alten Adresse, zweites:
+          # Ziel, relativ zur Wurzel der Website.
+          weiterleiten() {
+            pfad="$1"; ziel="$2"
+            datei="_site/${pfad}"
+            case "$pfad" in */|"") datei="${datei}index.html" ;; esac
+            mkdir -p "$(dirname "$datei")"
+            # Für Seiten in Unterordnern (/unsere-preise/) eine Ebene zurück.
+            tiefe=$(printf '%s' "$pfad" | tr -cd '/' | wc -c)
+            vor=""; for _ in $(seq 1 "$tiefe"); do vor="../${vor}"; done
+            ziel="${vor}${ziel}"
+            cat > "$datei" <<EOF
           <!doctype html>
           <html lang="de">
           <head>
@@ -66,7 +73,21 @@ jobs:
           <body><p><a href="${ziel}">Weiter zur Website von Irmonhair</a></p></body>
           </html>
           EOF
-          done
+          }
+          # Die Hauptadresse und die alten Unterseiten dieser Website …
+          weiterleiten ""                  "fenster/"
+          weiterleiten "index.html"        "fenster/"
+          weiterleiten "leistungen.html"   "fenster/leistungen.html"
+          weiterleiten "impressum.html"    "fenster/impressum.html"
+          weiterleiten "datenschutz.html"  "fenster/datenschutz.html"
+          # … und die Adressen der früheren Website unter irmonhair-muenchen.de,
+          # damit Links bei Google, Planity und in Lesezeichen weiter tragen.
+          weiterleiten "unsere-preise/"               "fenster/leistungen.html"
+          weiterleiten "ueberblick-leistungen/"       "fenster/leistungen.html"
+          weiterleiten "frauen-herrenhaarschnitte/"   "fenster/leistungen.html#schnitt"
+          weiterleiten "impressum/"                   "fenster/impressum.html"
+          weiterleiten "datenschutz/"                 "fenster/datenschutz.html"
+          weiterleiten "danke/"                       "fenster/"
 
           # Sicherheitsnetz: keine Notizen, Skripte oder Quelldaten im Netz.
           find _site \( -name '*.md' -o -name '*.py' -o -name '*.php' \
