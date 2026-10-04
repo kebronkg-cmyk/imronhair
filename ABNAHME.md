@@ -29,8 +29,8 @@ inkl. USt., „ab“), Haftung für Inhalte und Links, Urheberrecht. Den Link
 zur EU-Streitschlichtungsplattform gibt es nicht mehr — die Plattform ist
 seit 20.07.2025 abgeschaltet und darf nicht mehr verlinkt werden.
 
-Neu im Datenschutz: beide Gesellschaften als Verantwortliche, Netlify
-neben GitHub Pages als Hoster (mit EU-US Data Privacy Framework), die
+Neu im Datenschutz: beide Gesellschaften als Verantwortliche, GitHub
+Pages als Hoster (mit EU-US Data Privacy Framework), die
 Buchung bei All-Inkl (Deutschland), der WhatsApp-Knopf bei den
 Extensions, Gmail als Postfach, Speicherdauer, Pflichtangaben,
 Widerspruchsrecht hervorgehoben, Anschrift des BayLDA korrigiert
@@ -58,10 +58,8 @@ wörtlich übernommen, die Echtheit prüft nicht der Salon.
    es bei der Handwerkskammer oder beim BayLDA.
 5. **Auftragsverarbeitung:** Vor dem Freischalten der Online-Buchung den
    AV-Vertrag mit All-Inkl im KAS abschließen (die Erklärung setzt ihn
-   voraus). Für Netlify den AV-Vertrag (Data Processing Agreement) im
-   Netlify-Konto annehmen. Am einfachsten: am Ende nur **einen** Hoster
-   behalten (All-Inkl) und Netlify/GitHub Pages nur zum Testen nutzen —
-   dann die Hosting-Abschnitte entsprechend kürzen.
+   voraus). **Netlify ist abgelöst** (04.10.2026): Die Seite läuft nur noch
+   über GitHub Pages; die Netlify-Seite bitte im Netlify-Konto löschen.
 6. **E-Mail:** Für eine kostenlose Gmail-Adresse gibt es keinen
    AV-Vertrag mit Google. Empfohlen: eine Adresse bei All-Inkl (z. B.
    info@irmonhair-muenchen.de) und diese im Impressum und Datenschutz

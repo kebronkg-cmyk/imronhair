@@ -25,8 +25,59 @@ jobs:
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+
+      # Ausgeliefert wird nur, was die Besucher sehen: die Seiten, ihre
+      # Stile, Skripte, Bilder und Schriften. Notizen (*.md), Recherche,
+      # Werkzeuge, die PHP-Schnittstelle und das Studio bleiben im Repo und
+      # gehen nicht ins Netz. Die Schnittstelle läuft auf All-Inkl.
+      - name: Seite zusammenstellen
+        run: |
+          set -euo pipefail
+          mkdir -p _site/spiegel _site/api
+
+          # Die aktuelle Fassung und die älteren Fassungen unter ihren Pfaden.
+          cp -r fenster schleife alt alt2 _site/
+
+          # Die frühere Hauptseite (Spiegel) unter /spiegel/.
+          cp index.html leistungen.html impressum.html datenschutz.html \
+             neu.css neu.js logo-*.svg _site/spiegel/
+          cp -r bilder schrift _site/spiegel/
+
+          # Die Terminvorschau liest den öffentlichen Katalog (Leistungen,
+          # Dauer, Team) — nur diese eine Datei aus api/.
+          cp api/katalog.json _site/api/
+
+          # Die Hauptadresse und die alten Unterseiten leiten auf die
+          # Fenster-Fassung weiter; Anker (#…) und ?salon= bleiben erhalten.
+          for seite in index leistungen impressum datenschutz; do
+            ziel="fenster/${seite}.html"
+            [ "$seite" = index ] && ziel="fenster/"
+            cat > "_site/${seite}.html" <<EOF
+          <!doctype html>
+          <html lang="de">
+          <head>
+          <meta charset="utf-8">
+          <title>Irmonhair · Friseur in München</title>
+          <meta name="robots" content="noindex">
+          <link rel="canonical" href="${ziel}">
+          <meta http-equiv="refresh" content="0; url=${ziel}">
+          <script>location.replace('${ziel}' + location.search + location.hash);</script>
+          </head>
+          <body><p><a href="${ziel}">Weiter zur Website von Irmonhair</a></p></body>
+          </html>
+          EOF
+          done
+
+          # Sicherheitsnetz: keine Notizen, Skripte oder Quelldaten im Netz.
+          find _site \( -name '*.md' -o -name '*.py' -o -name '*.php' \
+                        -o -name '*.mjs' -o -name '.DS_Store' \) -delete
+          # Versteckte Ordner (z. B. .impeccable mit Design-Notizen) ebenso.
+          find _site -mindepth 1 -name '.*' -prune -exec rm -rf {} +
+          touch _site/.nojekyll
+          echo "Ausgeliefert:"; find _site -maxdepth 2 | sort | head -60
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

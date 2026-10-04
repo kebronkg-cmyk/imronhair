@@ -379,3 +379,34 @@ Knopf darunter. Jetzt:
 Gemessen bei 768, 820, 1024 und 1180 px: kein Überlauf, keine Überbreite,
 höchstens drei Etiketten zugleich in Bewegung, keine Konsolenfehler.
 Handy (360, 390) und Desktop (1280, 1440, 1920) pixelgleich zum Stand davor.
+
+## Auslieferung: nur noch GitHub Pages, nur noch die Seiten selbst
+
+Stand 04.10.2026.
+
+- **Netlify abgelöst.** `netlify.toml` ist gelöscht, der Datenschutz nennt
+  nur noch GitHub Pages. Die Netlify-Seite muss im Netlify-Konto gelöscht
+  werden (Site configuration → Delete this site).
+- **Nur die Website geht ins Netz.** Der Workflow stellt `_site/` zusammen:
+  die Fassungen `fenster/`, `schleife/`, `alt/`, `alt2/`, die frühere
+  Hauptseite unter `spiegel/` und aus `api/` nur `katalog.json`. Nicht mehr
+  öffentlich: alle `*.md` (Abnahme, Übergabe, Buchung), `recherche/`,
+  `api/*.php`, `studio/`, `.claude/`, `.impeccable/`. Vorher waren sie unter
+  der Website-Adresse abrufbar (geprüft: Status 200 → jetzt 404).
+- **Die Fenster-Fassung ist die Hauptseite.** Die Hauptadresse und die alten
+  Unterseiten (`leistungen.html`, `impressum.html`, `datenschutz.html`)
+  leiten auf `fenster/` weiter, Anker und `?salon=` bleiben erhalten. Die
+  Fenster-Seiten sind jetzt für Suchmaschinen freigegeben, die
+  Spiegel-Fassung unter `/spiegel/` nicht mehr.
+- **Warum nicht die Fenster-Dateien an die Wurzel kopieren:** Die
+  Terminseite findet die Schnittstelle unter `../api/`. Unter der
+  GitHub-Adresse `/imronhair/fenster/` zeigt das richtig auf
+  `/imronhair/api/`; an der Wurzel liefe es aus der Seite hinaus.
+- **Online-Buchung und GitHub:** GitHub Pages kann kein PHP und keine
+  Datenbank. Die Seite bleibt auf GitHub, nur die Schnittstelle läuft auf
+  All-Inkl. Dafür in `fenster/termin.html` die Zeile
+  `<meta name="irmonhair-api" content="../api/">` auf die volle Adresse der
+  Schnittstelle setzen (z. B. `https://buchung.irmonhair-muenchen.de/api/`)
+  und in `api/config.php` unter `erlaubte_herkunft` die Adresse der
+  Website eintragen (`https://kebronkg-cmyk.github.io` bzw. die eigene
+  Domain). Bis dahin zeigt die Terminseite Telefon und Planity.
