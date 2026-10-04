@@ -2113,3 +2113,6 @@ html.leiste-weg .preisleiste {
   .preise .stufen[data-n] > div:nth-child(n) { grid-column: auto; justify-items: start; text-align: left; }
 }
 .preise .abschluss { margin-top: var(--a5); }
+
+/* Hinweis zur Herkunft der Bewertungen (§ 5b Abs. 3 UWG). */
+.stimmen-hinweis { margin: 1.25rem 0 0; max-width: 26rem; font-size: .8rem; line-height: 1.5; }

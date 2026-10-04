@@ -4,23 +4,78 @@ Die Seite ist online: https://kebronkg-cmyk.github.io/imronhair/
 Was hier steht, kann nur der Salon beantworten. Die Punkte 1, 2 und 7 sind
 rechtlich, nicht kosmetisch — und seit die Seite öffentlich ist, fällig.
 
-## 1. Das Impressum ist unvollständig — und widerspricht sich
+## 1. Impressum und Datenschutz — fertig bis auf das, was nur der Salon weiß
 
-Übernommen ist genau, was die bisherige Seite nennt: *Irmonhair GmbH*,
-Irmonherstraße 7, vertreten durch Bedia Sendan, E-Mail
-bedia.oezbek@gmail.com. Drei Probleme:
+**Stand 04.10.2026.** Impressum und Datenschutzerklärung sind in allen
+Fassungen neu geschrieben. Die Firmendaten stammen aus dem
+Handelsregister (über northdata.de, das automatisch aus dem Register
+liest — bitte einmal mit dem eigenen Registerauszug abgleichen):
 
-- **GmbH oder UG?** Im Impressum der alten Seite steht „GmbH“, auf deren
-  Start- und Preisseite „Irmonhair UG“. Die Rechtsform muss stimmen.
-- **Es fehlen Pflichtangaben** einer Gesellschaft: Registergericht und
-  Registernummer (HRB), Geschäftsführung, sofern vorhanden die
-  USt-IdNr., und als Handwerksbetrieb die zuständige Handwerkskammer
-  (München und Oberbayern) samt Berufsbezeichnung.
-- **Name:** Vertreten durch *Bedia Sendan*, die E-Mail-Adresse lautet auf
-  *oezbek*. Bitte bestätigen, welcher Name ins Impressum gehört.
+| | Salon Pasing | Salon Großhadern |
+|---|---|---|
+| Firma | Irmonhair GmbH (vormals Irmonhair UG) | Irmonhair Beauty GmbH |
+| Register | Amtsgericht München, HRB 214510 | Amtsgericht München, HRB 260713 |
+| Anschrift | Irmonherstraße 7, 81241 München | Würmtalstraße 119, 81375 München |
+| Geschäftsführung | Bedia Sendan (seit 01/2024) | Bedia Sendan (seit 09/2022) |
 
-Nichts davon ist erfunden oder ergänzt — die Angaben fehlen, bis der Salon
-sie nennt.
+Damit ist auch geklärt, warum die E-Mail-Adresse auf *oezbek* lautet: Senem
+Özbek war bis 2024 Geschäftsführerin. Die alte Seite nannte für beide
+Salons nur die GmbH — Großhadern gehört aber zur Irmonhair Beauty GmbH.
+
+Neu im Impressum: Registerangaben beider Gesellschaften, berufsrechtliche
+Angaben (Friseurhandwerk, Handwerkskammer für München und Oberbayern,
+Handwerksordnung), Verbraucherstreitbeilegung, Preisangaben (Endpreise
+inkl. USt., „ab“), Haftung für Inhalte und Links, Urheberrecht. Den Link
+zur EU-Streitschlichtungsplattform gibt es nicht mehr — die Plattform ist
+seit 20.07.2025 abgeschaltet und darf nicht mehr verlinkt werden.
+
+Neu im Datenschutz: beide Gesellschaften als Verantwortliche, Netlify
+neben GitHub Pages als Hoster (mit EU-US Data Privacy Framework), die
+Buchung bei All-Inkl (Deutschland), der WhatsApp-Knopf bei den
+Extensions, Gmail als Postfach, Speicherdauer, Pflichtangaben,
+Widerspruchsrecht hervorgehoben, Anschrift des BayLDA korrigiert
+(Promenade 18 — vorher stand 27). Ein kaputter Satz in Abschnitt 5
+(„Przum Schutz … Prüfsummeuuml;fsumme“) ist repariert.
+
+Neu bei den Bewertungen: ein Satz nach § 5b Abs. 3 UWG — Auswahl,
+wörtlich übernommen, die Echtheit prüft nicht der Salon.
+
+**Was nur der Salon erledigen kann — bevor die Seite die Hauptadresse wird:**
+
+1. **USt-IdNr.:** Hat eine der Gesellschaften eine? Dann muss sie ins
+   Impressum (§ 5 Abs. 1 Nr. 6 DDG). Bitte nennen.
+2. **Verbraucherschlichtung:** Der Satz „nicht verpflichtet und nicht
+   bereit“ stimmt nur, wenn die jeweilige Gesellschaft am 31.12. des
+   Vorjahres höchstens zehn Beschäftigte hatte (§ 36 VSBG). Sonst bitte
+   melden.
+3. **Datenschutzbeauftragte:** Nicht nötig, solange je Gesellschaft
+   weniger als 20 Personen ständig mit personenbezogenen Daten arbeiten
+   (§ 38 BDSG). Bitte bestätigen.
+4. **Zwei Gesellschaften, eine Buchung:** Die Online-Buchung nutzt eine
+   gemeinsame Datenbank für beide Salons. Dafür braucht es zwischen den
+   beiden GmbHs eine kurze Vereinbarung über die gemeinsame
+   Verantwortlichkeit (Art. 26 DSGVO) — ein bis zwei Seiten, Muster gibt
+   es bei der Handwerkskammer oder beim BayLDA.
+5. **Auftragsverarbeitung:** Vor dem Freischalten der Online-Buchung den
+   AV-Vertrag mit All-Inkl im KAS abschließen (die Erklärung setzt ihn
+   voraus). Für Netlify den AV-Vertrag (Data Processing Agreement) im
+   Netlify-Konto annehmen. Am einfachsten: am Ende nur **einen** Hoster
+   behalten (All-Inkl) und Netlify/GitHub Pages nur zum Testen nutzen —
+   dann die Hosting-Abschnitte entsprechend kürzen.
+6. **E-Mail:** Für eine kostenlose Gmail-Adresse gibt es keinen
+   AV-Vertrag mit Google. Empfohlen: eine Adresse bei All-Inkl (z. B.
+   info@irmonhair-muenchen.de) und diese im Impressum und Datenschutz
+   eintragen.
+7. **Speicherdauer:** Vorgeschlagen und so eingetragen: Kundenkarte bis
+   drei Jahre nach dem letzten Termin, Steuerunterlagen nach Gesetz (bis
+   zehn Jahre). Bitte bestätigen oder eine andere Frist nennen.
+8. **Fotos:** Bestätigen, dass die Rechte an den Salonfotos bei Irmonhair
+   liegen (das Impressum sagt das jetzt so).
+
+Diese Texte sind sorgfältig nach geltendem Recht (DDG, DSGVO, TDDDG,
+UWG, VSBG, PAngV) geschrieben, ersetzen aber keine anwaltliche Prüfung.
+Wer ganz sicher gehen will, lässt sie einmal von der Handwerkskammer
+(kostenlose Rechtsberatung für Mitglieder) oder einer Anwältin ansehen.
 
 ## 2. „Chemiefreie Farben“ steht nicht da
 

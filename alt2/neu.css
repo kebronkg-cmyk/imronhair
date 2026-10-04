@@ -2122,3 +2122,6 @@ html.leiste-weg .preisleiste {
    die Leiste; darunter wurde er zu einer senkrechten Buchstabenreihe
    gequetscht. */
 @media (max-width: 33.99rem) { .leiste .marke-zusatz { display: none; } }
+
+/* Hinweis zur Herkunft der Bewertungen (§ 5b Abs. 3 UWG). */
+.stimmen-hinweis { margin: 1.25rem 0 0; max-width: 26rem; font-size: .8rem; line-height: 1.5; }

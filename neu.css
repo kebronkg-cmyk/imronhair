@@ -1300,3 +1300,6 @@ html.leiste-weg .wegweiser {
   transition: opacity .4s var(--kurve) .12s, visibility 0s;
 }
 @media (prefers-reduced-motion: reduce) { .spiegel-ort > span { transition: none; } }
+
+/* Hinweis zur Herkunft der Bewertungen (§ 5b Abs. 3 UWG). */
+.stimmen-hinweis { margin: 1.25rem 0 0; max-width: 26rem; font-size: .8rem; line-height: 1.5; }
