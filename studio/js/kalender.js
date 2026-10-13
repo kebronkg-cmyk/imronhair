@@ -11,7 +11,7 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { $, el, svg, ZEICHEN, euro, dauerText, TAG, tagText, alsDatum, plusTage, heute, minuten, hhmm,
-  wochentag, montag, jetztMin, kundenName, meldung, fragen, summePhasen } from './hilfen.js';
+  wochentag, montag, jetztMin, kundenName, meldung, fragen, summePhasen, abgesagt } from './hilfen.js';
 import { Z, api, personVon, salonVon } from './api.js';
 import { terminZeigen, terminNeu, abwesenheitZeigen } from './termin.js';
 
@@ -123,7 +123,7 @@ function zeichnen() {
 }
 
 function tagesinfo() {
-  const t = daten.termine.filter((x) => x.status !== 'storniert');
+  const t = daten.termine.filter((x) => !abgesagt(x.status));
   const summe = t.reduce((s, x) => s + (x.status === 'nicht_erschienen' ? 0 : x.preis_cent || 0), 0);
   const ab = t.some((x) => x.preis_ab || x.preis_cent === null);
   const info = $('tagesinfo');
@@ -266,7 +266,7 @@ function raster(woche) {
 const ABW = { urlaub: 'Urlaub', krank: 'Krank', pause: 'Pause', schulung: 'Schulung', frei: 'Frei', geschlossen: 'Geschlossen' };
 
 function spaltenKopf(sp, termine, woche) {
-  const aktiv = termine.filter((t) => t.status !== 'storniert');
+  const aktiv = termine.filter((t) => !abgesagt(t.status));
   if (woche) {
     const d = alsDatum(sp.datum);
     return el('button', { type: 'button', klasse: 'kal-spaltenkopf' + (sp.datum === heute() ? ' ist-heute' : ''),
@@ -299,7 +299,7 @@ function wochenPersonen() {
  * Einwirkzeit eines anderen, wird er eingerückt darübergelegt.
  */
 function anordnen(termine, woche) {
-  const liste = termine.filter((t) => t.status !== 'storniert').map((t) => ({ t, bereich: terminBereich(t), teile: arbeitsTeile(t), bahn: 0, bahnen: 1, tiefe: 0 }))
+  const liste = termine.filter((t) => !abgesagt(t.status)).map((t) => ({ t, bereich: terminBereich(t), teile: arbeitsTeile(t), bahn: 0, bahnen: 1, tiefe: 0 }))
     .sort((p, q) => p.bereich[0] - q.bereich[0] || q.bereich[1] - p.bereich[1]);
   const stoss = (p, q) => (woche && p.t.person !== q.t.person) ? p.bereich[0] < q.bereich[1] && q.bereich[0] < p.bereich[1] : schneiden(p.teile, q.teile);
   // Gruppen, die sich stoßen (zusammenhängend), bekommen gemeinsame Bahnen.
@@ -327,7 +327,7 @@ function anordnen(termine, woche) {
   return liste;
 }
 
-const STATUS = { gebucht: '', erschienen: 'erschienen', nicht_erschienen: 'nicht erschienen', storniert: 'storniert' };
+const STATUS = { gebucht: '', erschienen: 'erschienen', nicht_erschienen: 'nicht erschienen', storniert_kunde: 'abgesagt', storniert_salon: 'abgesagt' };
 
 function terminBlock(b, y, ppm, woche) {
   const t = b.t;
@@ -473,15 +473,20 @@ const zug = {
 };
 function zurueck(z) { z.block.style.transform = ''; z.block.style.height = ''; z.block.classList.remove('ist-gezogen'); delete z.block.dataset.neu; }
 
-async function speichern(aenderung, text, z, trotzdem = false) {
+/* Ziehen nur auf freie Zeiten: Eine Überschneidung wird abgelehnt und der
+   Block springt zurück. Nur „außerhalb der Arbeitszeit“ bei offenem Salon
+   lässt sich bewusst überstimmen. */
+async function speichern(aenderung, text, z, ausserhalbOk = false) {
   try {
     const alt = daten.termine.find((x) => x.id === aenderung.id);
-    await api('termin_aendern', { post: { ...aenderung, trotzdem } });
+    await api('termin_aendern', { post: { ...aenderung, ausserhalb_ok: ausserhalbOk } });
     meldung(`Verschoben: ${text}`, 'ok', alt ? { text: 'Rückgängig', tun: () => rueckgaengig(alt) } : null);
     laden(true);
   } catch (e) {
-    if (e.daten.code === 'konflikt' && !trotzdem) {
-      const ok = await fragen({ titel: 'Überschneidung', text: 'Dort ist schon etwas eingetragen:', liste: e.daten.konflikte.map((k) => k.text), ja: 'Trotzdem verschieben' });
+    if (e.daten.code === 'konflikt' && e.daten.hart) {
+      meldung('Geht nicht: ' + e.daten.konflikte.map((k) => k.text).join('; '), 'fehler');
+    } else if (e.daten.code === 'konflikt' && !ausserhalbOk) {
+      const ok = await fragen({ titel: 'Außerhalb der Arbeitszeit', text: 'Der Salon hat offen, aber dort ist keine Arbeitszeit eingetragen.', ja: 'Trotzdem verschieben' });
       if (ok) return speichern(aenderung, text, z, true);
     } else {
       meldung(e.message, 'fehler');
@@ -491,9 +496,13 @@ async function speichern(aenderung, text, z, trotzdem = false) {
   }
 }
 async function rueckgaengig(alt) {
-  const jetzt = await api('termin_verlauf', { get: { id: alt.id } });
-  await api('termin_aendern', { post: { id: alt.id, version: jetzt.version, start: alt.start, person: alt.person, phasen: alt.phasen, trotzdem: true } });
-  meldung('Zurückgenommen.', 'ok');
+  try {
+    const jetzt = await api('termin_verlauf', { get: { id: alt.id } });
+    await api('termin_aendern', { post: { id: alt.id, version: jetzt.version, start: alt.start, person: alt.person, phasen: alt.phasen, ausserhalb_ok: true } });
+    meldung('Zurückgenommen.', 'ok');
+  } catch (e) {
+    meldung(e.daten?.code === 'konflikt' ? 'Der alte Platz ist inzwischen vergeben.' : e.message, 'fehler');
+  }
   laden(true);
 }
 
@@ -507,7 +516,7 @@ function liste() {
   for (const pid of personenAm(d)) {
     const arbeit = arbeitAm(pid, d);
     if (!arbeit.length) continue;
-    const belegt = daten.termine.filter((t) => t.person === pid && t.start.startsWith(d) && t.status !== 'storniert').flatMap(arbeitsTeile)
+    const belegt = daten.termine.filter((t) => t.person === pid && t.start.startsWith(d) && !abgesagt(t.status)).flatMap(arbeitsTeile)
       .concat(abwesendAm(pid, d).map((x) => [x.a, x.b])).sort((p, q) => p[0] - q[0]);
     const ab = d === heute() ? Math.ceil(jetztMin() / 15) * 15 : 0;
     const frei = [];
@@ -532,7 +541,7 @@ function liste() {
           onclick: () => neuerTermin({ datum: d, person: pid, zeit: hhmm(x) }),
         }))))))));
   }
-  const offen = termine.filter((t) => t.status !== 'storniert');
+  const offen = termine.filter((t) => !abgesagt(t.status));
   const ul = el('ol', { klasse: 'agenda' });
   if (!offen.length) ul.append(el('li', { klasse: 'leer', text: 'Keine Termine an diesem Tag.' }));
   for (const t of termine) {

@@ -20,6 +20,9 @@ export const Z = {
 };
 
 export const inhaberin = () => Z.ich?.rolle === 'inhaberin';
+/** Inhaberin oder Rezeption: salonweite Sperren, Export. */
+export const leitung = () => ['inhaberin', 'rezeption'].includes(Z.ich?.rolle);
+export const ROLLE_NAME = { inhaberin: 'Inhaberin', rezeption: 'Rezeption', team: 'Team' };
 export const salonVon = (id) => Z.s.salons.find((s) => s.id === id);
 export const personVon = (id) => Z.s.personen.find((p) => p.id === id);
 export const leistungVon = (id) => Z.s.leistungen.find((l) => l.id === id);

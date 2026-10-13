@@ -1,7 +1,8 @@
 # Terminbuchung und Studio — Einrichtung und Betrieb
 
 Eigene Online-Buchung für beide Salons, dazu das **Studio**: der
-Kalender und die Kartei für den Salon. Läuft auf jedem gewöhnlichen
+Kalender und die Kartei für den Salon. Was gegenüber der Spezifikation
+geprüft und geschlossen wurde, steht in `BUCHUNG-ABGLEICH.md`. Läuft auf jedem gewöhnlichen
 Webspace mit PHP — gebaut und geprüft für **All-Inkl** (PHP 8, MySQL).
 Keine Abhängigkeiten, kein Build, keine fremden Dienste.
 
@@ -30,6 +31,8 @@ Ansehen. Echt gebucht wird erst auf dem eigenen Webspace.
    - `db`: die Zugangsdaten aus Schritt 1 (`treiber` bleibt `mysql`);
    - `einrichtungs_schluessel` und `cron_schluessel`: je eine lange
      Zufallsfolge (Passwortgenerator, 24 Zeichen);
+   - `alarm_an`: wer einen Alarm bekommt, falls der nächtliche
+     Selbstcheck je eine Überschneidung findet;
    - `buchung_adresse`: die volle Adresse von `fenster/termin.html`;
    - `post`: `aktiv => true`, wenn Bestätigungen per E-Mail gehen sollen.
      Die Absenderadresse muss als Postfach bei All-Inkl existieren
@@ -45,9 +48,14 @@ Ansehen. Echt gebucht wird erst auf dem eigenen Webspace.
 6. **Team:** unter *Team* für jede Person die echten Arbeitszeiten je
    Salon eintragen (vorläufig stehen dort die Öffnungszeiten) und einen
    Zugang anlegen (Anmeldename + Passwort), wer das Studio nutzen soll.
-7. **Erinnerungen am Vortag** (nur mit E-Mail): KAS → *Tools* →
-   *Cronjobs* → stündlich die Adresse
-   `https://…/api/?a=erinnern&schluessel=<cron_schluessel>` aufrufen.
+7. **Cronjobs** (KAS → *Tools* → *Cronjobs*):
+   - stündlich `https://…/api/?a=erinnern&schluessel=<cron_schluessel>`
+     (Erinnerung am Vortag, nur mit E-Mail);
+   - nachts (z. B. 3:10 Uhr) `https://…/api/?a=selbstcheck&schluessel=<cron_schluessel>`
+     — sucht Überschneidungen und Termine an Schließtagen, schickt bei
+     einem Fund sofort eine Mail an `alarm_an`. Erwartet: nie.
+   - **Überwachung:** `https://…/api/?a=gesund` bei einem Uptime-Dienst
+     (z. B. UptimeRobot, kostenlos) mit Alarm aufs Handy eintragen.
 8. **Prüfen:** in `fenster/termin.html` einen Termin buchen, im Studio
    ansehen, über den Link aus der Bestätigung wieder absagen.
 
@@ -74,21 +82,40 @@ volle Adresse der Schnittstelle setzen.
 ## So funktioniert es
 
 **Freie Zeiten.** Eine Leistung ist eine Folge von Phasen — Arbeit,
-Einwirkzeit, Arbeit (aus Planity übernommen, im Studio änderbar).
-Belegt ist eine Person nur während der Arbeit; in der Einwirkzeit kann
-sie eine andere Kundin bedienen. Angeboten werden die Startzeiten im
+Einwirkzeit, Arbeit, Puffer (aus Planity übernommen, im Studio änderbar,
+alles in Fünf-Minuten-Schritten). Belegt ist eine Person während Arbeit
+und Puffer; in der Einwirkzeit kann sie eine andere Kundin bedienen.
+Buchbar ist nur, was in die Öffnungszeit des Salons **und** die
+Arbeitszeit der Person fällt — gesetzliche Feiertage (Bayern),
+Schließtage, Urlaub und Pausen blocken hart. In der Stunde der
+Zeitumstellung gibt es keine Termine. Angeboten werden die Startzeiten im
 Raster (Vorgabe 15 Minuten) und zusätzlich die Minute direkt nach einem
 Termin („Lücken füllen“), damit keine Viertelstunden verloren gehen.
 Bei „wer zuerst frei ist“ bekommt die Person den Termin, bei der er am
 besten an einen anderen anschließt.
 
-**Keine Doppelbuchung.** Jede Buchung sperrt in einer Transaktion die
-betroffenen Personen (MySQL: `SELECT … FOR UPDATE`, SQLite: `BEGIN
-IMMEDIATE`), prüft dann die Belegung und trägt ein. Gleichzeitige
-Anfragen warten aufeinander; die zweite bekommt „gerade vergeben“ und
-frische Zeiten. Ein doppelt abgeschicktes Formular ergibt denselben
-Termin (Anfrage-Kennung). Wer in zwei Salons arbeitet, ist über beide
-hinweg nur einmal belegbar.
+**Keine Doppelbuchung.** Eine einzige Funktion legt Termine an und
+verschiebt sie: `bucheTermin()` in `api/lib/termine.php` — für online,
+Telefon und Kasse. Sie sperrt in einer Transaktion die betroffenen
+Personen (MySQL: `SELECT … FOR UPDATE`, SQLite: `BEGIN IMMEDIATE`),
+prüft die Belegung neu und trägt ein; bestätigt wird erst nach dem
+COMMIT. Gleichzeitige Anfragen warten aufeinander; die zweite bekommt
+„gerade vergeben“ und drei Ausweichzeiten. Ein doppelt abgeschicktes
+Formular ergibt denselben Termin (Anfrage-Kennung); bleibt die Antwort
+aus, fragt die Seite nach, statt die Kundin raten zu lassen. Wer in zwei
+Salons arbeitet, ist über beide hinweg nur einmal belegbar. Im Studio
+gibt es kein „trotzdem“ für Überschneidungen.
+
+**Verschieben** ist eine eigene Handlung: derselbe Termin, gleicher Link,
+neue Zeit. Der alte Platz wird erst frei, wenn der neue sicher gebucht
+ist. Die Kundin bekommt eine neue Bestätigung mit „vorher → jetzt“ —
+auch, wenn der Salon im Studio verschiebt oder umbesetzt. Eine gewählte
+Person bleibt verbindlich.
+
+**Zustände:** gebucht → erschienen | nicht erschienen | abgesagt von der
+Kundin | abgesagt vom Salon (nur mit Grund, die Kundin wird informiert).
+Nichts wird gelöscht; jede Änderung steht mit Verursacher (Kundin,
+Mitarbeiterin, System) und vorher/nachher im Protokoll.
 
 **Gleichzeitig im Studio.** Jeder Termin hat eine Version. Ändern zwei
 Geräte denselben Termin, gewinnt das erste; das zweite bekommt den neuen
@@ -108,11 +135,13 @@ als Datei.
 im Cookie (HttpOnly, SameSite=Strict), jede Änderung braucht zusätzlich
 den CSRF-Schlüssel der Sitzung. Mengenbremsen gegen Durchprobieren
 (Anmeldung) und Massenbuchungen, eine Falle für Formular-Roboter, höchstens
-drei offene Online-Termine je Nummer. Rollen: *Inhaberin* (alles) und
-*Team* (Kalender und Kunden). Jede Änderung steht im Protokoll.
+drei offene Online-Termine je Nummer. Rollen: *Inhaberin* (alles),
+*Rezeption* (dazu salonweite Schließtage und Export) und *Team*
+(Kalender und Kunden). Jede Änderung steht im Protokoll.
 
-**Sicherung.** Einstellungen → *Sicherung herunterladen* speichert alles
-als JSON (ohne Passwörter). Zusätzlich sichert All-Inkl die Datenbank
+**Sicherung und Export.** Einstellungen → *Export* lädt Termine, Kunden,
+Protokoll und Einwilligungen als CSV (Excel-tauglich); *Sicherung
+herunterladen* speichert alles als JSON (ohne Passwörter). Zusätzlich sichert All-Inkl die Datenbank
 täglich (KAS → *Datenbanken* → *Backups*).
 
 ## Dateien
@@ -123,10 +152,10 @@ täglich (KAS → *Datenbanken* → *Backups*).
 | `api/lib/basis.php` | Einstellungen, Datenbankschicht, Transaktionen, Zeit, Telefon/E-Mail |
 | `api/lib/schema.php` | Tabellen (MySQL und SQLite), Erstbefüllung aus `katalog.json` |
 | `api/lib/planer.php` | Freie Zeiten, Einwirkzeit, Überschneidungen, Belegung |
-| `api/lib/termine.php` | Termine und Kunden anlegen und ändern |
-| `api/lib/oeffentlich.php` | Online-Buchung: Katalog, frei, buchen, ansehen, absagen |
+| `api/lib/termine.php` | `bucheTermin()` (einzige Stelle für Anlegen und Verschieben), Ändern, Kunden, Einwilligungen |
+| `api/lib/oeffentlich.php` | Online-Buchung: Katalog, frei, buchen, verschieben, anfrage, ansehen, absagen, gesund |
 | `api/lib/studio.php` | Studio: Anmeldung, Kalender, Kunden, Team, Leistungen, Auswertung |
-| `api/lib/post.php` | E-Mails mit Kalenderdatei, Erinnerungen per Cronjob |
+| `api/lib/post.php` | E-Mails mit Kalenderdatei („vorher → jetzt“ bei Änderungen), Erinnerungen und Selbstcheck per Cronjob |
 | `api/katalog.json` | Erstbefüllung, erzeugt von `recherche/katalog.py` aus Planity |
 | `fenster/termin.*` | Online-Buchung; `termin-vorschau.js` rechnet ohne Server |
 | `studio/` | Studio; `js/` als Module ohne Build |
@@ -140,11 +169,17 @@ Start eingespielt; danach gehören die Daten dem Studio.
 ```sh
 # Server mit einer Test-Konfiguration (SQLite oder MySQL)
 IRMONHAIR_KONFIG=/pfad/test-config.php PHP_CLI_SERVER_WORKERS=8 php -S 127.0.0.1:8098 &
-node api/tests/pruefen.mjs http://127.0.0.1:8098/api/ <einrichtungs_schluessel>   # 88 Prüfungen
+# Jede Zeile mit frischer Datenbank (Datei löschen, Server neu starten):
+node api/tests/pflicht.mjs http://127.0.0.1:8098/api/ <einrichtungs_schluessel>   # Pflicht-Tests 4.5 (88)
+node api/tests/pruefen.mjs http://127.0.0.1:8098/api/ <einrichtungs_schluessel>   # Schnittstelle (92)
+node api/tests/buchung-ausfall.mjs http://127.0.0.1:8098/                         # Netzausfall, Kollision, Verschieben (13)
 node api/tests/last.mjs http://127.0.0.1:8098/api/ 200                            # gleichzeitige Buchungen
 node api/tests/studio-oberflaeche.mjs http://127.0.0.1:8098/ <Datum mit Terminen> # Studio im Browser
 node api/tests/buchung-oberflaeche.mjs http://127.0.0.1:8098/ 390 844 /tmp/b      # Buchung im Browser
 ```
+
+Die Pflicht-Tests sind ohne Ausnahme grün vor jedem Deploy. Danach
+`api/?a=selbstcheck&schluessel=…` — er muss `"ok":true` melden.
 
 Die Test-Konfiguration braucht `cron_schluessel => 'cron-123'`,
 `erlaubte_herkunft => ['http://andere.test']` und hohe Mengenbremsen

@@ -117,6 +117,45 @@ export function fragen({ titel, text, liste = [], ja = 'OK', nein = 'Abbrechen',
   });
 }
 
+/** Abgesagt — von wem auch immer. */
+export const abgesagt = (status) => String(status).startsWith('storniert');
+
+/**
+ * Absage aus dem Studio: Wer sagt ab? Sagt der Salon ab, braucht es einen
+ * Grund — die Kundin bekommt ihn mitgeteilt. Gibt {status, grund} oder null.
+ */
+export function absageFragen({ titel, text }) {
+  const d = $('frage');
+  return new Promise((fertig) => {
+    let wer = 'storniert_kunde';
+    const fehler = el('p', { klasse: 'form-fehler', role: 'alert', hidden: true, text: 'Bitte einen Grund angeben.' });
+    const grund = el('input', { type: 'text', maxlength: 255, placeholder: 'z. B. Krankheit, Notfall im Salon', autocomplete: 'off', oninput: () => { fehler.hidden = true; } });
+    const grundFeld = el('label', { klasse: 'feld', hidden: true }, el('span', { klasse: 'feld-name', text: 'Grund (geht an die Kundin)' }), grund);
+    const wahl = (id, name) => el('button', { type: 'button', 'aria-pressed': String(wer === id), text: name, onclick: (e) => {
+      wer = id;
+      for (const b of e.currentTarget.parentElement.children) b.setAttribute('aria-pressed', String(b === e.currentTarget));
+      grundFeld.hidden = id !== 'storniert_salon';
+      if (!grundFeld.hidden) grund.focus();
+    } });
+    const form = el('form', { method: 'dialog', klasse: 'frage-form' },
+      el('h2', { klasse: 'frage-titel', text: titel }),
+      text ? el('p', { klasse: 'frage-text', text }) : null,
+      el('div', { klasse: 'schalter', role: 'group', 'aria-label': 'Wer sagt ab?' },
+        wahl('storniert_kunde', 'Kundin sagt ab'), wahl('storniert_salon', 'Salon sagt ab')),
+      grundFeld, fehler,
+      el('div', { klasse: 'frage-wege' },
+        el('button', { klasse: 'knopf-still', value: 'nein', text: 'Behalten' }),
+        el('button', { klasse: 'knopf knopf-gefahr', value: 'ja', text: 'Absagen' })));
+    form.addEventListener('submit', (e) => {
+      if (e.submitter?.value === 'ja' && wer === 'storniert_salon' && !grund.value.trim()) { e.preventDefault(); fehler.hidden = false; grund.focus(); }
+    });
+    d.replaceChildren(form);
+    d.onclose = () => fertig(d.returnValue === 'ja' ? { status: wer, grund: grund.value.trim() || null } : null);
+    d.returnValue = '';
+    d.showModal();
+  });
+}
+
 /** Wartet kurz, bevor eine Funktion läuft (Eingabe beim Tippen). */
 export function spaeter(f, ms = 180) {
   let uhr;

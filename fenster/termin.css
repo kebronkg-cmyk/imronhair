@@ -307,8 +307,20 @@
 .zeit-reihe { display: grid; grid-template-columns: repeat(auto-fill, minmax(4.9rem, 1fr)); gap: .45rem; }
 .zeit {
   min-height: 2.9rem; border-radius: 3px;
+  display: grid; place-content: center; gap: .2rem;
   font: 500 1rem/1 var(--marke); font-variant-numeric: tabular-nums lining-nums; letter-spacing: .02em;
 }
+/* Nie nur die Startzeit: das Ende steht leise darunter. */
+.zeit-bis { font: 400 .72rem/1 var(--lauf); letter-spacing: .01em; color: var(--tinte-still); }
+.zeit[aria-pressed="true"] .zeit-bis { color: inherit; opacity: .8; }
+
+.ausweich {
+  margin: 0 0 var(--a3); padding: .9rem 1rem 1rem;
+  border: 1px solid var(--linie-gold); border-radius: 3px;
+  animation: auftauchen .45s var(--kurve) backwards;
+}
+.ausweich-text { margin: 0 0 .8rem; font-size: .95rem; color: var(--tinte); }
+.ausweich .vorschlaege { margin: 0; }
 .zeiten-laden, .zeiten-leer, .zeiten-fuss { margin: 0; color: var(--tinte-leise); font-size: .95rem; }
 .zeiten-fuss { color: var(--tinte-still); font-size: .85rem; }
 .zeiten-laden { color: var(--tinte-still); }
@@ -342,6 +354,16 @@
 .merken input::after { content: ''; width: .35rem; height: .65rem; border: solid var(--gold); border-width: 0 1.5px 1.5px 0; transform: translateY(-1px) rotate(45deg); opacity: 0; transition: opacity var(--t1) var(--kurve); }
 .merken input:checked { border-color: var(--knopf-kante); }
 .merken input:checked::after { opacity: 1; }
+
+.einwilligungen { display: grid; gap: .8rem; margin: 0; padding: 0; border: 0; min-width: 0; }
+.einwilligung { font-size: .9rem; }
+.buchen-hinweis { margin: 0; padding: .7rem .9rem; border-left: 2px solid var(--gold); font-size: .9rem; color: var(--tinte-leise); }
+.buchen-hinweis strong { color: var(--tinte); font-weight: 600; }
+.buchen-hinweis a { color: var(--tinte); }
+/* Beim Verschieben zählt nur die neue Zeit — keine Angaben noch einmal. */
+.ist-verschieben .feld, .ist-verschieben .merken, .ist-verschieben .einwilligungen, .ist-verschieben .rechtlich { display: none; }
+.fertig-vorher { line-height: 1.7; }
+.fertig-vorher s { color: var(--tinte-still); }
 
 .rechtlich { margin: 0; font-size: .82rem; color: var(--tinte-still); }
 .rechtlich a { color: var(--tinte-leise); }
@@ -433,6 +455,6 @@
 .knopf-leise { border-color: transparent; color: var(--tinte-still); }
 
 @media (prefers-reduced-motion: reduce) {
-  .schritt-inhalt, .dazu, .vorschau-band, .hinweis-band, .beleg-zeile, .fertig-gruss, .fertig-titel, .fertig-bau { animation: none; }
+  .schritt-inhalt, .dazu, .vorschau-band, .hinweis-band, .beleg-zeile, .fertig-gruss, .fertig-titel, .fertig-bau, .ausweich { animation: none; }
   .schritt::before { transition: none; }
 }

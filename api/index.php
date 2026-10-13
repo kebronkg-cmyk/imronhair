@@ -1,7 +1,8 @@
 <?php
 /* Irmonhair Termine — Schnittstelle.
    Aufruf: api/?a=<aktion>. Antwort immer JSON (außer der Sicherung).
-   Öffentlich: katalog, frei, buchen, termin, stornieren (erinnern: Cron).
+   Öffentlich: katalog, frei, buchen, verschieben, anfrage, termin,
+   stornieren, gesund. Cron: erinnern, selbstcheck.
    Studio: alles andere, nur angemeldet. */
 
 declare(strict_types=1);
@@ -10,14 +11,14 @@ require __DIR__ . '/lib/basis.php';
 require __DIR__ . '/lib/planer.php';
 require __DIR__ . '/lib/termine.php';
 
-const OEFFENTLICH = ['katalog', 'frei', 'buchen', 'termin', 'stornieren'];
+const OEFFENTLICH = ['katalog', 'frei', 'buchen', 'verschieben', 'anfrage', 'termin', 'stornieren', 'gesund'];
 const STUDIO = [
     'studio_status', 'einrichten', 'anmelden', 'abmelden', 'passwort',
     'stand', 'kalender', 'termin_neu', 'termin_aendern', 'termin_verlauf', 'vorschlaege',
     'abwesenheit_speichern', 'abwesenheit_loeschen',
     'kunden', 'kunde', 'kunde_speichern', 'kunden_zusammenfuehren', 'kunde_loeschen', 'kunde_auskunft',
     'team', 'person_speichern', 'leistung_speichern', 'salon_speichern', 'einstellungen_speichern',
-    'auswertung', 'protokoll', 'sicherung',
+    'auswertung', 'protokoll', 'sicherung', 'export',
 ];
 
 $aktion = (string)($_GET['a'] ?? '');
@@ -35,12 +36,14 @@ try {
             header('Access-Control-Max-Age: 86400');
         }
         if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') { http_response_code(204); exit; }
+        $GLOBALS['AKTEUR'] = 'kunde';
         require __DIR__ . '/lib/oeffentlich.php';
         antwort(('aktion_' . $aktion)());
     }
-    if ($aktion === 'erinnern') {
+    if ($aktion === 'erinnern' || $aktion === 'selbstcheck') {
+        $GLOBALS['AKTEUR'] = 'system';
         require __DIR__ . '/lib/post.php';
-        antwort(aktion_erinnern());
+        antwort(('aktion_' . $aktion)());
     }
     if (in_array($aktion, STUDIO, true)) {
         header('X-Frame-Options: DENY');

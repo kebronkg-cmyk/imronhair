@@ -8,6 +8,12 @@
   'use strict';
   let katalog = null;
   const gebucht = new Map();   // Token → Termin (nur in diesem Tab)
+  const anfragen = new Map();  // Anfrage-Kennung → Token (ein Termin je Anfrage)
+  // Derselbe Wortlaut wie EINWILLIGUNGEN in api/lib/basis.php.
+  const EINWILLIGUNGEN = {
+    terminnachrichten: 'Ich möchte Nachrichten zu meinem Termin (Erinnerung, Änderungen) auch per SMS oder WhatsApp bekommen.',
+    recall: 'Erinnern Sie mich, wenn mein nächster Termin fällig ist — höchstens eine Nachricht und eine Nachfrage, per SMS oder E-Mail. Abmelden jederzeit mit STOP.',
+  };
   const RASTER = 15, VORLAUF = 60, HORIZONT = 90;
 
   const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -103,7 +109,7 @@
 
   function oeffentlich(t) {
     const s = katalog.salons.find((x) => x.id === t.salon);
-    return { ...t, salon: s, storno_moeglich: t.status === 'gebucht', vergangen: false };
+    return { ...t, salon: s, storno_moeglich: t.status === 'gebucht', vergangen: false, storniert: t.status.startsWith('storniert') };
   }
 
   async function rufe(aktion, { get = {}, post } = {}) {
@@ -111,9 +117,18 @@
     await new Promise((r) => setTimeout(r, 180));   // wie über das Netz
     const heute = iso(new Date());
     if (aktion === 'katalog') {
-      return { ...katalog, regeln: { raster: RASTER, horizont: HORIZONT, stornofrist: 24, online_aktiv: true, hinweis: '' }, heute };
+      return { ...katalog, regeln: { raster: RASTER, horizont: HORIZONT, stornofrist: 24, online_aktiv: true, hinweis: '' }, einwilligungen: EINWILLIGUNGEN, heute };
     }
-    const fehler = (text, code, status = 409) => Object.assign(new Error(text), { status, daten: { code } });
+    const fehler = (text, code, status = 409, mehr = {}) => Object.assign(new Error(text), { status, daten: { code, ...mehr } });
+    const koennen = (ids) => katalog.personen.filter((p) => ids.every((id) => katalog.leistungen.find((l) => l.id === id).personen.includes(p.id))).map((p) => p.id);
+    // Drei Ausweichzeiten: zuerst am selben Tag nah an der Wunschzeit.
+    const ausweich = (salon, ids, personen, start) => {
+      const d = start.slice(0, 10), w = +start.slice(11, 13) * 60 + +start.slice(14, 16);
+      const tage = frei(salon, ids, personen, d, plus(d, 13));
+      const liste = [];
+      Object.entries(tage).forEach(([tag, x], i) => x.zeiten.forEach((z) => liste.push([i, Math.abs(+z.t.slice(0, 2) * 60 + +z.t.slice(3, 5) - w), tag, z])));
+      return liste.sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(0, 3).map(([, , datum, z]) => ({ datum, t: z.t, p: z.p }));
+    };
     if (aktion === 'frei') {
       const ids = String(get.leistungen).split(',');
       const personen = katalog.personen.filter((p) => ids.every((id) => katalog.leistungen.find((l) => l.id === id).personen.includes(p.id))).map((p) => p.id);
@@ -125,13 +140,33 @@
       for (const [d, t] of Object.entries(tage)) if (t.zeiten.length) { naechster = { datum: d, ...t.zeiten[0] }; break; }
       return { von, bis, letzter, tage, naechster };
     }
+    if (aktion === 'anfrage') {
+      const tok = anfragen.get(get.anfrage_id);
+      return tok ? { angekommen: true, termin: oeffentlich(gebucht.get(tok)) } : { angekommen: false };
+    }
+    if (aktion === 'verschieben') {
+      const t = gebucht.get(post.t);
+      if (!t) throw fehler('In der Vorschau gibt es diesen Termin nur im selben Tab.', 'unbekannt', 404);
+      const ids = t.posten.map((p) => p.leistung);
+      const d = post.start.slice(0, 10), zeit = post.start.slice(11);
+      const personen = t.wunsch_person ? [t.person] : koennen(ids);
+      const vorher = { start: t.start, ende: t.ende, person_name: t.person_name };
+      t.status = 'verschiebt';   // der eigene Platz zählt nicht als belegt
+      const z = frei(t.salon, ids, personen, d, d)[d]?.zeiten.find((x) => x.t === zeit);
+      t.status = 'gebucht';
+      if (!z) throw fehler('Diese Uhrzeit wurde gerade vergeben. Hier sind die nächsten freien Zeiten:', 'vergeben', 409, { alternativen: ausweich(t.salon, ids, personen, post.start) });
+      const dauer = t.phasen.reduce((s2, p) => s2 + p[1], 0);
+      const pid = z.p.includes(t.person) ? t.person : z.p[0];
+      Object.assign(t, { start: post.start, ende: `${d} ${hhmm(+zeit.slice(0, 2) * 60 + +zeit.slice(3, 5) + dauer)}`, person: pid, person_name: katalog.personen.find((p) => p.id === pid).name });
+      return { ...oeffentlich(t), vorher };
+    }
     if (aktion === 'buchen') {
+      if (post.anfrage_id && anfragen.has(post.anfrage_id)) return { ...oeffentlich(gebucht.get(anfragen.get(post.anfrage_id))), wiederholt: true };
       const ids = post.leistungen;
       const d = post.start.slice(0, 10), t = post.start.slice(11);
-      const personen = post.person ? [post.person] : katalog.personen.filter((p) => ids.every((id) => katalog.leistungen.find((l) => l.id === id).personen.includes(p.id))).map((p) => p.id);
+      const personen = post.person ? [post.person] : koennen(ids);
       const z = frei(post.salon, ids, personen, d, d)[d]?.zeiten.find((x) => x.t === t);
-      if (!z) throw fehler('Diese Uhrzeit wurde gerade vergeben. Bitte wählen Sie eine andere.', 'vergeben');
-      if (post.ersetzt && gebucht.has(post.ersetzt)) gebucht.get(post.ersetzt).status = 'storniert';
+      if (!z) throw fehler('Diese Uhrzeit wurde gerade vergeben. Hier sind die nächsten freien Zeiten:', 'vergeben', 409, { alternativen: ausweich(post.salon, ids, personen, post.start) });
       const phasen = phasenVon(ids);
       const ende = new Date(alsDatum(d).setHours(0, +t.slice(0, 2) * 60 + +t.slice(3, 5) + phasen.reduce((s, p) => s + p[1], 0)));
       const ls = ids.map((id) => katalog.leistungen.find((l) => l.id === id));
@@ -146,13 +181,14 @@
         name: post.name, wunsch_person: !!post.person, kundennotiz: post.notiz,
       };
       gebucht.set(token, termin);
+      if (post.anfrage_id) anfragen.set(post.anfrage_id, token);
       return oeffentlich(termin);
     }
     if (aktion === 'termin' || aktion === 'stornieren') {
       const tok = (get && get.t) || (post && post.t);
       const t = gebucht.get(tok);
       if (!t) throw fehler('In der Vorschau gibt es diesen Termin nur im selben Tab.', 'unbekannt', 404);
-      if (aktion === 'stornieren') t.status = 'storniert';
+      if (aktion === 'stornieren') t.status = 'storniert_kunde';
       return oeffentlich(t);
     }
     throw fehler('Unbekannt', 'unbekannt', 404);

@@ -27,10 +27,34 @@ function konfig(?string $schluessel = null, mixed $vorgabe = null): mixed
         if (!is_file($datei)) {
             throw new Fehler('Die Buchung ist noch nicht eingerichtet (api/config.php fehlt).', 503, 'nicht_eingerichtet');
         }
-        $k = require $datei;
+        $k = mandant_waehlen(require $datei);
     }
     if ($schluessel === null) return $k;
     return $k[$schluessel] ?? $vorgabe;
+}
+
+/** Mandantenfähig: Stehen in der Konfiguration mehrere Mandanten (Salons
+    oder Salonketten), gilt der, dessen Adresse aufgerufen wird (oder der
+    aus IRMONHAIR_MANDANT). Jeder Mandant hat ein eigenes Tabellen-Präfix
+    und damit eigene, getrennte Daten; seine Einträge überschreiben die
+    gemeinsamen. Ohne „mandanten“ bleibt alles wie bei einem Salon. */
+function mandant_waehlen(array $k): array
+{
+    if (empty($k['mandanten']) || !is_array($k['mandanten'])) return $k;
+    $wahl = getenv('IRMONHAIR_MANDANT') ?: null;
+    if ($wahl === null) {
+        $host = strtolower(preg_replace('/:\d+$/', '', (string)($_SERVER['HTTP_HOST'] ?? '')));
+        foreach ($k['mandanten'] as $id => $m) {
+            if (in_array($host, array_map('strtolower', $m['hosts'] ?? []), true)) { $wahl = (string)$id; break; }
+        }
+    }
+    if ($wahl === null || !isset($k['mandanten'][$wahl])) {
+        throw new Fehler('Für diese Adresse ist keine Terminbuchung eingerichtet.', 503, 'nicht_eingerichtet');
+    }
+    $m = $k['mandanten'][$wahl];
+    unset($k['mandanten'], $m['hosts']);
+    if (empty($m['db']['praefix'])) throw new Fehler('Mandant ohne eigenes Tabellen-Präfix.', 500);
+    return array_replace_recursive($k, $m) + ['mandant' => $wahl];
 }
 
 /* ── Datenbank ─────────────────────────────────────────────────────────
@@ -264,7 +288,67 @@ function zeitpunkt_pruefen(?string $z): string
         throw new Fehler('Ungültige Uhrzeit.', 422, 'zeit');
     }
     datum_pruefen($m[1]);
+    // Intern rechnet alles im 5-Minuten-Raster; krumme Minuten gibt es nicht.
+    if ((int)$m[3] % 5 !== 0) throw new Fehler('Ungültige Uhrzeit.', 422, 'zeit');
     return "{$m[1]} {$m[2]}:{$m[3]}:00";
+}
+
+/** Gibt es diese Ortszeit genau einmal? Nein in der Stunde, die bei der
+    Umstellung auf Sommerzeit fehlt, und in der, die es im Oktober doppelt gibt. */
+function zeit_eindeutig(string $lokal): bool
+{
+    $ts = strtotime($lokal);
+    if ($ts === false || date('Y-m-d H:i:s', $ts) !== $lokal) return false;
+    return date('Y-m-d H:i:s', $ts - 3600) !== $lokal && date('Y-m-d H:i:s', $ts + 3600) !== $lokal;
+}
+
+/** Liegt an diesem Tag eine Zeitumstellung? (Dann wird jede Zeit geprüft.) */
+function umstellungstag(string $datum): bool
+{
+    return date('I', strtotime("$datum 00:30:00")) !== date('I', strtotime("$datum 23:30:00"));
+}
+
+/** Ein Zeitraum ist nur dann eindeutig, wenn Anfang und Ende es sind und
+    keine Zeitumstellung dazwischen liegt — sonst stimmt die Dauer nicht. */
+function zeitraum_eindeutig(string $start, string $ende): bool
+{
+    return zeit_eindeutig($start) && zeit_eindeutig($ende)
+        && date('Z', strtotime($start)) === date('Z', strtotime($ende));
+}
+
+/** Ortszeit Europe/Berlin → UTC (für die zweite, eindeutige Speicherung). */
+function utc(string $lokal): string
+{
+    return gmdate('Y-m-d H:i:s', strtotime($lokal));
+}
+
+/** Gesetzliche Feiertage in Bayern (München), als „YYYY-MM-DD“ => Name. */
+function feiertage(int $jahr): array
+{
+    static $cache = [];
+    if (isset($cache[$jahr])) return $cache[$jahr];
+    // Ostersonntag nach Gauß (ohne die Kalender-Erweiterung von PHP).
+    $a = $jahr % 19; $b = intdiv($jahr, 100); $c = $jahr % 100;
+    $d = intdiv($b, 4); $e = $b % 4; $f = intdiv($b + 8, 25); $g = intdiv($b - $f + 1, 3);
+    $h = (19 * $a + $b - $d - $g + 15) % 30; $i = intdiv($c, 4); $k = $c % 4;
+    $l = (32 + 2 * $e + 2 * $i - $h - $k) % 7; $m = intdiv($a + 11 * $h + 22 * $l, 451);
+    $monat = intdiv($h + $l - 7 * $m + 114, 31); $tag = (($h + $l - 7 * $m + 114) % 31) + 1;
+    $ostern = sprintf('%04d-%02d-%02d', $jahr, $monat, $tag);
+    $f = [
+        "$jahr-01-01" => 'Neujahr', "$jahr-01-06" => 'Heilige Drei Könige',
+        tag_plus($ostern, -2) => 'Karfreitag', tag_plus($ostern, 1) => 'Ostermontag',
+        "$jahr-05-01" => 'Tag der Arbeit', tag_plus($ostern, 39) => 'Christi Himmelfahrt',
+        tag_plus($ostern, 50) => 'Pfingstmontag', tag_plus($ostern, 60) => 'Fronleichnam',
+        "$jahr-08-15" => 'Mariä Himmelfahrt', "$jahr-10-03" => 'Tag der Deutschen Einheit',
+        "$jahr-11-01" => 'Allerheiligen', "$jahr-12-25" => '1. Weihnachtstag', "$jahr-12-26" => '2. Weihnachtstag',
+    ];
+    return $cache[$jahr] = $f;
+}
+
+function feiertag(string $datum): ?string
+{
+    if (!einstellungen()['feiertage']) return null;
+    return feiertage((int)substr($datum, 0, 4))[$datum] ?? null;
 }
 
 function tag_plus(string $datum, int $tage): string
@@ -363,10 +447,20 @@ function suchtext(array $teile): string
 
 function zufall(int $bytes = 16): string { return bin2hex(random_bytes($bytes)); }
 
+/** Wer gerade handelt: die Kundin (öffentliche Seite), jemand aus dem
+    Salon (angemeldet) oder das System (Cronjob). Ohne Verursacher keine
+    Änderung — das Protokoll hält es zu jedem Eintrag fest. */
+function akteur(): string
+{
+    if (!empty($GLOBALS['ANGEMELDET'])) return 'mitarbeiter';
+    return $GLOBALS['AKTEUR'] ?? 'system';
+}
+
 function protokoll(string $aktion, ?int $termin = null, ?int $kunde = null, array $daten = [], ?string $person = null): void
 {
     db()->einfuegen('protokoll', [
         'zeit' => jetzt(), 'person_id' => $person ?? ($GLOBALS['ANGEMELDET']['id'] ?? null),
+        'akteur' => akteur(),
         'aktion' => $aktion, 'termin_id' => $termin, 'kunde_id' => $kunde,
         'daten' => $daten ? json_encode($daten, JSON_UNESCAPED_UNICODE) : null,
     ]);
@@ -392,4 +486,25 @@ const EINSTELLUNGEN_VORGABE = [
     'luecken_fuellen' => true, // auch Startzeiten direkt nach einem Termin anbieten
     'online_aktiv' => true,
     'hinweis' => '',           // Satz über der Buchung, z. B. Urlaubshinweis
+    'feiertage' => true,       // gesetzliche Feiertage (Bayern) sind geschlossen
+];
+
+/* ── Termin-Zustände ───────────────────────────────────────────────────
+   gebucht → erschienen | nicht_erschienen | storniert_kunde | storniert_salon
+   Nie gelöscht. Zeit belegen nur „gebucht“ und „erschienen“ (die Kundin
+   sitzt schon im Stuhl); nach einer Absage oder einem Nichterscheinen ist
+   die Zeit wieder frei. */
+const STATUS = ['gebucht', 'erschienen', 'nicht_erschienen', 'storniert_kunde', 'storniert_salon'];
+const STATUS_BELEGT = ['gebucht', 'erschienen'];
+const STATUS_STORNIERT = ['storniert_kunde', 'storniert_salon'];
+
+function storniert(string $status): bool
+{
+    return in_array($status, STATUS_STORNIERT, true);
+}
+
+/** Wortlaut der Einwilligungen — so steht er auf der Seite, so wird er gespeichert. */
+const EINWILLIGUNGEN = [
+    'terminnachrichten' => 'Ich möchte Nachrichten zu meinem Termin (Erinnerung, Änderungen) auch per SMS oder WhatsApp bekommen.',
+    'recall' => 'Erinnern Sie mich, wenn mein nächster Termin fällig ist — höchstens eine Nachricht und eine Nachfrage, per SMS oder E-Mail. Abmelden jederzeit mit STOP.',
 ];

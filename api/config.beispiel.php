@@ -22,8 +22,15 @@ return [
     // Lang und zufällig wählen, z. B. 24 Zeichen aus einem Passwortgenerator.
     'einrichtungs_schluessel' => 'HIER-EIN-LANGER-ZUFALLSSCHLUESSEL',
 
-    // Für den Cronjob der Erinnerungsmails: api/?a=erinnern&schluessel=…
+    // Für die Cronjobs: api/?a=erinnern&schluessel=… (stündlich) und
+    // api/?a=selbstcheck&schluessel=… (nachts).
     'cron_schluessel' => 'HIER-EIN-ZWEITER-ZUFALLSSCHLUESSEL',
+
+    // Wer einen Alarm bekommt, wenn der nächtliche Selbstcheck eine
+    // Überschneidung findet (erwartet: nie). Braucht 'post' => aktiv.
+    'alarm_an' => [
+        // 'inhaberin@irmonhair-muenchen.de',
+    ],
 
     // Adresse der Buchungsseite — daraus entsteht der Link „Termin verwalten“.
     'buchung_adresse' => 'https://www.irmonhair-muenchen.de/fenster/termin.html',
@@ -47,4 +54,16 @@ return [
             'grosshadern' => '',
         ],
     ],
+
+    // ── Mehrere Salons (Mandanten) ───────────────────────────────────
+    // Für weitere Salons auf demselben Webspace: je Mandant die Adressen,
+    // unter denen er erreichbar ist, ein eigenes Tabellen-Präfix (eigene,
+    // getrennte Daten) und alles, was abweicht. Ohne diesen Eintrag gilt
+    // alles oben für genau einen Salon.
+    // 'mandanten' => [
+    //     'irmonhair' => ['hosts' => ['www.irmonhair-muenchen.de'], 'db' => ['praefix' => 'ih_']],
+    //     'beispiel'  => ['hosts' => ['termine.beispiel-salon.de'], 'db' => ['praefix' => 'bsp_'],
+    //                     'katalog' => __DIR__ . '/katalog-beispiel.json',
+    //                     'buchung_adresse' => 'https://termine.beispiel-salon.de/termin.html'],
+    // ],
 ];

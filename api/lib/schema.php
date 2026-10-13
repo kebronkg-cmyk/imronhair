@@ -84,7 +84,36 @@ const SCHEMA_STUFEN = [
         "CREATE INDEX {p}protokoll_termin ON {p}protokoll (termin_id)",
         "INSERT INTO {p}zaehler (name, wert) VALUES ('stand', 1)",
     ],
+    // Abgleich mit der Spezifikation: Absage mit Verursacher und Grund,
+    // Zeiten zusätzlich in UTC, Herkunft der Buchung, Verursacher im
+    // Protokoll, Einwilligungen mit Wortlaut.
+    2 => [
+        "ALTER TABLE {p}termin ADD COLUMN storno_grund VARCHAR(255) NULL",
+        "ALTER TABLE {p}termin ADD COLUMN start_utc DATETIME NULL",
+        "ALTER TABLE {p}termin ADD COLUMN ende_utc DATETIME NULL",
+        "ALTER TABLE {p}termin ADD COLUMN ref VARCHAR(40) NULL",
+        "ALTER TABLE {p}protokoll ADD COLUMN akteur VARCHAR(16) NULL",
+        "UPDATE {p}termin SET status = 'storniert_kunde' WHERE status = 'storniert' AND id IN
+            (SELECT termin_id FROM {p}protokoll WHERE aktion IN ('online_storniert', 'online_umgebucht') AND termin_id IS NOT NULL)",
+        "UPDATE {p}termin SET status = 'storniert_salon' WHERE status = 'storniert'",
+        "DELETE FROM {p}belegung WHERE termin_id IN (SELECT id FROM {p}termin WHERE status NOT IN ('gebucht', 'erschienen'))",
+        "CREATE TABLE {p}einwilligung (
+            id {auto}, kunde_id INT NOT NULL, art VARCHAR(24) NOT NULL, erteilt INT NOT NULL,
+            zeit DATETIME NOT NULL, quelle VARCHAR(16) NOT NULL, wortlaut {text} NOT NULL, termin_id INT NULL){tab}",
+        "CREATE INDEX {p}einwilligung_kunde ON {p}einwilligung (kunde_id, art, id)",
+        "CREATE INDEX {p}termin_start_utc ON {p}termin (start_utc)",
+    ],
 ];
+
+/** Was sich nicht in SQL sagen lässt, nach der jeweiligen Stufe. */
+function schema_nacharbeit(DB $db, int $stufe): void
+{
+    if ($stufe === 2) {
+        foreach ($db->alle('SELECT id, start, ende FROM {p}termin') as $t) {
+            $db->q('UPDATE {p}termin SET start_utc = ?, ende_utc = ? WHERE id = ?', [utc($t['start']), utc($t['ende']), $t['id']]);
+        }
+    }
+}
 
 function schema_aktualisieren(DB $db): void
 {
@@ -123,6 +152,7 @@ function schema_aktualisieren(DB $db): void
                 $db->q("INSERT INTO {p}meta (schluessel, wert) VALUES ('schema', ?)", [(string)$s]);
                 katalog_einspielen($db);
             } else {
+                schema_nacharbeit($db, $s);
                 $db->q("UPDATE {p}meta SET wert = ? WHERE schluessel = 'schema'", [(string)$s]);
             }
         }
@@ -139,7 +169,8 @@ function schema_aktualisieren(DB $db): void
     Danach gehören die Daten dem Studio; der Katalog wird nie wieder gelesen. */
 function katalog_einspielen(DB $db): void
 {
-    $k = json_decode((string)file_get_contents(API_WURZEL . '/katalog.json'), true);
+    // Jeder Mandant kann seinen eigenen Erstkatalog haben.
+    $k = json_decode((string)file_get_contents(konfig('katalog', API_WURZEL . '/katalog.json')), true);
     if (!$k) throw new Fehler('katalog.json fehlt oder ist kaputt.', 500);
     $jetzt = jetzt();
     foreach ($k['salons'] as $s) {
