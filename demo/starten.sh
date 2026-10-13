@@ -32,6 +32,7 @@ cat <<TEXT
   ────────────────────────────────────────────────────────────
   Irmonhair — Vorführung läuft
 
+  Website:              ${ADRESSE}/fenster/
   Buchung (Kundin):     ${ADRESSE}/fenster/termin.html
   Studio (Mitarbeiter): ${ADRESSE}/studio/
       Inhaberin  demo     / demo-passwort
@@ -44,4 +45,4 @@ cat <<TEXT
   ────────────────────────────────────────────────────────────
 
 TEXT
-exec php -S 0.0.0.0:8000
+exec php -S 0.0.0.0:8000 demo/router.php
