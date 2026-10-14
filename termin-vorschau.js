@@ -13,7 +13,14 @@
   const EINWILLIGUNGEN = {
     terminnachrichten: 'Ich möchte Nachrichten zu meinem Termin (Erinnerung, Änderungen) auch per SMS oder WhatsApp bekommen.',
     recall: 'Erinnern Sie mich, wenn mein nächster Termin fällig ist — höchstens eine Nachricht und eine Nachfrage, per SMS oder E-Mail. Abmelden jederzeit mit STOP.',
+    angebote: 'Schicken Sie mir gelegentlich Angebote und Neuigkeiten von Irmonhair — höchstens eine Nachricht im Monat, per E-Mail oder SMS. Ich bestätige das noch einmal über einen Link. Abmelden jederzeit mit STOP oder über den Link in jeder Nachricht.',
   };
+  const WARTELISTE = 'Benachrichtigen Sie mich per SMS oder E-Mail, wenn ein passender Termin frei wird. Der Eintrag endet von selbst am Ende des gewählten Zeitraums; austragen jederzeit mit STOP oder über den Link.';
+  const NACHRICHTEN = { sms: true, whatsapp: false, email: true, warteliste: true, recall: true, anteil_erinnerung: null, treue: null, codes: false,
+    vorschau_sms: 'Irmonhair: Morgen {zeit} Uhr bei {person}, {adresse}. Ändern/absagen: {link}' };
+  // Recall-Abstand wie recall_vorgabe() in api/lib/basis.php.
+  const recallTage = (l) => /keratin/i.test(l.name) ? 105 : /balayage/i.test(l.name) ? 77 : /ansatz/i.test(l.name) ? 42 : /dauerwelle/i.test(l.name) ? 84
+    : ({ herren: 35, kinder: 42, schnitt: 49, farbe: 49, straehnen: 70, verlaengerung: 56, gesicht: 28 })[l.gruppe] ?? null;
   const RASTER = 15, VORLAUF = 60, HORIZONT = 90;
 
   const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -100,7 +107,7 @@
       salons: k.salons, gruppen: k.gruppen,
       personen: k.personen.filter((p) => p.online),
       leistungen: k.leistungen.filter((l) => l.online).map((l) => ({
-        ...l, dauer: l.phasen.reduce((s, p) => s + p[1], 0),
+        ...l, dauer: l.phasen.reduce((s, p) => s + p[1], 0), recall_tage: recallTage(l),
         einwirken: l.phasen.reduce((s, p) => s + (p[0] === 'pause' ? p[1] : 0), 0),
         personen: l.personen.filter((p) => k.personen.find((x) => x.id === p)?.online),
       })),
@@ -117,7 +124,8 @@
     await new Promise((r) => setTimeout(r, 180));   // wie über das Netz
     const heute = iso(new Date());
     if (aktion === 'katalog') {
-      return { ...katalog, regeln: { raster: RASTER, horizont: HORIZONT, stornofrist: 24, online_aktiv: true, hinweis: '' }, einwilligungen: EINWILLIGUNGEN, heute };
+      return { ...katalog, regeln: { raster: RASTER, horizont: HORIZONT, stornofrist: 24, online_aktiv: true, hinweis: '' }, einwilligungen: EINWILLIGUNGEN,
+        einwilligung_warteliste: WARTELISTE, nachrichten: NACHRICHTEN, heute };
     }
     const fehler = (text, code, status = 409, mehr = {}) => Object.assign(new Error(text), { status, daten: { code, ...mehr } });
     const koennen = (ids) => katalog.personen.filter((p) => ids.every((id) => katalog.leistungen.find((l) => l.id === id).personen.includes(p.id))).map((p) => p.id);
@@ -178,11 +186,23 @@
         start: post.start, ende: `${iso(ende)} ${hhmm(ende.getHours() * 60 + ende.getMinutes())}`, phasen, status: 'gebucht',
         posten: ls.map((l) => ({ leistung: l.id, name: l.name, laenge: l.laenge, dauer: l.dauer, preis_cent: l.preis_cent, preis_ab: l.preis_ab })),
         preis_cent: ls.some((l) => l.preis_cent === null) && !cent ? null : cent, preis_ab: ls.some((l) => l.preis_ab || l.preis_cent === null),
-        name: post.name, wunsch_person: !!post.person, kundennotiz: post.notiz,
+        name: post.name, wunsch_person: !!post.person, kundennotiz: post.notiz, hat_telefon: true, hat_email: !!post.email,
+        einwilligungen: Object.fromEntries(Object.keys(EINWILLIGUNGEN).map((a) => [a, post.einwilligungen?.[a] ? { erteilt: a !== 'angebote', wartet: a === 'angebote' } : null])),
       };
       gebucht.set(token, termin);
       if (post.anfrage_id) anfragen.set(post.anfrage_id, token);
-      return oeffentlich(termin);
+      return { ...oeffentlich(termin), bestaetigen: !!post.einwilligungen?.angebote };
+    }
+    if (aktion === 'einwilligung') {
+      const t = gebucht.get(post.t);
+      if (!t) throw fehler('In der Vorschau gibt es diesen Termin nur im selben Tab.', 'unbekannt', 404);
+      t.einwilligungen[post.art] = { erteilt: post.art !== 'angebote', wartet: post.art === 'angebote' };
+      return oeffentlich(t);
+    }
+    if (aktion === 'warteliste') {
+      if (!post.name || post.name.length < 2) throw fehler('Bitte Ihren Namen angeben.', 'pflicht', 422, { feld: 'name' });
+      if (String(post.telefon).replace(/\D/g, '').length < 6) throw fehler('Bitte eine Handynummer angeben (z. B. 0176 1234567).', 'telefon', 422, { feld: 'telefon' });
+      return { ok: true, von: post.von, bis: post.bis, tageszeit: post.tageszeit, kanal: 'sms' };
     }
     if (aktion === 'termin' || aktion === 'stornieren') {
       const tok = (get && get.t) || (post && post.t);

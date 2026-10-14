@@ -50,8 +50,11 @@ Ansehen. Echt gebucht wird erst auf dem eigenen Webspace.
    Salon eintragen (vorläufig stehen dort die Öffnungszeiten) und einen
    Zugang anlegen (Anmeldename + Passwort), wer das Studio nutzen soll.
 7. **Cronjobs** (KAS → *Tools* → *Cronjobs*):
-   - stündlich `https://…/api/?a=erinnern&schluessel=<cron_schluessel>`
-     (Erinnerung am Vortag, nur mit E-Mail);
+   - alle 15 Minuten `https://…/api/?a=nachrichten&schluessel=<cron_schluessel>`
+     — Erinnerung am Vortag (E-Mail, SMS nach Regel), einmal am Tag ab
+     9 Uhr der Recall, die Warteliste, der Versand der Warteschlange und
+     am Monatsanfang der Monatsbericht. (Ein alter Cronjob auf
+     `?a=erinnern` tut dasselbe.)
    - nachts (z. B. 3:10 Uhr) `https://…/api/?a=selbstcheck&schluessel=<cron_schluessel>`
      — sucht Überschneidungen und Termine an Schließtagen, schickt bei
      einem Fund sofort eine Mail an `alarm_an`. Erwartet: nie.
@@ -68,6 +71,83 @@ Liegt die Buchungsseite auf einer anderen Adresse als die Schnittstelle,
 deren Herkunft unter `erlaubte_herkunft` eintragen und in
 `termin.html` die Zeile `<meta name="irmonhair-api" …>` auf die
 volle Adresse der Schnittstelle setzen.
+
+## Nachrichten: SMS, WhatsApp, E-Mail
+
+Alles, was das System von selbst schickt, läuft über eine Warteschlange
+(`{p}nachricht`) und steht im Studio unter **Nachrichten → Postausgang**
+mit Text, Status und Kosten. Ohne SMS-Anbieter läuft alles per E-Mail,
+soweit eine Adresse da ist.
+
+| Nachricht | Wann | Weg | Bedingung |
+|---|---|---|---|
+| Bestätigung, Änderung, Absage | sofort | E-Mail | Adresse angegeben |
+| Erinnerung | am Vortag (20–28 h vorher) | E-Mail | Adresse angegeben |
+| Erinnerung | am Vortag | SMS oder WhatsApp | Einwilligung „Terminnachrichten“ **und** Termin ab 80 € (einstellbar), früheres Nichterscheinen, Buchung am Telefon/vor Ort oder keine E-Mail |
+| Recall | wenn fällig, ohne Folgetermin | SMS, sonst E-Mail | Einwilligung „Recall“; eine Nachricht, nach 7 Tagen eine Nachfrage, dann Schluss |
+| Warteliste | sobald ein passender Platz frei wird | SMS, sonst E-Mail | Eintrag auf der Warteliste; bis zu drei zugleich, wer zuerst tippt, bekommt ihn |
+| Kampagne | von Hand im Studio | SMS oder E-Mail | Einwilligung „Angebote“, per Link bestätigt; höchstens eine im Monat |
+| Bestätigungslink Angebote | sofort | E-Mail, sonst SMS | Haken „Angebote“ gesetzt |
+
+- **Ruhezeiten:** Recall, Kampagne und Warteliste nur zwischen 9 und
+  20 Uhr, nicht sonntags und feiertags (Einstellungen → Nachrichten).
+- **STOP:** wirkt sofort und für alles auf dieser Nummer; was noch in der
+  Warteschlange liegt, geht nicht mehr raus (vor jedem Versand wird neu
+  geprüft). Jede werbende SMS endet mit „Abmelden: STOP“. Jede werbende
+  E-Mail hat den Link „Ihre Nachrichten“ (`nachrichten.html?k=…`, signiert)
+  und Abmelden mit einem Klick im Mailprogramm (RFC 8058).
+- **Nie doppelt:** Jeder Anlass hat einen eindeutigen Schlüssel; zwei
+  gleichzeitige Cronläufe senden dieselbe Nachricht nicht zweimal.
+- **SMS-Länge:** Die Vorlagen bleiben mit Link unter 160 Zeichen. Sie
+  sind im Studio änderbar (Nachrichten → Vorlagen); dort steht die
+  Länge dabei. Gedankenstriche werden vor dem Versand geglättet.
+
+### SMS einrichten (seven.io)
+
+1. Konto bei seven.io anlegen, Guthaben aufladen, API-Schlüssel kopieren.
+2. Eine Nummer mit Eingang mieten (für STOP-Antworten) und als
+   Webhook für eingehende SMS
+   `https://…/api/?a=sms_eingang&schluessel=<eingang_schluessel>`
+   eintragen.
+3. In `config.php` unter `sms`: `aktiv => true`, Schlüssel, Absender
+   (diese Nummer), `eingang_schluessel`.
+4. Im Studio unter Nachrichten → Kampagne einen Test an die eigene
+   Nummer schicken. Antwort „STOP“ → die Nummer steht unter „Abgemeldet“.
+5. AVV mit seven.io abschließen und in der Datenschutzerklärung
+   (Abschnitt 5, „Versand von SMS“) den Namen nachtragen.
+
+## Recall, Warteliste, Gutscheine, Lager
+
+- **Recall-Abstand** je Leistung unter *Leistungen* (vorbelegt: Herren 5,
+  Damen 7, Ansatz 6, Balayage 11 Wochen, Keratin 15 Wochen). Hat eine
+  Kundin ab drei Besuchen einen eigenen, plausiblen Rhythmus, gilt der.
+  Der Link `termin.html?r=…` öffnet die Buchung mit der Auswahl von
+  damals; Buchungen darüber zählen als „zurückgeholt“ (Monatsbericht,
+  Abrechnung je Zurückgeholter mit Monatsdeckel, Einstellungen).
+- **Warteliste:** online („Nichts Passendes?“ unter den Uhrzeiten) oder
+  im Studio. Absage, Verschieben oder gelöschte Sperre lösen sofort die
+  Suche aus. Der Link `termin.html?w=…` bucht mit einem Tipp; derselbe
+  Link zweimal ergibt denselben Termin, für alle anderen verfällt er.
+- **Gutscheine** (Verkauf → Gutscheine): Code `IH-XXXX-XXXX`, Restwert,
+  teilweise Einlösung, Druckkarte, drei Jahre zum Jahresende gültig.
+  **Aktionscodes** (`HERBST10`): Prozent oder Betrag, Zeitraum, Höchstzahl,
+  „nur erster Besuch“ — geprüft in derselben Sperre wie die Buchung.
+  Bezahlt wird weiter an der Kasse.
+- **Treuekarte** (Einstellungen): jeder Besuch ein Stempel, Prämie nach n
+  Besuchen, eingelöst in der Kundenkarte.
+- **Fotos** in der Kundenkarte: nur mit Einverständnis; im Browser auf
+  1600 px verkleinert und als JPEG neu gespeichert (Ort und Kamera sind
+  dann weg); abgelegt in `api/daten/fotos/` (von außen gesperrt).
+- **Lager** (Verkauf → Lager): Bestand, Mindestbestand, Eingang, Verkauf,
+  Verbrauch, Inventur, Handscanner wie Tastatur.
+- **Abgleich mit der Kasse** (Einstellungen): geplante Umsätze je Monat
+  aus den Terminpreisen (CSV) und die offenen Gutscheine. Bewusst kein
+  Steuer-Export: Für die Kanzlei gilt die Kasse mit TSE; ein zweiter,
+  ungenauerer Stapel stünde dort sonst doppelt.
+- **Kunden übernehmen** (Einstellungen): CSV aus Planity oder einem
+  anderen Programm; Spalten werden erkannt (auch französisch/englisch),
+  erst Vorschau, dann Übernahme. Vorhandene werden nur ergänzt;
+  Einwilligungen werden nicht übernommen.
 
 ## Wichtig vor dem Umschalten
 
@@ -156,7 +236,13 @@ täglich (KAS → *Datenbanken* → *Backups*).
 | `api/lib/termine.php` | `bucheTermin()` (einzige Stelle für Anlegen und Verschieben), Ändern, Kunden, Einwilligungen |
 | `api/lib/oeffentlich.php` | Online-Buchung: Katalog, frei, buchen, verschieben, anfrage, ansehen, absagen, gesund |
 | `api/lib/studio.php` | Studio: Anmeldung, Kalender, Kunden, Team, Leistungen, Auswertung |
-| `api/lib/post.php` | E-Mails mit Kalenderdatei („vorher → jetzt“ bei Änderungen), Erinnerungen und Selbstcheck per Cronjob |
+| `api/lib/post.php` | E-Mails mit Kalenderdatei („vorher → jetzt“ bei Änderungen), Selbstcheck per Cronjob |
+| `api/lib/nachrichten.php` | Warteschlange, SMS (seven.io), WhatsApp, STOP, Vorlagen, Erinnerung, Recall, Warteliste, Monatsbericht, Cron `nachrichten` |
+| `api/lib/verkauf.php` | Gutscheine, Aktionscodes, Treue (gemeinsam für Buchung und Studio) |
+| `api/lib/studio-nachrichten.php` | Studio: Postausgang, Recall, Warteliste, Kampagnen, Vorlagen, Einwilligung von Hand, Bericht |
+| `api/lib/studio-verkauf.php` | Studio: Gutscheine, Codes, Treue, Fotos, Lager, Import |
+| `api/lib/studio-buchhaltung.php` | Geplante Umsätze zum Abgleich mit der Kasse |
+| `nachrichten.html` | „Ihre Nachrichten“: Einwilligungen ändern, alles abbestellen, Angebote bestätigen |
 | `api/katalog.json` | Erstbefüllung, erzeugt von `recherche/katalog.py` aus Planity |
 | `termin.*` | Online-Buchung; `termin-vorschau.js` rechnet ohne Server |
 | `studio/` | Studio; `js/` als Module ohne Build |
@@ -177,6 +263,8 @@ node api/tests/buchung-ausfall.mjs http://127.0.0.1:8098/                       
 node api/tests/last.mjs http://127.0.0.1:8098/api/ 200                            # gleichzeitige Buchungen
 node api/tests/studio-oberflaeche.mjs http://127.0.0.1:8098/ <Datum mit Terminen> # Studio im Browser
 node api/tests/buchung-oberflaeche.mjs http://127.0.0.1:8098/ 390 844 /tmp/b      # Buchung im Browser
+# Nachrichten und Verkauf (124): SMS und E-Mail im Vorführmodus, siehe Kopf der Datei
+IRMONHAIR_KONFIG=/pfad/test-config.php node api/tests/nachrichten.mjs http://127.0.0.1:8099/api/
 ```
 
 Die Pflicht-Tests sind ohne Ausnahme grün vor jedem Deploy. Danach

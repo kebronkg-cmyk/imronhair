@@ -10,6 +10,11 @@ if [ -n "${CODESPACE_NAME:-}" ]; then
   ADRESSE="https://${CODESPACE_NAME}-8000.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-app.github.dev}"
 fi
 
+# Ältere Vorführ-Konfiguration ohne SMS: neu anlegen (nur die der Vorführung).
+if [ -f api/config.php ] && grep -q "'demo' => true" api/config.php && ! grep -q "'sms'" api/config.php; then
+  rm api/config.php
+fi
+
 if [ ! -f api/config.php ]; then
   cat > api/config.php <<PHP
 <?php
@@ -19,7 +24,10 @@ return [
     'einrichtungs_schluessel' => '$(head -c 18 /dev/urandom | base64 | tr -dc 'A-Za-z0-9')',
     'cron_schluessel' => 'vorfuehrung',
     'buchung_adresse' => '${ADRESSE}/termin.html',
-    'post' => ['aktiv' => false],
+    // SMS und E-Mail im Vorführmodus: nichts geht hinaus, der Postausgang
+    // im Studio zeigt trotzdem, was gesendet würde.
+    'post' => ['aktiv' => true, 'versand' => 'vorfuehrung', 'absender' => 'termine@vorfuehrung.invalid'],
+    'sms' => ['aktiv' => true, 'anbieter' => 'vorfuehrung', 'absender' => '+4915100000000', 'eingang_schluessel' => 'vorfuehrung'],
     'demo' => true,
 ];
 PHP
