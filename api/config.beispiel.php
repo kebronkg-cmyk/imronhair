@@ -33,7 +33,7 @@ return [
     ],
 
     // Adresse der Buchungsseite — daraus entsteht der Link „Termin verwalten“.
-    'buchung_adresse' => 'https://www.irmonhair-muenchen.de/fenster/termin.html',
+    'buchung_adresse' => 'https://www.irmonhair-muenchen.de/termin.html',
 
     // Liegt die Buchungsseite woanders als diese Schnittstelle (z. B. auf
     // GitHub Pages), hier deren Herkunft eintragen.

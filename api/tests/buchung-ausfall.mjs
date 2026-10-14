@@ -22,7 +22,7 @@ async function seite(breite = 390) {
   return { ctx, p };
 }
 async function bisZurZeit(p, opt = {}) {
-  await p.goto(basis + 'fenster/termin.html', { waitUntil: 'networkidle' });
+  await p.goto(basis + 'termin.html', { waitUntil: 'networkidle' });
   await p.click('.salon-wahl >> nth=0');
   await p.click('.familie-kopf >> nth=0');
   if (await p.locator('.laenge').count()) await p.click('.laenge >> nth=0');
@@ -111,7 +111,7 @@ async function angaben(p, tel) {
   const link = await p.getAttribute('.fertig-notiz a', 'href');
   const token = link.split('t=')[1];
   const vorher = await (await fetch(API + '?a=termin&t=' + token)).json();
-  await p.goto(basis + 'fenster/' + link, { waitUntil: 'networkidle' });
+  await p.goto(basis + link, { waitUntil: 'networkidle' });
   await p.click('#fertig-wege button:has-text("Verschieben")');
   await p.waitForSelector('.zeit');
   await p.click('.tag.ist-frei >> nth=6');
@@ -151,7 +151,7 @@ async function angaben(p, tel) {
   pruefe(text.includes('kein zweiter Termin'), '4 · Ohne jede Antwort: ehrliche Meldung, „noch einmal tippen ist sicher“', text);
   await p.unroute('**/api/?a=buchen*');
   await p.unroute('**/api/?a=anfrage*');
-  await p.goto(basis + 'fenster/termin.html', { waitUntil: 'networkidle' });
+  await p.goto(basis + 'termin.html', { waitUntil: 'networkidle' });
   await p.waitForSelector('#fertig:not([hidden])', { timeout: 10000 });
   pruefe((await p.textContent('#hinweis-band')).includes('angekommen'), '    beim nächsten Öffnen: „Ihre Buchung von vorhin ist angekommen“');
   await ctx.close();

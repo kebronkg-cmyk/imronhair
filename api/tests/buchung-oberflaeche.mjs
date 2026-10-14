@@ -8,7 +8,7 @@ const ctx = await b.newContext({ viewport: { width: w, height: h }, hasTouch: w 
 const p = await ctx.newPage();
 const err = []; p.on('pageerror', e => err.push(e.message)); p.on('console', m => { if (m.type() === 'error') err.push('console: ' + m.text()); });
 const shot = async (n) => { await p.waitForTimeout(700); await p.screenshot({ path: `${praefix}-${n}.png` }); };
-await p.goto(basis + 'fenster/termin.html' + (process.env.Q||''), { waitUntil: 'networkidle' });
+await p.goto(basis + 'termin.html' + (process.env.Q||''), { waitUntil: 'networkidle' });
 await shot('1-salon');
 await p.click('.salon-wahl >> nth=0'); await shot('2-leistung');
 await p.click('.familie-kopf >> nth=0'); await shot('3-laenge');

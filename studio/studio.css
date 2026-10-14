@@ -1,20 +1,20 @@
 /* ═══════════════════════════════════════════════════════════════════════
    Irmonhair Studio
 
-   Dieselbe Nacht wie das Schaufenster (Werte aus fenster/neu.css): warmes
+   Dieselbe Nacht wie das Schaufenster (Werte aus neu.css): warmes
    Schwarz, Creme für die Schrift, LED-Gold nur als Kante — am gewählten
    Schalter, am einen Hauptknopf und als Linie der aktuellen Uhrzeit im
    Kalender. Dichter gesetzt als die Website, weil hier gearbeitet wird:
    Grundschrift 15 px, Zahlen in Tabellenziffern.
    ═══════════════════════════════════════════════════════════════════════ */
 
-@font-face { font-family: 'Jost'; src: url('../fenster/schrift/Jost.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Mulish'; src: url('../fenster/schrift/Mulish.woff2') format('woff2'); font-weight: 300 800; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Sacramento'; src: url('../fenster/schrift/Sacramento.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Jost'; src: url('../schrift/Jost.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Mulish'; src: url('../schrift/Mulish.woff2') format('woff2'); font-weight: 300 800; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Sacramento'; src: url('../schrift/Sacramento.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
 
 :root {
   color-scheme: dark;
-  /* Aus fenster/neu.css übernommen */
+  /* Aus neu.css übernommen */
   --papier:       oklch(14.5% .008 55);
   --papier-tief:  oklch(17.5% .01 55);
   --weiss:        oklch(19.5% .012 55);

@@ -94,7 +94,7 @@
 
   async function laden() {
     if (katalog) return;
-    const r = await fetch('../api/katalog.json');
+    const r = await fetch('api/katalog.json');
     const k = await r.json();
     katalog = {
       salons: k.salons, gruppen: k.gruppen,

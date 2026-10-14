@@ -131,7 +131,7 @@ function kopfZeichnen() {
     el('button', { type: 'button', role: 'menuitem', text: document.documentElement.dataset.thema === 'hell' ? 'Dunkler Modus' : 'Off-White-Modus',
       onclick: () => { themaSetzen(document.documentElement.dataset.thema === 'hell' ? 'dunkel' : 'hell'); menueZu(); kopfZeichnen(); } }),
     el('button', { type: 'button', role: 'menuitem', text: 'Passwort ändern', onclick: () => { menueZu(); location.hash = '#einstellungen'; } }),
-    el('button', { type: 'button', role: 'menuitem', text: 'Online-Buchung ansehen', onclick: () => { menueZu(); open('../fenster/termin.html', '_blank', 'noopener'); } }),
+    el('button', { type: 'button', role: 'menuitem', text: 'Online-Buchung ansehen', onclick: () => { menueZu(); open('../termin.html', '_blank', 'noopener'); } }),
     el('button', { type: 'button', role: 'menuitem', text: 'Abmelden', onclick: abmelden }));
   ich.onclick = () => (menue.hidden ? menueAuf() : menueZu());
   $('suche-knopf').onclick = () => kunden.suchen();

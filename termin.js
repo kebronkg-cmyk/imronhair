@@ -33,7 +33,7 @@
   const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const params = new URLSearchParams(location.search);
   const VORSCHAU = params.has('vorschau');
-  const API = new URL(document.querySelector('meta[name="irmonhair-api"]')?.content || '../api/', location.href).href;
+  const API = new URL(document.querySelector('meta[name="irmonhair-api"]')?.content || 'api/', location.href).href;
 
   /* ── Gedächtnis (nur dieses Gerät) ─────────────────────────────────── */
   const lesen = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };

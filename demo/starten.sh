@@ -18,7 +18,7 @@ return [
     'db' => ['treiber' => 'sqlite', 'pfad' => __DIR__ . '/daten/vorfuehrung.sqlite'],
     'einrichtungs_schluessel' => '$(head -c 18 /dev/urandom | base64 | tr -dc 'A-Za-z0-9')',
     'cron_schluessel' => 'vorfuehrung',
-    'buchung_adresse' => '${ADRESSE}/fenster/termin.html',
+    'buchung_adresse' => '${ADRESSE}/termin.html',
     'post' => ['aktiv' => false],
     'demo' => true,
 ];
@@ -32,8 +32,8 @@ cat <<TEXT
   ────────────────────────────────────────────────────────────
   Irmonhair — Vorführung läuft
 
-  Website:              ${ADRESSE}/fenster/
-  Buchung (Kundin):     ${ADRESSE}/fenster/termin.html
+  Website:              ${ADRESSE}/
+  Buchung (Kundin):     ${ADRESSE}/termin.html
   Studio (Mitarbeiter): ${ADRESSE}/studio/
       Inhaberin  demo     / demo-passwort
       Rezeption  empfang  / empfang-passwort

@@ -8,9 +8,9 @@ Keine Abhängigkeiten, kein Build, keine fremden Dienste.
 
 | Adresse | Was |
 |---|---|
-| `fenster/termin.html` | Online-Buchung für Kundinnen |
-| `fenster/termin.html?t=…` | Termin ansehen, verschieben, absagen (Link aus der Bestätigung) |
-| `fenster/termin.html?vorschau` | Vorschau mit ausgedachten Terminen — bucht nichts, braucht keinen Server |
+| `termin.html` | Online-Buchung für Kundinnen |
+| `termin.html?t=…` | Termin ansehen, verschieben, absagen (Link aus der Bestätigung) |
+| `termin.html?vorschau` | Vorschau mit ausgedachten Terminen — bucht nichts, braucht keinen Server |
 | `studio/` | Studio: Kalender, Kunden, Team, Leistungen, Auswertung, Einstellungen |
 | `api/` | Schnittstelle (PHP); Daten in MySQL oder einer SQLite-Datei |
 
@@ -23,9 +23,10 @@ Ansehen. Echt gebucht wird erst auf dem eigenen Webspace.
 1. **Datenbank anlegen:** KAS → *Datenbanken* → *Neue Datenbank*.
    Name, Benutzer und Passwort notieren.
 2. **Dateien hochladen** (FTP oder KAS-Dateimanager) in das Verzeichnis
-   der Domain: mindestens `fenster/`, `api/`, `studio/`. Die übrigen
-   Ordner (`alt/`, `schleife/`, …) nur, wenn sie dort auch erreichbar sein
-   sollen.
+   der Domain: die Website aus dem Hauptordner (`*.html`, `*.css`,
+   `*.js`, `logo-*.svg`, `bilder/`, `schrift/`) sowie `api/` und `studio/`.
+   Die älteren Fassungen (`spiegel/`, `alt/`, …) nur, wenn sie dort auch
+   erreichbar sein sollen.
 3. **`api/config.beispiel.php` als `api/config.php` kopieren** und
    ausfüllen:
    - `db`: die Zugangsdaten aus Schritt 1 (`treiber` bleibt `mysql`);
@@ -33,7 +34,7 @@ Ansehen. Echt gebucht wird erst auf dem eigenen Webspace.
      Zufallsfolge (Passwortgenerator, 24 Zeichen);
    - `alarm_an`: wer einen Alarm bekommt, falls der nächtliche
      Selbstcheck je eine Überschneidung findet;
-   - `buchung_adresse`: die volle Adresse von `fenster/termin.html`;
+   - `buchung_adresse`: die volle Adresse von `termin.html`;
    - `post`: `aktiv => true`, wenn Bestätigungen per E-Mail gehen sollen.
      Die Absenderadresse muss als Postfach bei All-Inkl existieren
      (KAS → *E-Mail* → *Postfach anlegen*). Unter `salon_an` stehen die
@@ -56,7 +57,7 @@ Ansehen. Echt gebucht wird erst auf dem eigenen Webspace.
      einem Fund sofort eine Mail an `alarm_an`. Erwartet: nie.
    - **Überwachung:** `https://…/api/?a=gesund` bei einem Uptime-Dienst
      (z. B. UptimeRobot, kostenlos) mit Alarm aufs Handy eintragen.
-8. **Prüfen:** in `fenster/termin.html` einen Termin buchen, im Studio
+8. **Prüfen:** in `termin.html` einen Termin buchen, im Studio
    ansehen, über den Link aus der Bestätigung wieder absagen.
 
 Ohne MySQL geht es auch mit SQLite (eine Datei, keine Einrichtung):
@@ -65,7 +66,7 @@ ist per `.htaccess` gesperrt.
 
 Liegt die Buchungsseite auf einer anderen Adresse als die Schnittstelle,
 deren Herkunft unter `erlaubte_herkunft` eintragen und in
-`fenster/termin.html` die Zeile `<meta name="irmonhair-api" …>` auf die
+`termin.html` die Zeile `<meta name="irmonhair-api" …>` auf die
 volle Adresse der Schnittstelle setzen.
 
 ## Wichtig vor dem Umschalten
@@ -157,7 +158,7 @@ täglich (KAS → *Datenbanken* → *Backups*).
 | `api/lib/studio.php` | Studio: Anmeldung, Kalender, Kunden, Team, Leistungen, Auswertung |
 | `api/lib/post.php` | E-Mails mit Kalenderdatei („vorher → jetzt“ bei Änderungen), Erinnerungen und Selbstcheck per Cronjob |
 | `api/katalog.json` | Erstbefüllung, erzeugt von `recherche/katalog.py` aus Planity |
-| `fenster/termin.*` | Online-Buchung; `termin-vorschau.js` rechnet ohne Server |
+| `termin.*` | Online-Buchung; `termin-vorschau.js` rechnet ohne Server |
 | `studio/` | Studio; `js/` als Module ohne Build |
 
 `recherche/katalog.py` liest Planity neu (`--planity pasing.html
