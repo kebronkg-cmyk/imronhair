@@ -6,7 +6,7 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { $, el, svg, ZEICHEN, euro, preisText, dauerText, TAG_LANG, hhmm, minuten, heute, plusTage, montag, tagText,
-  meldung, fragen, speichern, summePhasen, alsDatum, iso } from './hilfen.js';
+  meldung, fragen, speichern, summePhasen, alsDatum, iso, themaWahl, themaSetzen } from './hilfen.js';
 import { Z, api, inhaberin, leitung, ROLLE_NAME, stammdatenLaden, personVon, salonVon, gruppeVon } from './api.js';
 import { tafelAuf, tafelZu } from './tafel.js';
 import { abwesenheitZeigen, abwesenheitNeu } from './termin.js';
@@ -297,7 +297,7 @@ export const auswertung = {
 export const einstellungen = {
   zeigen(f) {
     const teile = [kopf('Einstellungen')];
-    teile.push(passwortTeil());
+    teile.push(darstellungTeil(), passwortTeil());
     if (inhaberin()) teile.push(regelnTeil(), oeffnungTeil());
     if (leitung()) teile.push(abwesenheitenTeil(), exportTeil());
     if (inhaberin()) teile.push(sicherungTeil());
@@ -308,6 +308,18 @@ export const einstellungen = {
 
 function abschnitt(titel, lauf, ...inhalt) {
   return el('section', { klasse: 'abschnitt' }, el('h2', { klasse: 'abschnitt-titel', text: titel }), lauf ? el('p', { klasse: 'seiten-info', text: lauf }) : null, ...inhalt);
+}
+
+/** Darstellung je Gerät: Dunkel (wie das Schaufenster), Off-White für helle
+    Räume, oder wie das Gerät eingestellt ist. */
+function darstellungTeil() {
+  const w = themaWahl();
+  return abschnitt('Darstellung', 'Gilt für dieses Gerät.',
+    el('div', { klasse: 'schalter', role: 'group', 'aria-label': 'Darstellung' },
+      [['dunkel', 'Dunkel'], ['hell', 'Off-White'], ['auto', 'Wie das Gerät']].map(([id, name]) => el('button', {
+        type: 'button', 'aria-pressed': String(w === id), text: name,
+        onclick: (e) => { themaSetzen(id); schalterWahl(e); },
+      }))));
 }
 
 function passwortTeil() {

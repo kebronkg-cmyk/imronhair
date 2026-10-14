@@ -117,6 +117,24 @@ export function fragen({ titel, text, liste = [], ja = 'OK', nein = 'Abbrechen',
   });
 }
 
+/* ── Darstellung: Dunkel, Off-White oder wie das Gerät ─────────────── */
+const THEMA = 'studio-thema';
+const geraetHell = matchMedia('(prefers-color-scheme: light)');
+export function themaWahl() {
+  try { return localStorage.getItem(THEMA) || 'dunkel'; } catch (e) { return 'dunkel'; }
+}
+export function themaAnwenden() {
+  const w = themaWahl();
+  const hell = w === 'hell' || (w === 'auto' && geraetHell.matches);
+  document.documentElement.dataset.thema = hell ? 'hell' : 'dunkel';
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', hell ? '#f6f2ec' : '#0d0907');
+}
+export function themaSetzen(w) {
+  try { localStorage.setItem(THEMA, w); } catch (e) { /* privat: gilt nur bis zum Neuladen */ }
+  themaAnwenden();
+}
+geraetHell.addEventListener('change', themaAnwenden);
+
 /** Abgesagt — von wem auch immer. */
 export const abgesagt = (status) => String(status).startsWith('storniert');
 

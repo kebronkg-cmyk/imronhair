@@ -64,6 +64,49 @@
 }
 @media (min-width: 48rem) { :root { --rand: 1.5rem; --kopf: 60px; } }
 
+/* Off-White: für helle Räume und Tageslicht an der Theke. Keine Umkehrung
+   der Nacht — der Grund ist warmes Creme wie Papier, die Schrift ein tiefes
+   Braun statt Schwarz. Gold ist auf hellem Grund neu gesetzt: tiefer und
+   satter, sonst verschwindet es (als Schrift nur --gold-schrift). Was in
+   der Nacht als Fläche heller wird (Karten, Tafel), wird hier weißer;
+   was dunkler wird (geschlossene Zeit), wird hier grauer. */
+:root[data-thema="hell"] {
+  color-scheme: light;
+  --papier:       oklch(96.5% .008 85);
+  --papier-tief:  oklch(93.5% .011 82);
+  --weiss:        oklch(99.2% .004 85);
+  --nacht:        oklch(91% .012 80);
+  --tinte:        oklch(24% .02 55);
+  --tinte-leise:  oklch(37% .02 60);
+  --tinte-still:  oklch(47% .022 65);
+  --gold:         oklch(62% .11 72);
+  --gold-tief:    oklch(53% .1 68);
+  --gold-schrift: oklch(46% .09 66);
+  --gold-hell:    oklch(72% .1 78);
+  --led-schein:   oklch(70% .12 78 / .3);
+  --knopf-grund:  oklch(99.2% .004 85);
+  --knopf-kante:  oklch(52% .1 68);
+  --linie:        oklch(30% .02 60 / .13);
+  --linie-stark:  oklch(30% .02 60 / .28);
+  --linie-gold:   oklch(55% .1 70 / .55);
+  --bronze:       oklch(78% .03 70);
+  --offen:        oklch(50% .13 150);
+  --schatten:     oklch(30% .03 55);
+  --tafel-grund:  oklch(98.6% .005 85);
+  --feld-grund:   oklch(99.6% .003 85);
+  --zu-grund:     oklch(91.5% .01 78);
+  --wahl-grund:   color-mix(in oklch, var(--gold) 12%, var(--weiss));
+  --warnung:      oklch(52% .15 38);
+  --person-1: oklch(62% .11 78);
+  --person-2: oklch(56% .13 30);
+  --person-3: oklch(55% .1 155);
+  --person-4: oklch(54% .1 235);
+  --person-5: oklch(54% .11 300);
+  --person-6: oklch(58% .1 125);
+  --person-7: oklch(54% .12 350);
+  --person-8: oklch(56% .08 195);
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: var(--papier); scrollbar-color: var(--bronze) var(--papier); }

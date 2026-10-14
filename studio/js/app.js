@@ -7,7 +7,7 @@
    der aktuelle Bereich still nach.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { $, el, meldung, heute } from './hilfen.js';
+import { $, el, meldung, heute, themaSetzen, themaAnwenden } from './hilfen.js';
 import { Z, api, inhaberin, ApiFehler, ROLLE_NAME } from './api.js';
 import { tafelZu, tafelOffen } from './tafel.js';
 import * as kalender from './kalender.js';
@@ -26,6 +26,7 @@ let aktiv = null;
 
 /* ── Start ──────────────────────────────────────────────────────────── */
 async function start() {
+  themaAnwenden();
   Z.beiAbmeldung = () => { if (!$('app').hidden) torZeigen('anmelden', 'Die Sitzung ist abgelaufen. Bitte neu anmelden.'); };
   let s;
   try {
@@ -127,6 +128,8 @@ function kopfZeichnen() {
     el('p', { klasse: 'ich-rolle', text: ROLLE_NAME[Z.ich.rolle] || 'Team' }),
     'Notification' in window && Notification.permission === 'default'
       ? el('button', { type: 'button', role: 'menuitem', text: 'Online-Buchungen melden', onclick: () => { menueZu(); Notification.requestPermission(); } }) : null,
+    el('button', { type: 'button', role: 'menuitem', text: document.documentElement.dataset.thema === 'hell' ? 'Dunkler Modus' : 'Off-White-Modus',
+      onclick: () => { themaSetzen(document.documentElement.dataset.thema === 'hell' ? 'dunkel' : 'hell'); menueZu(); kopfZeichnen(); } }),
     el('button', { type: 'button', role: 'menuitem', text: 'Passwort ändern', onclick: () => { menueZu(); location.hash = '#einstellungen'; } }),
     el('button', { type: 'button', role: 'menuitem', text: 'Online-Buchung ansehen', onclick: () => { menueZu(); open('../fenster/termin.html', '_blank', 'noopener'); } }),
     el('button', { type: 'button', role: 'menuitem', text: 'Abmelden', onclick: abmelden }));

@@ -6,6 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Irmonhair Studio</title>
 <meta name="theme-color" content="#0d0907">
+<!-- Darstellung vor dem ersten Zeichnen setzen (kein Aufflackern). Die Wahl
+     gilt je Gerät; „auto“ folgt der Einstellung des Geräts. -->
+<script>
+  try {
+    var w = localStorage.getItem('studio-thema') || 'dunkel';
+    if (w === 'auto') w = matchMedia('(prefers-color-scheme: light)').matches ? 'hell' : 'dunkel';
+    document.documentElement.dataset.thema = w;
+  } catch (e) { /* ohne Speicher bleibt es dunkel */ }
+</script>
 <meta name="referrer" content="no-referrer">
 <link rel="icon" href="../fenster/logo-schleife.svg" type="image/svg+xml">
 <link rel="preload" href="../fenster/schrift/Jost.woff2" as="font" type="font/woff2" crossorigin>

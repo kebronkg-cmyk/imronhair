@@ -37,15 +37,29 @@ $beschreibung = [
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Tabellen — Vorführung</title>
+<script>
+  // Dieselbe Wahl wie im Studio (Dunkel, Off-White, wie das Gerät).
+  try {
+    var w = localStorage.getItem('studio-thema') || 'dunkel';
+    if (w === 'auto') w = matchMedia('(prefers-color-scheme: light)').matches ? 'hell' : 'dunkel';
+    document.documentElement.dataset.thema = w;
+  } catch (e) {}
+</script>
 <style>
-  :root { --grund: #0d0907; --flaeche: #17110e; --linie: #3a2e27; --tinte: #f3ebe3; --leise: #b8a99c; --gold: #d9b26a; }
+  :root { color-scheme: dark; --grund: oklch(14.5% .008 55); --flaeche: oklch(17.5% .01 55); --linie: oklch(92% .02 80 / .16);
+          --tinte: oklch(94% .014 85); --leise: oklch(74% .02 80); --gold: oklch(83% .095 84); --kante: oklch(85% .1 84); }
+  :root[data-thema="hell"] { color-scheme: light; --grund: oklch(96.5% .008 85); --flaeche: oklch(93.5% .011 82); --linie: oklch(30% .02 60 / .14);
+          --tinte: oklch(24% .02 55); --leise: oklch(47% .022 65); --gold: oklch(46% .09 66); --kante: oklch(62% .11 72); }
   * { box-sizing: border-box; }
   body { margin: 0; padding: 16px; background: var(--grund); color: var(--tinte); font: 15px/1.45 system-ui, sans-serif; }
   h1 { font-weight: 400; letter-spacing: .04em; margin: 0 0 4px; }
   p { color: var(--leise); margin: 0 0 16px; }
   nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
   nav a { padding: 8px 12px; border: 1px solid var(--linie); border-radius: 3px; color: var(--leise); text-decoration: none; }
-  nav a[aria-current] { border-color: var(--gold); color: var(--tinte); }
+  nav a[aria-current] { border-color: var(--kante); color: var(--tinte); }
+  .kopf { display: flex; justify-content: space-between; align-items: start; gap: 12px; flex-wrap: wrap; }
+  .umschalter { padding: 8px 14px; border: 1px solid var(--linie); border-radius: 3px; background: none; color: var(--tinte); font: inherit; cursor: pointer; }
+  .umschalter:focus-visible { outline: 2px solid var(--kante); outline-offset: 2px; }
   nav a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   .rahmen { overflow-x: auto; border: 1px solid var(--linie); border-radius: 3px; }
   table { border-collapse: collapse; width: 100%; font-size: 13px; }
@@ -56,7 +70,10 @@ $beschreibung = [
 </style>
 </head>
 <body>
-<h1>Tabellen</h1>
+<div class="kopf">
+  <h1>Tabellen</h1>
+  <button class="umschalter" type="button" id="umschalter"></button>
+</div>
 <p>Nur lesend, nur in der Vorführung. Ändern geht ausschließlich über das Studio — sonst greift der Schutz vor Doppelbuchungen nicht.</p>
 <nav aria-label="Tabellen">
 <?php foreach ($tabellen as $t): $n = (int)$db->wert("SELECT COUNT(*) FROM `$t`"); ?>
@@ -85,5 +102,16 @@ $zeilen = $db->alle("SELECT * FROM `$wahl` ORDER BY `$ordnung` DESC LIMIT 40");
   </tbody>
 </table>
 </div>
+<script>
+  const knopf = document.getElementById('umschalter');
+  const beschriften = () => { knopf.textContent = document.documentElement.dataset.thema === 'hell' ? 'Dunkler Modus' : 'Off-White-Modus'; };
+  knopf.addEventListener('click', () => {
+    const neu = document.documentElement.dataset.thema === 'hell' ? 'dunkel' : 'hell';
+    document.documentElement.dataset.thema = neu;
+    try { localStorage.setItem('studio-thema', neu); } catch (e) {}
+    beschriften();
+  });
+  beschriften();
+</script>
 </body>
 </html>
