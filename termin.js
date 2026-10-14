@@ -101,7 +101,10 @@
     let r;
     try {
       r = await fetch(url, {
-        method: post ? 'POST' : 'GET', signal: steuer.signal, credentials: 'omit',
+        // Cookies nur an die eigene Adresse: Liegt die Schnittstelle woanders
+        // (CORS), gehen keine mit. Liegt sie daneben, braucht etwa die
+        // geschützte Vorführung im Codespace das Anmelde-Cookie.
+        method: post ? 'POST' : 'GET', signal: steuer.signal, credentials: 'same-origin',
         headers: post ? { 'Content-Type': 'application/json' } : {}, body: post ? JSON.stringify(post) : undefined,
       });
     } catch (e) {
