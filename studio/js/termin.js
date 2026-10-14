@@ -9,15 +9,18 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { el, svg, ZEICHEN, euro, preisText, dauerText, tagText, plusTage, heute, minuten, hhmm, summePhasen,
-  kundenName, telLink, waLink, meldung, fragen, spaeter, sucheNorm } from './hilfen.js';
-import { Z, api, inhaberin, personVon, salonVon, leistungVon } from './api.js';
+  kundenName, telLink, waLink, meldung, fragen, spaeter, sucheNorm, abgesagt, absageFragen } from './hilfen.js';
+import { Z, api, leitung, personVon, salonVon, leistungVon } from './api.js';
 import { tafelAuf, tafelZu, tafelTitel } from './tafel.js';
 import { kundeZeigen } from './kunden.js';
 
-const STATUS_NAME = { gebucht: 'Gebucht', erschienen: 'Erschienen', nicht_erschienen: 'Nicht erschienen', storniert: 'Abgesagt' };
-const QUELLE = { online: 'online gebucht', telefon: 'am Telefon', vorort: 'vor Ort', studio: 'im Studio' };
+const STATUS_NAME = { gebucht: 'Gebucht', erschienen: 'Erschienen', nicht_erschienen: 'Nicht erschienen', storniert: 'Abgesagt',
+  storniert_kunde: 'Abgesagt (Kundin)', storniert_salon: 'Abgesagt (Salon)' };
+const QUELLE = { online: 'online gebucht', telefon: 'am Telefon', vorort: 'vor Ort', studio: 'im Studio',
+  kasse_vorausbuchung: 'an der Kasse vorausgebucht', recall: 'über Recall', warteliste: 'über die Warteliste' };
 const AKTION = {
-  termin_angelegt: 'angelegt', termin_geaendert: 'geändert', online_storniert: 'online abgesagt', online_umgebucht: 'online verschoben',
+  termin_angelegt: 'angelegt', termin_geaendert: 'geändert', termin_verschoben: 'verschoben', status_geaendert: 'Zustand geändert',
+  online_storniert: 'online abgesagt', online_umgebucht: 'online verschoben', online_verschoben: 'online verschoben',
 };
 
 /* ── Ansehen ─────────────────────────────────────────────────────────── */
@@ -48,8 +51,14 @@ function zeichneTermin(koerper, t, nachher) {
       nachher?.();
     } catch (e) {
       if (e.daten.code === 'konflikt') {
-        const ok = await fragen({ titel: 'Überschneidung', text: 'Zu dieser Zeit ist schon etwas eingetragen:', liste: e.daten.konflikte.map((x) => x.text), ja: 'Trotzdem' });
-        if (ok) return aendern({ ...felder, trotzdem: true }, text);
+        // Überschneidungen, Abwesenheit, Schließtag: hart. Nur „außerhalb der
+        // Arbeitszeit“ bei offenem Salon lässt sich bewusst überstimmen.
+        if (e.daten.hart) {
+          await fragen({ titel: 'Geht nicht', text: 'Diese Zeit ist nicht frei:', liste: e.daten.konflikte.map((x) => x.text), ja: 'OK', nein: 'Zurück' });
+        } else {
+          const ok = await fragen({ titel: 'Außerhalb der Arbeitszeit', text: 'Der Salon hat offen, aber die Zeit liegt außerhalb der eingetragenen Arbeitszeit.', ja: 'Trotzdem eintragen' });
+          if (ok) return aendern({ ...felder, ausserhalb_ok: true }, text);
+        }
       } else if (e.daten.code === 'veraltet') {
         meldung('Jemand hat den Termin gerade geändert — hier ist der neue Stand.', 'fehler');
         zeichneTermin(koerper, { ...e.daten.termin, verlauf: t.verlauf }, nachher);
@@ -61,7 +70,7 @@ function zeichneTermin(koerper, t, nachher) {
   const teile = [];
 
   // Zustand: drei Schalter; „Abgesagt“ steht unten als eigene Handlung.
-  if (t.status !== 'storniert') {
+  if (!abgesagt(t.status)) {
     const vergangen = t.start.slice(0, 10) <= heute();
     teile.push(el('div', { klasse: 'schalter status-schalter', role: 'group', 'aria-label': 'Zustand' },
       ['gebucht', 'erschienen', 'nicht_erschienen'].map((st) => el('button', {
@@ -71,7 +80,7 @@ function zeichneTermin(koerper, t, nachher) {
         onclick: () => t.status !== st && aendern({ status: st }, `${kundenName(t)}: ${STATUS_NAME[st]}`),
       }))));
   } else {
-    teile.push(el('p', { klasse: 'hinweis-zeile ist-abgesagt', text: 'Dieser Termin ist abgesagt.' }));
+    teile.push(el('p', { klasse: 'hinweis-zeile ist-abgesagt', text: (t.status === 'storniert_salon' ? 'Vom Salon abgesagt' : 'Von der Kundin abgesagt') + (t.storno_grund ? `: ${t.storno_grund}` : '.') }));
   }
 
   // Die Kundin: Nummer zum Antippen, WhatsApp, E-Mail, Karteinotiz.
@@ -114,13 +123,13 @@ function zeichneTermin(koerper, t, nachher) {
 
   // Handlungen.
   const wege = el('div', { klasse: 'tafel-wege' });
-  if (t.status !== 'storniert') {
+  if (!abgesagt(t.status)) {
     wege.append(
       el('button', { type: 'button', klasse: 'knopf-still', onclick: () => terminNeu({ termin: t }, nachher) }, svg(ZEICHEN.stift), el('span', { text: 'Ändern' })),
       k ? el('button', { type: 'button', klasse: 'knopf-still', onclick: () => naechsterTermin(t, nachher) }, svg(ZEICHEN.kalender), el('span', { text: 'Nächsten Termin planen' })) : null,
       el('button', { type: 'button', klasse: 'knopf-still knopf-leise', text: 'Absagen', onclick: async () => {
-        const ok = await fragen({ titel: 'Termin absagen?', text: `${kundenName(t)}, ${tagText(datum, 'lang')} um ${t.start.slice(11)}. Die Zeit wird wieder frei.`, ja: 'Absagen', nein: 'Behalten', gefahr: true });
-        if (ok) aendern({ status: 'storniert' }, 'Termin abgesagt');
+        const a = await absageFragen({ titel: 'Termin absagen?', text: `${kundenName(t)}, ${tagText(datum, 'lang')}, ${t.start.slice(11)}–${t.ende.slice(11)}. Die Zeit wird wieder frei${t.kunde?.email ? '; die Kundin bekommt eine E-Mail' : ''}.` });
+        if (a) aendern({ status: a.status, storno_grund: a.grund }, 'Termin abgesagt');
       } }));
   } else {
     wege.append(el('button', { type: 'button', klasse: 'knopf-still', text: 'Wiederherstellen', onclick: () => aendern({ status: 'gebucht' }, 'Wiederhergestellt') }));
@@ -140,6 +149,16 @@ function zeichneTermin(koerper, t, nachher) {
 function verlaufText(d) {
   if (!d) return '';
   const aus = [];
+  // Neue Einträge: vorher → nachher als Ganzes.
+  if (d.vorher && d.nachher) {
+    const v = d.vorher, n = d.nachher;
+    if (v.start !== n.start || v.ende !== n.ende) aus.push(` · ${v.start.slice(5, 16)}–${v.ende.slice(11, 16)} → ${n.start.slice(5, 16)}–${n.ende.slice(11, 16)}`);
+    if (v.person !== n.person) aus.push(` · ${personVon(v.person)?.name || v.person} → ${personVon(n.person)?.name || n.person}`);
+    if (v.status !== n.status) aus.push(` · ${STATUS_NAME[n.status] || n.status}`);
+    if (d.ausserhalb_arbeitszeit) aus.push(' · außerhalb der Arbeitszeit');
+    return aus.join('');
+  }
+  if (d.storno_grund && d.storno_grund[1]) aus.push(` · Grund: ${d.storno_grund[1]}`);
   if (d.start) aus.push(Array.isArray(d.start) ? ` · ${d.start[0].slice(5, 16)} → ${d.start[1].slice(5, 16)}` : '');
   if (d.person_id) aus.push(` · ${personVon(d.person_id[0])?.name || d.person_id[0]} → ${personVon(d.person_id[1])?.name || d.person_id[1]}`);
   if (d.status) aus.push(` · ${STATUS_NAME[d.status[1]] || d.status[1]}`);
@@ -158,6 +177,7 @@ async function naechsterTermin(t, nachher) {
   terminNeu({
     salon: t.salon, datum: ziel < heute() ? heute() : ziel, person: t.person, kunde: t.kunde,
     leistungen: t.posten.map((x) => x.leistung).filter((id) => id && leistungVon(id)?.aktiv),
+    quelle: 'kasse_vorausbuchung',
     hinweis: `In ${Math.round(tage / 7)} Wochen — ${tage === 42 ? 'übliche Pause' : 'ihr gewohnter Abstand'}.`,
   }, nachher);
 }
@@ -181,8 +201,7 @@ export function terminNeu(v, nachher) {
     preis: alt && alt.preis_cent !== null ? alt.preis_cent : null,
     preisGeaendert: false,
     notiz: alt ? alt.notiz || '' : '',
-    quelle: 'telefon',
-    trotzdem: false,
+    quelle: v.quelle || 'telefon',
   };
   const koerper = tafelAuf({ titel: alt ? 'Termin ändern' : 'Neuer Termin', unter: salonVon(f.salon).name, breit: true });
   const anfrageId = crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2);
@@ -453,7 +472,7 @@ export function terminNeu(v, nachher) {
     vorschlaegeLaden();
   }
 
-  async function speichern(trotzdem = false) {
+  async function speichern(ausserhalbOk = false) {
     const fehler = (text) => { bereiche.fehler.textContent = text; bereiche.fehler.hidden = false; bereiche.fehler.scrollIntoView({ block: 'nearest' }); };
     bereiche.fehler.hidden = true;
     if (!f.leistungen.length) return fehler('Bitte mindestens eine Leistung wählen.');
@@ -463,7 +482,7 @@ export function terminNeu(v, nachher) {
     knopf.disabled = true;
     const daten = {
       leistungen: f.leistungen, person: f.person, start: `${f.datum} ${f.zeit}`,
-      phasen: f.phasen || undefined, notiz: f.notiz.trim() || null, trotzdem,
+      phasen: f.phasen || undefined, notiz: f.notiz.trim() || null, ausserhalb_ok: ausserhalbOk,
     };
     if (f.preisGeaendert) daten.preis_cent = f.preis;
     if (f.kunde) daten.kunde_id = f.kunde.id;
@@ -482,9 +501,15 @@ export function terminNeu(v, nachher) {
       terminZeigen(t.id, nachher);
     } catch (e) {
       knopf.disabled = false;
-      if (e.daten.code === 'konflikt') {
-        const ok = await fragen({ titel: 'Überschneidung', text: 'Zu dieser Zeit ist schon etwas eingetragen:', liste: e.daten.konflikte.map((x) => x.text), ja: 'Trotzdem eintragen', nein: 'Andere Zeit' });
+      if (e.daten.code === 'konflikt' && e.daten.hart) {
+        // Doppelbelegung gibt es nicht — auch nicht „trotzdem“.
+        fehler('Diese Zeit ist nicht frei: ' + e.daten.konflikte.map((x) => x.text).join('; ') + '. Bitte eine freie Zeit antippen.');
+      } else if (e.daten.code === 'konflikt') {
+        const ok = await fragen({ titel: 'Außerhalb der Arbeitszeit', text: 'Der Salon hat offen, aber die Zeit liegt außerhalb der eingetragenen Arbeitszeit:', liste: e.daten.konflikte.map((x) => x.text), ja: 'Trotzdem eintragen', nein: 'Andere Zeit' });
         if (ok) return speichern(true);
+      } else if (e.daten.code === 'vergeben') {
+        fehler(e.message + ' Bitte eine der freien Zeiten antippen.');
+        vorschlaegeLaden();
       } else if (e.daten.code === 'veraltet') {
         fehler('Jemand hat den Termin inzwischen geändert. Bitte die Tafel schließen und neu öffnen.');
       } else {
@@ -514,7 +539,7 @@ function abwesenheitForm(ab, v, nachher) {
   const personen = Z.s.personen.filter((p) => p.aktiv);
   const wer = el('select', { onchange: (e) => { f.person = e.target.value || null; if (!f.person) f.salon = Z.salon; } },
     personen.map((p) => el('option', { value: p.id, text: p.name, selected: f.person === p.id ? true : null })),
-    inhaberin() ? el('option', { value: '', text: `Ganzer Salon ${salonVon(Z.salon).name}`, selected: !f.person ? true : null }) : null);
+    leitung() ? el('option', { value: '', text: `Ganzer Salon ${salonVon(Z.salon).name}`, selected: !f.person ? true : null }) : null);
   const feldZeit = (name) => el('div', { klasse: 'feld-reihe' },
     el('input', { type: 'date', value: f[name].slice(0, 10), onchange: (e) => { f[name] = `${e.target.value} ${f[name].slice(11)}`; } }),
     el('input', { type: 'time', step: 300, value: f[name].slice(11, 16), onchange: (e) => { f[name] = `${f[name].slice(0, 10)} ${e.target.value}`; } }));

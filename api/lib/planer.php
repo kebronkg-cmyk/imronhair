@@ -52,9 +52,10 @@ function phasen_pruefen(mixed $phasen): array
     if (!is_array($phasen) || !$phasen || count($phasen) > 12) throw new Fehler('Ablauf ungültig.', 422, 'phasen');
     $aus = [];
     foreach ($phasen as $p) {
-        if (!is_array($p) || count($p) !== 2 || !in_array($p[0], ['arbeit', 'pause'], true)) throw new Fehler('Ablauf ungültig.', 422, 'phasen');
+        if (!is_array($p) || count($p) !== 2 || !in_array($p[0], ['arbeit', 'pause', 'puffer'], true)) throw new Fehler('Ablauf ungültig.', 422, 'phasen');
         $m = (int)$p[1];
-        if ($m < 0 || $m > 720) throw new Fehler('Ablauf ungültig.', 422, 'phasen');
+        // Intern gilt das 5-Minuten-Raster — auch für jede Phase.
+        if ($m < 0 || $m > 720 || $m % 5 !== 0) throw new Fehler('Ablauf ungültig (Minuten in Fünferschritten).', 422, 'phasen');
         if ($m > 0) $aus[] = [$p[0], $m];
     }
     return phasen_verketten([['phasen' => $aus]]);
@@ -65,13 +66,18 @@ function phasen_dauer(array $phasen): int
     return array_sum(array_column($phasen, 1));
 }
 
-/** Arbeitsabschnitte relativ zum Start: [[von, bis], …] in Minuten. */
+/** Abschnitte, in denen die Person belegt ist, relativ zum Start:
+    [[von, bis], …] in Minuten. Arbeit und Puffer belegen, die Einwirkzeit
+    („pause“) nicht. Aneinanderstoßende Abschnitte werden einer. */
 function arbeit_abschnitte(array $phasen): array
 {
     $t = 0;
     $aus = [];
     foreach ($phasen as [$art, $min]) {
-        if ($art === 'arbeit') $aus[] = [$t, $t + $min];
+        if ($art !== 'pause') {
+            if ($aus && $aus[count($aus) - 1][1] === $t) $aus[count($aus) - 1][1] = $t + $min;
+            else $aus[] = [$t, $t + $min];
+        }
         $t += $min;
     }
     return $aus;
@@ -139,6 +145,40 @@ function auf_tag(string $datum, string $von, string $bis): ?array
 }
 
 /**
+ * Wann hat der Salon an diesem Tag offen? Öffnungszeiten minus Feiertage
+ * und salonweite Sperren (Schließtage). [[a, b], …] in Minuten.
+ */
+function salon_fenster(string $salon, string $vonDatum, string $bisDatum): array
+{
+    $db = db();
+    $s = $db->eins('SELECT oeffnung, aktiv FROM {p}salon WHERE id = ?', [$salon]);
+    $oeff = $s ? (json_decode((string)$s['oeffnung'], true) ?: []) : [];
+    $sperren = $db->alle('SELECT von, bis FROM {p}abwesenheit WHERE person_id IS NULL AND (salon_id IS NULL OR salon_id = ?) AND von < ? AND bis > ?',
+        [$salon, tag_plus($bisDatum, 1) . ' 00:00:00', "$vonDatum 00:00:00"]);
+    $aus = [];
+    for ($d = $vonDatum; $d <= $bisDatum; $d = tag_plus($d, 1)) {
+        if (!$s || !$s['aktiv'] || feiertag($d)) { $aus[$d] = []; continue; }
+        $fenster = [];
+        foreach ($oeff[(string)wochentag($d)] ?? [] as [$a, $b]) $fenster[] = [(int)$a, (int)$b];
+        $zu = [];
+        foreach ($sperren as $x) if ($iv = auf_tag($d, $x['von'], $x['bis'])) $zu[] = $iv;
+        $aus[$d] = intervalle_abziehen(intervalle_vereinen($fenster), $zu);
+    }
+    return $aus;
+}
+
+/** Schnittmenge zweier Intervall-Listen. */
+function intervalle_schneiden(array $x, array $y): array
+{
+    $aus = [];
+    foreach ($x as [$a, $b]) foreach ($y as [$c, $d]) {
+        $s = max($a, $c); $e = min($b, $d);
+        if ($e > $s) $aus[] = [$s, $e];
+    }
+    return intervalle_vereinen($aus);
+}
+
+/**
  * Tagespläne für Personen: je Person und Datum die Arbeitsfenster im Salon
  * (ohne Abwesenheiten) und die belegten Minuten (aus allen Salons).
  *   $plan[$person][$datum] = ['fenster' => [[a,b],…], 'belegt' => [[a,b,termin],…]]
@@ -161,6 +201,7 @@ function tagesplaene(array $personen, string $salon, string $vonDatum, string $b
         WHERE person_id IN ($in) AND start < ? AND ende > ?" . ($ohneTermin ? ' AND termin_id <> ?' : ''),
         array_merge($ids, [$bisZeit, $vonZeit], $ohneTermin ? [$ohneTermin] : []));
     $puffer = (int)einstellungen()['puffer'];
+    $salonAuf = salon_fenster($salon, $vonDatum, $bisDatum);
 
     for ($d = $vonDatum; $d <= $bisDatum; $d = tag_plus($d, 1)) {
         $wt = wochentag($d);
@@ -169,7 +210,8 @@ function tagesplaene(array $personen, string $salon, string $vonDatum, string $b
             foreach ($zeiten as $z) {
                 if ($z['person_id'] === $pid && (int)$z['wochentag'] === $wt) $fenster[] = [(int)$z['von'], (int)$z['bis']];
             }
-            $fenster = intervalle_vereinen($fenster);
+            // Arbeitszeit zählt nur, solange der Salon offen hat.
+            $fenster = intervalle_schneiden(intervalle_vereinen($fenster), $salonAuf[$d]);
             $sperren = [];
             foreach ($abw as $a) {
                 if ($a['person_id'] !== null && $a['person_id'] !== $pid) continue;
@@ -253,6 +295,7 @@ function freie_zeiten(string $salon, array $phasen, array $personIds, string $vo
         }
         $tag = [];
         $arbeitet = false;
+        $umstellung = umstellungstag($d);
         foreach ($personIds as $pid) {
             $tp = $plan[$pid][$d] ?? null;
             if (!$tp || !$tp['fenster']) continue;
@@ -266,7 +309,8 @@ function freie_zeiten(string $salon, array $phasen, array $personIds, string $vo
                 foreach ($tp['belegt'] as [$ba, $bb]) $kandidaten[$bb] = true;
             }
             foreach (array_keys($kandidaten) as $t) {
-                if ($t < $ab) continue;
+                if ($t < $ab || $t % 5) continue;
+                if ($umstellung && !zeitraum_eindeutig(min_zu_zeit($d, $t), min_zu_zeit($d, $t + $dauer))) continue;
                 if (passt($tp, $t, $abschnitte, $dauer, $puffer)) $tag[$t][] = $pid;
             }
         }
@@ -288,10 +332,10 @@ function online_fruehestens(): string
 }
 
 /** Aus mehreren freien Personen die wählen, bei der der Termin am besten anschließt. */
-function beste_person(array $kandidaten, string $salon, string $datum, int $t, array $phasen): string
+function beste_person(array $kandidaten, string $salon, string $datum, int $t, array $phasen, ?int $ohneTermin = null): string
 {
     if (count($kandidaten) === 1) return $kandidaten[0];
-    $plan = tagesplaene($kandidaten, $salon, $datum, $datum);
+    $plan = tagesplaene($kandidaten, $salon, $datum, $datum, $ohneTermin);
     $abschnitte = arbeit_abschnitte($phasen);
     $sort = [];
     $reihung = db()->alle('SELECT id, sort FROM {p}person WHERE id IN (' . DB::liste($kandidaten) . ')', $kandidaten);
@@ -332,10 +376,16 @@ function konflikte(string $person, string $salon, string $start, array $phasen, 
         }
     }
     if (!$imFenster) {
-        $abw = db()->wert('SELECT COUNT(*) FROM {p}abwesenheit WHERE von < ? AND bis > ? AND (person_id IS NULL OR person_id = ?) AND (salon_id IS NULL OR salon_id = ?)',
-            [zeit_plus($start, $dauer), $start, $person, $salon]);
-        $aus[] = ['art' => $abw ? 'abwesend' : 'ausserhalb'];
+        // Hart: Salon zu (Öffnungszeit, Feiertag, Schließtag) oder Person
+        // abwesend. Weich (nur im Studio bewusst überstimmbar): außerhalb
+        // der eingetragenen Arbeitszeit, aber bei offenem Salon.
+        $imSalon = false;
+        foreach (salon_fenster($salon, $datum, $datum)[$datum] as [$a, $b]) if ($t >= $a && $ende <= $b) $imSalon = true;
+        $abw = db()->wert('SELECT COUNT(*) FROM {p}abwesenheit WHERE person_id = ? AND von < ? AND bis > ? AND (salon_id IS NULL OR salon_id = ?)',
+            [$person, zeit_plus($start, $dauer), $start, $salon]);
+        $aus[] = ['art' => !$imSalon ? 'geschlossen' : ($abw ? 'abwesend' : 'ausserhalb')];
     }
+    if (!zeitraum_eindeutig($start, zeit_plus($start, $dauer))) $aus[] = ['art' => 'umstellung'];
     return $aus;
 }
 
@@ -344,9 +394,33 @@ function belegung_schreiben(int $termin, string $person, string $start, array $p
 {
     $db = db();
     $db->q('DELETE FROM {p}belegung WHERE termin_id = ?', [$termin]);
-    if (in_array($status, ['storniert'], true)) return;
+    if (!in_array($status, STATUS_BELEGT, true)) return;
     foreach (arbeit_abschnitte($phasen) as [$x, $y]) {
         $db->einfuegen('belegung', ['termin_id' => $termin, 'person_id' => $person,
             'start' => zeit_plus($start, $x), 'ende' => zeit_plus($start, $y)]);
     }
+}
+
+/**
+ * Drei Ausweichzeiten, wenn die gewünschte gerade weg ist: zuerst am selben
+ * Tag möglichst nah an der Wunschzeit, dann an den folgenden Tagen.
+ */
+function alternativen(string $salon, array $phasen, array $kandidaten, string $start, ?string $fruehestens, ?int $ohneTermin = null, int $n = 3): array
+{
+    $datum = substr($start, 0, 10);
+    $wunsch = zeit_zu_min($start);
+    $bis = tag_plus($datum, 13);
+    $letzter = tag_plus(date('Y-m-d'), (int)einstellungen()['horizont']);
+    if ($fruehestens !== null && $bis > $letzter) $bis = $letzter;
+    if ($bis < $datum) return [];
+    $frei = freie_zeiten($salon, $phasen, $kandidaten, $datum, $bis, $fruehestens, $ohneTermin);
+    $liste = [];
+    foreach ($frei as $d => $zeiten) {
+        $abstand = (int)round((strtotime("$d 12:00:00") - strtotime("$datum 12:00:00")) / 86400);
+        foreach ($zeiten as $t => $wer) {
+            $liste[] = [$abstand, abs($t - $wunsch), $d, $t, $wer];
+        }
+    }
+    usort($liste, fn($a, $b) => [$a[0], $a[1], $a[3]] <=> [$b[0], $b[1], $b[3]]);
+    return array_map(fn($x) => ['datum' => $x[2], 't' => hhmm($x[3]), 'p' => $x[4]], array_slice($liste, 0, $n));
 }

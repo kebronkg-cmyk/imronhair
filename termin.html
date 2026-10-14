@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="neu.css">
 <link rel="stylesheet" href="termin.css">
 <!-- Wo die Termin-Schnittstelle liegt (relativ zu dieser Seite oder als volle Adresse). -->
-<meta name="irmonhair-api" content="../api/">
+<meta name="irmonhair-api" content="api/">
 <link rel="preload" href="schrift/Jost.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="schrift/Mulish.woff2" as="font" type="font/woff2" crossorigin>
 </head>
@@ -148,6 +148,8 @@
         <button class="schritt-aendern" type="button">&auml;ndern<span class="nurlesen"> (Zeit)</span></button>
       </div>
       <div class="schritt-inhalt">
+        <!-- Gerade vergeben: drei Ausweichzeiten, so nah wie möglich an der gewünschten -->
+        <div class="ausweich" id="ausweich" role="status" hidden></div>
         <div class="vorschlaege" id="vorschlaege"></div>
         <div class="tage-rahmen">
           <div class="tage" id="tage" role="group" aria-label="Tag w&auml;hlen"></div>
@@ -187,12 +189,15 @@
             <label for="k-webseite">Webseite</label>
             <input id="k-webseite" name="webseite" tabindex="-1" autocomplete="off">
           </div>
+          <!-- Einwilligungen: beide freiwillig, keine vorausgewählt -->
+          <fieldset class="einwilligungen" id="einwilligungen" hidden></fieldset>
           <label class="merken">
             <input type="checkbox" id="k-merken">
             <span>Angaben auf diesem Ger&auml;t merken <small>&mdash; beim n&auml;chsten Mal ist alles ausgef&uuml;llt</small></span>
           </label>
           <div class="beleg etikett-handy" id="etikett-handy"></div>
           <p class="rechtlich">Mit dem Buchen verarbeiten wir Ihre Angaben, um den Termin zu vergeben und Sie zu erreichen. Mehr in der <a href="datenschutz.html#termine">Datenschutzerkl&auml;rung</a>.</p>
+          <p class="buchen-hinweis" id="buchen-hinweis" hidden></p>
           <p class="fehler" id="kontakt-fehler" role="alert" hidden></p>
           <button class="knopf buchen-knopf" type="submit" id="buchen">Termin verbindlich buchen</button>
         </form>

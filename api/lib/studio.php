@@ -7,7 +7,10 @@
 declare(strict_types=1);
 
 const COOKIE = 'ih_studio';
-const ROLLEN = ['inhaberin', 'team'];
+/* Rollen: Inhaberin (alles), Rezeption (Kalender, Kunden, salonweite
+   Sperren, Export), Team (Kalender und Kunden). Jede Person hat ihren
+   eigenen Zugang — niemand teilt sich ein Login. */
+const ROLLEN = ['inhaberin', 'rezeption', 'team'];
 
 function cookie_setzen(string $wert, int $ablauf): void
 {
@@ -44,7 +47,7 @@ function angemeldet(): ?array
     return $GLOBALS['ANGEMELDET'];
 }
 
-function anmeldung_pflicht(bool $schreibend, bool $inhaberin = false): array
+function anmeldung_pflicht(bool $schreibend, bool|array $inhaberin = false): array
 {
     $a = angemeldet();
     if (!$a) throw new Fehler('Bitte neu anmelden.', 401, 'abgemeldet');
@@ -52,7 +55,8 @@ function anmeldung_pflicht(bool $schreibend, bool $inhaberin = false): array
         methode('POST');
         if (!hash_equals($a['csrf'], (string)($_SERVER['HTTP_X_CSRF'] ?? ''))) throw new Fehler('Sitzung abgelaufen, bitte Seite neu laden.', 403, 'csrf');
     }
-    if ($inhaberin && $a['rolle'] !== 'inhaberin') throw new Fehler('Das darf nur die Inhaberin.', 403, 'rolle');
+    if ($inhaberin === true && $a['rolle'] !== 'inhaberin') throw new Fehler('Das darf nur die Inhaberin.', 403, 'rolle');
+    if (is_array($inhaberin) && !in_array($a['rolle'], $inhaberin, true)) throw new Fehler('Das darf Ihre Rolle nicht.', 403, 'rolle');
     return $a;
 }
 
@@ -182,10 +186,25 @@ function aktion_passwort(): array
 
 /* ── Kalender ────────────────────────────────────────────────────── */
 
+/** Änderungszähler — und was Kundinnen seit dem letzten Blick online
+    getan haben (gebucht, verschoben, abgesagt), für die Sofortmeldung. */
 function aktion_stand(): array
 {
     anmeldung_pflicht(false);
-    return ['stand' => (int)db()->wert("SELECT wert FROM {p}zaehler WHERE name = 'stand'")];
+    $db = db();
+    $aus = ['stand' => (int)$db->wert("SELECT wert FROM {p}zaehler WHERE name = 'stand'"),
+            'letztes' => (int)$db->wert('SELECT COALESCE(MAX(id), 0) FROM {p}protokoll')];
+    $seit = feld('seit');
+    if ($seit !== null && ctype_digit((string)$seit)) {
+        $zeilen = $db->alle("SELECT p.id, p.aktion, p.termin_id, t.start, t.ende, t.salon_id, t.person_id, t.gast_name
+            FROM {p}protokoll p JOIN {p}termin t ON t.id = p.termin_id
+            WHERE p.id > ? AND p.akteur = 'kunde' AND p.aktion IN ('termin_angelegt', 'online_verschoben', 'online_storniert')
+            ORDER BY p.id LIMIT 20", [(int)$seit]);
+        $aus['ereignisse'] = array_map(fn($z) => ['id' => (int)$z['id'], 'aktion' => $z['aktion'], 'termin' => (int)$z['termin_id'],
+            'start' => substr($z['start'], 0, 16), 'ende' => substr($z['ende'], 0, 16), 'salon' => $z['salon_id'],
+            'person' => $z['person_id'], 'name' => $z['gast_name']], $zeilen);
+    }
+    return $aus;
 }
 
 function aktion_kalender(): array
@@ -199,11 +218,11 @@ function aktion_kalender(): array
     $vonZ = "$von 00:00:00";
     $bisZ = tag_plus($bis, 1) . ' 00:00:00';
     $stand = (int)$db->wert("SELECT wert FROM {p}zaehler WHERE name = 'stand'");
-    $termine = $db->alle("SELECT * FROM {p}termin WHERE salon_id = ? AND start < ? AND ende > ?" . (feld('storno') ? '' : " AND status <> 'storniert'") . ' ORDER BY start',
+    $termine = $db->alle("SELECT * FROM {p}termin WHERE salon_id = ? AND start < ? AND ende > ?" . (feld('storno') ? '' : " AND status NOT IN ('storniert_kunde', 'storniert_salon')") . ' ORDER BY start',
         [$salon, $bisZ, $vonZ]);
     // Termine derselben Personen im anderen Salon: nur als belegt zeigen.
     $woanders = $db->alle("SELECT t.id, t.person_id, t.start, t.ende, t.salon_id FROM {p}termin t
-        WHERE t.salon_id <> ? AND t.status <> 'storniert' AND t.start < ? AND t.ende > ?
+        WHERE t.salon_id <> ? AND t.status IN ('gebucht', 'erschienen') AND t.start < ? AND t.ende > ?
         AND t.person_id IN (SELECT DISTINCT person_id FROM {p}arbeitszeit WHERE salon_id = ?)", [$salon, $bisZ, $vonZ, $salon]);
     $zeiten = $db->alle('SELECT person_id, wochentag, von, bis FROM {p}arbeitszeit WHERE salon_id = ? ORDER BY von', [$salon]);
     $abw = $db->alle('SELECT * FROM {p}abwesenheit WHERE von < ? AND bis > ? AND (salon_id IS NULL OR salon_id = ?) ORDER BY von', [$bisZ, $vonZ, $salon]);
@@ -247,6 +266,8 @@ function studio_kunde(): ?int
     return kunde_zu_telefon($vor ?: null, $nach, $tel, $email);
 }
 
+const QUELLEN_STUDIO = ['telefon', 'vorort', 'studio', 'kasse_vorausbuchung', 'recall', 'warteliste'];
+
 function aktion_termin_neu(): array
 {
     anmeldung_pflicht(true);
@@ -256,18 +277,31 @@ function aktion_termin_neu(): array
     if ($person && !db()->wert('SELECT 1 FROM {p}person WHERE id = ? AND aktiv = 1', [$person])) throw new Fehler('Unbekannte Person.', 422);
     $phasen = feld('phasen') !== null ? phasen_pruefen(feld('phasen')) : null;
     $preis = feld('preis_cent');
-    return db()->schreiben(function () use ($salon, $leistungen, $person, $phasen, $preis) {
+    $start = zeitpunkt_pruefen(text_feld('start', 20, true));
+    $anfrage = text_feld('anfrage_id', 64);
+    $r = db()->schreiben(function () use ($salon, $leistungen, $person, $phasen, $preis, $start, $anfrage) {
         $kunde = studio_kunde();
         $k = feld('kunde');
-        return termin_anlegen([
+        return bucheTermin([
             'salon' => $salon, 'leistungen' => $leistungen, 'person' => $person ?: null, 'phasen' => $phasen,
-            'start' => zeitpunkt_pruefen(text_feld('start', 20, true)), 'kunde_id' => $kunde,
+            'start' => $start, 'kunde_id' => $kunde,
             'gast_name' => is_array($k) ? (mb_substr(trim((string)($k['name'] ?? '')), 0, 160) ?: null) : null,
-            'notiz' => text_feld('notiz', 2000), 'quelle' => in_array(feld('quelle'), ['telefon', 'vorort', 'studio'], true) ? feld('quelle') : 'studio',
-            'trotzdem' => feld('trotzdem') === true, 'preis_cent' => is_int($preis) ? $preis : null,
-            'anfrage_id' => text_feld('anfrage_id', 64),
+            'notiz' => text_feld('notiz', 2000), 'quelle' => in_array(feld('quelle'), QUELLEN_STUDIO, true) ? feld('quelle') : 'studio',
+            'kanal' => 'studio', 'ausserhalb_ok' => feld('ausserhalb_ok') === true || feld('trotzdem') === true,
+            'preis_cent' => is_int($preis) ? $preis : null, 'anfrage_id' => $anfrage,
         ]);
     });
+    // Nach dem COMMIT: Bestätigung an die Kundin, wenn sie eine E-Mail hat.
+    if (!$r['wiederholt'] && kunden_email_vorhanden($r['termin'])) {
+        require_once __DIR__ . '/post.php';
+        post_bestaetigung($r['termin'], null);
+    }
+    return $r['termin'];
+}
+
+function kunden_email_vorhanden(array $t): bool
+{
+    return !empty($t['kunde']['email']) && $t['start'] >= date('Y-m-d H:i');
 }
 
 function aktion_termin_aendern(): array
@@ -276,6 +310,7 @@ function aktion_termin_aendern(): array
     $id = (int)feld('id');
     $t = db()->eins('SELECT salon_id FROM {p}termin WHERE id = ?', [$id]);
     if (!$t) throw new Fehler('Termin nicht gefunden.', 404);
+    if (!is_int(feld('version')) && !ctype_digit((string)feld('version'))) throw new Fehler('Bitte neu laden (Versionsstand fehlt).', 422, 'version');
     $a = [];
     if (feld('start') !== null) $a['start'] = zeitpunkt_pruefen((string)feld('start'));
     if (feld('person') !== null) {
@@ -284,19 +319,31 @@ function aktion_termin_aendern(): array
         $a['person'] = $p;
     }
     if (feld('phasen') !== null) $a['phasen'] = phasen_pruefen(feld('phasen'));
-    if (feld('status') !== null) $a['status'] = (string)feld('status');
+    if (feld('status') !== null) {
+        $st = (string)feld('status');
+        if ($st === 'storniert') $st = 'storniert_salon';   // ältere Oberfläche
+        $a['status'] = $st;
+    }
+    if (array_key_exists('storno_grund', eingabe())) $a['storno_grund'] = text_feld('storno_grund', 255);
     foreach (['notiz' => 2000, 'kundennotiz' => 600] as $f => $max) if (array_key_exists($f, eingabe())) $a[$f] = text_feld($f, $max);
     if (array_key_exists('preis_cent', eingabe())) $a['preis_cent'] = is_int(feld('preis_cent')) ? feld('preis_cent') : null;
     if (feld('leistungen') !== null) {
         $a['leistungen'] = studio_leistungen($t['salon_id']);
         if (!isset($a['phasen'])) $a['phasen'] = phasen_verketten($a['leistungen']);
     }
-    return db()->schreiben(function () use ($id, $a) {
+    $r = db()->schreiben(function () use ($id, $a) {
         if (array_key_exists('kunde_id', eingabe()) || feld('kunde') !== null) {
             $a['kunde_id'] = studio_kunde();
         }
-        return termin_aendern($id, $a, feld('version') !== null ? (int)feld('version') : null, feld('trotzdem') === true);
+        return termin_aendern($id, $a, (int)feld('version'), feld('ausserhalb_ok') === true || feld('trotzdem') === true);
     });
+    // Nach dem COMMIT: jede Änderung an Zeit, Person oder Status meldet sich
+    // bei der Kundin — mit „vorher → jetzt“, aus dem gespeicherten Stand.
+    if (feld('benachrichtigen') !== false) {
+        require_once __DIR__ . '/post.php';
+        post_aenderung($r['vorher'], $r['termin']);
+    }
+    return $r['termin'];
 }
 
 function aktion_termin_verlauf(): array
@@ -304,8 +351,10 @@ function aktion_termin_verlauf(): array
     anmeldung_pflicht(false);
     $id = (int)feld('id');
     $t = termin_lesen($id);
-    $verlauf = db()->alle('SELECT p.zeit, p.aktion, p.daten, pe.name FROM {p}protokoll p LEFT JOIN {p}person pe ON pe.id = p.person_id WHERE p.termin_id = ? ORDER BY p.id', [$id]);
-    $t['verlauf'] = array_map(fn($v) => ['zeit' => substr($v['zeit'], 0, 16), 'aktion' => $v['aktion'], 'wer' => $v['name'], 'daten' => json_decode((string)$v['daten'], true)], $verlauf);
+    $verlauf = db()->alle('SELECT p.zeit, p.aktion, p.daten, p.akteur, pe.name FROM {p}protokoll p LEFT JOIN {p}person pe ON pe.id = p.person_id WHERE p.termin_id = ? ORDER BY p.id', [$id]);
+    $t['verlauf'] = array_map(fn($v) => ['zeit' => substr($v['zeit'], 0, 16), 'aktion' => $v['aktion'],
+        'wer' => $v['name'] ?? (['kunde' => 'Kundin (online)', 'system' => 'System'][$v['akteur'] ?? ''] ?? null),
+        'akteur' => $v['akteur'] ?? null, 'daten' => json_decode((string)$v['daten'], true)], $verlauf);
     return $t;
 }
 
@@ -335,7 +384,7 @@ function aktion_abwesenheit_speichern(): array
     $a = anmeldung_pflicht(true);
     $person = text_feld('person', 32);
     $salon = text_feld('salon', 32);
-    if (!$person && $a['rolle'] !== 'inhaberin') throw new Fehler('Salonweite Sperren setzt die Inhaberin.', 403, 'rolle');
+    if (!$person && !in_array($a['rolle'], ['inhaberin', 'rezeption'], true)) throw new Fehler('Salonweite Sperren setzen Inhaberin oder Rezeption.', 403, 'rolle');
     $von = zeitpunkt_pruefen(text_feld('von', 20, true));
     $bis = zeitpunkt_pruefen(text_feld('bis', 20, true));
     if ($bis <= $von) throw new Fehler('Das Ende muss nach dem Anfang liegen.', 422);
@@ -361,9 +410,10 @@ function aktion_abwesenheit_loeschen(): array
     anmeldung_pflicht(true);
     $id = (int)feld('id');
     db()->schreiben(function (DB $db) use ($id) {
+        $alt = $db->eins('SELECT * FROM {p}abwesenheit WHERE id = ?', [$id]);
         $db->q('DELETE FROM {p}abwesenheit WHERE id = ?', [$id]);
         $db->standErhoehen();
-        protokoll('abwesenheit_geloescht', null, null, ['id' => $id]);
+        protokoll('abwesenheit_geloescht', null, null, ['id' => $id, 'vorher' => $alt]);
     });
     return ['ok' => true];
 }
@@ -377,9 +427,9 @@ function aktion_kunden(): array
     $q = trim((string)(text_feld('q', 100) ?? ''));
     $jetzt = jetzt();
     $werte = [$jetzt, $jetzt];
-    $sql = 'SELECT k.*, (SELECT MAX(start) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status NOT IN (\'storniert\', \'nicht_erschienen\') AND t.start < ?) AS letzter,
+    $sql = 'SELECT k.*, (SELECT MAX(start) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status IN (\'gebucht\', \'erschienen\') AND t.start < ?) AS letzter,
         (SELECT MIN(start) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status = \'gebucht\' AND t.start >= ?) AS naechster,
-        (SELECT COUNT(*) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status <> \'storniert\') AS besuche
+        (SELECT COUNT(*) FROM {p}termin t WHERE t.kunde_id = k.id AND t.status NOT IN (\'storniert_kunde\', \'storniert_salon\')) AS besuche
         FROM {p}kunde k WHERE k.geloescht = 0';
     if ($q !== '') {
         foreach (preg_split('/\s+/u', mb_strtolower($q)) as $wort) {
@@ -411,7 +461,7 @@ function aktion_kunde(): array
     $k = kunde_lesen($id);
     $db = db();
     $termine = termine_aufbereiten($db->alle('SELECT * FROM {p}termin WHERE kunde_id = ? ORDER BY start DESC LIMIT 200', [$id]));
-    $vergangen = array_values(array_filter($termine, fn($t) => $t['start'] < date('Y-m-d H:i') && $t['status'] !== 'storniert'));
+    $vergangen = array_values(array_filter($termine, fn($t) => $t['start'] < date('Y-m-d H:i') && !storniert($t['status'])));
     $umsatz = array_sum(array_map(fn($t) => $t['status'] === 'erschienen' ? (int)$t['preis_cent'] : 0, $vergangen));
     // Üblicher Abstand zwischen Besuchen (Median) → Vorschlag für den nächsten.
     $abstaende = [];
@@ -424,7 +474,7 @@ function aktion_kunde(): array
     if ($k['telefon']) {
         $doppelt = $db->alle('SELECT id, vorname, nachname FROM {p}kunde WHERE telefon = ? AND id <> ? AND geloescht = 0', [$k['telefon'], $id]);
     }
-    return $k + ['termine' => $termine, 'umsatz_cent' => $umsatz, 'rhythmus_tage' => $rhythmus,
+    return $k + ['termine' => $termine, 'umsatz_cent' => $umsatz, 'rhythmus_tage' => $rhythmus, 'einwilligungen' => einwilligungen_lesen($id),
         'nicht_erschienen' => count(array_filter($termine, fn($t) => $t['status'] === 'nicht_erschienen')), 'doppelt' => $doppelt];
 }
 
@@ -659,7 +709,7 @@ function aktion_einstellungen_speichern(): array
         if ($w < $min || $w > $max) throw new Fehler("„{$f}“ muss zwischen $min und $max liegen.", 422, 'bereich', ['feld' => $f]);
         $e[$f] = $w;
     }
-    foreach (['luecken_fuellen', 'online_aktiv'] as $f) if (is_bool(feld($f))) $e[$f] = feld($f);
+    foreach (['luecken_fuellen', 'online_aktiv', 'feiertage'] as $f) if (is_bool(feld($f))) $e[$f] = feld($f);
     if (feld('hinweis') !== null) $e['hinweis'] = (string)text_feld('hinweis', 300);
     db()->schreiben(function (DB $db) use ($e) {
         $db->q("UPDATE {p}meta SET wert = ? WHERE schluessel = 'einstellungen'", [json_encode($e, JSON_UNESCAPED_UNICODE)]);
@@ -688,7 +738,7 @@ function aktion_auswertung(): array
     foreach ($zeilen as $t) {
         $p = &$jePerson[$t['person_id']];
         $p ??= ['termine' => 0, 'umsatz_cent' => 0, 'arbeit_min' => 0, 'nicht_erschienen' => 0];
-        if ($t['status'] === 'storniert') { $summe['storniert']++; unset($p); continue; }
+        if (storniert($t['status'])) { $summe['storniert']++; unset($p); continue; }
         $summe['termine']++; $p['termine']++;
         if ($t['quelle'] === 'online') $summe['online']++;
         if ($t['status'] === 'nicht_erschienen') { $summe['nicht_erschienen']++; $p['nicht_erschienen']++; }
@@ -726,7 +776,7 @@ function aktion_sicherung(): never
     anmeldung_pflicht(false, true);
     $db = db();
     $aus = ['erstellt' => jetzt(), 'schema' => (int)$db->wert("SELECT wert FROM {p}meta WHERE schluessel = 'schema'"), 'tabellen' => []];
-    foreach (['meta', 'salon', 'person', 'arbeitszeit', 'abwesenheit', 'leistung', 'leistung_person', 'kunde', 'termin', 'termin_posten', 'belegung', 'protokoll'] as $t) {
+    foreach (['meta', 'salon', 'person', 'arbeitszeit', 'abwesenheit', 'leistung', 'leistung_person', 'kunde', 'einwilligung', 'termin', 'termin_posten', 'belegung', 'protokoll'] as $t) {
         $zeilen = $db->alle("SELECT * FROM {p}$t");
         if ($t === 'person') foreach ($zeilen as &$z) unset($z['pass_hash']);
         unset($z);
@@ -737,5 +787,60 @@ function aktion_sicherung(): never
     header('Content-Disposition: attachment; filename="irmonhair-sicherung-' . date('Y-m-d-His') . '.json"');
     header('Cache-Control: no-store');
     echo json_encode($aus, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    exit;
+}
+
+/**
+ * Export als CSV (Excel-tauglich: UTF-8 mit BOM, Semikolon). Kunden,
+ * Termine mit Leistungen, das ganze Protokoll und die Einwilligungen —
+ * jederzeit per Knopf, damit die Daten dem Salon gehören.
+ */
+function aktion_export(): never
+{
+    anmeldung_pflicht(false, ['inhaberin', 'rezeption']);
+    $db = db();
+    $was = (string)feld('was', 'termine');
+    $personen = array_column($db->alle('SELECT id, name FROM {p}person'), 'name', 'id');
+    switch ($was) {
+        case 'kunden':
+            $kopf = ['Nr', 'Vorname', 'Nachname', 'Telefon', 'E-Mail', 'Notiz', 'Angelegt', 'Geändert', 'Gelöscht'];
+            $zeilen = array_map(fn($k) => [$k['id'], $k['vorname'], $k['nachname'], $k['telefon'], $k['email'], $k['notiz'], $k['erstellt'], $k['geaendert'], $k['geloescht'] ? 'ja' : ''],
+                $db->alle('SELECT * FROM {p}kunde ORDER BY id'));
+            break;
+        case 'termine':
+            $posten = [];
+            foreach ($db->alle('SELECT termin_id, name, laenge FROM {p}termin_posten ORDER BY termin_id, pos') as $p) $posten[$p['termin_id']][] = $p['name'] . ($p['laenge'] ? ' (' . $p['laenge'] . ')' : '');
+            $kopf = ['Nr', 'Salon', 'Person', 'Kunden-Nr', 'Name', 'Beginn', 'Ende', 'Beginn UTC', 'Ende UTC', 'Leistungen', 'Preis €', 'ab', 'Status', 'Absagegrund', 'Quelle', 'Ref', 'Wunschperson', 'Angelegt', 'Geändert', 'Version'];
+            $zeilen = array_map(fn($t) => [$t['id'], $t['salon_id'], $personen[$t['person_id']] ?? $t['person_id'], $t['kunde_id'], $t['gast_name'], $t['start'], $t['ende'],
+                $t['start_utc'], $t['ende_utc'], implode(' + ', $posten[$t['id']] ?? []), $t['preis_cent'] === null ? '' : number_format($t['preis_cent'] / 100, 2, ',', ''),
+                $t['preis_ab'] ? 'ja' : '', $t['status'], $t['storno_grund'], $t['quelle'], $t['ref'], $t['wunsch_person'] ? 'ja' : '', $t['erstellt'], $t['geaendert'], $t['version']],
+                $db->alle('SELECT * FROM {p}termin ORDER BY start'));
+            break;
+        case 'protokoll':
+            $kopf = ['Nr', 'Zeit', 'Wer', 'Verursacher', 'Aktion', 'Termin', 'Kunde', 'Daten'];
+            $zeilen = array_map(fn($z) => [$z['id'], $z['zeit'], $personen[$z['person_id']] ?? $z['person_id'], $z['akteur'], $z['aktion'], $z['termin_id'], $z['kunde_id'], $z['daten']],
+                $db->alle('SELECT * FROM {p}protokoll ORDER BY id'));
+            break;
+        case 'einwilligungen':
+            $kopf = ['Nr', 'Kunden-Nr', 'Art', 'Erteilt', 'Zeit', 'Quelle', 'Wortlaut', 'Termin'];
+            $zeilen = array_map(fn($z) => [$z['id'], $z['kunde_id'], $z['art'], $z['erteilt'] ? 'ja' : 'nein', $z['zeit'], $z['quelle'], $z['wortlaut'], $z['termin_id']],
+                $db->alle('SELECT * FROM {p}einwilligung ORDER BY id'));
+            break;
+        default:
+            throw new Fehler('Unbekannter Export.', 422);
+    }
+    protokoll('export', null, null, ['was' => $was, 'zeilen' => count($zeilen)]);
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="irmonhair-' . $was . '-' . date('Y-m-d') . '.csv"');
+    header('Cache-Control: no-store');
+    $f = fopen('php://output', 'w');
+    fwrite($f, "\xEF\xBB\xBF");
+    // Zellen, die mit = oder @ (oder + und - vor etwas anderem als einer
+    // Ziffer) beginnen, würde Excel als Formel ausführen. Telefonnummern
+    // (+49…) bleiben, wie sie sind.
+    $sicher = fn($w) => is_string($w) && preg_match('/^(?:[=@\t\r]|[+-][^0-9])/', $w) ? "'" . $w : $w;
+    fputcsv($f, $kopf, ';', '"', '');
+    foreach ($zeilen as $z) fputcsv($f, array_map($sicher, $z), ';', '"', '');
+    fclose($f);
     exit;
 }

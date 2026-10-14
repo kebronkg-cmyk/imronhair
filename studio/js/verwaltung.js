@@ -6,8 +6,8 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { $, el, svg, ZEICHEN, euro, preisText, dauerText, TAG_LANG, hhmm, minuten, heute, plusTage, montag, tagText,
-  meldung, fragen, speichern, summePhasen, alsDatum, iso } from './hilfen.js';
-import { Z, api, inhaberin, stammdatenLaden, personVon, salonVon, gruppeVon } from './api.js';
+  meldung, fragen, speichern, summePhasen, alsDatum, iso, themaWahl, themaSetzen } from './hilfen.js';
+import { Z, api, inhaberin, leitung, ROLLE_NAME, stammdatenLaden, personVon, salonVon, gruppeVon } from './api.js';
 import { tafelAuf, tafelZu } from './tafel.js';
 import { abwesenheitZeigen, abwesenheitNeu } from './termin.js';
 
@@ -39,7 +39,7 @@ export const team = {
       return el('li', {}, el('button', { type: 'button', klasse: 'team-zeile' + (p.aktiv ? '' : ' ist-aus'), stil: { '--farbe': farbe(p.farbe) }, onclick: () => personBearbeiten(p) },
         el('span', { klasse: 'monogramm', 'aria-hidden': 'true', text: p.name.charAt(0) }),
         el('span', { klasse: 'team-text' },
-          el('span', { klasse: 'team-name' }, p.name, p.rolle === 'inhaberin' ? el('span', { klasse: 'marke', text: 'Inhaberin' }) : null, !p.aktiv ? el('span', { klasse: 'marke', text: 'inaktiv' }) : null),
+          el('span', { klasse: 'team-name' }, p.name, p.rolle !== 'team' ? el('span', { klasse: 'marke', text: ROLLE_NAME[p.rolle] }) : null, !p.aktiv ? el('span', { klasse: 'marke', text: 'inaktiv' }) : null),
           el('span', { klasse: 'team-info', text: `${salons}${tage ? ' · ' + tage : ''}` })),
         el('span', { klasse: 'team-rechts' },
           el('span', { klasse: 'team-info', text: p.online ? 'online buchbar' : 'nur im Studio' }),
@@ -52,7 +52,7 @@ function personBearbeiten(p) {
   const neu = !p;
   const f = p ? structuredClone(p) : { name: '', farbe: (Z.s.personen.length % 8) + 1, rolle: 'team', anmeldename: '', aktiv: true, online: true, arbeitszeiten: [], leistungen: [] };
   f.passwort = '';
-  const koerper = tafelAuf({ titel: neu ? 'Neue Person' : p.name, unter: neu ? '' : (p.rolle === 'inhaberin' ? 'Inhaberin' : 'Team'), breit: true });
+  const koerper = tafelAuf({ titel: neu ? 'Neue Person' : p.name, unter: neu ? '' : ROLLE_NAME[p.rolle] || 'Team', breit: true });
   const fehler = el('p', { klasse: 'form-fehler', role: 'alert', hidden: true });
   const feld = (name, text, attr = {}) => el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text }),
     el('input', { value: f[name] ?? '', name, oninput: (e) => { f[name] = e.target.value; }, ...attr }));
@@ -132,7 +132,7 @@ function personBearbeiten(p) {
       feld('passwort', neu || !p.hat_passwort ? 'Passwort (mind. 10 Zeichen)' : 'Neues Passwort (leer = bleibt)', { type: 'password', autocomplete: 'new-password' })),
     el('div', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Rolle' }),
       el('div', { klasse: 'schalter schalter-klein', role: 'group', 'aria-label': 'Rolle' },
-        [['team', 'Team: Kalender und Kunden'], ['inhaberin', 'Inhaberin: alles']].map(([id, name]) => el('button', { type: 'button', 'aria-pressed': String(f.rolle === id), text: name,
+        [['team', 'Team: Kalender und Kunden'], ['rezeption', 'Rezeption: dazu Schließtage und Export'], ['inhaberin', 'Inhaberin: alles']].map(([id, name]) => el('button', { type: 'button', 'aria-pressed': String(f.rolle === id), text: name,
           onclick: (e) => { f.rolle = id; schalterWahl(e); } })))),
     fehler,
     el('div', { klasse: 'tafel-wege tafel-wege-fest' },
@@ -297,8 +297,10 @@ export const auswertung = {
 export const einstellungen = {
   zeigen(f) {
     const teile = [kopf('Einstellungen')];
-    teile.push(passwortTeil());
-    if (inhaberin()) teile.push(regelnTeil(), oeffnungTeil(), abwesenheitenTeil(), sicherungTeil());
+    teile.push(darstellungTeil(), passwortTeil());
+    if (inhaberin()) teile.push(regelnTeil(), oeffnungTeil());
+    if (leitung()) teile.push(abwesenheitenTeil(), exportTeil());
+    if (inhaberin()) teile.push(sicherungTeil());
     f.replaceChildren(el('div', { klasse: 'seite seite-schmal' }, teile));
   },
   neuLaden() { /* nichts Lebendiges */ },
@@ -306,6 +308,18 @@ export const einstellungen = {
 
 function abschnitt(titel, lauf, ...inhalt) {
   return el('section', { klasse: 'abschnitt' }, el('h2', { klasse: 'abschnitt-titel', text: titel }), lauf ? el('p', { klasse: 'seiten-info', text: lauf }) : null, ...inhalt);
+}
+
+/** Darstellung je Gerät: Dunkel (wie das Schaufenster), Off-White für helle
+    Räume, oder wie das Gerät eingestellt ist. */
+function darstellungTeil() {
+  const w = themaWahl();
+  return abschnitt('Darstellung', 'Gilt für dieses Gerät.',
+    el('div', { klasse: 'schalter', role: 'group', 'aria-label': 'Darstellung' },
+      [['dunkel', 'Dunkel'], ['hell', 'Off-White'], ['auto', 'Wie das Gerät']].map(([id, name]) => el('button', {
+        type: 'button', 'aria-pressed': String(w === id), text: name,
+        onclick: (e) => { themaSetzen(id); schalterWahl(e); },
+      }))));
 }
 
 function passwortTeil() {
@@ -331,7 +345,8 @@ function regelnTeil() {
   const haken = (name, text) => el('label', { klasse: 'haken' }, el('input', { type: 'checkbox', checked: e[name], onchange: (ev) => { e[name] = ev.target.checked; } }), el('span', { text }));
   const fehler = el('p', { klasse: 'form-fehler', role: 'alert', hidden: true });
   return abschnitt('Online-Buchung', null,
-    el('div', { klasse: 'haken-reihe' }, haken('online_aktiv', 'Online-Buchung ist offen'), haken('luecken_fuellen', 'Lücken füllen: auch direkt nach einem Termin anbieten')),
+    el('div', { klasse: 'haken-reihe' }, haken('online_aktiv', 'Online-Buchung ist offen'), haken('luecken_fuellen', 'Lücken füllen: auch direkt nach einem Termin anbieten'),
+      haken('feiertage', 'An gesetzlichen Feiertagen (Bayern) geschlossen')),
     el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Hinweis über der Buchung (z. B. Betriebsurlaub)' }),
       el('input', { value: e.hinweis, maxlength: 300, oninput: (ev) => { e.hinweis = ev.target.value; } })),
     el('div', { klasse: 'feld-raster' },
@@ -398,13 +413,21 @@ function abwesenheitenTeil() {
     el('button', { type: 'button', klasse: 'knopf-still', text: '+ Urlaub oder Schließtag', onclick: () => abwesenheitNeu({ datum: heute(), zeit: '00:00' }, laden) }));
 }
 
+/** Alle Daten als CSV — jederzeit, ohne zu fragen. Die Daten gehören dem Salon. */
+function exportTeil() {
+  const api0 = new URL(document.querySelector('meta[name="irmonhair-api"]').content, location.href).href;
+  const knopf = (was, text) => el('a', { klasse: 'knopf-still', href: `${api0}?a=export&was=${was}`, download: '' }, text);
+  return abschnitt('Export', 'Als Tabelle (CSV, öffnet in Excel und Numbers). Monatlich kündbar heißt auch: Die Daten nehmen Sie jederzeit mit.',
+    el('div', { klasse: 'tafel-wege' }, knopf('termine', 'Termine'), knopf('kunden', 'Kunden'), knopf('protokoll', 'Protokoll'), knopf('einwilligungen', 'Einwilligungen')));
+}
+
 function sicherungTeil() {
   const protokoll = el('ul', { klasse: 'protokoll' });
   let vor = null;
   const mehr = el('button', { type: 'button', klasse: 'text-link', text: 'Protokoll zeigen', onclick: async () => {
     const r = await api('protokoll', { get: { vor } });
     for (const z of r.eintraege) protokoll.append(el('li', {}, el('span', { klasse: 'zahl', text: `${tagText(z.zeit.slice(0, 10), 'zahl').slice(0, 6)} ${z.zeit.slice(11)}` }),
-      el('span', { text: z.wer || 'online' }), el('span', { text: z.aktion.replace(/_/g, ' ') + (z.termin ? ` #${z.termin}` : '') })));
+      el('span', { text: z.wer || (z.akteur === 'system' ? 'System' : 'Kundin online') }), el('span', { text: z.aktion.replace(/_/g, ' ') + (z.termin ? ` #${z.termin}` : '') })));
     vor = r.eintraege.at(-1)?.id;
     mehr.textContent = r.eintraege.length === 100 ? 'weitere' : '';
     mehr.hidden = r.eintraege.length < 100;

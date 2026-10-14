@@ -7,7 +7,7 @@
    daraus, wann der nächste Besuch ansteht.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { $, el, svg, ZEICHEN, euro, tagText, plusTage, heute, preisText, telLink, waLink, meldung, fragen, spaeter, speichern, tageZwischen } from './hilfen.js';
+import { $, el, svg, ZEICHEN, euro, tagText, plusTage, heute, preisText, telLink, waLink, meldung, fragen, spaeter, speichern, tageZwischen, abgesagt } from './hilfen.js';
 import { Z, api, inhaberin, personVon } from './api.js';
 import { tafelAuf, tafelZu } from './tafel.js';
 import { terminZeigen, terminNeu } from './termin.js';
@@ -70,7 +70,7 @@ export async function kundeZeigen(id) {
 
   const kommend = k.termine.filter((t) => t.status === 'gebucht' && t.start >= heute()).reverse();
   const vergangen = k.termine.filter((t) => !(t.status === 'gebucht' && t.start >= heute()));
-  const letzter = vergangen.find((t) => t.status !== 'storniert' && t.status !== 'nicht_erschienen');
+  const letzter = vergangen.find((t) => !abgesagt(t.status) && t.status !== 'nicht_erschienen');
   const teile = [];
 
   teile.push(el('div', { klasse: 'kontakt-wege' },
@@ -103,11 +103,16 @@ export async function kundeZeigen(id) {
   }
 
   if (k.notiz) teile.push(el('p', { klasse: 'kartei-notiz' }, el('span', { klasse: 'klein-titel', text: 'Kartei' }), k.notiz));
+  // Einwilligungen: was die Kundin erlaubt hat, mit Datum und Quelle.
+  const ew = k.einwilligungen || {};
+  const ewText = { terminnachrichten: 'Terminnachrichten per SMS/WhatsApp', recall: 'Recall (Erinnerung an den nächsten Termin)' };
+  teile.push(el('p', { klasse: 'hinweis-zeile' }, el('span', { klasse: 'klein-titel', text: 'Einwilligungen' }),
+    Object.entries(ewText).map(([art, text]) => `${text}: ${ew[art]?.erteilt ? 'ja, seit ' + tagText(ew[art].zeit.slice(0, 10), 'zahl') + ' (' + ew[art].quelle + ')' : 'nein'}`).join(' · ')));
 
   const zeile = (t) => el('li', {}, el('button', { type: 'button', klasse: `verlauf-zeile ist-${t.status}`, onclick: () => terminZeigen(t.id) },
     el('span', { klasse: 'zahl', text: tagText(t.start.slice(0, 10), 'zahl') }),
     el('span', { text: t.posten.map((x) => x.name).join(' + ') }),
-    el('span', { klasse: 'verlauf-wer', text: (personVon(t.person)?.name || '') + (t.status !== 'gebucht' && t.status !== 'erschienen' ? ' · ' + { storniert: 'abgesagt', nicht_erschienen: 'nicht erschienen' }[t.status] : '') }),
+    el('span', { klasse: 'verlauf-wer', text: (personVon(t.person)?.name || '') + (t.status !== 'gebucht' && t.status !== 'erschienen' ? ' · ' + (abgesagt(t.status) ? 'abgesagt' : 'nicht erschienen') : '') }),
     el('span', { klasse: 'zahl', text: preisText(t.preis_cent, t.preis_ab) })));
   if (kommend.length) teile.push(el('section', {}, el('h3', { klasse: 'form-titel', text: 'Kommend' }), el('ul', { klasse: 'verlauf-liste' }, kommend.map(zeile))));
   teile.push(el('section', {}, el('h3', { klasse: 'form-titel', text: 'Bisher' }),

@@ -45,6 +45,8 @@ function aktion_katalog(): array
         'gruppen' => json_decode((string)$db->wert("SELECT wert FROM {p}meta WHERE schluessel = 'gruppen'"), true),
         'regeln' => ['raster' => (int)$e['raster'], 'horizont' => (int)$e['horizont'], 'stornofrist' => (int)$e['stornofrist'],
                      'online_aktiv' => (bool)$e['online_aktiv'], 'hinweis' => (string)$e['hinweis']],
+        // Der Wortlaut, der neben den Haken steht — genau so wird er gespeichert.
+        'einwilligungen' => EINWILLIGUNGEN,
         'heute' => date('Y-m-d'), 'jetzt' => date('H:i'),
     ];
 }
@@ -106,6 +108,16 @@ function aktion_buchen(): array
     methode('POST');
     // Formular-Roboter füllen jedes Feld aus; Menschen sehen dieses nicht.
     if (text_feld('webseite')) throw new Fehler('Die Buchung konnte nicht gespeichert werden.', 422);
+    $anfrage = text_feld('anfrage_id', 64);
+    if ($anfrage !== null && !preg_match('/^[A-Za-z0-9-]{8,64}$/', $anfrage)) $anfrage = null;
+    // Ein wiederholtes Absenden derselben Anfrage (schlechtes Netz, zweiter
+    // Tipp) bekommt den schon gebuchten Termin — ohne Bremse und ohne Prüfung.
+    if ($anfrage && ($id = db()->wert('SELECT token FROM {p}termin WHERE anfrage_id = ?', [$anfrage]))) {
+        return oeffentlicher_termin((string)$id) + ['wiederholt' => true];
+    }
+    // Verschieben über das Buchungsformular (ältere Seiten): derselbe Weg.
+    if (text_feld('ersetzt', 32)) return aktion_verschieben();
+
     // Großzügig: im Mobilfunk teilen sich viele Kundinnen eine IP-Adresse.
     bremse('buchen', ip(), (int)konfig('bremse_buchen', 30), 3600);
     [$salon, $leistungen, $person] = auswahl_lesen();
@@ -119,58 +131,93 @@ function aktion_buchen(): array
     $email = email_normal($emailRoh);
     if ($emailRoh && !$email) throw new Fehler('Diese E-Mail-Adresse sieht nicht richtig aus.', 422, 'email', ['feld' => 'email']);
     if (feld('einwilligung') !== true) throw new Fehler('Bitte bestätigen Sie den Hinweis zum Datenschutz.', 422, 'einwilligung', ['feld' => 'einwilligung']);
-    $anfrage = text_feld('anfrage_id', 64);
-    if ($anfrage !== null && !preg_match('/^[A-Za-z0-9-]{8,64}$/', $anfrage)) $anfrage = null;
-    $ersetzt = text_feld('ersetzt', 32);
+    $zustimmung = is_array(feld('einwilligungen')) ? feld('einwilligungen') : [];
+    $ref = text_feld('ref', 40);
+    if ($ref !== null && !preg_match('/^[A-Za-z0-9_.-]{1,40}$/', $ref)) $ref = null;
 
     $e = einstellungen();
     $offen = (int)db()->wert("SELECT COUNT(*) FROM {p}termin t JOIN {p}kunde k ON k.id = t.kunde_id
-        WHERE k.telefon = ? AND t.status = 'gebucht' AND t.start > ? AND t.quelle = 'online'" . ($ersetzt ? ' AND t.token <> ?' : ''),
-        array_merge([$telefon, jetzt()], $ersetzt ? [$ersetzt] : []));
+        WHERE k.telefon = ? AND t.status = 'gebucht' AND t.start > ? AND t.quelle = 'online'", [$telefon, jetzt()]);
     if ($offen >= (int)$e['max_offen']) {
         throw new Fehler('Unter dieser Nummer sind schon mehrere Termine offen. Bitte rufen Sie uns an.', 409, 'zu_viele');
     }
 
     [$vor, $nach] = name_teilen($name);
     try {
-        $termin = db()->schreiben(function (DB $db) use ($salon, $leistungen, $person, $start, $vor, $nach, $telefon, $email, $name, $anfrage, $ersetzt) {
-            $alt = null;
-            if ($ersetzt) {
-                $alt = $db->eins('SELECT * FROM {p}termin WHERE token = ?', [$ersetzt]);
-                if (!$alt || $alt['status'] !== 'gebucht' || !storno_moeglich($alt)) {
-                    throw new Fehler('Der bisherige Termin kann nicht mehr online verschoben werden. Bitte rufen Sie an.', 409, 'storno_frist');
-                }
-            }
+        $r = db()->schreiben(function () use ($salon, $leistungen, $person, $start, $vor, $nach, $telefon, $email, $name, $anfrage, $ref, $zustimmung) {
             $kunde = kunde_zu_telefon($vor, $nach, $telefon, $email);
-            if ($alt) {
-                // Erst den alten freigeben, damit derselbe Platz wieder wählbar ist.
-                $db->personenSperren([$alt['person_id']]);
-                $db->aendern('termin', ['status' => 'storniert', 'storniert_am' => jetzt(), 'geaendert' => jetzt(),
-                    'version' => (int)$alt['version'] + 1], 'id = ?', [$alt['id']]);
-                $db->q('DELETE FROM {p}belegung WHERE termin_id = ?', [$alt['id']]);
-                protokoll('online_umgebucht', (int)$alt['id'], $kunde, [], null);
-            }
-            return termin_anlegen([
+            $r = bucheTermin([
                 'salon' => $salon, 'leistungen' => $leistungen, 'start' => $start, 'person' => $person,
                 'kunde_id' => $kunde, 'gast_name' => $name, 'kundennotiz' => text_feld('notiz', 600),
-                'quelle' => 'online', 'anfrage_id' => $anfrage, 'online' => true,
+                'quelle' => 'online', 'ref' => $ref, 'anfrage_id' => $anfrage, 'kanal' => 'online',
             ]);
+            if ($kunde && !$r['wiederholt']) einwilligungen_speichern($kunde, $zustimmung, 'online', $r['termin']['id']);
+            return $r;
         });
     } catch (PDOException $ex) {
         // Doppelt abgeschickt, beide gleichzeitig: der zweite trifft den eindeutigen Schlüssel.
-        if ($anfrage && (($ex->errorInfo[0] ?? '') === '23000' || str_contains($ex->getMessage(), 'UNIQUE'))) {
-            $id = db()->wert('SELECT id FROM {p}termin WHERE anfrage_id = ?', [$anfrage]);
-            if ($id) $termin = termin_lesen((int)$id) + ['wiederholt' => true];
-            else throw $ex;
-        } else {
-            throw $ex;
+        if ($anfrage && (($ex->errorInfo[0] ?? '') === '23000' || str_contains($ex->getMessage(), 'UNIQUE'))
+            && ($tok = db()->wert('SELECT token FROM {p}termin WHERE anfrage_id = ?', [$anfrage]))) {
+            return oeffentlicher_termin((string)$tok) + ['wiederholt' => true];
         }
+        throw $ex;
     }
-    if (empty($termin['wiederholt'])) {
+    // Erst nach dem COMMIT: Bestätigung aus dem gespeicherten Stand.
+    if (!$r['wiederholt']) {
         require_once __DIR__ . '/post.php';
-        post_bestaetigung($termin, $email);
+        post_bestaetigung($r['termin'], $email);
     }
-    return oeffentlicher_termin($termin['token']);
+    return oeffentlicher_termin($r['termin']['token']) + ['wiederholt' => $r['wiederholt']];
+}
+
+/**
+ * Verschieben über den Link: eine eigene, atomare Aktion. Derselbe Termin
+ * bekommt die neue Zeit; der alte Platz wird erst frei, wenn der neue
+ * sicher gebucht ist. Ist der neue weg, bleibt der alte unverändert.
+ * Eine gewählte Person bleibt verbindlich.
+ */
+function aktion_verschieben(): array
+{
+    methode('POST');
+    bremse('token', ip(), 60, 600);
+    $token = text_feld('ersetzt', 32) ?? text_feld('t', 64, true);
+    if (!preg_match('/^[a-f0-9]{32}$/', $token)) throw new Fehler('Diesen Termin gibt es nicht.', 404, 'unbekannt');
+    $start = zeitpunkt_pruefen(text_feld('start', 20, true));
+    $t = db()->eins('SELECT * FROM {p}termin WHERE token = ?', [$token]);
+    if (!$t) throw new Fehler('Diesen Termin gibt es nicht.', 404, 'unbekannt');
+    if ($t['status'] !== 'gebucht' || !storno_moeglich($t)) {
+        throw new Fehler('Der Termin kann nicht mehr online verschoben werden. Bitte rufen Sie an.', 409, 'storno_frist');
+    }
+    $r = bucheTermin(['termin_id' => (int)$t['id'], 'start' => $start, 'kanal' => 'online']);
+    if ($r['vorher']) {
+        require_once __DIR__ . '/post.php';
+        post_aenderung($r['vorher'], $r['termin']);
+    }
+    $aus = oeffentlicher_termin($token);
+    if ($r['vorher']) $aus['vorher'] = ['start' => $r['vorher']['start'], 'ende' => $r['vorher']['ende'], 'person_name' => $r['vorher']['person_name']];
+    return $aus;
+}
+
+/**
+ * Ist meine Buchung angekommen? Die Seite fragt mit ihrer Anfrage-Kennung
+ * nach, wenn die Antwort ausblieb (Netz weg, Seite hing). Die Kennung ist
+ * zufällig und nur der Seite bekannt, die gebucht hat.
+ */
+function aktion_anfrage(): array
+{
+    bremse('token', ip(), 60, 600);
+    $anfrage = text_feld('anfrage_id', 64, true);
+    if (!preg_match('/^[A-Za-z0-9-]{8,64}$/', $anfrage)) throw new Fehler('Unbekannte Anfrage.', 404, 'unbekannt');
+    $tok = db()->wert('SELECT token FROM {p}termin WHERE anfrage_id = ?', [$anfrage]);
+    if (!$tok) return ['angekommen' => false];
+    return ['angekommen' => true, 'termin' => oeffentlicher_termin((string)$tok)];
+}
+
+/** Für die Überwachung (Uptime-Check): antwortet die Datenbank? */
+function aktion_gesund(): array
+{
+    $stand = (int)db()->wert("SELECT wert FROM {p}zaehler WHERE name = 'stand'");
+    return ['ok' => true, 'zeit' => jetzt(), 'stand' => $stand > 0];
 }
 
 function storno_moeglich(array $t): bool
@@ -190,6 +237,7 @@ function oeffentlicher_termin(string $token): array
     $a['storno_moeglich'] = $t['status'] === 'gebucht' && storno_moeglich($t);
     $a['vergangen'] = $t['start'] < jetzt();
     $a['wunsch_person'] = (bool)$t['wunsch_person'];
+    $a['storniert'] = storniert($t['status']);
     return $a;
 }
 
@@ -207,20 +255,24 @@ function aktion_stornieren(): array
     bremse('token', ip(), 60, 600);
     $token = text_feld('t', 64, true);
     if (!preg_match('/^[a-f0-9]{32}$/', $token)) throw new Fehler('Diesen Termin gibt es nicht.', 404, 'unbekannt');
-    db()->schreiben(function (DB $db) use ($token) {
+    $neu = db()->schreiben(function (DB $db) use ($token) {
         $t = $db->eins('SELECT * FROM {p}termin WHERE token = ?', [$token]);
         if (!$t) throw new Fehler('Diesen Termin gibt es nicht.', 404, 'unbekannt');
-        if ($t['status'] === 'storniert') return;
+        if (storniert($t['status'])) return false;
         if ($t['status'] !== 'gebucht' || !storno_moeglich($t)) {
             throw new Fehler('So kurz vorher geht das nur telefonisch.', 409, 'storno_frist');
         }
-        $db->aendern('termin', ['status' => 'storniert', 'storniert_am' => jetzt(), 'geaendert' => jetzt(),
+        $db->aendern('termin', ['status' => 'storniert_kunde', 'storniert_am' => jetzt(), 'geaendert' => jetzt(),
             'version' => (int)$t['version'] + 1], 'id = ?', [$t['id']]);
         $db->q('DELETE FROM {p}belegung WHERE termin_id = ?', [$t['id']]);
         $db->standErhoehen();
-        protokoll('online_storniert', (int)$t['id'], $t['kunde_id'] ? (int)$t['kunde_id'] : null, [], null);
+        protokoll('online_storniert', (int)$t['id'], $t['kunde_id'] ? (int)$t['kunde_id'] : null,
+            ['status' => [$t['status'], 'storniert_kunde']], null);
+        return true;
     });
-    require_once __DIR__ . '/post.php';
-    post_storno_salon($token);
+    if ($neu) {
+        require_once __DIR__ . '/post.php';
+        post_storno($token);
+    }
     return oeffentlicher_termin($token);
 }

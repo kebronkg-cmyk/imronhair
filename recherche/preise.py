@@ -385,7 +385,7 @@ def uebersicht_html(pas, gro):
 
 
 
-# ── Fassung /fenster/: Karte statt Kästen ──────────────────────────────
+# ── Hauptseite (früher /fenster/): Karte statt Kästen ──────────────────────────────
 # Jede Leistung ist eine Zeile: Name und Angaben links, Preis rechts. Die
 # Längen tragen `data-l`, damit die Längenwahl oben (Radioknöpfe, :has())
 # nur den passenden Preis stehen lässt. Gruppen sind <details>, von denen
@@ -441,7 +441,7 @@ def karte_html(salon, gruppen):
             f'<h3 class="gruppe-titel">{E(titel)}</h3><span class="gruppe-lauf">{E(lauf)}</span>'
             f'<span class="gruppe-ab">{"ab " + a if a else "auf Anfrage"}<small>{n} {"Leistung" if n == 1 else "Leistungen"}</small></span></summary>'
             f'<ul class="zeilen">{"".join(zeile_html(p) for p in posten)}</ul>'
-            # Zur eigenen Buchung, Salon und Gruppe vorgewählt (/fenster/termin.html).
+            # Zur eigenen Buchung, Salon und Gruppe vorgewählt (termin.html).
             f'<p class="gruppe-schluss"><a class="knopf-still" href="termin.html?salon={salon}&amp;gruppe={gid}">'
             f'{E(titel)} in {ORT[salon]} buchen</a></p></details>')
     return '\n'.join(teile)
@@ -482,11 +482,11 @@ def einsetzen(datei, marke, inhalt):
 if __name__ == '__main__':
     pas = aufbauen('pasing', PASING)
     gro = aufbauen('grosshadern', GROSSHADERN)
-    einsetzen('leistungen.html', 'pasing', salon_html('pasing', pas))
-    einsetzen('leistungen.html', 'grosshadern', salon_html('grosshadern', gro))
-    einsetzen('leistungen.html', 'weg-pasing', wegweiser_html('pasing', pas))
-    einsetzen('leistungen.html', 'weg-grosshadern', wegweiser_html('grosshadern', gro))
-    einsetzen('index.html', 'uebersicht', uebersicht_html(pas, gro))
+    einsetzen('spiegel/leistungen.html', 'pasing', salon_html('pasing', pas))
+    einsetzen('spiegel/leistungen.html', 'grosshadern', salon_html('grosshadern', gro))
+    einsetzen('spiegel/leistungen.html', 'weg-pasing', wegweiser_html('pasing', pas))
+    einsetzen('spiegel/leistungen.html', 'weg-grosshadern', wegweiser_html('grosshadern', gro))
+    einsetzen('spiegel/index.html', 'uebersicht', uebersicht_html(pas, gro))
     # Die erste Fassung unter /alt/ bekommt dieselben Listen.
     for marke, inhalt in [('pasing', salon_html('pasing', pas)), ('grosshadern', salon_html('grosshadern', gro)),
                           ('weg-pasing', wegweiser_html('pasing', pas)), ('weg-grosshadern', wegweiser_html('grosshadern', gro))]:
@@ -499,9 +499,9 @@ if __name__ == '__main__':
     einsetzen('schleife/index.html', 'uebersicht', uebersicht_html(pas, gro))
     # /fenster/: Karte mit Längenwahl, Vorschau als Etiketten (Handy) und
     # die bisherige Übersicht (ab Tablet).
-    einsetzen('fenster/leistungen.html', 'pasing', karte_html('pasing', pas))
-    einsetzen('fenster/leistungen.html', 'grosshadern', karte_html('grosshadern', gro))
-    einsetzen('fenster/index.html', 'uebersicht', uebersicht_html(pas, gro))
-    einsetzen('fenster/index.html', 'etiketten', etiketten_html(pas, gro))
+    einsetzen('leistungen.html', 'pasing', karte_html('pasing', pas))
+    einsetzen('leistungen.html', 'grosshadern', karte_html('grosshadern', gro))
+    einsetzen('index.html', 'uebersicht', uebersicht_html(pas, gro))
+    einsetzen('index.html', 'etiketten', etiketten_html(pas, gro))
     n = sum(len(v) for v in pas.values()) + sum(len(v) for v in gro.values())
     print(f'{n} Posten gesetzt, Stand {DATEN["pasing"]["gelesen"]}')

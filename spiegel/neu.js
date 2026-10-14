@@ -1,22 +1,3 @@
-/* ── Startseite: immer oben beginnen ─────────────────────────────────────
-   Beim Öffnen und Neuladen landet man im Schaufenster, nicht an der
-   zuletzt gescrollten Stelle und nicht an einer Sprungmarke aus einem
-   geteilten Link. Sprungmarken innerhalb der Seite (Menü) bleiben. */
-(() => {
-  if (!document.querySelector('.auftakt')) return;
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  const oben = () => {
-    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
-    const alt = document.documentElement.style.scrollBehavior;
-    document.documentElement.style.scrollBehavior = 'auto';
-    scrollTo(0, 0);
-    document.documentElement.style.scrollBehavior = alt;
-  };
-  oben();
-  addEventListener('load', oben, { once: true });
-  addEventListener('pageshow', (e) => { if (e.persisted) oben(); });
-})();
-
 /* ═══════════════════════════════════════════════════════════════════════
    Irmonhair — Friseur in München
 
@@ -207,99 +188,80 @@
     dialog.addEventListener('close', () => { if (zurueck) zurueck.focus(); });
   }
 
-  /* ── Preisliste: Salon, Länge, Gruppen ───────────────────────────────
-     Salon und Länge sind Radioknöpfe, die Gruppen <details>; ohne Skript
-     funktioniert alles, nur ohne Gedächtnis. Das Skript liest die Adresse
-     (?salon=grosshadern, #farbe, #grosshadern-farbe), öffnet die Gruppe,
-     merkt sich Salon und Länge und hält immer nur eine Gruppe offen. */
+  /* ── Salonwahl und Wegweiser (Preisliste) ────────────────────────────
+     Die Wahl steht in Radioknöpfen; das Skript merkt sie sich und liest
+     sie aus der Adresse: #grosshadern wählt den Salon, #farbe springt
+     in die Gruppe des gewählten Salons, #grosshadern-farbe in beides. */
 
   const wahl = document.querySelectorAll('.salonwahl input');
   if (wahl.length) {
     const GRUPPEN = ['schnitt', 'farbe', 'straehnen', 'pflege', 'herren', 'kinder', 'verlaengerung', 'gesicht'];
-    const lesen = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
-    const schreiben = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* privat */ } };
-    const waehlen = (s) => { const el = document.getElementById('wahl-' + s); if (el) el.checked = true; };
+    const merken = (s) => { try { localStorage.setItem('irmonhair-salon', s); } catch (e) { /* privat */ } };
+    const gemerkt = () => { try { return localStorage.getItem('irmonhair-salon'); } catch (e) { return null; } };
+    const waehlen = (s) => {
+      const el = document.getElementById('wahl-' + s);
+      if (el) el.checked = true;
+    };
     const gewaehlt = () => (document.querySelector('.salonwahl input:checked') || {}).value || 'pasing';
-    const kapitel = document.querySelector('.leiste-kapitel');
-
-    function oeffnen(id, springen) {
-      const d = document.getElementById(id);
-      if (!d || d.tagName !== 'DETAILS') return;
-      d.open = true;
-      if (springen) requestAnimationFrame(() => d.scrollIntoView({ block: 'start' }));
-    }
 
     function adresseLesen() {
-      const q = new URLSearchParams(location.search).get('salon');
-      if (q === 'pasing' || q === 'grosshadern') waehlen(q);
       const h = decodeURIComponent(location.hash.slice(1));
       if (!h) return;
       const [a, b] = h.split('-');
       if (a === 'pasing' || a === 'grosshadern') {
         waehlen(a);
-        if (b) oeffnen(h, true);
-      } else if (GRUPPEN.includes(a)) oeffnen(gewaehlt() + '-' + a, true);
+        if (b && document.getElementById(h)) requestAnimationFrame(() => document.getElementById(h).scrollIntoView());
+      } else if (GRUPPEN.includes(a)) {
+        const ziel = document.getElementById(gewaehlt() + '-' + a);
+        if (ziel) requestAnimationFrame(() => ziel.scrollIntoView());
+      }
     }
 
-    const salonVorher = lesen('irmonhair-salon');
-    if (salonVorher) waehlen(salonVorher);
-    const laengeVorher = lesen('irmonhair-laenge');
-    if (laengeVorher) { const el = document.getElementById('laenge-' + laengeVorher); if (el) el.checked = true; }
+    const vorher = gemerkt();
+    if (vorher) waehlen(vorher);
     adresseLesen();
     addEventListener('hashchange', adresseLesen);
 
-    for (const r of wahl) r.addEventListener('change', () => schreiben('irmonhair-salon', r.value));
-    for (const r of document.querySelectorAll('.laengenwahl input')) {
-      r.addEventListener('change', () => schreiben('irmonhair-laenge', r.value));
-    }
-
-    // Die Höhe der Steuerleiste, damit der Kopf der offenen Gruppe genau
-    // darunter klebt.
-    const steuer = document.querySelector('.preis-steuer');
-    if (steuer) {
-      const kleben = () => wurzel.style.setProperty('--kleb', steuer.offsetHeight + 'px');
-      kleben();
-      addEventListener('resize', kleben);
-    }
-
-    // Immer nur eine Gruppe offen — wo der Browser `name` an <details>
-    // nicht kennt, übernimmt das Skript. Die offene Gruppe steht als
-    // Kapitel in der Leiste.
-    const gruppen = [...document.querySelectorAll('details.gruppe')];
-    const eigenesName = 'name' in HTMLDetailsElement.prototype;
-    for (const d of gruppen) {
-      d.addEventListener('toggle', () => {
-        if (d.open && !eigenesName) {
-          for (const x of gruppen) if (x !== d && x.getAttribute('name') === d.getAttribute('name')) x.open = false;
-        }
-        if (kapitel) {
-          const offen = gruppen.find((x) => x.open && x.offsetParent);
-          kapitel.textContent = offen ? offen.querySelector('.gruppe-titel').textContent : '';
-        }
-        // Beim Öffnen die Zeile unter die Steuerleiste holen, falls sie
-        // oben aus dem Bild geraten ist (die vorige Gruppe klappt zu).
-        if (d.open) {
-          const oben = d.getBoundingClientRect().top;
-          if (oben < 0) d.scrollIntoView({ block: 'start', behavior: ruhig ? 'auto' : 'smooth' });
-        }
+    for (const r of wahl) {
+      r.addEventListener('change', () => {
+        merken(r.value);
+        history.replaceState(null, '', '#' + r.value);
+        spaeher();
       });
     }
-  }
 
-  /* ── Preisetiketten (Startseite, Handy) ──────────────────────────────
-     Der Umschalter zeigt die Preise eines Salons (per :has()); das
-     Skript führt die Wahl in die Adresse der Etiketten mit. */
-
-  const etikettWahl = document.querySelectorAll('.etiketten-wahl input');
-  if (etikettWahl.length) {
-    const setzen = () => {
-      const s = (document.querySelector('.etiketten-wahl input:checked') || {}).value || 'pasing';
-      for (const a of document.querySelectorAll('.etikett')) {
-        a.href = `leistungen.html?salon=${s}#${a.dataset.gruppe}`;
-      }
-    };
-    for (const r of etikettWahl) r.addEventListener('change', setzen);
-    setzen();
+    /* Der Späher markiert im Wegweiser die Gruppe, die gerade oben
+       steht, und schiebt sie in der Bahn ins Bild. */
+    let beob = null;
+    function spaeher() {
+      if (beob) beob.disconnect();
+      const salon = document.getElementById(gewaehlt());
+      if (!salon || !('IntersectionObserver' in window)) return;
+      const verweise = [...salon.querySelectorAll('.wegweiser a')];
+      const gruppen = [...salon.querySelectorAll('.gruppe')];
+      const sichtbar = new Set();
+      const markieren = () => {
+        const erste = gruppen.find((g) => sichtbar.has(g));
+        if (!erste) return;
+        for (const v of verweise) {
+          const an = v.getAttribute('href') === '#' + erste.id;
+          if (an) {
+            if (v.getAttribute('aria-current') !== 'true') {
+              v.setAttribute('aria-current', 'true');
+              const bahn = v.parentElement;
+              bahn.scrollTo({ left: v.offsetLeft - bahn.clientWidth / 2 + v.offsetWidth / 2,
+                              behavior: ruhig ? 'auto' : 'smooth' });
+            }
+          } else v.removeAttribute('aria-current');
+        }
+      };
+      beob = new IntersectionObserver((eintraege) => {
+        for (const e of eintraege) (e.isIntersecting ? sichtbar.add(e.target) : sichtbar.delete(e.target));
+        markieren();
+      }, { rootMargin: '-35% 0px -55% 0px' });
+      for (const g of gruppen) beob.observe(g);
+    }
+    spaeher();
   }
 
   /* ── Der Vorhang ──────────────────────────────────────────────────────
@@ -344,8 +306,7 @@
 
   const satz = document.querySelector('.auftakt-satz');
   if (satz && !ruhig) {
-    // Der Fensterrahmen am Handy hat seinen eigenen Auftritt (die LED zieht sich).
-    const teile = [...satz.children].filter((el) => !el.classList.contains('fenster-rahmen'));
+    const teile = [...satz.children];
     if (spiegel) teile.splice(2, 0, spiegel);
     for (const el of teile) el.classList.add('auftritt-gross');
     wurzel.classList.remove('vorlauf');
@@ -371,30 +332,6 @@
     });
   }, { rootMargin: '0px 0px -8% 0px' });
   for (const el of stuecke) beob.observe(el);
-})();
-
-/* ── Preisschrank: die Etiketten hängen sich ein ─────────────────────────
-   Ab iPad (dort hängt der Schrank über die ganze Breite) und nur, wenn
-   der Schrank beim Laden noch nicht im Bild ist. Die Wartezeit steht im
-   CSS (--i × 220 ms); nach dem Einhängen wird der Übergang wieder
-   freigegeben, damit das Schwingen beim Darüberfahren greift. */
-(() => {
-  const schrank = document.querySelector('.stufe .preisregal');
-  if (!schrank || !('IntersectionObserver' in window)) return;
-  if (!matchMedia('(min-width: 48rem)').matches) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (schrank.getBoundingClientRect().top < innerHeight) return;
-  const etiketten = [...schrank.querySelectorAll('.etikett')];
-  etiketten.forEach((e, i) => e.style.setProperty('--i', i));
-  schrank.classList.add('wartet');
-  const beob = new IntersectionObserver((eintraege) => {
-    if (!eintraege.some((e) => e.isIntersecting)) return;
-    beob.disconnect();
-    schrank.classList.add('da');
-    const dauer = 600 + (etiketten.length - 1) * 220 + 50;
-    setTimeout(() => schrank.classList.remove('wartet', 'da'), dauer);
-  }, { rootMargin: '0px 0px -15% 0px' });
-  beob.observe(schrank);
 })();
 
 /* ── Welcher Salon liegt näher? ─────────────────────────────────────────
@@ -445,158 +382,4 @@
         : 'Der Standort liess sich gerade nicht bestimmen. Bitte später noch einmal versuchen.';
     }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
   });
-})();
-
-/* ── Das Farbregal: der Wunsch als WhatsApp-Nachricht ─────────────────────
-   Ton, Länge, Wunsch, Methode und Salon sind Radioknöpfe. Daraus wird die
-   Nachricht im Textfeld — Zeile für Zeile, so wie der Salon sie lesen
-   will — und der Link „Per WhatsApp senden“ (wa.me, Nummer aus
-   data-whatsapp). Hat die Besucherin den Text selbst geändert, schreibt
-   die Auswahl ihn nicht mehr über; eine neue Wahl fragt nicht, sie setzt
-   nur die betroffene Zeile neu. Ohne Skript stehen ein fertiger Text und
-   ein Link mit dem Anfang der Nachricht da. */
-(function () {
-  const regal = document.getElementById('regal');
-  if (!regal) return;
-  const tonFeld = regal.querySelector('.regal-ton');
-  const feld = regal.querySelector('#nachricht');
-  const senden = regal.querySelector('.nachricht-senden');
-  const kopie = regal.querySelector('.regal-kopie');
-  const still = regal.querySelector('.regal-still');
-  const ruhe = still ? still.textContent : '';
-  const nummer = senden ? senden.dataset.whatsapp : '';
-  const wert = (name) => (regal.querySelector('input[name="' + name + '"]:checked') || {}).value || '';
-  const ZIEL = { laenge: 'mehr Länge', volumen: 'mehr Volumen', beides: 'mehr Länge und Volumen' };
-  const METHODE = { tape: 'Tape-Technik', bondings: 'Bondings', offen: 'bitte beraten Sie mich' };
-
-  // Die Zeilen der Nachricht, mit festem Schlüssel — so lässt sich eine
-  // einzelne Zeile ersetzen, auch wenn der Rest von Hand geändert wurde.
-  const zeilen = () => ({
-    'Farbton': wert('ton') + ' (Beispiel von der Website)',
-    'Länge': wert('laenge'),
-    'Wunsch': ZIEL[wert('ziel')] || wert('ziel'),
-    'Methode': METHODE[wert('methode')] || wert('methode'),
-    'Salon': wert('salon'),
-  });
-  const vorlage = () => ['Hallo Irmonhair, ich interessiere mich für Extensions.',
-    ...Object.entries(zeilen()).map(([k, v]) => k + ': ' + v),
-    'Ich hätte gern einen Termin zur Beratung.'].join('\n');
-
-  let vonHand = false;
-  function link() {
-    if (senden && nummer) senden.href = 'https://wa.me/' + nummer + '?text=' + encodeURIComponent(feld.value.trim());
-  }
-  function setzen(e) {
-    if (tonFeld) tonFeld.textContent = wert('ton');
-    if (!vonHand) feld.value = vorlage();
-    else if (e && e.target && e.target.name) {
-      // Nur die Zeile der geänderten Wahl ersetzen; fehlt sie, bleibt der Text.
-      const z = zeilen();
-      const schluessel = { ton: 'Farbton', laenge: 'Länge', ziel: 'Wunsch', methode: 'Methode', salon: 'Salon' }[e.target.name];
-      if (schluessel) feld.value = feld.value.replace(new RegExp('^' + schluessel + ': .*$', 'm'), schluessel + ': ' + z[schluessel]);
-    }
-    link();
-  }
-  regal.addEventListener('change', (e) => { if (e.target !== feld) setzen(e); });
-  regal.addEventListener('submit', (e) => e.preventDefault());
-  feld.addEventListener('input', () => { vonHand = feld.value !== vorlage(); link(); });
-  setzen();
-
-  /* Ausweg: den Text kopieren, etwa für SMS oder E-Mail. */
-  if (kopie && navigator.clipboard) {
-    kopie.hidden = false;
-    kopie.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(feld.value.trim());
-        still.textContent = 'Kopiert — fügen Sie den Text in Ihre Nachricht an den Salon ein.';
-      } catch (err) {
-        still.textContent = 'Kopieren ging gerade nicht. Rufen Sie gern an: 089 821 116 4.';
-      }
-      clearTimeout(kopie.zeit);
-      kopie.zeit = setTimeout(() => { still.textContent = ruhe; }, 5000);
-    });
-  }
-})();
-
-/* ── Handy: Schaufenster und Kapitel ─────────────────────────────────────
-   Am Handy ist der erste Bildschirm das Fenster. Seine untere LED-Kante
-   (.fenster-fuge) wandert beim Scrollen hinab bis auf den Spiegel und
-   geht dort in dessen Lichtkante über. Dazu steht in der Leiste, in
-   welchem Kapitel man gerade ist, und die Fuge über jedem Kapitel
-   leuchtet auf, wenn es ins Bild kommt. Nur `transform` und `opacity`. */
-(() => {
-  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const handy = matchMedia('(max-width: 47.99rem)');
-  const wurzel = document.documentElement;
-
-  // Kapitel in der Leiste + aufleuchtende Fuge
-  const kapitel = document.querySelector('.leiste-kapitel');
-  const abschnitte = [...document.querySelectorAll('section[data-kapitel]')];
-  if (abschnitte.length && 'IntersectionObserver' in window) {
-    const sichtbar = new Set();
-    const beob = new IntersectionObserver((eintraege) => {
-      for (const e of eintraege) {
-        if (e.isIntersecting) { sichtbar.add(e.target); e.target.classList.add('kapitel-an'); }
-        else sichtbar.delete(e.target);
-      }
-      const oben = abschnitte.find((a) => sichtbar.has(a));
-      const text = oben ? oben.dataset.kapitel : '';
-      if (kapitel && kapitel.textContent !== text) {
-        kapitel.textContent = text;
-        // Neues Kapitel: kurz einblenden (Animation nur ab Tablet, siehe CSS).
-        kapitel.classList.remove('neu'); void kapitel.offsetWidth; kapitel.classList.add('neu');
-      }
-    }, { rootMargin: '-30% 0px -60% 0px' });
-    for (const a of abschnitte) beob.observe(a);
-  }
-
-  // Die wandernde Fuge. Sie folgt dem Scrollen nicht Ereignis für Ereignis,
-  // sondern gleitet mit einer weichen Nachführung hinterher (exponentiell
-  // abklingend, ohne Überschwingen), damit grobe Scroll-Schritte am Handy
-  // nicht als Ruckeln sichtbar werden. Nur transform und opacity; der
-  // Helligkeitswert sitzt am Spiegelrahmen, nicht an der ganzen Seite.
-  const fuge = document.querySelector('.fenster-fuge');
-  const fenster = document.querySelector('.auftakt-satz');
-  const rahmen = document.querySelector('.spiegel-rahmen');
-  if (!fuge || !fenster || !rahmen) return;
-  const WEG = 320;    // Scrollweg für die ganze Fahrt
-  const TAU = 110;    // Zeitkonstante der Nachführung in ms
-  let strecke = 0, breite = 1, ist = 0, ziel = 0, zuletzt = 0, bild = 0;
-
-  function messen() {
-    if (!handy.matches || ruhig) { rahmen.style.removeProperty('--glut'); fuge.style.transform = ''; fuge.style.opacity = ''; return; }
-    const y = scrollY;
-    const r = rahmen.getBoundingClientRect();
-    // Ziel: der Scheitel des Rundbogens, dort ist der Spiegel am schmalsten.
-    fuge.style.transform = '';
-    const f0 = fuge.getBoundingClientRect();
-    strecke = Math.max(0, r.top + y - (f0.top + y));
-    breite = Math.max(.2, (r.width * .42) / f0.width);
-    ist = ziel = Math.min(1, Math.max(0, y / WEG));
-    setzen(ist);
-  }
-  function setzen(p) {
-    const s = 1 - (1 - breite) * p;
-    fuge.style.transform = `translate3d(0, ${(strecke * p).toFixed(2)}px, 0) scaleX(${s.toFixed(4)})`;
-    fuge.style.opacity = String(p < .78 ? 1 : Math.max(0, (1 - p) / .22));
-    rahmen.style.setProperty('--glut', p.toFixed(3));
-  }
-  function schritt(t) {
-    const dt = zuletzt ? Math.min(64, t - zuletzt) : 16;
-    zuletzt = t;
-    ist += (ziel - ist) * (1 - Math.exp(-dt / TAU));
-    if (Math.abs(ziel - ist) < .0005) ist = ziel;
-    setzen(ist);
-    bild = ist === ziel ? 0 : requestAnimationFrame(schritt);
-    if (!bild) zuletzt = 0;
-  }
-  addEventListener('scroll', () => {
-    if (!handy.matches || ruhig || !strecke) return;
-    ziel = Math.min(1, Math.max(0, scrollY / WEG));
-    if (!bild) bild = requestAnimationFrame(schritt);
-  }, { passive: true });
-  addEventListener('resize', messen);
-  handy.addEventListener('change', messen);
-  addEventListener('load', messen);
-  messen();
 })();

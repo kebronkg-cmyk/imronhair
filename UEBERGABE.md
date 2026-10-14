@@ -410,3 +410,23 @@ Stand 04.10.2026.
   und in `api/config.php` unter `erlaubte_herkunft` die Adresse der
   Website eintragen (`https://kebronkg-cmyk.github.io` bzw. die eigene
   Domain). Bis dahin zeigt die Terminseite Telefon und Planity.
+
+## Hauptseite an der Wurzel (14.10.2026)
+
+- **Die Fenster-Fassung liegt jetzt im Hauptordner**, nicht mehr unter
+  `fenster/`. Die frühere Hauptseite (Spiegel) liegt in `spiegel/` und wird
+  dort wie bisher unter `/spiegel/` ausgeliefert. Alle Dateien sind
+  unverändert umgezogen (Byte für Byte geprüft).
+- **Alte Adressen leiten weiter:** `/fenster/`, `/fenster/termin.html`,
+  `/fenster/leistungen.html`, `/fenster/impressum.html`,
+  `/fenster/datenschutz.html` → dieselbe Seite an der Wurzel, mit `?…` und
+  `#…`. Ebenso die Adressen der früheren Website (`/unsere-preise/` usw.).
+  In der Vorführung erledigt das `demo/router.php`.
+- **Schnittstelle:** `termin.html` sucht sie jetzt unter `api/` (neben der
+  Seite) statt `../api/`. Die frühere Begründung („an der Wurzel liefe
+  `../api/` aus der Seite hinaus“) gilt damit nicht mehr.
+- Angepasst: Studio (Schrift und Zeichen aus `../schrift/`, Link
+  „Online-Buchung ansehen“), Prüfskripte, `api/config.beispiel.php`
+  (`buchung_adresse`), `recherche/preise.py` und `recherche/schleife.py`
+  (schreiben in die Hauptseite bzw. `spiegel/`), Auslieferung.
+

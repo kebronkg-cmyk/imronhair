@@ -7,8 +7,8 @@
    der aktuelle Bereich still nach.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { $, el, meldung, heute } from './hilfen.js';
-import { Z, api, inhaberin, ApiFehler } from './api.js';
+import { $, el, meldung, heute, themaSetzen, themaAnwenden } from './hilfen.js';
+import { Z, api, inhaberin, ApiFehler, ROLLE_NAME } from './api.js';
 import { tafelZu, tafelOffen } from './tafel.js';
 import * as kalender from './kalender.js';
 import * as kunden from './kunden.js';
@@ -26,6 +26,7 @@ let aktiv = null;
 
 /* ── Start ──────────────────────────────────────────────────────────── */
 async function start() {
+  themaAnwenden();
   Z.beiAbmeldung = () => { if (!$('app').hidden) torZeigen('anmelden', 'Die Sitzung ist abgelaufen. Bitte neu anmelden.'); };
   let s;
   try {
@@ -124,9 +125,13 @@ function kopfZeichnen() {
   ich.replaceChildren(el('span', { klasse: 'ich-zeichen', text: Z.ich.name.charAt(0) }), el('span', { klasse: 'ich-name', text: Z.ich.name }));
   const menue = $('ich-menue');
   menue.replaceChildren(
-    el('p', { klasse: 'ich-rolle', text: Z.ich.rolle === 'inhaberin' ? 'Inhaberin' : 'Team' }),
+    el('p', { klasse: 'ich-rolle', text: ROLLE_NAME[Z.ich.rolle] || 'Team' }),
+    'Notification' in window && Notification.permission === 'default'
+      ? el('button', { type: 'button', role: 'menuitem', text: 'Online-Buchungen melden', onclick: () => { menueZu(); Notification.requestPermission(); } }) : null,
+    el('button', { type: 'button', role: 'menuitem', text: document.documentElement.dataset.thema === 'hell' ? 'Dunkler Modus' : 'Off-White-Modus',
+      onclick: () => { themaSetzen(document.documentElement.dataset.thema === 'hell' ? 'dunkel' : 'hell'); menueZu(); kopfZeichnen(); } }),
     el('button', { type: 'button', role: 'menuitem', text: 'Passwort ändern', onclick: () => { menueZu(); location.hash = '#einstellungen'; } }),
-    el('button', { type: 'button', role: 'menuitem', text: 'Online-Buchung ansehen', onclick: () => { menueZu(); open('../fenster/termin.html', '_blank', 'noopener'); } }),
+    el('button', { type: 'button', role: 'menuitem', text: 'Online-Buchung ansehen', onclick: () => { menueZu(); open('../termin.html', '_blank', 'noopener'); } }),
     el('button', { type: 'button', role: 'menuitem', text: 'Abmelden', onclick: abmelden }));
   ich.onclick = () => (menue.hidden ? menueAuf() : menueZu());
   $('suche-knopf').onclick = () => kunden.suchen();
@@ -166,14 +171,28 @@ function abgleichStarten() {
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') abgleichen(); });
   addEventListener('online', abgleichen);
 }
+/* Was Kundinnen online tun (gebucht, verschoben, abgesagt), erscheint
+   sofort als Meldung — und, wenn erlaubt, als Benachrichtigung des Geräts,
+   auch wenn das Studio im Hintergrund liegt. */
+const EREIGNIS = { termin_angelegt: 'Online gebucht', online_verschoben: 'Online verschoben', online_storniert: 'Online abgesagt' };
+let letztesEreignis = null;
 async function abgleichen() {
-  if (!Z.ich || document.visibilityState !== 'visible') return;
+  if (!Z.ich) return;
+  const sichtbar = document.visibilityState === 'visible';
+  // Im Hintergrund nur nachsehen, wenn das Gerät benachrichtigen darf.
+  if (!sichtbar && !('Notification' in window && Notification.permission === 'granted')) return;
   try {
     const alt = Z.stand;
-    const r = await api('stand');
+    const r = await api('stand', { get: letztesEreignis === null ? {} : { seit: letztesEreignis } });
+    for (const e of r.ereignisse || []) {
+      const text = `${EREIGNIS[e.aktion] || 'Online'}: ${e.name || 'Kundin'} · ${e.start.slice(8, 10)}.${e.start.slice(5, 7)}. ${e.start.slice(11)}–${e.ende.slice(11)}`;
+      if (sichtbar) meldung(text, 'info');
+      else try { new Notification('Irmonhair Studio', { body: text, tag: 'termin-' + e.termin }); } catch (x) { /* nicht erlaubt */ }
+    }
+    letztesEreignis = r.letztes ?? letztesEreignis;
     if (r.stand > alt) {
       Z.stand = r.stand;
-      aktiv?.modul.neuLaden?.();
+      if (sichtbar) aktiv?.modul.neuLaden?.();
     }
     document.body.classList.remove('ist-offline');
   } catch (e) {

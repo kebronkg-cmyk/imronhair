@@ -10,6 +10,18 @@
    - „Nächster freier Termin“ und „Wie gewohnt“ als zwei stille Vorschläge;
    - wer sich merken lässt, bucht beim nächsten Mal mit einem Tipp.
 
+   Was hier nie passieren darf (gelernt aus der Kritik an Planity und
+   Treatwell): eine Buchung, von der die Kundin nicht weiß, ob sie da ist;
+   ein doppelter Termin, weil die Seite hing; ein Umbuchen, das den alten
+   Termin still löscht. Deshalb:
+   - jede Buchung trägt eine Anfrage-Kennung; wiederholtes Senden ergibt
+     genau einen Termin, und bleibt die Antwort aus, fragt die Seite nach
+     („angekommen?“), statt die Kundin raten zu lassen;
+   - Verschieben ist eine eigene Handlung — der alte Termin wird erst frei,
+     wenn der neue sicher gebucht ist; „Neu buchen“ sagt dazu, dass ein
+     zusätzlicher Termin entsteht;
+   - überall Beginn und Ende, Person und Salon — nie nur eine Startzeit.
+
    Ohne Schnittstelle (etwa auf GitHub Pages) bleibt die Rückfallebene aus
    dem HTML stehen: Telefon und Planity. Mit ?vorschau läuft die Seite mit
    ausgedachten Terminen, damit man sie ansehen kann, ohne zu buchen.
@@ -21,7 +33,7 @@
   const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const params = new URLSearchParams(location.search);
   const VORSCHAU = params.has('vorschau');
-  const API = new URL(document.querySelector('meta[name="irmonhair-api"]')?.content || '../api/', location.href).href;
+  const API = new URL(document.querySelector('meta[name="irmonhair-api"]')?.content || 'api/', location.href).href;
 
   /* ── Gedächtnis (nur dieses Gerät) ─────────────────────────────────── */
   const lesen = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
@@ -57,6 +69,8 @@
   const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   const plusTage = (s, n) => { const d = alsDatum(s); d.setDate(d.getDate() + n); return iso(d); };
   const minuten = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+  const bis = (t, dauer) => hhmm(minuten(t) + dauer);
+  const warte = (ms) => new Promise((ok) => setTimeout(ok, ms));
   const heute = () => iso(new Date());
   function tagText(s, lang) {
     const d = alsDatum(s);
@@ -112,6 +126,8 @@
     zeit: null,           // {t, p}
     schritt: 'salon',
     ersetzt: null,        // Token beim Verschieben
+    ersetztTermin: null,  // der Termin, der verschoben wird (für „vorher → jetzt“)
+    eigene: [],           // kommende eigene Termine (nur wenn gemerkt)
     dazuAus: new Set(),   // abgelehnte Zusätze
     ladeNr: 0,
   };
@@ -171,7 +187,7 @@
     const ls = gewaehlt();
     setzeWahl('leistung', ls.map((l) => l.name + (l.laenge ? ' · ' + l.laenge : '')).join(' + '));
     setzeWahl('person', Z.person === 'egal' ? 'Wer zuerst frei ist' : (person(Z.person)?.name || ''));
-    setzeWahl('zeit', Z.tag && Z.zeit ? `${gross(tagText(Z.tag))}, ${Z.zeit.t} Uhr` : '');
+    setzeWahl('zeit', Z.tag && Z.zeit ? `${gross(tagText(Z.tag))}, ${Z.zeit.t}–${bis(Z.zeit.t, summe().dauer)} Uhr` : '');
   }
   function setzeWahl(s, text) {
     const e = schrittEl(s)?.querySelector('.schritt-wahl');
@@ -539,11 +555,13 @@
       const hier = zeiten.filter((z) => minuten(z.t) >= a && minuten(z.t) < b);
       if (!hier.length) continue;
       const reihe = el('div', { klasse: 'zeit-reihe', role: 'group', 'aria-label': name });
+      const dauer = summe().dauer;
       for (const z of hier) {
         reihe.append(el('button', {
           type: 'button', klasse: 'zeit', 'aria-pressed': String(Z.zeit?.t === z.t),
+          'aria-label': `${z.t} bis ${bis(z.t, dauer)} Uhr`,
           onclick: () => zeitWaehlen(Z.tag, z),
-        }, z.t));
+        }, el('span', { text: z.t }), el('small', { klasse: 'zeit-bis', 'aria-hidden': 'true', text: 'bis ' + bis(z.t, dauer) })));
       }
       f.append(el('div', { klasse: 'zeit-gruppe' }, el('span', { klasse: 'zeit-gruppe-name', text: name }), reihe));
     }
@@ -560,14 +578,15 @@
     const alle = Object.keys(Z.frei.tage).flatMap((d) => zeitenAm(d).map((z) => ({ d, z })));
     if (alle.length) {
       const erster = alle[0];
-      f.append(vorschlag('Nächster freier Termin', `${gross(tagText(erster.d))}, ${erster.z.t}`, erster.d, erster.z));
+      const dauer = summe().dauer;
+      f.append(vorschlag('Nächster freier Termin', `${gross(tagText(erster.d))}, ${erster.z.t}–${bis(erster.z.t, dauer)}`, erster.d, erster.z));
       const letzte = lesen('irmonhair-letzte');
       if (letzte && letzte.wochentag !== undefined && letzte.minute !== undefined) {
         const passend = alle.filter(({ d, z }) => alsDatum(d).getDay() === letzte.wochentag && Math.abs(minuten(z.t) - letzte.minute) <= 90)
           .sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : Math.abs(minuten(a.z.t) - letzte.minute) - Math.abs(minuten(b.z.t) - letzte.minute)))[0];
         if (passend && !(passend.d === erster.d && passend.z.t === erster.z.t)) {
           const tageszeit = letzte.minute < 720 ? 'vormittags' : letzte.minute < 900 ? 'mittags' : 'nachmittags';
-          f.append(vorschlag(`Wie gewohnt: ${TAG_LANG[letzte.wochentag]} ${tageszeit}`, `${gross(tagText(passend.d))}, ${passend.z.t}`, passend.d, passend.z));
+          f.append(vorschlag(`Wie gewohnt: ${TAG_LANG[letzte.wochentag]} ${tageszeit}`, `${gross(tagText(passend.d))}, ${passend.z.t}–${bis(passend.z.t, dauer)}`, passend.d, passend.z));
         }
       }
     }
@@ -578,6 +597,8 @@
 
   function zeitWaehlen(d, z) {
     Z.tag = d; Z.zeit = z;
+    $('ausweich').hidden = true;
+    buchenHinweis();
     tageMarkieren();
     zeitenListe();
     zu('kontakt');
@@ -596,8 +617,13 @@
     const gesamt = t ? preisText(t.preis_cent, t.preis_ab) : (sm.n ? (sm.offen ? 'nach Beratung' : (sm.ab ? 'ab ' : '') + euro(sm.cent)) : '');
     const dauer = t ? minuten(t.ende.slice(11)) - minuten(t.start.slice(11)) : sm.dauer;
     const nachPerson = SCHRITTE.indexOf(Z.schritt) > SCHRITTE.indexOf('person');
-    const wer = t ? t.person_name : !nachPerson ? '' : Z.person === 'egal' ? (Z.zeit && Z.zeit.p.length === 1 ? person(Z.zeit.p[0]).name : 'wer zuerst frei ist') : person(Z.person)?.name;
-    const wann = t ? `${gross(tagText(t.start.slice(0, 10), true))} · ${t.start.slice(11)} Uhr` : (Z.tag && Z.zeit ? `${gross(tagText(Z.tag, true))} · ${Z.zeit.t} Uhr` : '');
+    // Bei „egal“ die Namen nennen, die zur gewählten Zeit frei sind — die
+    // Bestätigung nennt dann die eine, bei der es wird.
+    const wer = t ? t.person_name : !nachPerson ? '' : Z.person === 'egal'
+      ? (Z.zeit ? (Z.zeit.p.length === 1 ? person(Z.zeit.p[0]).name : undListe(vornamen(Z.zeit.p))) : 'wer zuerst frei ist')
+      : person(Z.person)?.name;
+    const wann = t ? `${gross(tagText(t.start.slice(0, 10), true))} · ${t.start.slice(11)}–${t.ende.slice(11)} Uhr`
+      : (Z.tag && Z.zeit ? `${gross(tagText(Z.tag, true))} · ${Z.zeit.t}–${bis(Z.zeit.t, sm.dauer)} Uhr` : '');
     const f = document.createDocumentFragment();
     f.append(el('span', { klasse: 'beleg-loch', 'aria-hidden': 'true' }));
     f.append(el('p', { klasse: 'beleg-marke', text: 'Irmonhair' + (s ? ' · ' + s.name : '') }));
@@ -611,6 +637,7 @@
     const dl = el('dl', { klasse: 'beleg-daten' });
     const zeile = (dt, dd) => dd && dl.append(el('div', {}, el('dt', { text: dt }), el('dd', { text: dd })));
     zeile('Bei', wer);
+    if (s && (t || nachPerson)) zeile('Wo', `${s.name}, ${s.strasse}`);
     zeile('Wann', wann);
     zeile('Dauer', dauer ? 'ca. ' + dauerText(dauer) + (!t && sm.einwirken ? `, davon ${dauerText(sm.einwirken)} Einwirkzeit` : '') : '');
     f.append(dl);
@@ -629,7 +656,7 @@
     document.body.classList.toggle('mit-belegzeile', zeigen);
     if (zeigen) {
       const preis = sm.offen ? 'nach Beratung' : (sm.ab ? 'ab ' : '') + euro(sm.cent);
-      const wann = Z.tag && Z.zeit ? ` · ${gross(tagText(Z.tag))} ${Z.zeit.t}` : '';
+      const wann = Z.tag && Z.zeit ? ` · ${gross(tagText(Z.tag))} ${Z.zeit.t}–${bis(Z.zeit.t, sm.dauer)}` : '';
       zeile.textContent = `${sm.n === 1 ? gewaehlt()[0].name : sm.n + ' Leistungen'} · ${preis} · ${dauerText(sm.dauer)}${wann}`;
     }
   }
@@ -644,6 +671,50 @@
     $('k-merken').checked = true;
   }
 
+  /** Zwei Haken, keiner vorausgewählt; der Wortlaut kommt von der
+      Schnittstelle und wird genau so mit Zeitstempel gespeichert. */
+  function einwilligungenZeichnen() {
+    const box = $('einwilligungen');
+    const texte = Z.k?.einwilligungen;
+    if (!texte) { box.hidden = true; return; }
+    box.replaceChildren(...Object.entries(texte).map(([art, text]) => el('label', { klasse: 'merken einwilligung' },
+      el('input', { type: 'checkbox', 'data-art': art }), el('span', { text }))));
+    box.hidden = false;
+  }
+  function einwilligungen() {
+    const aus = {};
+    for (const i of $('einwilligungen').querySelectorAll('input[data-art]')) aus[i.dataset.art] = i.checked;
+    return aus;
+  }
+
+  /** Klar sagen, was der Knopf tut: zusätzlich buchen oder verschieben. */
+  function buchenHinweis() {
+    const box = $('buchen-hinweis');
+    const knopf = $('buchen');
+    const alt = Z.ersetztTermin;
+    $('kontakt').classList.toggle('ist-verschieben', !!alt);
+    if (alt) {
+      const neu = Z.tag && Z.zeit ? `${gross(tagText(Z.tag))}, ${Z.zeit.t}–${bis(Z.zeit.t, summe().dauer)}` : 'die neue Zeit';
+      box.replaceChildren(el('strong', { text: 'Verschieben: ' }),
+        `${gross(tagText(alt.start.slice(0, 10)))}, ${alt.start.slice(11)}–${alt.ende.slice(11)} → ${neu}. `,
+        'Der bisherige Termin wird erst frei, wenn die neue Zeit sicher gebucht ist.');
+      box.hidden = false;
+      if (!knopf.disabled) knopf.textContent = 'Auf diese Zeit verschieben';
+      return;
+    }
+    if (!knopf.disabled) knopf.textContent = 'Termin verbindlich buchen';
+    const andere = Z.eigene.filter((t) => t.status === 'gebucht');
+    if (andere.length) {
+      const t = andere[0];
+      box.replaceChildren(el('strong', { text: 'Zusätzlicher Termin: ' }),
+        `Ihr Termin am ${tagText(t.start.slice(0, 10))}, ${t.start.slice(11)}–${t.ende.slice(11)} bleibt bestehen. `,
+        'Wollen Sie ihn stattdessen verschieben? ', el('a', { href: `termin.html?t=${t.token}`, text: 'Hier ändern' }), '.');
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
   function feldFehler(feld, text) {
     const input = feld && $('k-' + feld);
     for (const i of document.querySelectorAll('#kontakt [aria-invalid]')) i.removeAttribute('aria-invalid');
@@ -653,57 +724,137 @@
     if (input) { input.setAttribute('aria-invalid', 'true'); input.focus(); }
   }
 
+  /* Senden, ohne dass je ein doppelter oder ein „vielleicht“-Termin
+     entsteht. Dieselbe Anfrage-Kennung bei jedem Versuch: Die Schnittstelle
+     bucht sie höchstens einmal. Bleibt die Antwort aus, wird nachgefragt
+     und — falls nötig — noch einmal gesendet. Erfolg zeigt die Seite erst,
+     wenn die Schnittstelle den gespeicherten Termin zurückgibt. */
+  const OFFEN = 'irmonhair-offen';
+  async function sicherSenden(aktion, post, knopf) {
+    for (let versuch = 1; ; versuch++) {
+      try {
+        return await api(aktion, { post });
+      } catch (err) {
+        const unklar = err.status === 0 || (err.status >= 500 && ['intern', 'unerreichbar', undefined].includes(err.daten.code));
+        if (!unklar || versuch >= 3) throw err;
+        knopf.textContent = 'Die Verbindung hakt — wir prüfen, ob es angekommen ist …';
+        await warte(1200 * versuch);
+        if (post.anfrage_id) {
+          try {
+            const a = await api('anfrage', { get: { anfrage_id: post.anfrage_id } });
+            if (a.angekommen) return a.termin;
+          } catch (e) { /* weiter versuchen */ }
+        }
+        knopf.textContent = 'Noch einmal …';
+      }
+    }
+  }
+
   let anfrageId = null;
   async function buchen(e) {
     e.preventDefault();
+    const knopf = $('buchen');
+    if (knopf.disabled) return;
+    if (!Z.zeit) { zu('zeit'); return; }
+    if (Z.ersetzt) return verschiebenSenden(knopf);
     const name = $('k-name').value.trim();
     const telefon = $('k-telefon').value.trim();
     const email = $('k-email').value.trim();
     if (name.length < 2) return feldFehler('name', 'Bitte Ihren Namen angeben.');
     if (telefon.replace(/\D/g, '').length < 6) return feldFehler('telefon', 'Bitte eine Handynummer angeben, z. B. 0176 1234567.');
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return feldFehler('email', 'Diese E-Mail-Adresse sieht nicht richtig aus.');
-    if (!Z.zeit) { zu('zeit'); return; }
     feldFehler(null, '');
-    const knopf = $('buchen');
     knopf.disabled = true;
+    knopf.setAttribute('aria-busy', 'true');
     knopf.textContent = 'Wird gebucht …';
     // Dieselbe Kennung bei jedem neuen Versuch derselben Wahl: ein zweiter
     // Tipp (oder ein wiederholtes Senden bei schlechtem Netz) ergibt einen Termin.
     const schluessel = [Z.salon, Z.gewaehlt.join(), Z.person, Z.tag, Z.zeit.t, telefon].join('|');
     if (!anfrageId || anfrageId.schluessel !== schluessel) anfrageId = { schluessel, id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2)) };
+    // Wird die Seite mitten im Senden geschlossen, fragt sie beim nächsten
+    // Öffnen nach, ob der Termin angekommen ist.
+    schreiben(OFFEN, { id: anfrageId.id, zeit: Date.now() });
     try {
-      const t = await api('buchen', {
-        post: {
-          salon: Z.salon, leistungen: Z.gewaehlt, person: Z.person === 'egal' ? null : Z.person,
-          start: `${Z.tag} ${Z.zeit.t}`, name, telefon, email: email || null, notiz: $('k-notiz').value.trim() || null,
-          webseite: $('k-webseite').value, einwilligung: true, anfrage_id: anfrageId.id, ersetzt: Z.ersetzt,
-        },
-      });
+      const t = await sicherSenden('buchen', {
+        salon: Z.salon, leistungen: Z.gewaehlt, person: Z.person === 'egal' ? null : Z.person,
+        start: `${Z.tag} ${Z.zeit.t}`, name, telefon, email: email || null, notiz: $('k-notiz').value.trim() || null,
+        webseite: $('k-webseite').value, einwilligung: true, einwilligungen: einwilligungen(),
+        anfrage_id: anfrageId.id, ref: params.get('ref') || null,
+      }, knopf);
+      schreiben(OFFEN, null);
       if ($('k-merken').checked) {
         schreiben('irmonhair-kontakt', { name, telefon, email });
         schreiben('irmonhair-letzte', { salon: Z.salon, leistungen: Z.gewaehlt, person: t.wunsch_person ? t.person : null,
           wochentag: alsDatum(Z.tag).getDay(), minute: minuten(Z.zeit.t) });
-        const liste = (lesen('irmonhair-termine') || []).filter((x) => x !== Z.ersetzt);
-        schreiben('irmonhair-termine', [t.token, ...liste.filter((x) => x !== t.token)].slice(0, 5));
       } else {
         schreiben('irmonhair-kontakt', null);
       }
+      // Den Link zum Termin immer auf dem Gerät behalten — sonst steht er
+      // nach dem Schließen der Seite nur in der E-Mail (falls angegeben).
+      const liste = lesen('irmonhair-termine') || [];
+      schreiben('irmonhair-termine', [t.token, ...liste.filter((x) => x !== t.token)].slice(0, 5));
       anfrageId = null;
       fertigZeigen(t, true);
     } catch (err) {
       knopf.disabled = false;
-      knopf.textContent = 'Termin verbindlich buchen';
-      const code = err.daten.code;
-      if (code === 'vergeben') {
-        // Die Zeit ist weg: frisch laden und an derselben Stelle weiter.
-        Z.zeit = null;
-        zu('zeit');
-        await freiLaden();
-        zeigeHinweis(err.message);
-      } else {
-        feldFehler(err.daten.feld && $('k-' + err.daten.feld) ? err.daten.feld : null, err.message);
-      }
+      knopf.removeAttribute('aria-busy');
+      buchenHinweis();
+      fehlerNachSenden(err);
     }
+  }
+
+  /** Verschieben: nur die neue Zeit, keine Angaben. Atomar auf der Schnittstelle. */
+  async function verschiebenSenden(knopf) {
+    feldFehler(null, '');
+    knopf.disabled = true;
+    knopf.setAttribute('aria-busy', 'true');
+    knopf.textContent = 'Wird verschoben …';
+    try {
+      const t = await sicherSenden('verschieben', { t: Z.ersetzt, start: `${Z.tag} ${Z.zeit.t}` }, knopf);
+      const vorher = t.vorher || Z.ersetztTermin;
+      Z.ersetzt = null; Z.ersetztTermin = null;
+      knopf.disabled = false;
+      knopf.removeAttribute('aria-busy');
+      fertigZeigen({ ...t, vorher }, true);
+    } catch (err) {
+      knopf.disabled = false;
+      knopf.removeAttribute('aria-busy');
+      buchenHinweis();
+      fehlerNachSenden(err);
+    }
+  }
+
+  function fehlerNachSenden(err) {
+    if (err.daten.code === 'vergeben') {
+      // Die Zeit ist weg: frisch laden, drei Ausweichzeiten anbieten.
+      Z.zeit = null;
+      zu('zeit');
+      freiLaden();
+      ausweichZeigen(err.message, err.daten.alternativen || []);
+      return;
+    }
+    if (err.status === 0 || err.status >= 500) {
+      const s = Z.salon && salon(Z.salon);
+      const box = $('kontakt-fehler');
+      for (const i of document.querySelectorAll('#kontakt [aria-invalid]')) i.removeAttribute('aria-invalid');
+      box.replaceChildren('Das hat gerade nicht geklappt. Noch einmal tippen ist sicher — es entsteht kein zweiter Termin. ',
+        s ? el('span', {}, 'Oder rufen Sie an: ', el('a', { href: 'tel:' + s.telefon, text: s.telefon_text }), '.') : '');
+      box.hidden = false;
+      return;
+    }
+    feldFehler(err.daten.feld && $('k-' + err.daten.feld) ? err.daten.feld : null, err.message);
+  }
+
+  /** Gerade vergeben: drei freie Zeiten, so nah wie möglich an der gewünschten. */
+  function ausweichZeigen(text, alternativen) {
+    const box = $('ausweich');
+    const dauer = summe().dauer;
+    box.replaceChildren(el('p', { klasse: 'ausweich-text', text }),
+      alternativen.length ? el('div', { klasse: 'vorschlaege ausweich-wege' },
+        alternativen.map((a) => vorschlag(gross(tagText(a.datum, true)), `${a.t}–${bis(a.t, dauer)}`, a.datum, { t: a.t, p: a.p }))) : null);
+    box.hidden = false;
+    ansage(text);
+    requestAnimationFrame(() => box.scrollIntoView({ behavior: ruhig ? 'auto' : 'smooth', block: 'center' }));
   }
 
   function zeigeHinweis(text) {
@@ -724,23 +875,35 @@
     const box = $('fertig');
     box.hidden = false;
     const vorname = (t.name || $('k-name').value || '').trim().split(/\s+/).slice(0, -1).join(' ') || (t.name || '').trim();
-    const storniert = t.status === 'storniert';
+    const storniert = String(t.status).startsWith('storniert');
+    const verschoben = frisch && !!t.vorher;
     $('fertig-gruss').textContent = storniert ? 'Schade.' : frisch ? (vorname ? `Bis bald, ${vorname}.` : 'Bis bald.') : t.vergangen ? 'Danke für Ihren Besuch.' : 'Wir freuen uns auf Sie.';
-    $('fertig-titel').textContent = storniert ? 'Der Termin ist abgesagt' : frisch ? 'Ihr Termin ist gebucht' : t.vergangen ? 'Dieser Termin liegt zurück' : 'Ihr Termin';
+    $('fertig-titel').textContent = storniert ? (t.status === 'storniert_salon' ? 'Wir mussten den Termin absagen' : 'Der Termin ist abgesagt')
+      : verschoben ? 'Ihr Termin ist verschoben' : frisch ? 'Ihr Termin ist gebucht' : t.vergangen ? 'Dieser Termin liegt zurück' : 'Ihr Termin';
     const b = $('beleg-fertig');
     b.replaceChildren(belegInhalt(t));
     b.classList.toggle('ist-storniert', storniert);
     const wege = document.createDocumentFragment();
     const s = t.salon;
+    if (verschoben) {
+      wege.append(el('p', { klasse: 'fertig-notiz fertig-vorher' },
+        'vorher: ', el('s', { text: `${gross(tagText(t.vorher.start.slice(0, 10)))}, ${t.vorher.start.slice(11)}–${t.vorher.ende.slice(11)}` }),
+        el('br'), 'jetzt: ', el('strong', { text: `${gross(tagText(t.start.slice(0, 10)))}, ${t.start.slice(11)}–${t.ende.slice(11)}, bei ${t.person_name}` })));
+    }
+    if (storniert && t.status === 'storniert_salon' && t.storno_grund) {
+      wege.append(el('p', { klasse: 'fertig-notiz', text: t.storno_grund }));
+    }
     if (!storniert && !t.vergangen) {
+      // Nur eine Lampe: „In den Kalender“. Google und Weg stehen still daneben.
       wege.append(el('button', { type: 'button', klasse: 'knopf', text: 'In den Kalender', onclick: () => icsLaden(t) }));
+      wege.append(el('a', { klasse: 'knopf-still', href: googleLink(t), target: '_blank', rel: 'noopener', text: 'Google Kalender' }));
       wege.append(el('a', { klasse: 'knopf-still', href: `https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}`, target: '_blank', rel: 'noopener', text: 'Wegbeschreibung' }));
     }
     if (frisch && !storniert) {
       wege.append(el('p', { klasse: 'fertig-notiz' },
         $('k-email').value.trim() ? 'Die Bestätigung kommt per E-Mail. ' : '',
         'Verschieben oder absagen können Sie ', el('a', { href: `termin.html?t=${t.token}`, text: 'über diesen Link' }),
-        ` — bis ${Z.k?.regeln.stornofrist ?? 24} Stunden vorher. Speichern Sie ihn am besten.`));
+        ` — bis ${Z.k?.regeln.stornofrist ?? 24} Stunden vorher. Er ist auf diesem Gerät gespeichert und steht auch im Kalendereintrag.`));
     }
     if (!frisch && !storniert && !t.vergangen) {
       if (t.storno_moeglich) {
@@ -768,13 +931,16 @@
       return;
     }
     knopf.disabled = true;
+    knopf.textContent = 'Wird abgesagt …';
     try {
-      const neu = await api('stornieren', { post: { t: t.token } });
+      const neu = await sicherSenden('stornieren', { t: t.token }, knopf);
       schreiben('irmonhair-termine', (lesen('irmonhair-termine') || []).filter((x) => x !== t.token));
       fertigZeigen(neu, false);
     } catch (e) {
       knopf.disabled = false;
-      alert(e.message);
+      knopf.dataset.sicher = '';
+      knopf.textContent = 'Absagen';
+      zeigeHinweis(e.message);
     }
   }
 
@@ -782,6 +948,7 @@
       Buchen des neuen im selben Zug freigegeben. */
   function verschieben(t) {
     Z.ersetzt = t.token;
+    Z.ersetztTermin = t;
     $('fertig').hidden = true;
     document.querySelector('.buchung-kopf').hidden = false;
     $('bogen').hidden = false;
@@ -793,7 +960,8 @@
     personenZeichnen();
     zu('zeit');
     freiLaden();
-    zeigeHinweis(`Neue Zeit wählen — der Termin am ${tagText(t.start.slice(0, 10))} um ${t.start.slice(11)} wird erst frei, wenn der neue gebucht ist.`);
+    buchenHinweis();
+    zeigeHinweis(`Neue Zeit wählen — Ihr Termin am ${tagText(t.start.slice(0, 10))}, ${t.start.slice(11)}–${t.ende.slice(11)} bleibt bestehen, bis die neue Zeit sicher gebucht ist.`);
     history.replaceState(null, '', 'termin.html');
   }
 
@@ -820,6 +988,9 @@
       `DTSTART:${berlinUtc(t.start.slice(0, 10), t.start.slice(11))}`, `DTEND:${berlinUtc(t.ende.slice(0, 10), t.ende.slice(11))}`,
       `SUMMARY:${x('Irmonhair ' + s.name + ': ' + was)}`, `LOCATION:${x(`Irmonhair, ${s.strasse}, ${s.ort}`)}`,
       `DESCRIPTION:${x(`Bei ${t.person_name}. Telefon ${s.telefon_text}. Verwalten: ${new URL('termin.html?t=' + t.token, location.href).href}`)}`,
+      // Ein späterer Eintrag mit derselben UID ersetzt diesen (nach einem Verschieben).
+      `SEQUENCE:${Math.floor(Date.now() / 60000) % 100000000}`,
+      'BEGIN:VALARM', 'TRIGGER:-PT24H', 'ACTION:DISPLAY', `DESCRIPTION:${x('Morgen Irmonhair um ' + t.start.slice(11))}`, 'END:VALARM',
       'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY', `DESCRIPTION:${x('Irmonhair um ' + t.start.slice(11))}`, 'END:VALARM',
       'END:VEVENT', 'END:VCALENDAR'];
     const blob = new Blob([zeilen.join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' });
@@ -827,6 +998,17 @@
     document.body.append(a);
     a.click();
     setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+
+  function googleLink(t) {
+    const s = t.salon;
+    const q = new URLSearchParams({
+      action: 'TEMPLATE', text: `Irmonhair ${s.name}: ${t.posten.map((p) => p.name).join(', ')}`,
+      dates: `${berlinUtc(t.start.slice(0, 10), t.start.slice(11))}/${berlinUtc(t.ende.slice(0, 10), t.ende.slice(11))}`,
+      location: `Irmonhair, ${s.strasse}, ${s.ort}`,
+      details: `Bei ${t.person_name}. Telefon ${s.telefon_text}. Verwalten: ${new URL('termin.html?t=' + t.token, location.href).href}`,
+    });
+    return 'https://calendar.google.com/calendar/render?' + q;
   }
 
   /* ── Eigene Termine oben (nur wenn gemerkt) ─────────────────────────── */
@@ -841,13 +1023,15 @@
       } catch (e) { /* weg oder nicht erreichbar */ }
     }
     schreiben('irmonhair-termine', offen.map((t) => t.token));
-    if (!offen.length) return;
     offen.sort((a, b) => (a.start < b.start ? -1 : 1));
+    Z.eigene = offen;
+    buchenHinweis();
+    if (!offen.length) return;
     const box = $('eigene');
     box.hidden = false;
     box.replaceChildren(...offen.map((t) => el('a', { klasse: 'eigener', href: `termin.html?t=${t.token}` },
       el('span', { klasse: 'eigener-zeile', text: 'Ihr nächster Termin' }),
-      el('span', { klasse: 'eigener-wann', text: `${gross(tagText(t.start.slice(0, 10), true))}, ${t.start.slice(11)} Uhr · ${t.salon.name}, bei ${t.person_name}` }),
+      el('span', { klasse: 'eigener-wann', text: `${gross(tagText(t.start.slice(0, 10), true))}, ${t.start.slice(11)}–${t.ende.slice(11)} Uhr · ${t.salon.name}, bei ${t.person_name}` }),
       el('span', { klasse: 'eigener-mehr', text: 'ansehen oder ändern' }))));
   }
 
@@ -878,22 +1062,11 @@
       $('rueckfall-hinweis').hidden = false;
       return;
     }
-    if (token) {
-      try {
-        const t = await api('termin', { get: { t: token } });
-        document.querySelector('.buchung-kopf').hidden = true;
-        $('rueckfall').hidden = true;
-        fertigZeigen(t, false);
-        return;
-      } catch (e) {
-        zeigeHinweis(e.message);
-      }
-    }
-    $('rueckfall').hidden = true;
-    $('bogen').hidden = false;
-    $('buchung-lauf').textContent = 'Salon, Leistung und Uhrzeit wählen — Sie sehen sofort, wer wann frei ist.';
-    if (k.regeln.hinweis) { const h = $('hinweis-band'); h.textContent = k.regeln.hinweis; h.hidden = false; h.classList.add('ist-dauerhaft'); }
+    // Bedienung einrichten, bevor es irgendwohin abzweigt — auch wer über
+    // den Link aus der Bestätigung kommt, verschiebt über dasselbe Formular.
     kontaktVorfuellen();
+    einwilligungenZeichnen();
+    buchenHinweis();
     for (const e of document.querySelectorAll('.schritt-aendern')) {
       e.addEventListener('click', () => {
         const s = e.closest('.schritt').dataset.schritt;
@@ -911,11 +1084,44 @@
     $('suche').addEventListener('input', () => { clearTimeout(sucheUhr); sucheUhr = setTimeout(leistungenZeichnen, 120); });
     $('kontakt').addEventListener('submit', buchen);
     for (const id of ['k-name', 'k-telefon', 'k-email']) $(id).addEventListener('input', () => { if (!$('kontakt-fehler').hidden) feldFehler(null, ''); });
+    addEventListener('offline', () => zeigeHinweis('Keine Verbindung. Ihre Auswahl bleibt stehen — gebucht wird erst, wenn das Netz zurück ist.'));
     // Zurück nach einer Weile: freie Zeiten auffrischen.
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && Z.frei && Date.now() - Z.frei.geladen > 120000 && ['person', 'zeit'].includes(Z.schritt)) freiLaden();
     });
 
+    // Wurde die Seite mitten im Buchen geschlossen? Nachfragen statt raten.
+    const offen = lesen(OFFEN);
+    if (offen && Date.now() - offen.zeit < 6 * 3600000) {
+      try {
+        const a = await api('anfrage', { get: { anfrage_id: offen.id } });
+        schreiben(OFFEN, null);
+        if (a.angekommen) {
+          const liste = lesen('irmonhair-termine') || [];
+          schreiben('irmonhair-termine', [a.termin.token, ...liste.filter((x) => x !== a.termin.token)].slice(0, 5));
+          document.querySelector('.buchung-kopf').hidden = true;
+          $('rueckfall').hidden = true;
+          fertigZeigen(a.termin, true);
+          zeigeHinweis('Ihre Buchung von vorhin ist angekommen — hier ist sie.');
+          return;
+        }
+      } catch (e) { /* später erneut */ }
+    } else if (offen) schreiben(OFFEN, null);
+    if (token) {
+      try {
+        const t = await api('termin', { get: { t: token } });
+        document.querySelector('.buchung-kopf').hidden = true;
+        $('rueckfall').hidden = true;
+        fertigZeigen(t, false);
+        return;
+      } catch (e) {
+        zeigeHinweis(e.message);
+      }
+    }
+    $('rueckfall').hidden = true;
+    $('bogen').hidden = false;
+    $('buchung-lauf').textContent = 'Salon, Leistung und Uhrzeit wählen — Sie sehen sofort, wer wann frei ist.';
+    if (k.regeln.hinweis) { const h = $('hinweis-band'); h.textContent = k.regeln.hinweis; h.hidden = false; h.classList.add('ist-dauerhaft'); }
     // Salon aus der Adresse, sonst aus dem Gedächtnis; die Gruppe aus der Preisliste.
     const wunsch = params.get('salon') || roh('irmonhair-salon');
     const gruppe = params.get('gruppe');

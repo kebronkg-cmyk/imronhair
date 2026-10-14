@@ -1,0 +1,12 @@
+{
+  // Vorführung im Browser (auch auf dem iPad): GitHub → Code → Codespaces →
+  // „Create codespace“. Der Server startet von selbst, die Seite öffnet sich.
+  // Nur für die Vorführung — echte Termine laufen auf dem eigenen Webspace.
+  "name": "Irmonhair Vorführung",
+  "image": "mcr.microsoft.com/devcontainers/php:8.3",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": { "label": "Irmonhair Vorführung", "onAutoForward": "openBrowser" }
+  },
+  "postAttachCommand": "bash demo/starten.sh"
+}

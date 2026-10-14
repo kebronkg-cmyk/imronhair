@@ -6,6 +6,8 @@
 // 'erlaubte_herkunft' => ['http://andere.test'].
 // Bricht beim ersten Fehler ab und nennt ihn.
 
+import { feiertage } from './pruefen-hilfe.mjs';
+
 const API = process.argv[2] || 'http://127.0.0.1:8098/api/';
 const SCHLUESSEL = process.argv[3] || 'testschluessel-123456';
 let ok = 0;
@@ -38,11 +40,15 @@ async function rufe(a, { get, post, kopf = {} } = {}) {
   return { status: r.status, json, kopf: r.headers };
 }
 
-// Ein Dienstag mindestens 8 Tage voraus: Pasing und Großhadern haben offen.
+const istFeiertag = (s) => feiertage(+s.slice(0, 4)).has(s);
+// Ein Dienstag mindestens 8 Tage voraus, er und der Mittwoch danach kein
+// Feiertag: Pasing und Großhadern haben offen.
 const tag = (() => {
   const d = new Date(); d.setDate(d.getDate() + 8);
-  while (d.getDay() !== 2) d.setDate(d.getDate() + 1);
-  return d.toISOString().slice(0, 10);
+  const iso = (x) => x.toISOString().slice(0, 10);
+  const naechster = (x) => { const y = new Date(x); y.setDate(y.getDate() + 1); return y; };
+  while (d.getDay() !== 2 || istFeiertag(iso(d)) || istFeiertag(iso(naechster(d)))) d.setDate(d.getDate() + 1);
+  return iso(d);
 })();
 const tag2 = (() => { const d = new Date(tag + 'T12:00:00'); d.setDate(d.getDate() + 1); return d.toISOString().slice(0, 10); })();
 const hat = (frei, d, t, p) => (frei.tage[d]?.zeiten || []).some((z) => z.t === t && (!p || z.p.includes(p)));
@@ -140,13 +146,19 @@ pruefe(r.status === 409 && r.json.code === 'zu_viele', 'Vierter offener Termin u
 // ── Termin ansehen, umbuchen, absagen ──────────────────────────────
 r = await rufe('termin', { get: { t: t1.token } });
 pruefe(r.status === 200 && r.json.storno_moeglich && r.json.salon.name === 'Pasing' && !('kunde' in r.json), 'Termin über den Link lesbar, ohne Kundendaten');
-r = await rufe('buchen', { post: buchung({ salon: 'pasing', leistungen: [schnitt.id], person: 'tina', start: `${tag} 10:15`, ersetzt: t1.token, telefon: '0176 1000000' }) });
-pruefe(r.status === 200 && r.json.start.endsWith('10:15'), 'Umbuchen auf 10:15 (überlappt den alten Platz) klappt', r.json);
+r = await rufe('verschieben', { post: { t: t1.token, start: `${tag} 10:15` } });
+pruefe(r.status === 200 && r.json.start.endsWith('10:15') && r.json.ende.endsWith('11:30') && r.json.id === t1.id && r.json.token === t1.token,
+  'Verschieben auf 10:15 (überlappt den alten Platz): derselbe Termin, neue Zeit', r.json);
+pruefe(r.json.vorher?.start.endsWith('10:00') && r.json.person === 'tina', 'Antwort nennt vorher → jetzt, Wunschperson bleibt', r.json);
 const t1b = r.json;
-r = await rufe('termin', { get: { t: t1.token } });
-pruefe(r.json.status === 'storniert', 'Der alte Termin ist storniert');
+r = await rufe('frei', { get: { salon: 'pasing', leistungen: waschen.id, person: 'tina', von: tag, tage: 1 } });
+pruefe(!hat(r.json, tag, '10:15') && hat(r.json, tag, '09:30') && !hat(r.json, tag, '10:00'), 'Alter Platz frei, neuer belegt (Waschen 9:30 passt davor, 10:00 nicht)', r.json.tage[tag].zeiten.map((z) => z.t));
+r = await rufe('buchen', { post: buchung({ salon: 'pasing', leistungen: [schnitt.id], person: 'tina', start: `${tag} 10:30`, ersetzt: t1.token }) });
+pruefe(r.status === 200 && r.json.id === t1.id && r.json.start.endsWith('10:30'), 'Ältere Seiten (Buchen mit „ersetzt“) verschieben ebenso', r.json);
+r = await rufe('verschieben', { post: { t: t1.token, start: `${tag} 10:15` } });
+pruefe(r.status === 200 && r.json.start.endsWith('10:15'), 'Zurück auf 10:15');
 r = await rufe('stornieren', { post: { t: t1b.token } });
-pruefe(r.status === 200 && r.json.status === 'storniert', 'Absagen über den Link');
+pruefe(r.status === 200 && r.json.status === 'storniert_kunde' && r.json.storniert, 'Absagen über den Link: „storniert_kunde“');
 r = await rufe('frei', { get: { salon: 'pasing', leistungen: schnitt.id, person: 'tina', von: tag, tage: 1 } });
 pruefe(hat(r.json, tag, '10:00'), 'Nach der Absage ist 10:00 wieder frei');
 r = await rufe('termin', { get: { t: 'f'.repeat(32) } });
@@ -195,15 +207,17 @@ const t2 = r.json;
 pruefe((await rufe('stand')).json.stand > stand1, 'Stand zählt hoch (andere Geräte laden nach)');
 r = await rufe('termin_neu', { post: { salon: 'pasing', person: 'tina', leistungen: [schnitt.id], start: `${tag} 12:00`, kunde: { name: 'Clara C' } } });
 pruefe(r.status === 409 && r.json.code === 'konflikt' && r.json.konflikte[0].text.includes('Berta'), 'Überschneidung wird gemeldet, mit Namen', r.json);
-r = await rufe('termin_neu', { post: { salon: 'pasing', person: 'tina', leistungen: [schnitt.id], start: `${tag} 12:00`, kunde: { name: 'Clara C' }, trotzdem: true } });
-pruefe(r.status === 200, 'Mit „trotzdem“ geht es (bewusste Doppelbelegung)');
+r = await rufe('termin_neu', { post: { salon: 'pasing', person: 'tina', leistungen: [schnitt.id], start: `${tag} 12:00`, kunde: { name: 'Clara C' }, trotzdem: true, ausserhalb_ok: true } });
+pruefe(r.status === 409 && r.json.hart === true, 'Auch mit „trotzdem“ keine Doppelbelegung — Überschneidungen blocken hart', r.json);
+r = await rufe('termin_neu', { post: { salon: 'pasing', person: 'tina', leistungen: [schnitt.id], start: `${tag} 13:00`, kunde: { name: 'Clara C' } } });
+pruefe(r.status === 200, 'Clara bei Tina 13:00', r.json);
 const t3 = r.json;
 r = await rufe('termin_neu', { post: { salon: 'pasing', person: 'tina', leistungen: [schnitt.id], start: `${tag} 18:00`, kunde: { name: 'Spät' } } });
-pruefe(r.status === 409 && r.json.konflikte[0].art === 'ausserhalb', 'Nach Feierabend: „außerhalb der Arbeitszeit“');
+pruefe(r.status === 409 && r.json.konflikte[0].art === 'geschlossen' && r.json.hart, 'Nach Ladenschluss: „geschlossen“, hart', r.json);
 
 // Verschieben mit Versionsschutz
 r = await rufe('termin_aendern', { post: { id: t3.id, version: t3.version, start: `${tag} 14:30`, person: 'csilla' } });
-pruefe(r.status === 409, 'Verschieben auf Csilla 14:30 kollidiert mit Waschen 13:30? nein — mit Balayage-Arbeit 14:30', r.json);
+pruefe(r.status === 409, 'Verschieben auf Csilla 14:30 kollidiert mit der Balayage-Arbeit ab 14:30', r.json);
 r = await rufe('termin_aendern', { post: { id: t3.id, version: t3.version, start: `${tag} 15:30`, person: 'csilla' } });
 pruefe(r.status === 200 && r.json.person === 'csilla' && r.json.version === t3.version + 1, 'Verschoben zu Csilla 15:30', r.json);
 r = await rufe('termin_aendern', { post: { id: t3.id, version: t3.version, status: 'erschienen' } });
@@ -211,7 +225,8 @@ pruefe(r.status === 409 && r.json.code === 'veraltet' && r.json.termin, 'Alte Ve
 r = await rufe('termin_aendern', { post: { id: t3.id, version: t3.version + 1, phasen: [['arbeit', 30], ['pause', 20], ['arbeit', 25]] } });
 pruefe(r.status === 200 && r.json.ende.endsWith('16:45'), 'Dauer mit Einwirkzeit angepasst (bis 16:45)', r.json);
 r = await rufe('termin_verlauf', { get: { id: t3.id } });
-pruefe(r.json.verlauf.length >= 3 && r.json.verlauf.some((v) => v.daten?.person_id), 'Verlauf zeigt Wer/Was', r.json.verlauf);
+pruefe(r.json.verlauf.length >= 3 && r.json.verlauf.some((v) => v.daten?.vorher?.person === 'tina' && v.daten?.nachher?.person === 'csilla') && r.json.verlauf.every((v) => v.akteur === 'mitarbeiter'),
+  'Verlauf zeigt Wer, vorher und nachher', r.json.verlauf);
 
 r = await rufe('vorschlaege', { post: undefined, get: { salon: 'pasing', von: tag } });
 pruefe(r.status === 422, 'Vorschläge ohne Leistung: 422');

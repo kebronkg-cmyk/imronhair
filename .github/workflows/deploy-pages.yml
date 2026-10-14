@@ -33,23 +33,23 @@ jobs:
       - name: Seite zusammenstellen
         run: |
           set -euo pipefail
-          mkdir -p _site/spiegel _site/api
+          mkdir -p _site/api
 
-          # Die aktuelle Fassung und die älteren Fassungen unter ihren Pfaden.
-          cp -r fenster schleife alt alt2 _site/
+          # Die Hauptseite (das Schaufenster bei Nacht) an der Wurzel: Seiten,
+          # Stile, Skripte, Bilder, Schriften, Zeichen.
+          cp index.html leistungen.html impressum.html datenschutz.html termin.html \
+             neu.css neu.js termin.css termin.js termin-vorschau.js logo-*.svg _site/
+          cp -r bilder schrift _site/
 
-          # Die frühere Hauptseite (Spiegel) unter /spiegel/.
-          cp index.html leistungen.html impressum.html datenschutz.html \
-             neu.css neu.js logo-*.svg _site/spiegel/
-          cp -r bilder schrift _site/spiegel/
+          # Die älteren Fassungen unter ihren Pfaden (/spiegel/, /schleife/, /alt/, /alt2/).
+          cp -r spiegel schleife alt alt2 _site/
 
           # Die Terminvorschau liest den öffentlichen Katalog (Leistungen,
           # Dauer, Team) — nur diese eine Datei aus api/.
           cp api/katalog.json _site/api/
 
-          # Weiterleitungen auf die Fenster-Fassung; Anker (#…) und ?salon=
-          # bleiben erhalten. Erstes Feld: Pfad der alten Adresse, zweites:
-          # Ziel, relativ zur Wurzel der Website.
+          # Weiterleitungen; Anker (#…) und ?salon=… bleiben erhalten. Erstes
+          # Feld: Pfad der alten Adresse, zweites: Ziel, relativ zur Wurzel.
           weiterleiten() {
             pfad="$1"; ziel="$2"
             datei="_site/${pfad}"
@@ -59,6 +59,7 @@ jobs:
             tiefe=$(printf '%s' "$pfad" | tr -cd '/' | wc -c)
             vor=""; for _ in $(seq 1 "$tiefe"); do vor="../${vor}"; done
             ziel="${vor}${ziel}"
+            [ -n "$ziel" ] || ziel="./"
             cat > "$datei" <<EOF
           <!doctype html>
           <html lang="de">
@@ -74,20 +75,22 @@ jobs:
           </html>
           EOF
           }
-          # Die Hauptadresse und die alten Unterseiten dieser Website …
-          weiterleiten ""                  "fenster/"
-          weiterleiten "index.html"        "fenster/"
-          weiterleiten "leistungen.html"   "fenster/leistungen.html"
-          weiterleiten "impressum.html"    "fenster/impressum.html"
-          weiterleiten "datenschutz.html"  "fenster/datenschutz.html"
+          # Die frühere Ablage unter /fenster/ (Links aus Bestätigungen,
+          # Lesezeichen, geteilte Links) …
+          weiterleiten "fenster/"                 ""
+          weiterleiten "fenster/index.html"       ""
+          weiterleiten "fenster/leistungen.html"  "leistungen.html"
+          weiterleiten "fenster/termin.html"      "termin.html"
+          weiterleiten "fenster/impressum.html"   "impressum.html"
+          weiterleiten "fenster/datenschutz.html" "datenschutz.html"
           # … und die Adressen der früheren Website unter irmonhair-muenchen.de,
           # damit Links bei Google, Planity und in Lesezeichen weiter tragen.
-          weiterleiten "unsere-preise/"               "fenster/leistungen.html"
-          weiterleiten "ueberblick-leistungen/"       "fenster/leistungen.html"
-          weiterleiten "frauen-herrenhaarschnitte/"   "fenster/leistungen.html#schnitt"
-          weiterleiten "impressum/"                   "fenster/impressum.html"
-          weiterleiten "datenschutz/"                 "fenster/datenschutz.html"
-          weiterleiten "danke/"                       "fenster/"
+          weiterleiten "unsere-preise/"               "leistungen.html"
+          weiterleiten "ueberblick-leistungen/"       "leistungen.html"
+          weiterleiten "frauen-herrenhaarschnitte/"   "leistungen.html#schnitt"
+          weiterleiten "impressum/"                   "impressum.html"
+          weiterleiten "datenschutz/"                 "datenschutz.html"
+          weiterleiten "danke/"                       ""
 
           # Sicherheitsnetz: keine Notizen, Skripte oder Quelldaten im Netz.
           find _site \( -name '*.md' -o -name '*.py' -o -name '*.php' \

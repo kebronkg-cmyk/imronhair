@@ -212,6 +212,8 @@ schlimmer als ein unbeschriftetes.
 | Eine CSS-Animation mit `forwards` überschreibt Inline-Stile aus dem Skript | Nur die Wartezeit abdecken (`backwards`) oder eine andere Eigenschaft animieren |
 | `<details name>` schließt beim Aufklappen aller Gruppen jede andere — Messungen und Prüfskripte sehen nur eine | Zum Messen `name` entfernen; Elemente in geschlossenen `<details>` haben trotzdem ein Rechteck → `checkVisibility()` |
 | Eine Polsterung wie `padding: x 0 y` auf einem Element mit `.mitte` löscht dessen seitlichen Rand | Nur `padding-top`/`padding-bottom` setzen |
+| Ein frühes `return` in der Startfunktion (hier: Ansicht „Ihr Termin“ über den Link) überspringt das Anmelden der Formular-Handler — „Verschieben“ schickte das Formular nativ ab und lud die Seite neu | Bedienung einrichten, bevor die Seite abzweigt; jeden Einstieg (Link, Vorschau, Rückkehr) im Browser durchspielen |
+| Ein Prüfskript, das bei einer Überschneidung „trotzdem“ anklickt, prüft nicht das Ziehen, sondern die Doppelbelegung | Prüfungen legen ihren Termin selbst an einer nachweislich freien Stelle an |
 | Ein Element, das dem Scrollen folgt, ruckelt am Handy: grobe Scroll-Schritte, ein `drop-shadow` auf dem bewegten Element, eine Custom Property an `<html>` (ganze Seite neu berechnet) | Weich nachführen (exponentiell, per `requestAnimationFrame`), Schein als Verlauf, Variable am betroffenen Element setzen; Einzelbilder messen |
 
 ## Zugänglichkeit

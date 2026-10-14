@@ -325,7 +325,7 @@ Rundbogen im Seitenverhältnis 3 : 4, schwarzer Rahmen, LED-Innenkante, im Glas 
 - **Don't** unter .72rem gehen.
 
 
-## Handy: eigene Komposition (Fassung /fenster/)
+## Handy: eigene Komposition (Hauptseite, früher /fenster/)
 
 Unter 48rem ist die Startseite keine gestapelte Desktop-Seite.
 
