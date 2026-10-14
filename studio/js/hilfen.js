@@ -20,6 +20,9 @@ export function el(tag, attr, ...kinder) {
   return e;
 }
 
+/** replaceChildren, das null und false überspringt (wie el()). */
+export const fuellen = (ziel, ...kinder) => ziel.replaceChildren(...kinder.flat(Infinity).filter((k) => k !== null && k !== undefined && k !== false));
+
 export const svg = (pfad, klasse = 'zeichen') => {
   const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   s.setAttribute('viewBox', '0 0 20 20');

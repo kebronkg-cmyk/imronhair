@@ -28,6 +28,14 @@ export const personVon = (id) => Z.s.personen.find((p) => p.id === id);
 export const leistungVon = (id) => Z.s.leistungen.find((l) => l.id === id);
 export const gruppeVon = (id) => Z.s.gruppen.find((g) => g.id === id);
 
+/** Adresse einer Aktion zum direkten Laden (Fotos, Exporte). */
+export function apiAdresse(aktion, get = {}) {
+  const url = new URL(API);
+  url.searchParams.set('a', aktion);
+  for (const [k, v] of Object.entries(get)) url.searchParams.set(k, v);
+  return url.href;
+}
+
 export async function api(aktion, { get, post, roh = false } = {}) {
   const url = new URL(API);
   url.searchParams.set('a', aktion);

@@ -207,8 +207,17 @@ function eingabe(): array
     if ($e !== null) return $e;
     $e = $_GET;
     if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+        // Fotos für die Kartei sind größer; alles andere bleibt klein.
+        $grenze = match ((string)($_GET['a'] ?? '')) { 'foto_hochladen' => 8000000, 'import_pruefen', 'import_kunden' => 4000000, default => 200000 };
         $roh = file_get_contents('php://input') ?: '';
-        if (strlen($roh) > 200000) throw new Fehler('Anfrage zu groß.', 413);
+        if (strlen($roh) > $grenze) throw new Fehler('Anfrage zu groß.', 413);
+        if (str_starts_with((string)($_SERVER['CONTENT_TYPE'] ?? ''), 'application/x-www-form-urlencoded')) {
+            // Abmelden mit einem Klick aus dem Mailprogramm (RFC 8058) und
+            // eingehende SMS mancher Anbieter kommen als Formular.
+            parse_str($roh, $form);
+            $e = array_merge($e, $form);
+            return $e;
+        }
         $json = $roh === '' ? [] : json_decode($roh, true);
         if (!is_array($json)) throw new Fehler('Ungültige Anfrage.', 400);
         $e = array_merge($e, $json);
@@ -242,7 +251,29 @@ function antwort(mixed $daten, int $status = 200): never
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
     echo json_encode($daten, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRESERVE_ZERO_FRACTION);
+    nachlauf();
     exit;
+}
+
+/** Arbeit, die nach der Antwort laufen soll (etwa die Warteliste nach
+    einer Absage benachrichtigen) — die Kundin wartet nicht darauf. */
+function nach_antwort(?callable $f = null): array
+{
+    static $liste = [];
+    if ($f) $liste[] = $f;
+    return $liste;
+}
+
+function nachlauf(): void
+{
+    $liste = nach_antwort();
+    if (!$liste) return;
+    // Unter PHP-FPM geht die Antwort jetzt schon raus; sonst nach dem Nachlauf.
+    if (function_exists('fastcgi_finish_request')) fastcgi_finish_request();
+    ignore_user_abort(true);
+    foreach ($liste as $f) {
+        try { $f(); } catch (Throwable $e) { error_log('[irmonhair] Nachlauf: ' . $e->getMessage()); }
+    }
 }
 
 function methode(string $m): void
@@ -487,7 +518,73 @@ const EINSTELLUNGEN_VORGABE = [
     'online_aktiv' => true,
     'hinweis' => '',           // Satz über der Buchung, z. B. Urlaubshinweis
     'feiertage' => true,       // gesetzliche Feiertage (Bayern) sind geschlossen
+    // Nachrichten
+    'erinnerung_sms' => 'regel',   // regel | immer | nie — SMS/WhatsApp am Vortag
+    'erinnerung_schwelle' => 8000, // „regel“: ab diesem Preis (Cent), nach einem
+                                   // Nichterscheinen oder bei Telefonbuchung
+    'recall_aktiv' => true,
+    'recall_nachfass' => 7,        // Tage bis zur einzigen Nachfrage
+    'warteliste_aktiv' => true,
+    'ruhe_von' => 540,             // Werbung, Recall, Warteliste nur zwischen
+    'ruhe_bis' => 1200,            // 9 und 20 Uhr, nicht sonntags und feiertags
+    'recall_preis_cent' => 300,    // Abrechnung je zurückgeholter Kundin (0 = aus)
+    'recall_deckel_cent' => 6000,  // höchstens so viel im Monat
+    'sms_preis_cent' => 8,         // für die Kostenschätzung je SMS-Teil
+    // Treue: jeder n-te Besuch mit Prämie
+    'treue_aktiv' => false,
+    'treue_n' => 10,
+    'treue_praemie' => 'Der zehnte Besuch: Waschen, Schneiden, Föhnen geht aufs Haus.',
+    // Steuerberater (Vorschlag, mit der Kanzlei abstimmen)
+    'datev_berater' => '',
+    'datev_mandant' => '',
+    'datev_erloese' => '8400',
+    'datev_gegenkonto' => '1000',
 ];
+
+/** Recall-Abstand in Tagen (Spezifikation 4.3): Herren 4–5 Wochen, Damen
+    6–8, Ansatz 5–6, Balayage 10–12, Keratin 3–4 Monate. Gilt als Vorgabe
+    je Leistung; das Studio ändert ihn unter „Leistungen“. */
+function recall_vorgabe(string $gruppe, string $name): ?int
+{
+    $n = mb_strtolower($name);
+    if (str_contains($n, 'keratin')) return 105;
+    if (str_contains($n, 'balayage')) return 77;
+    if (str_contains($n, 'ansatz')) return 42;
+    if (str_contains($n, 'dauerwelle')) return 84;
+    return match ($gruppe) {
+        'herren' => 35, 'kinder' => 42, 'schnitt' => 49, 'farbe' => 49,
+        'straehnen' => 70, 'verlaengerung' => 56, 'gesicht' => 28,
+        default => null,
+    };
+}
+
+/** Geheimnis für signierte Links (Abmelden, Nachrichten-Einstellungen).
+    Einmal zufällig erzeugt und in der Datenbank abgelegt. */
+function geheimnis(): string
+{
+    static $g = null;
+    if ($g !== null) return $g;
+    $db = db();
+    $g = (string)($db->wert("SELECT wert FROM {p}meta WHERE schluessel = 'geheimnis'") ?? '');
+    if ($g === '') {
+        $g = zufall(32);
+        try { $db->q("INSERT INTO {p}meta (schluessel, wert) VALUES ('geheimnis', ?)", [$g]); }
+        catch (PDOException $e) { $g = (string)$db->wert("SELECT wert FROM {p}meta WHERE schluessel = 'geheimnis'"); }
+    }
+    return $g;
+}
+
+/** „17.3fa…“: Kundennummer und Unterschrift — für den Link „Ihre Nachrichten“. */
+function kunde_schluessel(int $id): string
+{
+    return $id . '.' . substr(hash_hmac('sha256', 'kunde-' . $id, geheimnis()), 0, 24);
+}
+
+function kunde_aus_schluessel(?string $s): ?int
+{
+    if (!$s || !preg_match('/^(\d{1,10})\.([a-f0-9]{24})$/', $s, $m)) return null;
+    return hash_equals(kunde_schluessel((int)$m[1]), $s) ? (int)$m[1] : null;
+}
 
 /* ── Termin-Zustände ───────────────────────────────────────────────────
    gebucht → erschienen | nicht_erschienen | storniert_kunde | storniert_salon
@@ -507,4 +604,11 @@ function storniert(string $status): bool
 const EINWILLIGUNGEN = [
     'terminnachrichten' => 'Ich möchte Nachrichten zu meinem Termin (Erinnerung, Änderungen) auch per SMS oder WhatsApp bekommen.',
     'recall' => 'Erinnern Sie mich, wenn mein nächster Termin fällig ist — höchstens eine Nachricht und eine Nachfrage, per SMS oder E-Mail. Abmelden jederzeit mit STOP.',
+    'angebote' => 'Schicken Sie mir gelegentlich Angebote und Neuigkeiten von Irmonhair — höchstens eine Nachricht im Monat, per E-Mail oder SMS. Ich bestätige das noch einmal über einen Link. Abmelden jederzeit mit STOP oder über den Link in jeder Nachricht.',
 ];
+
+/** Gilt mit dem Eintrag in die Warteliste (dort steht er neben dem Knopf). */
+const EINWILLIGUNG_WARTELISTE = 'Benachrichtigen Sie mich per SMS oder E-Mail, wenn ein passender Termin frei wird. Der Eintrag endet von selbst am Ende des gewählten Zeitraums; austragen jederzeit mit STOP oder über den Link.';
+
+/** Nur nach Bestätigung über einen Link gültig (Double-Opt-in). */
+const EINWILLIGUNG_DOPPELT = ['angebote'];

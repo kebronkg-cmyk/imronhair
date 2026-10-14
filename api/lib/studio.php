@@ -106,6 +106,7 @@ function stammdaten(): array
             'preis_cent' => $l['preis_cent'] === null ? null : (int)$l['preis_cent'], 'preis_ab' => (bool)$l['preis_ab'],
             'preis_text' => $l['preis_text'], 'online' => (bool)$l['online'], 'aktiv' => (bool)$l['aktiv'],
             'zusatzleistung' => (bool)$l['zusatzleistung'], 'sort' => (int)$l['sort'], 'personen' => $zuordnung[$l['id']] ?? [],
+            'recall_tage' => isset($l['recall_tage']) ? (int)$l['recall_tage'] ?: null : null,
         ];
     }
     return [
@@ -339,9 +340,12 @@ function aktion_termin_aendern(): array
     });
     // Nach dem COMMIT: jede Änderung an Zeit, Person oder Status meldet sich
     // bei der Kundin — mit „vorher → jetzt“, aus dem gespeicherten Stand.
-    if (feld('benachrichtigen') !== false) {
-        require_once __DIR__ . '/post.php';
-        post_aenderung($r['vorher'], $r['termin']);
+    require_once __DIR__ . '/nachrichten.php';
+    if (feld('benachrichtigen') !== false) post_aenderung($r['vorher'], $r['termin']);
+    // Ist dadurch Zeit frei geworden, erfährt es die Warteliste sofort.
+    $v = $r['vorher'];
+    if (in_array($v['status'], STATUS_BELEGT, true) && (!in_array($r['termin']['status'], STATUS_BELEGT, true) || $v['start'] !== $r['termin']['start'] || $v['person'] !== $r['termin']['person'] || $v['ende'] !== $r['termin']['ende'])) {
+        nach_freigabe($v['salon'], substr($v['start'], 0, 10));
     }
     return $r['termin'];
 }
@@ -409,12 +413,17 @@ function aktion_abwesenheit_loeschen(): array
 {
     anmeldung_pflicht(true);
     $id = (int)feld('id');
-    db()->schreiben(function (DB $db) use ($id) {
+    $alt = db()->schreiben(function (DB $db) use ($id) {
         $alt = $db->eins('SELECT * FROM {p}abwesenheit WHERE id = ?', [$id]);
         $db->q('DELETE FROM {p}abwesenheit WHERE id = ?', [$id]);
         $db->standErhoehen();
         protokoll('abwesenheit_geloescht', null, null, ['id' => $id, 'vorher' => $alt]);
+        return $alt;
     });
+    if ($alt) {
+        require_once __DIR__ . '/nachrichten.php';
+        foreach (db()->alle('SELECT id FROM {p}salon WHERE aktiv = 1') as $s) if (!$alt['salon_id'] || $alt['salon_id'] === $s['id']) nach_freigabe($s['id'], substr($alt['von'], 0, 10));
+    }
     return ['ok' => true];
 }
 
@@ -474,8 +483,18 @@ function aktion_kunde(): array
     if ($k['telefon']) {
         $doppelt = $db->alle('SELECT id, vorname, nachname FROM {p}kunde WHERE telefon = ? AND id <> ? AND geloescht = 0', [$k['telefon'], $id]);
     }
+    require_once __DIR__ . '/studio-verkauf.php';
+    require_once __DIR__ . '/nachrichten.php';
+    $kroh = $db->eins('SELECT telefon, email, herkunft FROM {p}kunde WHERE id = ?', [$id]);
     return $k + ['termine' => $termine, 'umsatz_cent' => $umsatz, 'rhythmus_tage' => $rhythmus, 'einwilligungen' => einwilligungen_lesen($id),
-        'nicht_erschienen' => count(array_filter($termine, fn($t) => $t['status'] === 'nicht_erschienen')), 'doppelt' => $doppelt];
+        'nicht_erschienen' => count(array_filter($termine, fn($t) => $t['status'] === 'nicht_erschienen')), 'doppelt' => $doppelt,
+        'treue' => treue_stand($id), 'fotos' => fotos_lesen($id), 'herkunft' => $kroh['herkunft'] ?? null,
+        'gesperrt' => ['sms' => $kroh['telefon'] ? gesperrt('sms', $kroh['telefon']) : false, 'email' => $kroh['email'] ? gesperrt('email', $kroh['email']) : false],
+        'warteliste' => array_map(fn($w) => warteliste_lesen((int)$w['id']), $db->alle("SELECT id FROM {p}warteliste WHERE kunde_id = ? AND status = 'aktiv'", [$id])),
+        'gutscheine' => array_map(fn($g) => ['code' => $g['code'], 'rest_cent' => (int)$g['rest_cent'], 'gueltig_bis' => $g['gueltig_bis']],
+            $db->alle("SELECT code, rest_cent, gueltig_bis FROM {p}gutschein WHERE kunde_id = ? AND status = 'aktiv'", [$id])),
+        'nachrichten_n' => (int)$db->wert('SELECT COUNT(*) FROM {p}nachricht WHERE kunde_id = ?', [$id]),
+        'sms_aktiv' => sms_aktiv(), 'texte' => EINWILLIGUNGEN];
 }
 
 function aktion_kunde_speichern(): array
@@ -543,6 +562,11 @@ function aktion_kunde_loeschen(): array
         $db->aendern('kunde', ['geloescht' => 1, 'vorname' => null, 'nachname' => null, 'telefon' => null, 'email' => null,
             'notiz' => null, 'suche' => null, 'geaendert' => jetzt()], 'id = ?', [$id]);
         $db->q('UPDATE {p}termin SET gast_name = NULL, kundennotiz = NULL WHERE kunde_id = ?', [$id]);
+        // Fotos, Nachrichten und Warteliste gehören zur Person.
+        require_once __DIR__ . '/studio-verkauf.php';
+        fotos_loeschen($id);
+        $db->q("UPDATE {p}nachricht SET an = '', text = '', betreff = NULL, status = CASE WHEN status = 'wartet' THEN 'zurueckgezogen' ELSE status END WHERE kunde_id = ?", [$id]);
+        $db->q("UPDATE {p}warteliste SET status = 'entfernt', notiz = NULL WHERE kunde_id = ?", [$id]);
         $db->standErhoehen();
         protokoll('kunde_geloescht', null, $id);
     });
@@ -652,6 +676,10 @@ function aktion_leistung_speichern(): array
             'online' => feld('online') === false ? 0 : 1, 'aktiv' => feld('aktiv') === false ? 0 : 1,
             'zusatzleistung' => feld('zusatzleistung') === true ? 1 : 0, 'geaendert' => jetzt(),
         ];
+        if (array_key_exists('recall_tage', eingabe())) {
+            $rt = feld('recall_tage');
+            $zeile['recall_tage'] = is_int($rt) && $rt >= 7 && $rt <= 365 ? $rt : null;
+        }
         if ($id) {
             $alt = $db->eins('SELECT familie FROM {p}leistung WHERE id = ?', [$id]);
             if (!$alt) throw new Fehler('Leistung nicht gefunden.', 404);
@@ -709,7 +737,23 @@ function aktion_einstellungen_speichern(): array
         if ($w < $min || $w > $max) throw new Fehler("„{$f}“ muss zwischen $min und $max liegen.", 422, 'bereich', ['feld' => $f]);
         $e[$f] = $w;
     }
-    foreach (['luecken_fuellen', 'online_aktiv', 'feiertage'] as $f) if (is_bool(feld($f))) $e[$f] = feld($f);
+    $grenzen2 = ['erinnerung_schwelle' => [0, 100000], 'recall_nachfass' => [3, 30], 'ruhe_von' => [360, 720], 'ruhe_bis' => [900, 1320],
+        'recall_preis_cent' => [0, 10000], 'recall_deckel_cent' => [0, 100000], 'sms_preis_cent' => [0, 100], 'treue_n' => [2, 50]];
+    foreach ($grenzen2 as $f => [$min, $max]) {
+        if (feld($f) === null) continue;
+        $w = (int)feld($f);
+        if ($w < $min || $w > $max) throw new Fehler("„{$f}“ muss zwischen $min und $max liegen.", 422, 'bereich', ['feld' => $f]);
+        $e[$f] = $w;
+    }
+    foreach (['luecken_fuellen', 'online_aktiv', 'feiertage', 'recall_aktiv', 'warteliste_aktiv', 'treue_aktiv'] as $f) if (is_bool(feld($f))) $e[$f] = feld($f);
+    if (in_array(feld('erinnerung_sms'), ['regel', 'immer', 'nie'], true)) $e['erinnerung_sms'] = feld('erinnerung_sms');
+    if (feld('treue_praemie') !== null) $e['treue_praemie'] = (string)text_feld('treue_praemie', 200);
+    foreach (['datev_berater' => 7, 'datev_mandant' => 5, 'datev_erloese' => 8, 'datev_gegenkonto' => 8] as $f => $max) {
+        if (feld($f) === null) continue;
+        $w = (string)feld($f);
+        if ($w !== '' && !preg_match('/^\d{1,' . $max . '}$/', $w)) throw new Fehler("„{$f}“: nur Ziffern, höchstens $max.", 422, 'bereich', ['feld' => $f]);
+        $e[$f] = $w;
+    }
     if (feld('hinweis') !== null) $e['hinweis'] = (string)text_feld('hinweis', 300);
     db()->schreiben(function (DB $db) use ($e) {
         $db->q("UPDATE {p}meta SET wert = ? WHERE schluessel = 'einstellungen'", [json_encode($e, JSON_UNESCAPED_UNICODE)]);
@@ -776,9 +820,11 @@ function aktion_sicherung(): never
     anmeldung_pflicht(false, true);
     $db = db();
     $aus = ['erstellt' => jetzt(), 'schema' => (int)$db->wert("SELECT wert FROM {p}meta WHERE schluessel = 'schema'"), 'tabellen' => []];
-    foreach (['meta', 'salon', 'person', 'arbeitszeit', 'abwesenheit', 'leistung', 'leistung_person', 'kunde', 'einwilligung', 'termin', 'termin_posten', 'belegung', 'protokoll'] as $t) {
+    foreach (['meta', 'salon', 'person', 'arbeitszeit', 'abwesenheit', 'leistung', 'leistung_person', 'kunde', 'einwilligung', 'termin', 'termin_posten', 'belegung', 'protokoll',
+              'nachricht', 'sperre', 'bestaetigung', 'recall', 'warteliste', 'angebot', 'kampagne', 'gutschein', 'gutschein_bewegung', 'rabatt', 'treue', 'foto', 'artikel', 'lager_bewegung'] as $t) {
         $zeilen = $db->alle("SELECT * FROM {p}$t");
         if ($t === 'person') foreach ($zeilen as &$z) unset($z['pass_hash']);
+        if ($t === 'meta') $zeilen = array_values(array_filter($zeilen, fn($z) => $z['schluessel'] !== 'geheimnis'));
         unset($z);
         $aus['tabellen'][$t] = $zeilen;
     }
@@ -826,6 +872,28 @@ function aktion_export(): never
             $zeilen = array_map(fn($z) => [$z['id'], $z['kunde_id'], $z['art'], $z['erteilt'] ? 'ja' : 'nein', $z['zeit'], $z['quelle'], $z['wortlaut'], $z['termin_id']],
                 $db->alle('SELECT * FROM {p}einwilligung ORDER BY id'));
             break;
+        case 'nachrichten':
+            $kopf = ['Nr', 'Erstellt', 'Gesendet', 'Kanal', 'Zweck', 'An', 'Betreff', 'Text', 'Status', 'Fehler', 'SMS-Teile', 'Kosten €', 'Kunden-Nr', 'Termin'];
+            $zeilen = array_map(fn($n) => [$n['id'], $n['erstellt'], $n['gesendet'], $n['kanal'], $n['zweck'], $n['an'], $n['betreff'], $n['text'], $n['status'], $n['fehler'],
+                $n['teile'], $n['kosten_cent'] === null ? '' : number_format($n['kosten_cent'] / 100, 2, ',', ''), $n['kunde_id'], $n['termin_id']],
+                $db->alle('SELECT * FROM {p}nachricht ORDER BY id'));
+            break;
+        case 'gutscheine':
+            $kopf = ['Code', 'Wert €', 'Rest €', 'Leistung', 'Käufer', 'Empfänger', 'Gültig bis', 'Status', 'Ausgegeben', 'Notiz'];
+            $zeilen = array_map(fn($g) => [$g['code'], number_format($g['wert_cent'] / 100, 2, ',', ''), number_format($g['rest_cent'] / 100, 2, ',', ''), $g['leistung'],
+                $g['kaeufer'], $g['empfaenger'], $g['gueltig_bis'], $g['status'], $g['erstellt'], $g['notiz']], $db->alle('SELECT * FROM {p}gutschein ORDER BY id'));
+            break;
+        case 'lager':
+            $kopf = ['Nr', 'Salon', 'Marke', 'Artikel', 'Strichcode', 'Bestand', 'Mindestbestand', 'EK €', 'VK €', 'Warenwert EK €', 'Aktiv'];
+            $zeilen = array_map(fn($a) => [$a['id'], $a['salon_id'], $a['marke'], $a['name'], $a['ean'], $a['bestand'], $a['mindest'],
+                $a['ek_cent'] === null ? '' : number_format($a['ek_cent'] / 100, 2, ',', ''), $a['vk_cent'] === null ? '' : number_format($a['vk_cent'] / 100, 2, ',', ''),
+                $a['ek_cent'] === null ? '' : number_format(max(0, $a['bestand']) * $a['ek_cent'] / 100, 2, ',', ''), $a['aktiv'] ? 'ja' : 'nein'],
+                $db->alle('SELECT * FROM {p}artikel ORDER BY salon_id, marke, name'));
+            break;
+        case 'umsatz':
+        case 'datev':
+            require_once __DIR__ . '/studio-buchhaltung.php';
+            buchhaltung_export($was);
         default:
             throw new Fehler('Unbekannter Export.', 422);
     }

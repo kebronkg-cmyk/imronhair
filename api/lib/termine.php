@@ -154,6 +154,7 @@ function bucheTermin(array $o): array
                 'phasen' => json_encode($phasen), 'status' => $o['status'] ?? $alt['status'],
                 'version' => (int)$alt['version'] + 1, 'geaendert' => $jetzt, 'geaendert_von' => $wer,
                 'erinnert' => $alt['start'] === $start ? (int)$alt['erinnert'] : 0,
+                'erinnert_sms' => $alt['start'] === $start ? (int)($alt['erinnert_sms'] ?? 0) : 0,
             ];
             if (!storniert($neu['status'])) { $neu['storniert_am'] = null; $neu['storno_grund'] = null; }
             if ($leistungen) {
@@ -334,6 +335,8 @@ function termine_aufbereiten(array $zeilen, bool $intern = true): array
             'preis_cent' => $t['preis_cent'] === null ? null : (int)$t['preis_cent'], 'preis_ab' => (bool)$t['preis_ab'],
             'kundennotiz' => $t['kundennotiz'],
             'storno_grund' => $t['storno_grund'] ?? null,
+            'rabatt_code' => $t['rabatt_code'] ?? null,
+            'rabatt_cent' => isset($t['rabatt_cent']) ? (int)$t['rabatt_cent'] : null,
         ];
         if ($intern) {
             $e += [
@@ -434,19 +437,54 @@ function text_kuerzen(mixed $w, int $max): ?string
     return $w === '' ? null : mb_substr($w, 0, $max);
 }
 
-/** Einwilligungen mit Zeitstempel, Quelle und genauem Wortlaut festhalten. */
-function einwilligungen_speichern(int $kunde, array $werte, string $quelle, ?int $termin = null): void
+/**
+ * Einwilligungen aus einem Formular festhalten: Zeitstempel, Quelle und
+ * genauer Wortlaut. Nur ein gesetzter Haken zählt; ein leerer nimmt keine
+ * frühere Einwilligung zurück — dafür gibt es STOP, den Link „Ihre
+ * Nachrichten“ und die Kundenkarte. Angebote gelten erst nach der
+ * Bestätigung über einen Link (Double-Opt-in); zurück kommen die
+ * Bestätigungsschlüssel, die der Aufrufer nach dem COMMIT verschickt.
+ */
+function einwilligungen_speichern(int $kunde, array $werte, string $quelle, ?int $termin = null): array
 {
+    $doppelt = [];
     foreach (EINWILLIGUNGEN as $art => $wortlaut) {
-        if (!array_key_exists($art, $werte)) continue;
-        // Nur ein gesetzter Haken zählt. Ein leerer nimmt keine frühere
-        // Einwilligung zurück — dafür gibt es STOP und die Kundenkarte.
-        if ($werte[$art] !== true) continue;
-        $letzte = db()->wert('SELECT erteilt FROM {p}einwilligung WHERE kunde_id = ? AND art = ? ORDER BY id DESC LIMIT 1', [$kunde, $art]);
-        if ($letzte !== null && (int)$letzte === 1) continue;
+        if (($werte[$art] ?? null) !== true || einwilligung_aktiv($kunde, $art)) continue;
+        if (in_array($art, EINWILLIGUNG_DOPPELT, true)) {
+            $doppelt[] = bestaetigung_anlegen($kunde, $art, $quelle);
+            continue;
+        }
         db()->einfuegen('einwilligung', ['kunde_id' => $kunde, 'art' => $art, 'erteilt' => 1, 'zeit' => jetzt(),
             'quelle' => $quelle, 'wortlaut' => $wortlaut, 'termin_id' => $termin]);
     }
+    return array_values(array_filter($doppelt));
+}
+
+/** Eine Einwilligung erteilen oder zurücknehmen. Gibt true, wenn sich etwas geändert hat. */
+function einwilligung_setzen(int $kunde, string $art, bool $erteilt, string $quelle, ?int $termin = null): bool
+{
+    if (!isset(EINWILLIGUNGEN[$art])) throw new Fehler('Unbekannte Einwilligung.', 422);
+    if (einwilligung_aktiv($kunde, $art) === $erteilt) return false;
+    db()->einfuegen('einwilligung', ['kunde_id' => $kunde, 'art' => $art, 'erteilt' => $erteilt ? 1 : 0, 'zeit' => jetzt(),
+        'quelle' => $quelle, 'wortlaut' => $erteilt ? EINWILLIGUNGEN[$art] : 'Widerruf: ' . EINWILLIGUNGEN[$art], 'termin_id' => $termin]);
+    protokoll($erteilt ? 'einwilligung' : 'widerruf', $termin, $kunde, ['art' => $art, 'quelle' => $quelle]);
+    return true;
+}
+
+function einwilligung_aktiv(int $kunde, string $art): bool
+{
+    return (int)db()->wert('SELECT erteilt FROM {p}einwilligung WHERE kunde_id = ? AND art = ? ORDER BY id DESC LIMIT 1', [$kunde, $art]) === 1;
+}
+
+/** Bestätigungslink für den Double-Opt-in. Ein offener, junger wird wiederverwendet. */
+function bestaetigung_anlegen(int $kunde, string $art, string $quelle): ?string
+{
+    $offen = db()->wert('SELECT token FROM {p}bestaetigung WHERE kunde_id = ? AND art = ? AND bestaetigt IS NULL AND erstellt > ? ORDER BY id DESC LIMIT 1',
+        [$kunde, $art, date('Y-m-d H:i:s', time() - 86400)]);
+    if ($offen) return null;   // schon unterwegs: keine zweite Nachricht
+    $token = zufall(16);
+    db()->einfuegen('bestaetigung', ['kunde_id' => $kunde, 'art' => $art, 'token' => $token, 'quelle' => $quelle, 'erstellt' => jetzt()]);
+    return $token;
 }
 
 function einwilligungen_lesen(int $kunde): array
@@ -455,6 +493,11 @@ function einwilligungen_lesen(int $kunde): array
     foreach (array_keys(EINWILLIGUNGEN) as $art) {
         $z = db()->eins('SELECT erteilt, zeit, quelle FROM {p}einwilligung WHERE kunde_id = ? AND art = ? ORDER BY id DESC LIMIT 1', [$kunde, $art]);
         $aus[$art] = $z ? ['erteilt' => (bool)$z['erteilt'], 'zeit' => substr($z['zeit'], 0, 16), 'quelle' => $z['quelle']] : null;
+        if (in_array($art, EINWILLIGUNG_DOPPELT, true) && !($z['erteilt'] ?? false)
+            && db()->wert('SELECT 1 FROM {p}bestaetigung WHERE kunde_id = ? AND art = ? AND bestaetigt IS NULL AND erstellt > ?', [$kunde, $art, date('Y-m-d H:i:s', time() - 30 * 86400)])) {
+            $aus[$art] = ($aus[$art] ?? ['erteilt' => false, 'zeit' => null, 'quelle' => null]) + ['wartet' => true];
+            $aus[$art]['wartet'] = true;
+        }
     }
     return $aus;
 }

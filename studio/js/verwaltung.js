@@ -5,7 +5,7 @@
    leer bleibt von allem, was man nicht täglich braucht.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { $, el, svg, ZEICHEN, euro, preisText, dauerText, TAG_LANG, hhmm, minuten, heute, plusTage, montag, tagText,
+import { $, el, fuellen, svg, ZEICHEN, euro, preisText, dauerText, TAG_LANG, MONAT_LANG, hhmm, minuten, heute, plusTage, montag, tagText,
   meldung, fragen, speichern, summePhasen, alsDatum, iso, themaWahl, themaSetzen } from './hilfen.js';
 import { Z, api, inhaberin, leitung, ROLLE_NAME, stammdatenLaden, personVon, salonVon, gruppeVon } from './api.js';
 import { tafelAuf, tafelZu } from './tafel.js';
@@ -215,6 +215,10 @@ function leistungBearbeiten(l) {
     el('div', { klasse: 'feld-reihe' },
       el('label', { klasse: 'feld feld-schmal' }, el('span', { klasse: 'feld-name', text: 'Preis (€)' }), preis),
       el('div', { klasse: 'haken-reihe' }, haken('preis_ab', '„ab“-Preis'), haken('online', 'online buchbar'), haken('aktiv', 'angeboten'), haken('zusatzleistung', 'als Zusatz vorschlagen'))),
+    el('div', { klasse: 'feld-reihe' },
+      el('label', { klasse: 'feld feld-schmal' }, el('span', { klasse: 'feld-name', text: 'Recall nach (Tagen, leer = keiner)' }),
+        el('input', { type: 'number', min: 7, max: 365, inputmode: 'numeric', value: f.recall_tage ?? '', oninput: (e) => { f.recall_tage = e.target.value === '' ? null : Math.round(+e.target.value); } })),
+      el('p', { klasse: 'seiten-info', text: 'So lange nach dem Besuch fragt das System nach, ob der nächste Termin fällig ist (nur mit Einwilligung). Hat die Kundin einen eigenen, regelmäßigen Rhythmus, gilt der.' })),
     el('div', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Wer macht das' }), personen),
     fehler,
     el('div', { klasse: 'tafel-wege tafel-wege-fest' },
@@ -226,7 +230,7 @@ function leistungBearbeiten(l) {
           await api('leistung_speichern', { post: {
             id: l?.id, salon: f.salon, gruppe: f.gruppe, name: f.name, zusatz: f.zusatz || null, laenge: f.laenge || null, familie: l?.familie,
             phasen: f.phasen, preis_cent: roh === '' ? null : Math.round(parseFloat(roh) * 100), preis_ab: f.preis_ab, preis_text: f.preis_text || null,
-            online: f.online, aktiv: f.aktiv, zusatzleistung: f.zusatzleistung, personen: f.personen,
+            online: f.online, aktiv: f.aktiv, zusatzleistung: f.zusatzleistung, personen: f.personen, recall_tage: f.recall_tage ?? null,
           } });
           await stammdatenLaden();
           meldung('Gespeichert', 'ok');
@@ -289,18 +293,40 @@ export const auswertung = {
           el('td', { klasse: 'zahl', text: String(p.termine) }),
           el('td', { klasse: 'zahl', text: euro(p.umsatz_cent) }),
           el('td', {}, el('span', { klasse: 'balken', stil: { '--anteil': Math.min(1, p.auslastung || 0) } }), el('span', { klasse: 'zahl', text: prozent(p.auslastung) })),
-          el('td', { klasse: 'zahl', text: String(p.nicht_erschienen) })))))) : el('p', { klasse: 'leer', text: 'Keine Termine in diesem Zeitraum.' }));
+          el('td', { klasse: 'zahl', text: String(p.nicht_erschienen) })))))) : el('p', { klasse: 'leer', text: 'Keine Termine in diesem Zeitraum.' }),
+      berichtTeil());
   },
 };
+
+/** Der Monatsbericht: geht am Monatsanfang per E-Mail an die Inhaberin; hier zum Nachlesen. */
+function berichtTeil() {
+  const d = alsDatum(heute());
+  const monate = Array.from({ length: 12 }, (_, i) => new Date(d.getFullYear(), d.getMonth() - i, 1));
+  const text = el('pre', { klasse: 'bericht' });
+  const an = el('input', { type: 'email', placeholder: 'E-Mail-Adresse', autocomplete: 'email' });
+  let monat = iso(monate[1]).slice(0, 7);
+  const laden = async () => { text.textContent = 'Wird gerechnet …'; const r = await api('bericht', { get: { monat, salon: aSalon } }); text.textContent = r.text; };
+  laden();
+  return el('section', { klasse: 'abschnitt' }, el('h2', { klasse: 'abschnitt-titel', text: 'Monatsbericht' }),
+    el('p', { klasse: 'seiten-info', text: 'Recall, Warteliste, Nachrichten und woher die Buchungen kamen. Geht am Monatsanfang von selbst per E-Mail (api/config.php → bericht_an).' }),
+    el('div', { klasse: 'feld-reihe' },
+      el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Monat' }),
+        el('select', { onchange: (e) => { monat = e.target.value; laden(); } }, monate.map((m, i) => el('option', { value: iso(m).slice(0, 7), selected: i === 1 ? true : null, text: `${MONAT_LANG[m.getMonth()]} ${m.getFullYear()}` })))),
+      el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Per E-Mail an' }), an),
+      el('div', { klasse: 'feld k-test' }, el('button', { type: 'button', klasse: 'knopf-still', text: 'Senden', onclick: async () => {
+        try { await api('bericht_senden', { post: { monat, an: an.value } }); meldung('Gesendet', 'ok'); } catch (e) { meldung(e.message, 'fehler'); }
+      } }))),
+    text);
+}
 
 /* ═══ Einstellungen ═══════════════════════════════════════════════════ */
 export const einstellungen = {
   zeigen(f) {
     const teile = [kopf('Einstellungen')];
     teile.push(darstellungTeil(), passwortTeil());
-    if (inhaberin()) teile.push(regelnTeil(), oeffnungTeil());
+    if (inhaberin()) teile.push(regelnTeil(), nachrichtenTeil(), treueTeil(), oeffnungTeil());
     if (leitung()) teile.push(abwesenheitenTeil(), exportTeil());
-    if (inhaberin()) teile.push(sicherungTeil());
+    if (inhaberin()) teile.push(steuerTeil(), importTeil(), sicherungTeil());
     f.replaceChildren(el('div', { klasse: 'seite seite-schmal' }, teile));
   },
   neuLaden() { /* nichts Lebendiges */ },
@@ -418,7 +444,105 @@ function exportTeil() {
   const api0 = new URL(document.querySelector('meta[name="irmonhair-api"]').content, location.href).href;
   const knopf = (was, text) => el('a', { klasse: 'knopf-still', href: `${api0}?a=export&was=${was}`, download: '' }, text);
   return abschnitt('Export', 'Als Tabelle (CSV, öffnet in Excel und Numbers). Monatlich kündbar heißt auch: Die Daten nehmen Sie jederzeit mit.',
-    el('div', { klasse: 'tafel-wege' }, knopf('termine', 'Termine'), knopf('kunden', 'Kunden'), knopf('protokoll', 'Protokoll'), knopf('einwilligungen', 'Einwilligungen')));
+    el('div', { klasse: 'tafel-wege' }, knopf('termine', 'Termine'), knopf('kunden', 'Kunden'), knopf('protokoll', 'Protokoll'), knopf('einwilligungen', 'Einwilligungen'),
+      knopf('nachrichten', 'Nachrichten'), knopf('gutscheine', 'Gutscheine'), knopf('lager', 'Lager')));
+}
+
+/** Einstellungen speichern — ein Weg für alle Abschnitte. */
+async function einstellungenSichern(e, fehler) {
+  fehler.hidden = true;
+  try { await api('einstellungen_speichern', { post: e }); await stammdatenLaden(); meldung('Gespeichert', 'ok'); }
+  catch (ex) { fehler.textContent = ex.message; fehler.hidden = false; }
+}
+const zahlFeld = (e, name, text, einheit, attr, faktor = 1) => el('label', { klasse: 'feld feld-schmal' }, el('span', { klasse: 'feld-name', text }),
+  el('span', { klasse: 'mit-einheit' }, el('input', { type: 'number', value: e[name] / faktor, inputmode: 'decimal', onchange: (ev) => { e[name] = Math.round(+ev.target.value * faktor); }, ...attr }), el('span', { text: einheit })));
+const hakenFeld = (e, name, text) => el('label', { klasse: 'haken' }, el('input', { type: 'checkbox', checked: e[name], onchange: (ev) => { e[name] = ev.target.checked; } }), el('span', { text }));
+const uhrFeld = (e, name, text) => el('label', { klasse: 'feld feld-schmal' }, el('span', { klasse: 'feld-name', text }),
+  el('input', { type: 'time', step: 900, value: hhmm(e[name]), onchange: (ev) => { e[name] = minuten(ev.target.value); } }));
+
+/** Wann das System von selbst schreibt. */
+function nachrichtenTeil() {
+  const e = structuredClone(Z.s.einstellungen);
+  const fehler = el('p', { klasse: 'form-fehler', role: 'alert', hidden: true });
+  return abschnitt('Nachrichten', 'SMS kosten pro Stück; E-Mails nicht. Deshalb geht die SMS am Vortag nur, wo sie sich lohnt — außer Sie stellen „immer“ ein.',
+    el('div', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'SMS-Erinnerung am Vortag (nur mit Einwilligung)' }),
+      el('div', { klasse: 'schalter schalter-klein schalter-umbruch', role: 'group', 'aria-label': 'SMS-Erinnerung' },
+        [['regel', 'Wenn es sich lohnt'], ['immer', 'Immer'], ['nie', 'Nie']].map(([id, name]) => el('button', { type: 'button', 'aria-pressed': String(e.erinnerung_sms === id), text: name,
+          onclick: (ev) => { e.erinnerung_sms = id; schalterWahl(ev); } })))),
+    el('p', { klasse: 'seiten-info', text: '„Wenn es sich lohnt“: ab dem Betrag unten, nach einem Nichterscheinen, bei Buchung am Telefon oder vor Ort — und immer, wenn keine E-Mail-Adresse da ist.' }),
+    el('div', { klasse: 'feld-raster' },
+      zahlFeld(e, 'erinnerung_schwelle', 'SMS ab Terminpreis', '€', { min: 0, max: 1000, step: 5 }, 100),
+      zahlFeld(e, 'recall_nachfass', 'Recall-Nachfrage nach', 'Tagen', { min: 3, max: 30 }),
+      uhrFeld(e, 'ruhe_von', 'Werbung frühestens'), uhrFeld(e, 'ruhe_bis', 'Werbung spätestens'),
+      zahlFeld(e, 'sms_preis_cent', 'Preis je SMS (Schätzung)', 'Cent', { min: 0, max: 100 }),
+      zahlFeld(e, 'recall_preis_cent', 'Abrechnung je Zurückgeholter', '€', { min: 0, max: 100, step: .5 }, 100),
+      zahlFeld(e, 'recall_deckel_cent', 'höchstens im Monat', '€', { min: 0, max: 1000, step: 5 }, 100)),
+    el('div', { klasse: 'haken-reihe' }, hakenFeld(e, 'recall_aktiv', 'Recall: an den nächsten Termin erinnern'), hakenFeld(e, 'warteliste_aktiv', 'Warteliste anbieten')),
+    fehler,
+    el('button', { type: 'button', klasse: 'knopf', text: 'Speichern', onclick: () => einstellungenSichern(e, fehler) }));
+}
+
+function treueTeil() {
+  const e = structuredClone(Z.s.einstellungen);
+  const fehler = el('p', { klasse: 'form-fehler', role: 'alert', hidden: true });
+  return abschnitt('Treuekarte', 'Jeder Besuch ist ein Stempel; die Kundin sieht ihren Stand nach dem Buchen, das Studio in der Kundenkarte. Die Prämie wird dort eingelöst.',
+    hakenFeld(e, 'treue_aktiv', 'Treuekarte an'),
+    el('div', { klasse: 'feld-raster' }, zahlFeld(e, 'treue_n', 'Prämie nach', 'Besuchen', { min: 2, max: 50 })),
+    el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Prämie (so steht sie bei der Kundin)' }),
+      el('input', { value: e.treue_praemie, maxlength: 200, oninput: (ev) => { e.treue_praemie = ev.target.value; } })),
+    fehler,
+    el('button', { type: 'button', klasse: 'knopf', text: 'Speichern', onclick: () => einstellungenSichern(e, fehler) }));
+}
+
+/** Für die Steuerkanzlei: Umsatzliste und DATEV-Buchungsstapel. */
+function steuerTeil() {
+  const e = structuredClone(Z.s.einstellungen);
+  const fehler = el('p', { klasse: 'form-fehler', role: 'alert', hidden: true });
+  const d = alsDatum(heute());
+  const monate = Array.from({ length: 13 }, (_, i) => new Date(d.getFullYear(), d.getMonth() - i, 1));
+  let wahl = 1;
+  const zeitraum = () => { const m = monate[wahl]; return [iso(m), iso(new Date(m.getFullYear(), m.getMonth() + 1, 0))]; };
+  const api0 = new URL(document.querySelector('meta[name="irmonhair-api"]').content, location.href).href;
+  const laden = (was) => { const [von, bis] = zeitraum(); location.href = `${api0}?a=export&was=${was}&von=${von}&bis=${bis}`; };
+  const textFeld = (name, text) => el('label', { klasse: 'feld feld-schmal' }, el('span', { klasse: 'feld-name', text }),
+    el('input', { value: e[name], inputmode: 'numeric', oninput: (ev) => { e[name] = ev.target.value.trim(); } }));
+  return abschnitt('Für die Steuerkanzlei', 'Aus den Terminen (erschienen, abzüglich Nachlass) — nicht aus der Kasse. Die Kasse bleibt maßgeblich; die Liste spart das Abtippen und hilft beim Abgleich. Den DATEV-Stapel einmal mit der Kanzlei testen, bevor er regelmäßig geht.',
+    el('div', { klasse: 'feld-reihe' },
+      el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Monat' }),
+        el('select', { onchange: (ev) => { wahl = +ev.target.value; } }, monate.map((m, i) => el('option', { value: i, selected: i === wahl ? true : null, text: `${MONAT_LANG[m.getMonth()]} ${m.getFullYear()}` })))),
+      el('div', { klasse: 'tafel-wege' },
+        el('button', { type: 'button', klasse: 'knopf-still', text: 'Umsatzliste (CSV)', onclick: () => laden('umsatz') }),
+        el('button', { type: 'button', klasse: 'knopf-still', text: 'DATEV-Buchungsstapel', onclick: () => laden('datev') }))),
+    el('div', { klasse: 'feld-raster' }, textFeld('datev_berater', 'Beraternummer'), textFeld('datev_mandant', 'Mandantennummer'),
+      textFeld('datev_erloese', 'Erlöskonto (SKR03: 8400)'), textFeld('datev_gegenkonto', 'Gegenkonto (Kasse: 1000)')),
+    fehler,
+    el('button', { type: 'button', klasse: 'knopf-still', text: 'Konten speichern', onclick: () => einstellungenSichern(e, fehler) }));
+}
+
+/** Kundenliste aus Planity (oder einem anderen Programm) übernehmen. */
+function importTeil() {
+  let csv = '';
+  const ergebnis = el('div', { 'aria-live': 'polite' });
+  const datei = el('input', { type: 'file', accept: '.csv,text/csv,text/plain', onchange: async (ev) => {
+    const f = ev.target.files[0];
+    if (!f) return;
+    csv = await f.text();
+    try {
+      const r = await api('import_pruefen', { post: { csv } });
+      fuellen(ergebnis, 
+        el('p', { klasse: 'hinweis-zeile', text: `${r.zeilen} Zeilen: ${r.neu} neu, ${r.vorhanden} schon in der Kartei (werden nur ergänzt), ${r.ohne_kontakt} ohne Nummer und E-Mail (bleiben weg)${r.doppelt_in_datei ? `, ${r.doppelt_in_datei} doppelt in der Datei` : ''}. Erkannte Spalten: ${r.spalten.join(', ')}.` }),
+        r.beispiele.length ? el('ul', { klasse: 'verlauf-liste' }, r.beispiele.map((b) => el('li', { klasse: 'verlauf-zeile' }, el('span', { text: b.name || '—' }), el('span', { klasse: 'zahl', text: b.telefon || '' }), el('span', { text: b.email || '' })))) : null,
+        el('p', { klasse: 'seiten-info', text: 'Einwilligungen werden nicht übernommen — für Recall und Angebote fragen wir neu. Terminerinnerungen per E-Mail gehen ohnehin.' }),
+        r.neu || r.vorhanden ? el('button', { type: 'button', klasse: 'knopf', text: `${r.neu} übernehmen`, onclick: async (e2) => {
+          e2.currentTarget.disabled = true;
+          try { const x = await api('import_kunden', { post: { csv, herkunft: 'planity' } }); fuellen(ergebnis, el('p', { klasse: 'hinweis-zeile', text: `Fertig: ${x.neu} angelegt, ${x.ergaenzt} ergänzt.` })); }
+          catch (x) { meldung(x.message, 'fehler'); e2.currentTarget.disabled = false; }
+        } }) : null);
+    } catch (x) { fuellen(ergebnis, el('p', { klasse: 'form-fehler', text: x.message })); }
+    ev.target.value = '';
+  } });
+  return abschnitt('Kunden übernehmen', 'Die Kundenliste als CSV — aus Planity (Export der Kundenliste) oder einem anderen Programm. Erst kommt eine Vorschau; übernommen wird erst nach Ihrem Klick. Echte Kundendaten erst nach unterschriebenem Auftragsverarbeitungsvertrag.',
+    el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'CSV-Datei' }), datei), ergebnis);
 }
 
 function sicherungTeil() {

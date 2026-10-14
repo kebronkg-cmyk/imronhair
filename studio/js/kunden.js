@@ -7,8 +7,9 @@
    daraus, wann der nächste Besuch ansteht.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { $, el, svg, ZEICHEN, euro, tagText, plusTage, heute, preisText, telLink, waLink, meldung, fragen, spaeter, speichern, tageZwischen, abgesagt } from './hilfen.js';
-import { Z, api, inhaberin, personVon } from './api.js';
+import { $, el, fuellen, svg, ZEICHEN, euro, tagText, plusTage, heute, preisText, telLink, waLink, meldung, fragen, spaeter, speichern, tageZwischen, abgesagt } from './hilfen.js';
+import { Z, api, apiAdresse, inhaberin, personVon, salonVon } from './api.js';
+import { nachrichtZeile, eintragNeu } from './nachrichten.js';
 import { tafelAuf, tafelZu } from './tafel.js';
 import { terminZeigen, terminNeu } from './termin.js';
 
@@ -103,11 +104,13 @@ export async function kundeZeigen(id) {
   }
 
   if (k.notiz) teile.push(el('p', { klasse: 'kartei-notiz' }, el('span', { klasse: 'klein-titel', text: 'Kartei' }), k.notiz));
-  // Einwilligungen: was die Kundin erlaubt hat, mit Datum und Quelle.
-  const ew = k.einwilligungen || {};
-  const ewText = { terminnachrichten: 'Terminnachrichten per SMS/WhatsApp', recall: 'Recall (Erinnerung an den nächsten Termin)' };
-  teile.push(el('p', { klasse: 'hinweis-zeile' }, el('span', { klasse: 'klein-titel', text: 'Einwilligungen' }),
-    Object.entries(ewText).map(([art, text]) => `${text}: ${ew[art]?.erteilt ? 'ja, seit ' + tagText(ew[art].zeit.slice(0, 10), 'zahl') + ' (' + ew[art].quelle + ')' : 'nein'}`).join(' · ')));
+  if (k.treue) teile.push(treueTeil(k));
+  teile.push(einwilligungTeil(k));
+  teile.push(fotoTeil(k));
+  if (k.warteliste?.length) teile.push(el('p', { klasse: 'hinweis-zeile' }, el('span', { klasse: 'klein-titel', text: 'Warteliste' }),
+    k.warteliste.map((w) => `${w.leistungen_namen.join(' + ')} · ${salonVon(w.salon)?.name} · ${tagText(w.von, 'zahl').slice(0, 6)}–${tagText(w.bis, 'zahl').slice(0, 6)}`).join(' / ')));
+  if (k.gutscheine?.length) teile.push(el('p', { klasse: 'hinweis-zeile' }, el('span', { klasse: 'klein-titel', text: 'Gutscheine' }),
+    k.gutscheine.map((g) => `${g.code}: ${euro(g.rest_cent)} bis ${tagText(g.gueltig_bis, 'zahl')}`).join(' · ')));
 
   const zeile = (t) => el('li', {}, el('button', { type: 'button', klasse: `verlauf-zeile ist-${t.status}`, onclick: () => terminZeigen(t.id) },
     el('span', { klasse: 'zahl', text: tagText(t.start.slice(0, 10), 'zahl') }),
@@ -125,6 +128,9 @@ export async function kundeZeigen(id) {
       person: naechste?.person || null, leistungen: naechste ? naechste.posten.map((x) => x.leistung).filter(Boolean) : [],
     }) }, svg(ZEICHEN.kalender), el('span', { text: 'Termin' })),
     el('button', { type: 'button', klasse: 'knopf-still', onclick: () => kundeBearbeiten(k) }, svg(ZEICHEN.stift), el('span', { text: 'Bearbeiten' })),
+    el('button', { type: 'button', klasse: 'knopf-still', text: 'Warteliste', onclick: () => eintragNeu({ kunde_id: k.id, name, telefon: k.telefon_text, salon: naechste?.salon,
+      leistung: naechste?.posten[0]?.leistung }) }),
+    k.nachrichten_n ? el('button', { type: 'button', klasse: 'knopf-still', text: `Nachrichten (${k.nachrichten_n})`, onclick: () => nachrichtenZeigen(k) }) : null,
     inhaberin() ? el('button', { type: 'button', klasse: 'knopf-still', text: 'Auskunft (DSGVO)', onclick: async () => {
       const r = await api('kunde_auskunft', { get: { id: k.id } });
       speichern(`auskunft-${(k.nachname || k.vorname || 'kunde').toLowerCase()}-${heute()}.json`, JSON.stringify(r, null, 2));
@@ -170,4 +176,102 @@ function kundeBearbeiten(k) {
       el('button', { type: 'button', klasse: 'knopf-still', text: 'Abbrechen', onclick: () => (k ? kundeZeigen(k.id) : tafelZu()) }),
       el('button', { type: 'button', klasse: 'knopf', text: 'Speichern', onclick: () => sichern() })));
   koerper.querySelector('input').focus();
+}
+
+/* ── Treue, Einwilligungen, Fotos ───────────────────────────────────── */
+function treueTeil(k) {
+  const t = k.treue;
+  return el('div', { klasse: 'k-treue' },
+    el('span', { klasse: 'klein-titel', text: 'Treuekarte' }),
+    el('span', { klasse: 'treue-stempel', 'aria-label': `${t.stempel} von ${t.n} Stempeln` }, Array.from({ length: t.n }, (_, i) => el('i', { klasse: i < t.stempel ? 'ist-voll' : '' }))),
+    t.offen ? el('button', { type: 'button', klasse: 'knopf', text: 'Prämie einlösen', onclick: async () => {
+      if (!await fragen({ titel: 'Prämie einlösen?', text: t.praemie, ja: 'Einlösen' })) return;
+      await api('treue_einloesen', { post: { kunde_id: k.id } }); meldung('Prämie eingelöst', 'ok'); kundeZeigen(k.id);
+    } }) : el('span', { klasse: 'seiten-info', text: `noch ${t.n - t.stempel} bis: ${t.praemie}` }));
+}
+
+const EW_NAME = { terminnachrichten: 'Erinnerung per SMS', recall: 'Recall', angebote: 'Angebote' };
+const QUELLE = { online: 'online', online_danach: 'online nach dem Buchen', studio: 'im Salon', link: 'über den Link', sms_stop: 'per STOP' };
+function einwilligungTeil(k) {
+  const ew = k.einwilligungen || {};
+  const box = el('div', { klasse: 'k-ew' }, el('span', { klasse: 'klein-titel', text: 'Nachrichten' }));
+  for (const [art, name] of Object.entries(EW_NAME)) {
+    const e = ew[art];
+    const an = !!e?.erteilt;
+    box.append(el('div', { klasse: 'k-ew-zeile' },
+      el('span', { klasse: 'k-ew-name' }, el('span', { klasse: 'punkt' + (an ? ' ist-an' : ''), 'aria-hidden': 'true' }), name),
+      el('span', { klasse: 'k-ew-stand', text: an ? `ja seit ${tagText(e.zeit.slice(0, 10), 'zahl')} (${QUELLE[e.quelle] || (String(e.quelle).startsWith('bestaetigt') ? 'bestätigt' : e.quelle)})` : e?.wartet ? 'wartet auf Bestätigung' : e ? `nein seit ${tagText(e.zeit.slice(0, 10), 'zahl')}` : 'nicht gefragt' }),
+      el('button', { type: 'button', klasse: 'text-link', text: an ? 'zurücknehmen' : 'Kundin sagt Ja', onclick: async () => {
+        if (!an && !await fragen({ titel: `${name}: Kundin sagt Ja`, text: 'Bitte der Kundin diesen Wortlaut vorlesen oder zeigen — so wird er mit Datum und Ihrem Namen gespeichert:', liste: [k.texte?.[art] || ''], ja: 'Sie stimmt zu' })) return;
+        await api('einwilligung_studio', { post: { kunde_id: k.id, art, erteilt: !an } });
+        meldung('Gespeichert', 'ok'); kundeZeigen(k.id);
+      } })));
+  }
+  if (k.telefon) {
+    box.append(el('div', { klasse: 'k-ew-zeile' },
+      el('span', { klasse: 'k-ew-name', text: 'SMS an diese Nummer' }),
+      el('span', { klasse: 'k-ew-stand', text: k.gesperrt?.sms ? 'abgemeldet (STOP)' : 'erlaubt' }),
+      el('button', { type: 'button', klasse: 'text-link', text: k.gesperrt?.sms ? 'wieder erlauben' : 'STOP eintragen', onclick: async () => {
+        if (!k.gesperrt?.sms && !await fragen({ titel: 'STOP eintragen?', text: 'Die Nummer bekommt danach keine SMS mehr, und alle Einwilligungen zu Nachrichten werden zurückgenommen.', ja: 'STOP eintragen' })) return;
+        await api('sperre_studio', { post: { kunde_id: k.id, kanal: 'sms', gesperrt: !k.gesperrt?.sms } });
+        meldung('Gespeichert', 'ok'); kundeZeigen(k.id);
+      } })));
+  }
+  return box;
+}
+
+/** Fotos: im Browser verkleinert (lange Seite 1600 px) und als JPEG neu
+    gespeichert — damit sind auch Ort und Kamera aus den Bilddaten weg. */
+function fotoTeil(k) {
+  const datei = el('input', { type: 'file', accept: 'image/*', capture: 'environment', hidden: true, onchange: async (e) => {
+    const f = e.target.files[0];
+    e.target.value = '';
+    if (!f) return;
+    if (!await fragen({ titel: 'Foto in die Kartei?', text: 'Ist die Kundin einverstanden, dass das Foto in ihrer Kartei gespeichert wird? Sie kann es jederzeit löschen lassen.', ja: 'Ja, einverstanden' })) return;
+    try {
+      const bild = await verkleinern(f, 1600);
+      await api('foto_hochladen', { post: { kunde_id: k.id, bild, einverstanden: true, termin_id: k.termine.find((t) => t.start.slice(0, 10) === heute())?.id || null } });
+      meldung('Foto gespeichert', 'ok'); kundeZeigen(k.id);
+    } catch (x) { meldung(x.message, 'fehler'); }
+  } });
+  return el('div', { klasse: 'k-fotos' },
+    el('span', { klasse: 'klein-titel', text: 'Fotos' }),
+    el('div', { klasse: 'k-foto-reihe' },
+      (k.fotos || []).map((f) => el('button', { type: 'button', klasse: 'k-foto', 'aria-label': `Foto vom ${tagText(f.erstellt, 'zahl')}${f.notiz ? ': ' + f.notiz : ''}`, onclick: () => fotoZeigen(k, f) },
+        el('img', { src: apiAdresse('foto', { id: f.id }), alt: '', loading: 'lazy', width: f.breite, height: f.hoehe }))),
+      el('button', { type: 'button', klasse: 'k-foto k-foto-neu', onclick: () => datei.click() }, svg(ZEICHEN.plus), el('span', { text: 'Foto' }))),
+    datei);
+}
+function verkleinern(datei, lang) {
+  return new Promise((fertig, fehler) => {
+    const bild = new Image();
+    bild.onload = () => {
+      const f = Math.min(1, lang / Math.max(bild.naturalWidth, bild.naturalHeight));
+      const c = document.createElement('canvas');
+      c.width = Math.round(bild.naturalWidth * f); c.height = Math.round(bild.naturalHeight * f);
+      c.getContext('2d').drawImage(bild, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(bild.src);
+      fertig(c.toDataURL('image/jpeg', 0.85));
+    };
+    bild.onerror = () => fehler(new Error('Das Bild lässt sich nicht lesen.'));
+    bild.src = URL.createObjectURL(datei);
+  });
+}
+function fotoZeigen(k, f) {
+  const koerper = tafelAuf({ titel: `Foto vom ${tagText(f.erstellt, 'zahl')}`, unter: [k.vorname, k.nachname].filter(Boolean).join(' '), breit: true, schliessen: () => kundeZeigen(k.id) });
+  fuellen(koerper, 
+    el('img', { klasse: 'k-foto-gross', src: apiAdresse('foto', { id: f.id }), alt: f.notiz || 'Foto aus der Kartei', width: f.breite, height: f.hoehe }),
+    f.notiz ? el('p', { klasse: 'seiten-info', text: f.notiz }) : null,
+    el('div', { klasse: 'tafel-wege' },
+      el('button', { type: 'button', klasse: 'knopf-still', text: 'Zurück zur Kundin', onclick: () => kundeZeigen(k.id) }),
+      el('button', { type: 'button', klasse: 'knopf-still knopf-leise', text: 'Foto löschen', onclick: async () => {
+        if (!await fragen({ titel: 'Foto löschen?', text: 'Das Foto wird endgültig entfernt.', ja: 'Löschen', gefahr: true })) return;
+        await api('foto_loeschen', { post: { id: f.id } }); meldung('Gelöscht', 'ok'); kundeZeigen(k.id);
+      } })));
+}
+async function nachrichtenZeigen(k) {
+  const koerper = tafelAuf({ titel: 'Nachrichten', unter: [k.vorname, k.nachname].filter(Boolean).join(' ') });
+  const r = await api('nachrichten_liste', { get: { kunde_id: k.id } });
+  fuellen(koerper, el('ul', { klasse: 'verlauf-liste n-liste' }, r.nachrichten.map(nachrichtZeile)),
+    el('div', { klasse: 'tafel-wege' }, el('button', { type: 'button', klasse: 'knopf-still', text: 'Zurück zur Kundin', onclick: () => kundeZeigen(k.id) })));
 }

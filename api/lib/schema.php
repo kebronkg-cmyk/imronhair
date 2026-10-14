@@ -103,6 +103,86 @@ const SCHEMA_STUFEN = [
         "CREATE INDEX {p}einwilligung_kunde ON {p}einwilligung (kunde_id, art, id)",
         "CREATE INDEX {p}termin_start_utc ON {p}termin (start_utc)",
     ],
+    // Nachrichten (SMS, WhatsApp, E-Mail) mit Warteschlange und STOP,
+    // Recall, Warteliste, Kampagnen, Gutscheine, Aktionscodes, Treue,
+    // Fotos in der Kartei, Lager, Import.
+    3 => [
+        "CREATE TABLE {p}nachricht (
+            id {auto}, kunde_id INT NULL, termin_id INT NULL, kanal VARCHAR(10) NOT NULL, zweck VARCHAR(24) NOT NULL,
+            an VARCHAR(190) NOT NULL, betreff VARCHAR(255) NULL, text {text} NOT NULL, status VARCHAR(14) NOT NULL DEFAULT 'wartet',
+            versuche INT NOT NULL DEFAULT 0, nicht_vor DATETIME NOT NULL, anbieter_id VARCHAR(80) NULL, teile INT NOT NULL DEFAULT 1,
+            kosten_cent INT NULL, fehler VARCHAR(255) NULL, bezug VARCHAR(40) NULL, schluessel VARCHAR(120) NULL,
+            erstellt DATETIME NOT NULL, gesendet DATETIME NULL){tab}",
+        "CREATE UNIQUE INDEX {p}nachricht_schluessel ON {p}nachricht (schluessel)",
+        "CREATE INDEX {p}nachricht_status ON {p}nachricht (status, nicht_vor)",
+        "CREATE INDEX {p}nachricht_kunde ON {p}nachricht (kunde_id, id)",
+        "CREATE INDEX {p}nachricht_erstellt ON {p}nachricht (erstellt)",
+        "CREATE TABLE {p}sperre (
+            id {auto}, kanal VARCHAR(10) NOT NULL, adresse VARCHAR(190) NOT NULL, zeit DATETIME NOT NULL, quelle VARCHAR(16) NOT NULL){tab}",
+        "CREATE UNIQUE INDEX {p}sperre_adresse ON {p}sperre (kanal, adresse)",
+        "CREATE TABLE {p}bestaetigung (
+            id {auto}, kunde_id INT NOT NULL, art VARCHAR(24) NOT NULL, token CHAR(32) NOT NULL, quelle VARCHAR(16) NOT NULL,
+            erstellt DATETIME NOT NULL, bestaetigt DATETIME NULL){tab}",
+        "CREATE UNIQUE INDEX {p}bestaetigung_token ON {p}bestaetigung (token)",
+        "CREATE TABLE {p}recall (
+            id {auto}, kunde_id INT NOT NULL, letzter_termin_id INT NOT NULL, faellig DATE NOT NULL, token CHAR(16) NOT NULL,
+            erste DATETIME NULL, zweite DATETIME NULL, kanal VARCHAR(10) NULL, termin_id INT NULL, status VARCHAR(14) NOT NULL DEFAULT 'offen',
+            erstellt DATETIME NOT NULL){tab}",
+        "CREATE UNIQUE INDEX {p}recall_letzter ON {p}recall (kunde_id, letzter_termin_id)",
+        "CREATE UNIQUE INDEX {p}recall_token ON {p}recall (token)",
+        "CREATE TABLE {p}warteliste (
+            id {auto}, kunde_id INT NOT NULL, salon_id VARCHAR(32) NOT NULL, leistungen {text} NOT NULL, person_id VARCHAR(32) NULL,
+            von DATE NOT NULL, bis DATE NOT NULL, tageszeit VARCHAR(12) NOT NULL DEFAULT 'egal', status VARCHAR(14) NOT NULL DEFAULT 'aktiv',
+            token CHAR(32) NOT NULL, quelle VARCHAR(16) NOT NULL, notiz VARCHAR(255) NULL, letztes_angebot DATETIME NULL,
+            termin_id INT NULL, erstellt DATETIME NOT NULL){tab}",
+        "CREATE UNIQUE INDEX {p}warteliste_token ON {p}warteliste (token)",
+        "CREATE INDEX {p}warteliste_salon ON {p}warteliste (salon_id, status, bis)",
+        "CREATE TABLE {p}angebot (
+            id {auto}, warteliste_id INT NOT NULL, salon_id VARCHAR(32) NOT NULL, person_id VARCHAR(32) NULL, start DATETIME NOT NULL,
+            token CHAR(24) NOT NULL, status VARCHAR(14) NOT NULL DEFAULT 'offen', termin_id INT NULL,
+            erstellt DATETIME NOT NULL, ablauf DATETIME NOT NULL){tab}",
+        "CREATE UNIQUE INDEX {p}angebot_token ON {p}angebot (token)",
+        "CREATE INDEX {p}angebot_liste ON {p}angebot (warteliste_id)",
+        "CREATE TABLE {p}kampagne (
+            id {auto}, titel VARCHAR(120) NOT NULL, kanal VARCHAR(10) NOT NULL, betreff VARCHAR(255) NULL, text {text} NOT NULL,
+            zielgruppe {text} NULL, anzahl INT NOT NULL DEFAULT 0, erstellt DATETIME NOT NULL, erstellt_von VARCHAR(32) NULL){tab}",
+        "CREATE TABLE {p}gutschein (
+            id {auto}, code VARCHAR(20) NOT NULL, wert_cent INT NOT NULL, rest_cent INT NOT NULL, leistung VARCHAR(160) NULL,
+            kaeufer VARCHAR(160) NULL, empfaenger VARCHAR(160) NULL, kunde_id INT NULL, gueltig_bis DATE NOT NULL,
+            status VARCHAR(14) NOT NULL DEFAULT 'aktiv', notiz VARCHAR(255) NULL, erstellt DATETIME NOT NULL, erstellt_von VARCHAR(32) NULL){tab}",
+        "CREATE UNIQUE INDEX {p}gutschein_code ON {p}gutschein (code)",
+        "CREATE TABLE {p}gutschein_bewegung (
+            id {auto}, gutschein_id INT NOT NULL, art VARCHAR(14) NOT NULL, betrag_cent INT NOT NULL, termin_id INT NULL,
+            zeit DATETIME NOT NULL, person_id VARCHAR(32) NULL, notiz VARCHAR(255) NULL){tab}",
+        "CREATE INDEX {p}gutschein_bewegung_g ON {p}gutschein_bewegung (gutschein_id)",
+        "CREATE TABLE {p}rabatt (
+            id {auto}, code VARCHAR(24) NOT NULL, name VARCHAR(120) NOT NULL, prozent INT NULL, betrag_cent INT NULL,
+            von DATE NULL, bis DATE NULL, max_nutzungen INT NULL, nur_neu INT NOT NULL DEFAULT 0, aktiv INT NOT NULL DEFAULT 1,
+            erstellt DATETIME NOT NULL){tab}",
+        "CREATE UNIQUE INDEX {p}rabatt_code ON {p}rabatt (code)",
+        "CREATE TABLE {p}treue (
+            id {auto}, kunde_id INT NOT NULL, termin_id INT NULL, zeit DATETIME NOT NULL, person_id VARCHAR(32) NULL, notiz VARCHAR(255) NULL){tab}",
+        "CREATE INDEX {p}treue_kunde ON {p}treue (kunde_id)",
+        "CREATE TABLE {p}foto (
+            id {auto}, kunde_id INT NOT NULL, termin_id INT NULL, datei VARCHAR(80) NOT NULL, breite INT NOT NULL, hoehe INT NOT NULL,
+            bytes INT NOT NULL, notiz VARCHAR(255) NULL, erstellt DATETIME NOT NULL, person_id VARCHAR(32) NULL){tab}",
+        "CREATE INDEX {p}foto_kunde ON {p}foto (kunde_id)",
+        "CREATE TABLE {p}artikel (
+            id {auto}, name VARCHAR(160) NOT NULL, marke VARCHAR(80) NULL, ean VARCHAR(20) NULL, salon_id VARCHAR(32) NOT NULL,
+            bestand INT NOT NULL DEFAULT 0, mindest INT NOT NULL DEFAULT 0, ek_cent INT NULL, vk_cent INT NULL,
+            aktiv INT NOT NULL DEFAULT 1, geaendert DATETIME NOT NULL){tab}",
+        "CREATE INDEX {p}artikel_salon ON {p}artikel (salon_id, aktiv)",
+        "CREATE TABLE {p}lager_bewegung (
+            id {auto}, artikel_id INT NOT NULL, menge INT NOT NULL, art VARCHAR(14) NOT NULL, bestand_danach INT NOT NULL,
+            zeit DATETIME NOT NULL, person_id VARCHAR(32) NULL, notiz VARCHAR(255) NULL){tab}",
+        "CREATE INDEX {p}lager_bewegung_a ON {p}lager_bewegung (artikel_id, id)",
+        "ALTER TABLE {p}termin ADD COLUMN rabatt_code VARCHAR(24) NULL",
+        "ALTER TABLE {p}termin ADD COLUMN rabatt_cent INT NULL",
+        "ALTER TABLE {p}termin ADD COLUMN erinnert_sms INT NOT NULL DEFAULT 0",
+        "ALTER TABLE {p}leistung ADD COLUMN recall_tage INT NULL",
+        "ALTER TABLE {p}kunde ADD COLUMN herkunft VARCHAR(24) NULL",
+        "CREATE INDEX {p}termin_ref ON {p}termin (ref)",
+    ],
 ];
 
 /** Was sich nicht in SQL sagen lässt, nach der jeweiligen Stufe. */
@@ -111,6 +191,13 @@ function schema_nacharbeit(DB $db, int $stufe): void
     if ($stufe === 2) {
         foreach ($db->alle('SELECT id, start, ende FROM {p}termin') as $t) {
             $db->q('UPDATE {p}termin SET start_utc = ?, ende_utc = ? WHERE id = ?', [utc($t['start']), utc($t['ende']), $t['id']]);
+        }
+    }
+    if ($stufe === 3) {
+        // Recall-Abstand je Leistung vorbelegen (Spezifikation 4.3); das
+        // Studio kann ihn je Leistung ändern.
+        foreach ($db->alle('SELECT id, gruppe, name FROM {p}leistung') as $l) {
+            $db->q('UPDATE {p}leistung SET recall_tage = ? WHERE id = ?', [recall_vorgabe($l['gruppe'], $l['name']), $l['id']]);
         }
     }
 }

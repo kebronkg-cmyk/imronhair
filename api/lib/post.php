@@ -17,19 +17,24 @@ function kopfzeile_kodieren(string $s): string
     return preg_match('/[^\x20-\x7E]/', $s) ? '=?UTF-8?B?' . base64_encode($s) . '?=' : $s;
 }
 
-function post_senden(string $an, string $betreff, string $text, ?string $ics = null): bool
+/**
+ * $zusatz: kopf (weitere Kopfzeilen, etwa List-Unsubscribe), zweck,
+ * kunde_id, termin_id — für den Postausgang im Studio; ohne_protokoll,
+ * wenn der Aufrufer (die Warteschlange) selbst Buch führt.
+ */
+function post_senden(string $an, string $betreff, string $text, ?string $ics = null, array $zusatz = []): bool
 {
     if (!post_aktiv() || !filter_var($an, FILTER_VALIDATE_EMAIL)) return false;
     $p = konfig('post');
     $von = $p['absender'];
     $name = $p['absender_name'] ?? 'Irmonhair';
     $grenze = 'ih-' . zufall(8);
-    $kopf = [
+    $kopf = array_merge([
         'From: ' . kopfzeile_kodieren($name) . " <$von>",
         'Reply-To: ' . ($p['antwort_an'] ?? $von),
         'MIME-Version: 1.0',
         'X-Mailer: Irmonhair-Termine',
-    ];
+    ], array_values(array_filter($zusatz['kopf'] ?? [], fn($z) => !preg_match('/[\r\n]/', $z))));
     if ($ics) {
         $kopf[] = "Content-Type: multipart/mixed; boundary=\"$grenze\"";
         $inhalt = "--$grenze\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
@@ -43,11 +48,20 @@ function post_senden(string $an, string $betreff, string $text, ?string $ics = n
         $inhalt = chunk_split(base64_encode($text));
     }
     try {
-        $ok = mail($an, kopfzeile_kodieren($betreff), $inhalt, implode("\r\n", $kopf), '-f' . $von);
+        // In der Vorführung geht nichts hinaus; der Postausgang im Studio zeigt sie trotzdem.
+        $ok = ($p['versand'] ?? '') === 'vorfuehrung' ? true : mail($an, kopfzeile_kodieren($betreff), $inhalt, implode("\r\n", $kopf), '-f' . $von);
     } catch (Throwable $e) {
         $ok = false;
     }
     if (!$ok) protokoll('post_fehler', null, null, ['an' => $an, 'betreff' => $betreff], null);
+    if (empty($zusatz['ohne_protokoll'])) {
+        try {
+            db()->einfuegen('nachricht', ['kunde_id' => $zusatz['kunde_id'] ?? null, 'termin_id' => $zusatz['termin_id'] ?? null, 'kanal' => 'email',
+                'zweck' => $zusatz['zweck'] ?? 'post', 'an' => mb_strtolower($an), 'betreff' => mb_substr($betreff, 0, 255), 'text' => $text,
+                'status' => $ok ? 'gesendet' : 'fehler', 'versuche' => 1, 'nicht_vor' => jetzt(), 'teile' => 1, 'kosten_cent' => 0,
+                'erstellt' => jetzt(), 'gesendet' => $ok ? jetzt() : null, 'fehler' => $ok ? null : 'E-Mail nicht angenommen']);
+        } catch (Throwable $e) { /* der Versand zählt, nicht das Buchführen */ }
+    }
     return $ok;
 }
 
@@ -147,7 +161,7 @@ function post_bestaetigung(array $termin, ?string $email): void
         . "In Ihren Kalender (Datei im Anhang) oder in Google Kalender:\n" . google_link($termin, $salon) . "\n\n"
         . ($link ? "Termin ansehen, verschieben oder absagen:\n$link\n\n" : '')
         . "Bis bald,\nIhr Irmonhair-Team\n{$salon['strasse']}, {$salon['ort']} · {$salon['telefon_text']}\n");
-    if ($email) post_senden($email, 'Ihr Termin: ' . termin_zeile($termin, $salon), $text, ics_bauen($termin, $salon));
+    if ($email) post_senden($email, 'Ihr Termin: ' . termin_zeile($termin, $salon), $text, ics_bauen($termin, $salon), post_bezug($termin, 'bestaetigung'));
     if ($termin['quelle'] === 'online') {
         post_salon($termin['salon'], 'Online gebucht: ' . termin_zeile($termin, $salon),
             "Neue Online-Buchung\n\n" . ($termin['gast_name'] ?? '') . ' · ' . ($termin['kunde']['telefon_text'] ?? '') . "\n"
@@ -158,7 +172,7 @@ function post_bestaetigung(array $termin, ?string $email): void
 function post_salon(string $salonId, string $betreff, string $text): void
 {
     $an = konfig('post')['salon_an'][$salonId] ?? null;
-    if ($an) post_senden($an, $betreff, $text);
+    if ($an) post_senden($an, $betreff, $text, null, ['zweck' => 'salon']);
 }
 
 /**
@@ -181,7 +195,7 @@ function post_aenderung(array $vorher, array $nachher): void
         . "In Ihren Kalender (Datei im Anhang ersetzt den alten Eintrag) oder in Google Kalender:\n" . google_link($t, $salon) . "\n\n"
         . ($link ? "Termin ansehen, verschieben oder absagen:\n$link\n\n" : '')
         . "Ihr Irmonhair-Team · {$salon['telefon_text']}\n";
-    if ($email = kunden_email($t)) post_senden($email, 'Geändert: ' . termin_zeile($t, $salon), $text, ics_bauen($t, $salon));
+    if ($email = kunden_email($t)) post_senden($email, 'Geändert: ' . termin_zeile($t, $salon), $text, ics_bauen($t, $salon), post_bezug($t, 'aenderung'));
     if (akteur() === 'kunde') post_salon($t['salon'], 'Online verschoben: ' . termin_zeile($t, $salon),
         "Die Kundin hat online verschoben.\n\n" . ($t['gast_name'] ?? '') . "\nvorher: $alt\njetzt:  " . termin_zeile($t, $salon) . "\n");
 }
@@ -201,34 +215,25 @@ function post_storno(string $token): void
             . "\n\nAbgesagt: " . termin_zeile($t, $salon) . "\n\n"
             . "Neuen Termin buchen: " . preg_replace('/\?.*$/', '', termin_link('x')) . "\n"
             . "Ihr Irmonhair-Team · {$salon['telefon_text']}\n";
-        post_senden($email, 'Abgesagt: ' . termin_zeile($t, $salon), $text);
+        post_senden($email, 'Abgesagt: ' . termin_zeile($t, $salon), $text, null, post_bezug($t, 'absage'));
     }
     if (akteur() === 'kunde') post_salon($t['salon'], 'Online abgesagt: ' . termin_zeile($t, $salon),
         "Die Kundin hat online abgesagt.\n\n" . ($t['gast_name'] ?? '') . "\n" . termin_text($t, $salon) . "\n");
 }
 
-/** Aufruf durch einen Cronjob (All-Inkl: KAS → Tools → Cronjobs), z. B. stündlich. */
+/** Für den Postausgang: zu welcher Kundin und welchem Termin. */
+function post_bezug(array $t, string $zweck): array
+{
+    return ['zweck' => $zweck, 'kunde_id' => $t['kunde']['id'] ?? null, 'termin_id' => $t['id'] ?? null];
+}
+
+/** Früherer Cronjob „erinnern“: läuft jetzt über den einen Nachrichten-Cron
+    (Erinnerungen per E-Mail und SMS, Recall, Warteliste, Versand). */
 function aktion_erinnern(): array
 {
-    cron_pruefen();
-    $db = db();
-    $von = date('Y-m-d H:i:s', time() + 20 * 3600);
-    $bis = date('Y-m-d H:i:s', time() + 28 * 3600);
-    $zeilen = $db->alle("SELECT t.id, k.email FROM {p}termin t JOIN {p}kunde k ON k.id = t.kunde_id
-        WHERE t.status = 'gebucht' AND t.erinnert = 0 AND t.start >= ? AND t.start < ? AND k.email IS NOT NULL AND k.geloescht = 0", [$von, $bis]);
-    $n = 0;
-    foreach ($zeilen as $z) {
-        $t = termin_lesen((int)$z['id']);
-        $salon = $db->eins('SELECT * FROM {p}salon WHERE id = ?', [$t['salon']]);
-        $link = termin_link($t['token']);
-        $text = ("Guten Tag,\n\nwir freuen uns auf Sie:\n\n" . termin_text($t, $salon)
-            . "\n\n" . ($link ? "Falls etwas dazwischenkommt:\n$link\n\n" : '') . "Ihr Irmonhair-Team · {$salon['telefon_text']}\n");
-        if (post_senden($z['email'], 'Erinnerung: ' . termin_zeile($t, $salon), $text)) $n++;
-        $db->aendern('termin', ['erinnert' => 1], 'id = ?', [$z['id']]);
-    }
-    // Aufräumen: abgelaufene Sitzungen.
-    $db->q('DELETE FROM {p}sitzung WHERE ablauf < ?', [jetzt()]);
-    return ['erinnert' => $n];
+    require_once __DIR__ . '/nachrichten.php';
+    $r = aktion_nachrichten();
+    return $r + ['erinnert' => ($r['erinnerungen']['email'] ?? 0) + ($r['erinnerungen']['sms'] ?? 0)];
 }
 
 function cron_pruefen(): void

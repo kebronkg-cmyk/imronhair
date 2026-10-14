@@ -37,8 +37,8 @@ jobs:
 
           # Die Hauptseite (das Schaufenster bei Nacht) an der Wurzel: Seiten,
           # Stile, Skripte, Bilder, Schriften, Zeichen.
-          cp index.html leistungen.html impressum.html datenschutz.html termin.html \
-             neu.css neu.js termin.css termin.js termin-vorschau.js logo-*.svg _site/
+          cp index.html leistungen.html impressum.html datenschutz.html termin.html nachrichten.html \
+             neu.css neu.js termin.css termin.js termin-vorschau.js nachrichten.js logo-*.svg _site/
           cp -r bilder schrift _site/
 
           # Die älteren Fassungen unter ihren Pfaden (/spiegel/, /schleife/, /alt/, /alt2/).

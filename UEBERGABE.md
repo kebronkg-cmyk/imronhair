@@ -430,3 +430,39 @@ Stand 04.10.2026.
   (`buchung_adresse`), `recherche/preise.py` und `recherche/schleife.py`
   (schreiben in die Hauptseite bzw. `spiegel/`), Auslieferung.
 
+
+## Nachrichten, Recall, Warteliste, Verkauf (15.10.2026)
+
+Gebaut, was Salonkee kann und wir ohne fremde Plattform können — außer
+Marktplatz, Kasse mit TSE und Anruferkennung (braucht eine Telefonanlage,
+die Anrufe meldet). Kartenzahlung und Anzahlung sind ebenfalls offen:
+sie brauchen einen Zahlungsanbieter-Vertrag des Salons (Stripe o. ä.).
+
+- **Schnittstelle:** Datenbank-Stufe 3 (14 neue Tabellen, Migration läuft
+  beim ersten Aufruf). Warteschlange mit eindeutigem Schlüssel je
+  Anlass, Prüfung direkt vor dem Senden (STOP, Widerruf, inzwischen
+  gebucht, Platz weg), drei Versuche bei Netzfehlern. SMS über seven.io,
+  WhatsApp über Meta (nur Vorlage am Vortag), E-Mail über `mail()`.
+  In der Vorführung und in den Tests `'vorfuehrung'`: nichts geht raus.
+- **Einwilligungen auf der Buchungsseite:** drei Karten, keine
+  vorausgewählt; zuerst der Nutzen, darunter der gespeicherte Wortlaut.
+  Die Erinnerung zeigt genau die SMS, die käme (Zeit, Person, Adresse —
+  aus derselben Vorlage wie der Versand). „X % lassen sich erinnern“
+  erscheint erst ab 40 echten Online-Kundinnen in 120 Tagen und ab 50 %,
+  abgerundet — erfunden wird nichts. Nach dem Buchen eine zweite,
+  einzelne Frage („Soll eine SMS Sie am Vortag erinnern?“), weil die
+  Kundin dann entspannt ist. Angebote nur mit Bestätigungslink.
+- **Gemessen:** 124 neue Prüfungen (`api/tests/nachrichten.mjs`),
+  darunter: jede SMS-Vorlage passt mit der echten Adresse in 160 Zeichen;
+  gleichzeitiges Einlösen eines Gutscheins nur einmal; derselbe
+  Warteliste-Link zweimal ergibt einen Termin, der zweite Wartende
+  bekommt „vergeben“. Alle bisherigen Reihen grün (88 / 92 / 13 /
+  Studio-Oberfläche). Detektor: 18 Meldungen wie vorher (alle aus dem
+  Bestand, `dark-glow` des Hauptknopfs gewollt), plus derselbe Schein
+  auf `nachrichten.html`. Aufnahmen 390 und 1440 angesehen, keine
+  Konsolenfehler.
+- **Offen vor dem Echtbetrieb:** seven.io-Konto, Nummer mit Eingang und
+  AVV; Datenschutzerklärung Abschnitt 5 um den Namen des SMS-Dienstes
+  ergänzen; DATEV-Stapel einmal mit der Kanzlei testen; Monatsbericht-
+  Empfänger (`bericht_an`). MariaDB weiterhin nur über die SQL-Fassung
+  geprüft, nicht live.

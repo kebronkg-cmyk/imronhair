@@ -8,21 +8,26 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { $, el, meldung, heute, themaSetzen, themaAnwenden } from './hilfen.js';
-import { Z, api, inhaberin, ApiFehler, ROLLE_NAME } from './api.js';
+import { Z, api, inhaberin, leitung, ApiFehler, ROLLE_NAME } from './api.js';
 import { tafelZu, tafelOffen } from './tafel.js';
 import * as kalender from './kalender.js';
 import * as kunden from './kunden.js';
 import * as verwaltung from './verwaltung.js';
+import * as nachrichten from './nachrichten.js';
+import * as verkauf from './verkauf.js';
 
 const BEREICHE = [
   { id: 'kalender', name: 'Kalender', modul: kalender },
   { id: 'kunden', name: 'Kunden', modul: kunden },
+  { id: 'nachrichten', name: 'Nachrichten', kurz: 'Post', modul: nachrichten, leitung: true },
+  { id: 'verkauf', name: 'Verkauf', modul: verkauf },
   { id: 'team', name: 'Team', modul: verwaltung.team, inhaberin: true },
   { id: 'leistungen', name: 'Leistungen', kurz: 'Leistung', modul: verwaltung.leistungen, inhaberin: true },
   { id: 'auswertung', name: 'Auswertung', kurz: 'Zahlen', modul: verwaltung.auswertung, inhaberin: true },
   { id: 'einstellungen', name: 'Einstellungen', kurz: 'Optionen', modul: verwaltung.einstellungen },
 ];
 let aktiv = null;
+const erlaubt = (b) => (!b.inhaberin || inhaberin()) && (!b.leitung || leitung());
 
 /* ── Start ──────────────────────────────────────────────────────────── */
 async function start() {
@@ -118,7 +123,7 @@ function torZeigen(art, hinweis = '', personen = []) {
 
 /* ── Kopf und Bereiche ──────────────────────────────────────────────── */
 function kopfZeichnen() {
-  $('bereiche').replaceChildren(...BEREICHE.filter((b) => !b.inhaberin || inhaberin()).map((b) =>
+  $('bereiche').replaceChildren(...BEREICHE.filter(erlaubt).map((b) =>
     el('a', { href: '#' + b.id, klasse: 'bereich', daten: { bereich: b.id } },
       el('span', { klasse: 'bereich-lang', text: b.name }), b.kurz ? el('span', { klasse: 'bereich-kurz', text: b.kurz, 'aria-hidden': 'true' }) : null)));
   const ich = $('ich');
@@ -149,7 +154,7 @@ async function abmelden() {
 
 function bereichZeigen() {
   const id = (location.hash.slice(1).split('/')[0]) || 'kalender';
-  let b = BEREICHE.find((x) => x.id === id && (!x.inhaberin || inhaberin()));
+  let b = BEREICHE.find((x) => x.id === id && erlaubt(x));
   if (!b) b = BEREICHE[0];
   for (const a of document.querySelectorAll('.bereich')) a.toggleAttribute('aria-current', a.dataset.bereich === b.id);
   if (aktiv !== b) {

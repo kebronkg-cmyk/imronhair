@@ -155,6 +155,8 @@
           <div class="tage" id="tage" role="group" aria-label="Tag w&auml;hlen"></div>
         </div>
         <div class="uhrzeiten" id="zeiten" aria-live="polite"></div>
+        <!-- Nichts Passendes: auf die Warteliste (erscheint auf Wunsch) -->
+        <div class="warteliste" id="warteliste" hidden></div>
       </div>
     </li>
 
@@ -189,7 +191,17 @@
             <label for="k-webseite">Webseite</label>
             <input id="k-webseite" name="webseite" tabindex="-1" autocomplete="off">
           </div>
-          <!-- Einwilligungen: beide freiwillig, keine vorausgewählt -->
+          <!-- Gutschein oder Aktionscode: zugeklappt, damit niemand meint, ohne Code zahle er zu viel -->
+          <details class="code-box" id="code-box" hidden>
+            <summary>Gutschein- oder Aktionscode?</summary>
+            <div class="code-zeile">
+              <label class="nurlesen" for="k-code">Code</label>
+              <input id="k-code" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="24" placeholder="z. B. IH-7KQ2-M9XD">
+              <button class="knopf-still" type="button" id="code-pruefen">Prüfen</button>
+            </div>
+            <p class="code-ergebnis" id="code-ergebnis" aria-live="polite"></p>
+          </details>
+          <!-- Einwilligungen: alle freiwillig, keine vorausgewählt -->
           <fieldset class="einwilligungen" id="einwilligungen" hidden></fieldset>
           <label class="merken">
             <input type="checkbox" id="k-merken">
