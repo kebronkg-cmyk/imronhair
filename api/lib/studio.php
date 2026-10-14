@@ -748,12 +748,6 @@ function aktion_einstellungen_speichern(): array
     foreach (['luecken_fuellen', 'online_aktiv', 'feiertage', 'recall_aktiv', 'warteliste_aktiv', 'treue_aktiv'] as $f) if (is_bool(feld($f))) $e[$f] = feld($f);
     if (in_array(feld('erinnerung_sms'), ['regel', 'immer', 'nie'], true)) $e['erinnerung_sms'] = feld('erinnerung_sms');
     if (feld('treue_praemie') !== null) $e['treue_praemie'] = (string)text_feld('treue_praemie', 200);
-    foreach (['datev_berater' => 7, 'datev_mandant' => 5, 'datev_erloese' => 8, 'datev_gegenkonto' => 8] as $f => $max) {
-        if (feld($f) === null) continue;
-        $w = (string)feld($f);
-        if ($w !== '' && !preg_match('/^\d{1,' . $max . '}$/', $w)) throw new Fehler("„{$f}“: nur Ziffern, höchstens $max.", 422, 'bereich', ['feld' => $f]);
-        $e[$f] = $w;
-    }
     if (feld('hinweis') !== null) $e['hinweis'] = (string)text_feld('hinweis', 300);
     db()->schreiben(function (DB $db) use ($e) {
         $db->q("UPDATE {p}meta SET wert = ? WHERE schluessel = 'einstellungen'", [json_encode($e, JSON_UNESCAPED_UNICODE)]);
@@ -891,7 +885,6 @@ function aktion_export(): never
                 $db->alle('SELECT * FROM {p}artikel ORDER BY salon_id, marke, name'));
             break;
         case 'umsatz':
-        case 'datev':
             require_once __DIR__ . '/studio-buchhaltung.php';
             buchhaltung_export($was);
         default:

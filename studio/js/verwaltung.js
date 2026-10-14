@@ -326,7 +326,7 @@ export const einstellungen = {
     teile.push(darstellungTeil(), passwortTeil());
     if (inhaberin()) teile.push(regelnTeil(), nachrichtenTeil(), treueTeil(), oeffnungTeil());
     if (leitung()) teile.push(abwesenheitenTeil(), exportTeil());
-    if (inhaberin()) teile.push(steuerTeil(), importTeil(), sicherungTeil());
+    if (inhaberin()) teile.push(abgleichTeil(), importTeil(), sicherungTeil());
     f.replaceChildren(el('div', { klasse: 'seite seite-schmal' }, teile));
   },
   neuLaden() { /* nichts Lebendiges */ },
@@ -494,29 +494,22 @@ function treueTeil() {
     el('button', { type: 'button', klasse: 'knopf', text: 'Speichern', onclick: () => einstellungenSichern(e, fehler) }));
 }
 
-/** Für die Steuerkanzlei: Umsatzliste und DATEV-Buchungsstapel. */
-function steuerTeil() {
-  const e = structuredClone(Z.s.einstellungen);
-  const fehler = el('p', { klasse: 'form-fehler', role: 'alert', hidden: true });
+/** Abgleich mit der Kasse: was laut Terminbuch hätte kassiert werden
+    sollen, und welche Gutscheine noch offen sind. Kein Steuer-Export —
+    die Zahlen für die Kanzlei kommen aus der Kasse. */
+function abgleichTeil() {
   const d = alsDatum(heute());
   const monate = Array.from({ length: 13 }, (_, i) => new Date(d.getFullYear(), d.getMonth() - i, 1));
   let wahl = 1;
-  const zeitraum = () => { const m = monate[wahl]; return [iso(m), iso(new Date(m.getFullYear(), m.getMonth() + 1, 0))]; };
   const api0 = new URL(document.querySelector('meta[name="irmonhair-api"]').content, location.href).href;
-  const laden = (was) => { const [von, bis] = zeitraum(); location.href = `${api0}?a=export&was=${was}&von=${von}&bis=${bis}`; };
-  const textFeld = (name, text) => el('label', { klasse: 'feld feld-schmal' }, el('span', { klasse: 'feld-name', text }),
-    el('input', { value: e[name], inputmode: 'numeric', oninput: (ev) => { e[name] = ev.target.value.trim(); } }));
-  return abschnitt('Für die Steuerkanzlei', 'Aus den Terminen (erschienen, abzüglich Nachlass) — nicht aus der Kasse. Die Kasse bleibt maßgeblich; die Liste spart das Abtippen und hilft beim Abgleich. Den DATEV-Stapel einmal mit der Kanzlei testen, bevor er regelmäßig geht.',
+  const laden = () => { const m = monate[wahl]; location.href = `${api0}?a=export&was=umsatz&von=${iso(m)}&bis=${iso(new Date(m.getFullYear(), m.getMonth() + 1, 0))}`; };
+  return abschnitt('Abgleich mit der Kasse', 'Geplante Umsätze: was laut Terminbuch im Monat hätte kassiert werden sollen (Terminpreise, abzüglich Nachlass) — zum Vergleich mit den Tagesabschlüssen der Kasse. Für die Steuer gilt allein die Kasse. Offene Gutscheine: ausgegeben, aber noch nicht (ganz) eingelöst — diese Summe fragt die Steuerkanzlei zum Jahresende.',
     el('div', { klasse: 'feld-reihe' },
       el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Monat' }),
         el('select', { onchange: (ev) => { wahl = +ev.target.value; } }, monate.map((m, i) => el('option', { value: i, selected: i === wahl ? true : null, text: `${MONAT_LANG[m.getMonth()]} ${m.getFullYear()}` })))),
       el('div', { klasse: 'tafel-wege' },
-        el('button', { type: 'button', klasse: 'knopf-still', text: 'Umsatzliste (CSV)', onclick: () => laden('umsatz') }),
-        el('button', { type: 'button', klasse: 'knopf-still', text: 'DATEV-Buchungsstapel', onclick: () => laden('datev') }))),
-    el('div', { klasse: 'feld-raster' }, textFeld('datev_berater', 'Beraternummer'), textFeld('datev_mandant', 'Mandantennummer'),
-      textFeld('datev_erloese', 'Erlöskonto (SKR03: 8400)'), textFeld('datev_gegenkonto', 'Gegenkonto (Kasse: 1000)')),
-    fehler,
-    el('button', { type: 'button', klasse: 'knopf-still', text: 'Konten speichern', onclick: () => einstellungenSichern(e, fehler) }));
+        el('button', { type: 'button', klasse: 'knopf-still', text: 'Geplante Umsätze (CSV)', onclick: laden }),
+        el('a', { klasse: 'knopf-still', href: `${api0}?a=export&was=gutscheine`, download: '' }, 'Gutscheine (CSV)'))));
 }
 
 /** Kundenliste aus Planity (oder einem anderen Programm) übernehmen. */

@@ -463,6 +463,11 @@ sie brauchen einen Zahlungsanbieter-Vertrag des Salons (Stripe o. ä.).
   Konsolenfehler.
 - **Offen vor dem Echtbetrieb:** seven.io-Konto, Nummer mit Eingang und
   AVV; Datenschutzerklärung Abschnitt 5 um den Namen des SMS-Dienstes
-  ergänzen; DATEV-Stapel einmal mit der Kanzlei testen; Monatsbericht-
+  ergänzen; Monatsbericht-
   Empfänger (`bericht_an`). MariaDB weiterhin nur über die SQL-Fassung
   geprüft, nicht live.
+
+**Nachtrag:** Den DATEV-Buchungsstapel wieder entfernt. Er rechnete mit
+den Terminpreisen statt mit dem, was kassiert wurde, und hätte neben den
+Kassendaten doppelt in der Buchhaltung gestanden. Geblieben: „Geplante
+Umsätze“ zum Abgleich mit der Kasse und die Liste der offenen Gutscheine.

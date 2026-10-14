@@ -140,10 +140,10 @@ soweit eine Adresse da ist.
   dann weg); abgelegt in `api/daten/fotos/` (von außen gesperrt).
 - **Lager** (Verkauf → Lager): Bestand, Mindestbestand, Eingang, Verkauf,
   Verbrauch, Inventur, Handscanner wie Tastatur.
-- **Steuerkanzlei** (Einstellungen): Umsatzliste (CSV) und
-  DATEV-Buchungsstapel (EXTF 700, Windows-1252, je Tag und Salon „Kasse
-  an Erlöse“). Aus den Terminpreisen, nicht aus der Kasse — einmal mit
-  der Kanzlei testen.
+- **Abgleich mit der Kasse** (Einstellungen): geplante Umsätze je Monat
+  aus den Terminpreisen (CSV) und die offenen Gutscheine. Bewusst kein
+  Steuer-Export: Für die Kanzlei gilt die Kasse mit TSE; ein zweiter,
+  ungenauerer Stapel stünde dort sonst doppelt.
 - **Kunden übernehmen** (Einstellungen): CSV aus Planity oder einem
   anderen Programm; Spalten werden erkannt (auch französisch/englisch),
   erst Vorschau, dann Übernahme. Vorhandene werden nur ergänzt;
@@ -241,7 +241,7 @@ täglich (KAS → *Datenbanken* → *Backups*).
 | `api/lib/verkauf.php` | Gutscheine, Aktionscodes, Treue (gemeinsam für Buchung und Studio) |
 | `api/lib/studio-nachrichten.php` | Studio: Postausgang, Recall, Warteliste, Kampagnen, Vorlagen, Einwilligung von Hand, Bericht |
 | `api/lib/studio-verkauf.php` | Studio: Gutscheine, Codes, Treue, Fotos, Lager, Import |
-| `api/lib/studio-buchhaltung.php` | Umsatzliste und DATEV-Buchungsstapel |
+| `api/lib/studio-buchhaltung.php` | Geplante Umsätze zum Abgleich mit der Kasse |
 | `nachrichten.html` | „Ihre Nachrichten“: Einwilligungen ändern, alles abbestellen, Angebote bestätigen |
 | `api/katalog.json` | Erstbefüllung, erzeugt von `recherche/katalog.py` aus Planity |
 | `termin.*` | Online-Buchung; `termin-vorschau.js` rechnet ohne Server |

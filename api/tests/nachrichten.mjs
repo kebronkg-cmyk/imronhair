@@ -375,9 +375,9 @@ pruefe(r.status === 200 && r.json.vorlagen.find((v) => v.name === 'recall_sms').
 const monat = new Date().toISOString().slice(0, 7);
 const von = new Date(Date.now() - 60 * 86400000).toISOString().slice(0, 10), bis = new Date().toISOString().slice(0, 10);
 r = await rufe('export', { get: { was: 'umsatz', von, bis }, roh: true });
-pruefe(r.status === 200 && r.buf.toString().includes('Dienstleistung') && r.buf.toString().includes('Summe'), 'Umsatzliste für die Kanzlei (CSV)');
+pruefe(r.status === 200 && r.buf.toString().includes('Dienstleistung') && r.buf.toString().includes('Summe'), 'Geplante Umsätze zum Abgleich mit der Kasse (CSV)');
 r = await rufe('export', { get: { was: 'datev', von, bis }, roh: true });
-pruefe(r.status === 200 && r.buf.toString('latin1').startsWith('"EXTF";700;21;"Buchungsstapel"') && r.typ.includes('1252'), 'DATEV-Buchungsstapel (EXTF, Windows-1252)', r.buf.toString('latin1').slice(0, 200));
+pruefe(r.status === 422, 'Kein DATEV-Stapel (die Steuerdaten kommen aus der Kasse)');
 for (const was of ['nachrichten', 'gutscheine', 'lager']) {
   r = await rufe('export', { get: { was }, roh: true });
   pruefe(r.status === 200 && r.buf.length > 20, `Export ${was}`);

@@ -534,11 +534,6 @@ const EINSTELLUNGEN_VORGABE = [
     'treue_aktiv' => false,
     'treue_n' => 10,
     'treue_praemie' => 'Der zehnte Besuch: Waschen, Schneiden, Föhnen geht aufs Haus.',
-    // Steuerberater (Vorschlag, mit der Kanzlei abstimmen)
-    'datev_berater' => '',
-    'datev_mandant' => '',
-    'datev_erloese' => '8400',
-    'datev_gegenkonto' => '1000',
 ];
 
 /** Recall-Abstand in Tagen (Spezifikation 4.3): Herren 4–5 Wochen, Damen
