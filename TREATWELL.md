@@ -5,6 +5,42 @@ Ziel: Treatwell bleibt der Marktplatz, der Kalender von Irmonhair bleibt
 der einzige, der zählt. Kein Termin wird zweimal vergeben, keiner geht
 verloren, und das Studio sieht jeden Treatwell-Termin wie jeden anderen.
 
+## Vertragslage: zuerst klären, sonst nicht bauen
+
+Die Partner-AGB der Treatwell DACH GmbH (Stand September 2026,
+treatwell.de/info/vertragsbestimmungen, Abschnitt „Ihre allgemeinen
+Verpflichtungen“) verbieten diesen Aufbau dem Wortlaut nach:
+
+- „Kunden nicht aufzufordern, Buchungen auf andere Weise als über die
+  Treatwell Buchungsplattform oder das Widget vorzunehmen“
+- „keine andere Software von Drittanbietern zu verwenden, um Kund*innen
+  die Möglichkeit zu geben, Buchungen vorzunehmen“
+- „keine Kontaktdaten, direkten Verweise oder Links zu Ihrer eigenen
+  Website … auf der Partnerseite einzufügen“
+- Bestpreis: Marktplatzpreis nicht teurer als auf der eigenen Website
+  (Ausnahme: geschlossene Gruppen wie Treueprogramm, Angebote im Salon)
+- Sperre möglich, wenn der Partner „es versäumt …, unsere Software und
+  unseren Marktplatz für alle Ihre Buchungen zu nutzen“; bei Verdacht auf
+  Umgehung darf Treatwell Provision erheben.
+- Neukunde ist, wer nicht in der Kundendatenbank **in der
+  Treatwell-Software** steht (oder dort 365 Tage keine Buchung hatte).
+
+Gleichzeitig beschreibt die Treatwell-Partnerhilfe selbst, wie man
+Connect per iCal mit anderer Kalendersoftware verknüpft, und Anbieter wie
+Booking Connect (Phorest) verkaufen genau diese Anbindung. Gemacht wird
+es also, erlaubt ist es nach den AGB nicht.
+
+**Daraus folgt:** Vor dem Bau schriftliche Zustimmung von Treatwell für
+Irmonhair einholen (Besondere Partnervereinbarung): eigene
+Buchungssoftware auf der eigenen Website, Abgleich per iCal und zweiter
+Mail-Adresse. Ohne diese Zustimmung riskiert Irmonhair genau das
+Marktplatz-Profil, das sie behalten wollen. Ob die Klauseln in
+Deutschland halten, ist eine Frage für einen Anwalt, nicht für diesen Plan.
+
+Unabhängig davon erlaubt und sinnvoll: die eigene Kundenliste in
+Treatwell importieren (dann zahlen Stammkundinnen keine Provision, wenn
+sie einmal über Treatwell buchen).
+
 ## Was Treatwell anbietet (belegt)
 
 - **Externer Kalender je Mitarbeiterin:** In Treatwell Connect lässt sich
