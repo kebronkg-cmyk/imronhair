@@ -47,7 +47,7 @@
       const an = !!e?.erteilt;
       const haken = el('input', { type: 'checkbox', 'data-art': art });
       haken.checked = an;
-      haken.addEventListener('change', () => speichern({ arten: { [art]: haken.checked } }, haken.checked ? (art === 'angebote' ? 'Fast fertig: Bitte bestätigen Sie über den Link, den wir gerade geschickt haben.' : 'Eingeschaltet.') : 'Abbestellt — ab sofort kommt dazu nichts mehr.'));
+      haken.addEventListener('change', () => speichern({ arten: { [art]: haken.checked } }, haken.checked ? (art === 'angebote' ? 'Fast fertig: Bitte bestätigen Sie über den Link, den wir gerade geschickt haben.' : 'Eingeschaltet.') : 'Abbestellt. Ab sofort kommt dazu nichts mehr.'));
       return el('label', { klasse: 'zusage' + (an ? ' ist-an' : '') }, haken,
         el('span', { klasse: 'zusage-text' },
           el('span', { klasse: 'zusage-titel', text: TITEL[art] || art }),
@@ -77,7 +77,7 @@
       try {
         const r = await api('bestaetigen', { post: { b } });
         history.replaceState(null, '', 'nachrichten.html?k=' + r.k);
-        zeichnen(await api('kundin_nachrichten', { get: { k: r.k } }), 'Danke — bestätigt. Höchstens einmal im Monat kommt etwas von uns, und mit STOP oder hier hören wir sofort auf.');
+        zeichnen(await api('kundin_nachrichten', { get: { k: r.k } }), 'Danke, bestätigt. Höchstens einmal im Monat kommt etwas von uns. Mit STOP hören wir sofort auf.');
       } catch (e) { $('hinweis').textContent = e.message; }
       return;
     }

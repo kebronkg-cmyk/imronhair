@@ -118,6 +118,10 @@ r = await rufe('buchen', { post: buchung({ salon: 'grosshadern', leistungen: [gs
 pruefe(r.status === 409, '    Bedia gleichzeitig in Großhadern online → abgelehnt', r.json);
 r = await rufe('termin_neu', { post: { salon: 'grosshadern', person: 'bedia', leistungen: [gs.id], start: `${FR} 15:30`, kunde: { name: 'Salon B' }, ausserhalb_ok: true } });
 pruefe(r.status === 409 && r.json.hart, '    und im Studio, auch mit Überstimmen → abgelehnt', r.json);
+r = await rufe('termin_neu', { post: { salon: 'grosshadern', person: 'bedia', leistungen: [gs.id], start: `${FR} 16:15`, kunde: { name: 'Ohne Weg' } } });
+pruefe(r.status === 409 && r.json.hart, '    direkt danach (16:15) in Großhadern → abgelehnt, sie braucht den Weg', r.json);
+r = await rufe('termin_neu', { post: { salon: 'grosshadern', person: 'bedia', leistungen: [gs.id], start: `${FR} 16:45`, kunde: { name: 'Mit Weg' } } });
+pruefe(r.status === 200, '    nach 30 Minuten Weg (16:45) → erlaubt', r.json);
 
 // ── 6. Schließtag, Urlaub, Pause, Feiertag → abgelehnt ──────────────────
 const SA = tagAb(12, 6);

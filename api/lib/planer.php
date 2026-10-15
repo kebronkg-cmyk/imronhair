@@ -197,10 +197,14 @@ function tagesplaene(array $personen, string $salon, string $vonDatum, string $b
     $abw = $db->alle("SELECT person_id, salon_id, von, bis FROM {p}abwesenheit
         WHERE von < ? AND bis > ? AND (person_id IS NULL OR person_id IN ($in)) AND (salon_id IS NULL OR salon_id = ?)",
         array_merge([$bisZeit, $vonZeit], $ids, [$salon]));
-    $bel = $db->alle("SELECT termin_id, person_id, start, ende FROM {p}belegung
-        WHERE person_id IN ($in) AND start < ? AND ende > ?" . ($ohneTermin ? ' AND termin_id <> ?' : ''),
+    $bel = $db->alle("SELECT b.termin_id, b.person_id, b.start, b.ende, t.salon_id, t.start AS t_start, t.ende AS t_ende
+        FROM {p}belegung b JOIN {p}termin t ON t.id = b.termin_id
+        WHERE b.person_id IN ($in) AND b.start < ? AND b.ende > ?" . ($ohneTermin ? ' AND b.termin_id <> ?' : ''),
         array_merge($ids, [$bisZeit, $vonZeit], $ohneTermin ? [$ohneTermin] : []));
     $puffer = (int)einstellungen()['puffer'];
+    // Termin im anderen Salon: Die Person ist dort von Anfang bis Ende (auch
+    // in der Einwirkzeit) und braucht davor und danach den Weg.
+    $weg = (int)einstellungen()['wegzeit'];
     $salonAuf = salon_fenster($salon, $vonDatum, $bisDatum);
 
     for ($d = $vonDatum; $d <= $bisDatum; $d = tag_plus($d, 1)) {
@@ -218,8 +222,15 @@ function tagesplaene(array $personen, string $salon, string $vonDatum, string $b
                 if ($iv = auf_tag($d, $a['von'], $a['bis'])) $sperren[] = $iv;
             }
             $belegt = [];
+            $woanders = [];
             foreach ($bel as $b) {
                 if ($b['person_id'] !== $pid) continue;
+                if ($b['salon_id'] !== $salon) {
+                    if (isset($woanders[$b['termin_id']])) continue;
+                    $woanders[$b['termin_id']] = true;
+                    if ($iv = auf_tag($d, $b['t_start'], $b['t_ende'])) $belegt[] = [max(0, $iv[0] - $weg), min(1440, $iv[1] + $weg + $puffer), (int)$b['termin_id']];
+                    continue;
+                }
                 if ($iv = auf_tag($d, $b['start'], $b['ende'])) $belegt[] = [$iv[0], min(1440, $iv[1] + $puffer), (int)$b['termin_id']];
             }
             usort($belegt, fn($x, $y) => $x[0] <=> $y[0]);

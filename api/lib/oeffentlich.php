@@ -65,7 +65,7 @@ function katalog_nachrichten(): array
     $seit = date('Y-m-d H:i:s', time() - 120 * 86400);
     $anteil = null;
     $n = (int)$db->wert("SELECT COUNT(DISTINCT kunde_id) FROM {p}termin WHERE quelle = 'online' AND erstellt >= ? AND kunde_id IS NOT NULL", [$seit]);
-    if ($n >= 40) {
+    if ($n >= 20) {
         $ja = (int)$db->wert("SELECT COUNT(DISTINCT e.kunde_id) FROM {p}einwilligung e JOIN {p}termin t ON t.kunde_id = e.kunde_id
             WHERE t.quelle = 'online' AND t.erstellt >= ? AND e.art = 'terminnachrichten' AND e.erteilt = 1", [$seit]);
         $anteil = (int)floor($ja / $n * 10) * 10;   // abgerundet auf volle zehn Prozent
@@ -546,7 +546,7 @@ function aktion_angebot_annehmen(): array
     if ($a['status'] === 'angenommen') return angebot_aufbereiten($a, db()->eins('SELECT * FROM {p}warteliste WHERE id = ?', [$a['warteliste_id']]));
     [$a, $w] = angebot_pruefen($a);
     if ($a['status'] !== 'offen' || !$w) {
-        throw new Fehler('Schade — dieser Platz ist schon vergeben. Ihr Platz auf der Warteliste bleibt; wir melden uns beim nächsten.', 409, 'vergeben', angebot_aufbereiten($a, $w));
+        throw new Fehler('Schade, dieser Platz ist schon vergeben. Sie bleiben auf der Warteliste.', 409, 'vergeben', angebot_aufbereiten($a, $w));
     }
     $k = db()->eins('SELECT * FROM {p}kunde WHERE id = ?', [$w['kunde_id']]);
     try {
@@ -558,7 +558,7 @@ function aktion_angebot_annehmen(): array
         if ($e->status === 409) {
             db()->aendern('angebot', ['status' => 'vergeben'], 'id = ?', [$a['id']]);
             $a['status'] = 'vergeben';
-            throw new Fehler('Schade — jemand war schneller. Ihr Platz auf der Warteliste bleibt; wir melden uns beim nächsten.', 409, 'vergeben', angebot_aufbereiten($a, $w));
+            throw new Fehler('Schade, jemand war schneller. Sie bleiben auf der Warteliste.', 409, 'vergeben', angebot_aufbereiten($a, $w));
         }
         throw $e;
     }

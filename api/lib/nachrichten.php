@@ -361,15 +361,15 @@ const VORLAGEN = [
     'erinnerung_email' => "Guten Tag {vorname},\n\nwir freuen uns auf Sie:\n\n{termin}\n\nFalls etwas dazwischenkommt, verschieben oder absagen Sie hier:\n{link}\n\nBis morgen,\nIhr Irmonhair-Team · {telefon}",
     'recall_sms' => 'Irmonhair: Hallo {vorname}, {wochen} Wochen seit Ihrem letzten Besuch. Ihr Wunschtermin: {link}',
     'recall_email_betreff' => 'Zeit für {leistung}?',
-    'recall_email' => "Hallo {vorname},\n\nIhr letzter Besuch bei uns ist {wochen} Wochen her — ungefähr jetzt wäre {leistung} wieder dran.\n\nIhre Auswahl von damals ist schon eingetragen, Sie wählen nur noch die Zeit:\n{link}\n\nHerzlich,\n{person} und das Irmonhair-Team · {telefon}",
+    'recall_email' => "Hallo {vorname},\n\nIhr letzter Besuch ist {wochen} Wochen her. Ungefähr jetzt wäre {leistung} wieder dran.\n\nIhre Auswahl von damals ist schon eingetragen, Sie wählen nur noch die Zeit:\n{link}\n\nHerzlich,\n{person} und das Irmonhair-Team · {telefon}",
     'nachfass_sms' => 'Irmonhair: Bei {person} sind diese Woche noch Zeiten frei. {link}',
     'nachfass_email_betreff' => 'Noch Zeiten frei bei {person}',
-    'nachfass_email' => "Hallo {vorname},\n\nnur ein kurzer Nachtrag: Bei {person} sind in den nächsten Tagen noch Zeiten frei.\n{link}\n\nDanach melden wir uns nicht noch einmal — versprochen.\n\nIhr Irmonhair-Team · {telefon}",
+    'nachfass_email' => "Hallo {vorname},\n\nnur ein kurzer Nachtrag: Bei {person} sind in den nächsten Tagen noch Zeiten frei.\n{link}\n\nDanach melden wir uns nicht noch einmal.\n\nIhr Irmonhair-Team · {telefon}",
     'warteliste_sms' => 'Irmonhair: Platz frei! {tag} {zeit} bei {person}. Wer zuerst tippt: {link}',
     'warteliste_email_betreff' => 'Ein Platz ist frei: {tag}, {zeit} Uhr',
     'warteliste_email' => "Guten Tag {vorname},\n\nauf Ihrer Warteliste ist etwas frei geworden:\n\n{tag}, {zeit} Uhr bei {person} (Salon {salon})\n\nWer zuerst tippt, bekommt den Platz:\n{link}\n\nIhr Eintrag auf der Warteliste bleibt bestehen, falls es nicht passt.\n\nIhr Irmonhair-Team · {telefon}",
     'doi_email_betreff' => 'Bitte bestätigen: Angebote von Irmonhair',
-    'doi_email' => "Guten Tag {vorname},\n\nSie möchten gelegentlich Angebote und Neuigkeiten von Irmonhair bekommen — höchstens eine Nachricht im Monat. Bitte bestätigen Sie das mit einem Klick:\n\n{link}\n\nWaren Sie das nicht? Dann ignorieren Sie diese E-Mail einfach; es passiert nichts.\n\nIhr Irmonhair-Team",
+    'doi_email' => "Guten Tag {vorname},\n\nSie möchten gelegentlich Angebote von Irmonhair bekommen, höchstens eins im Monat. Bitte bestätigen Sie das mit einem Klick:\n\n{link}\n\nWaren Sie das nicht? Dann ignorieren Sie diese E-Mail einfach; es passiert nichts.\n\nIhr Irmonhair-Team",
     'doi_sms' => 'Irmonhair: Bitte bestätigen Sie, dass Sie gelegentlich Angebote bekommen möchten (max. 1 im Monat): {link}',
 ];
 
@@ -419,7 +419,7 @@ function kanal_fuer(array $k, bool $smsErlaubt = true): ?array
 function email_fuss(int $kunde): string
 {
     $link = seite_adresse('nachrichten.html', ['k' => kunde_schluessel($kunde)]);
-    return $link ? "\n\n—\nWelche Nachrichten Sie von uns bekommen, bestimmen Sie hier (auch: alle abbestellen):\n$link\n" : '';
+    return $link ? "\n\nNachrichten abbestellen oder ändern:\n$link\n" : '';
 }
 
 /* ── Erinnerung am Vortag ────────────────────────────────────────────── */

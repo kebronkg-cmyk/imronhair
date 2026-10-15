@@ -471,3 +471,23 @@ sie brauchen einen Zahlungsanbieter-Vertrag des Salons (Stripe o. ä.).
 den Terminpreisen statt mit dem, was kassiert wurde, und hätte neben den
 Kassendaten doppelt in der Buchhaltung gestanden. Geblieben: „Geplante
 Umsätze“ zum Abgleich mit der Kasse und die Liste der offenen Gutscheine.
+
+## Erinnerung als Schalter, Wegzeit, Kalender (15.10.2026)
+
+- **Eine Frage statt zwei:** Die Erinnerung am Vortag ist ein Schalter, der
+  schon an ist. Sie gehört zum Termin wie die Bestätigung; Doctolib,
+  Treatwell und Planity erinnern ebenso von selbst. Recall wird einmal
+  nach dem Buchen gefragt, Angebote gar nicht mehr beim Buchen (nur auf
+  „Ihre Nachrichten“). Bewusste Abweichung von „zwei Häkchen“ der
+  Spezifikation; Datenschutzerklärung angepasst.
+- **„7 von 10 nutzen das“** steht nur, wenn es aus echten Buchungen stimmt
+  (ab 20 Online-Kundinnen in 120 Tagen, ab 50 %, abgerundet).
+- **Wegzeit:** Ein Termin im anderen Salon blockt die Person von Anfang bis
+  Ende (auch in der Einwirkzeit) plus 30 Minuten davor und danach
+  (Einstellungen → Online-Buchung). Pflicht-Test ergänzt (90).
+- **Kalender:** Termin zeigt Beginn und Ende; Einwirkzeit „bis 10:45 · Tina
+  ist frei“; freie Lücken ab 30 Minuten stehen als „+ frei 13:00–14:00“ im
+  Raster und legen mit einem Tipp einen Termin an; Spaltenkopf mit freier
+  Zeit; Termine im anderen Salon mit Weg.
+- **Passwortfelder** mit Auge.
+- Texte ohne Gedankenstriche, kürzer. Detektor unverändert (18).

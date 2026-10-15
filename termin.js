@@ -329,7 +329,7 @@
       }
       f.append(li);
     }
-    if (!liste.length) f.append(el('li', { klasse: 'familien-leer', text: suche ? 'Nichts gefunden. Vielleicht unter einem anderen Wort — oder rufen Sie uns an.' : 'Hier gibt es online nichts zu buchen.' }));
+    if (!liste.length) f.append(el('li', { klasse: 'familien-leer', text: suche ? 'Nichts gefunden. Versuchen Sie ein anderes Wort oder rufen Sie uns an.' : 'Hier gibt es online nichts zu buchen.' }));
     $('familien').replaceChildren(f);
     dazuZeichnen();
     $('leistung-weiter').hidden = !Z.gewaehlt.length;
@@ -381,7 +381,7 @@
     const koennen = Z.k.personen.filter((p) => neu.every((id) => leistung(id).personen.includes(p.id)));
     if (!koennen.length) {
       ansage(`${l.name} und die übrige Auswahl macht niemand in einem Termin. Bitte zwei Termine buchen.`);
-      zeigeHinweis(`„${l.name}“ lässt sich nicht mit der übrigen Auswahl verbinden — dafür gibt es niemanden in einem Termin. Buchen Sie es bitte als eigenen Termin.`);
+      zeigeHinweis(`„${l.name}“ lässt sich nicht mit der übrigen Auswahl in einem Termin verbinden. Buchen Sie es bitte als eigenen Termin.`);
       return;
     }
     Z.gewaehlt = neu;
@@ -549,7 +549,7 @@
       const pid = Z.person;
       box.replaceChildren(el('p', { klasse: 'zeiten-leer' },
         pid !== 'egal' ? `${person(pid).name} hat in den nächsten drei Wochen nichts mehr frei. ` : 'In den nächsten drei Wochen ist nichts mehr frei. ',
-        n && pid === 'egal' ? el('button', { type: 'button', klasse: 'text-knopf', text: `Erst wieder ${tagText(n.datum)} — weiter suchen`, onclick: () => freiLaden(true) }) : null,
+        n && pid === 'egal' ? el('button', { type: 'button', klasse: 'text-knopf', text: `Weiter suchen, frei ab ${tagText(n.datum)}`, onclick: () => freiLaden(true) }) : null,
         pid !== 'egal' && koenner().length > 1 ? el('button', { type: 'button', klasse: 'text-knopf', text: 'Bei jemand anderem schauen', onclick: () => { Z.person = 'egal'; personenZeichnen(); zeitenZeichnen(); } }) : null),
         wartelisteWeg(null));
       return;
@@ -608,7 +608,6 @@
     Z.tag = d; Z.zeit = z;
     $('ausweich').hidden = true;
     $('warteliste').hidden = true;
-    einwilligungenZeichnen();
     buchenHinweis();
     tageMarkieren();
     zeitenListe();
@@ -685,78 +684,27 @@
     $('k-merken').checked = true;
   }
 
-  /* Einwilligungen: drei Karten, keine vorausgewählt. Jede sagt zuerst,
-     was die Kundin davon hat, und zeigt es — die Erinnerung als genau die
-     SMS, die sie am Vortag bekäme, mit ihrer Zeit, ihrer Friseurin, ihrer
-     Adresse. Darunter steht der Wortlaut, der so gespeichert wird.
-     Vorsichtige sagen eher Ja, wenn sie sehen, was kommt, wie oft, und wie
-     sie es wieder abstellen — nicht, wenn man sie drängt. Deshalb: nichts
-     vorangekreuzt, kein „Nein danke, ich vergesse gern“, und die Zahl,
-     wie viele sich erinnern lassen, nur aus echten Buchungen. */
-  function erinnerungVorschau() {
-    const n = Z.k?.nachrichten;
-    if (!n?.vorschau_sms) return '';
-    const s = Z.salon && salon(Z.salon);
-    const pid = Z.person !== 'egal' ? Z.person : Z.zeit?.p?.[0];
-    const strasse = s ? s.strasse.replace(/stra(ss|ß)e\b/, 'str.') : 'Irmonherstr. 7';
-    return n.vorschau_sms.replace('{zeit}', Z.zeit ? Z.zeit.t : '14:00').replace('{person}', pid ? person(pid)?.name || 'uns' : 'uns')
-      .replace('{adresse}', strasse).replace('{salon}', s ? s.name : '').replace('{vorname}', ($('k-name').value.trim().split(/\s+/)[0]) || '')
-      .replace('{tag}', '').replace('{link}', new URL('termin.html?t=', location.href).host + '/…').replace(/ {2,}/g, ' ');
-  }
-  function recallWochen() {
-    const tage = Math.max(0, ...gewaehlt().map((l) => l.recall_tage || 0));
-    return tage ? Math.round(tage / 7) : null;
-  }
+  /* Erinnerung am Vortag: ein Schalter, schon an. Sie gehört zum Termin
+     wie die Bestätigung (Doctolib, Treatwell und Planity erinnern ebenso
+     von selbst); wer sie nicht will, schaltet sie hier aus oder antwortet
+     STOP. Werbliches (Recall, Angebote) fragen wir nie vorangekreuzt:
+     Recall einmal nach dem Buchen, Angebote gar nicht beim Buchen. */
   function einwilligungenZeichnen() {
     const box = $('einwilligungen');
     const texte = Z.k?.einwilligungen;
     const n = Z.k?.nachrichten || {};
-    if (!texte) { box.hidden = true; return; }
-    const karte = (art, titel, zusatz, merkmale) => {
-      if (!texte[art]) return null;
-      const haken = el('input', { type: 'checkbox', 'data-art': art, onchange: (e) => { Z.ew[art] = e.target.checked; karteZustand(e.target); } });
-      haken.checked = !!Z.ew[art];
-      const k = el('label', { klasse: 'zusage' + (haken.checked ? ' ist-an' : '') },
-        haken,
-        el('span', { klasse: 'zusage-text' },
-          el('span', { klasse: 'zusage-titel', text: titel }),
-          zusatz,
-          merkmale?.length ? el('span', { klasse: 'zusage-merkmale' }, merkmale.map((m) => el('span', { text: m }))) : null,
-          el('span', { klasse: 'zusage-wortlaut', text: texte[art] }),
-          el('span', { klasse: 'zusage-danke', 'aria-live': 'polite' })));
-      return k;
-    };
-    const wochen = recallWochen();
-    const ersteLeistung = gewaehlt()[0];
-    const pid = Z.person !== 'egal' ? Z.person : Z.zeit?.p?.[0];
-    const sms = n.sms ? erinnerungVorschau() : '';
-    const karten = [
-      n.sms ? karte('terminnachrichten', 'Am Vortag kurz erinnern',
-        sms ? el('span', { klasse: 'sms-vorschau', 'aria-label': 'So sähe die Erinnerung aus' },
-          el('span', { klasse: 'sms-kopf', 'aria-hidden': 'true', text: n.whatsapp ? 'WhatsApp · am Tag vorher' : 'SMS · am Tag vorher' }),
-          el('span', { klasse: 'sms-blase', text: sms })) : null,
-        ['eine Nachricht je Termin', 'Ändern mit einem Tipp', 'Abbestellen mit STOP']) : null,
-      n.recall !== false ? karte('recall',
-        wochen ? `In etwa ${wochen} Wochen Bescheid sagen, wenn es wieder Zeit ist` : 'Bescheid sagen, wenn der nächste Termin fällig ist',
-        el('span', { klasse: 'zusage-zusatz', text: `${ersteLeistung ? ersteLeistung.name : 'Ihre Auswahl'}${pid && person(pid) ? ' bei ' + person(pid).name : ''} ist dann schon eingetragen — Sie wählen nur noch die Uhrzeit.` }),
-        ['eine Nachricht, eine Nachfrage', 'dann ist Schluss']) : null,
-      karte('angebote', 'Ab und zu ein Angebot',
-        el('span', { klasse: 'zusage-zusatz', text: 'Neues aus dem Salon, mal ein Angebot. Höchstens einmal im Monat; Sie bestätigen es noch einmal über einen Link.' }), null),
-    ].filter(Boolean);
-    box.replaceChildren(
-      el('legend', { klasse: 'zusagen-titel', text: 'Damit nichts untergeht' }),
-      el('p', { klasse: 'zusagen-lauf' }, 'Freiwillig, jedes einzeln — und jederzeit wieder abbestellbar. ',
-        n.anteil_erinnerung ? el('strong', { text: `${n.anteil_erinnerung} % unserer Kundinnen lassen sich erinnern.` }) : null),
-      ...karten,
-      el('p', { klasse: 'zusagen-fuss', text: 'Ihre Nummer bleibt bei uns: keine Weitergabe, keine Werbung ohne Ihr Ja.' }));
+    if (!texte?.terminnachrichten || !n.sms) { box.hidden = true; return; }
+    if (Z.ew.terminnachrichten === undefined) Z.ew.terminnachrichten = true;
+    const schalter = el('input', { type: 'checkbox', role: 'switch', 'data-art': 'terminnachrichten', klasse: 'schalter-knopf',
+      onchange: (e) => { Z.ew.terminnachrichten = e.target.checked; } });
+    schalter.checked = Z.ew.terminnachrichten;
+    box.replaceChildren(el('label', { klasse: 'erinnerung' },
+      el('span', { klasse: 'erinnerung-text' },
+        el('span', { klasse: 'erinnerung-titel', text: 'Erinnerung am Vortag' }),
+        el('span', { klasse: 'erinnerung-zeile', text: gross(texte.terminnachrichten.replace(/^Erinnerung am Vortag /, '')) }),
+        n.anteil_erinnerung ? el('span', { klasse: 'erinnerung-zeile erinnerung-anteil', text: `${n.anteil_erinnerung / 10} von 10 Kundinnen nutzen das.` }) : null),
+      schalter));
     box.hidden = false;
-  }
-  function karteZustand(haken) {
-    const k = haken.closest('.zusage');
-    k.classList.toggle('ist-an', haken.checked);
-    const danke = k.querySelector('.zusage-danke');
-    danke.textContent = !haken.checked ? '' : haken.dataset.art === 'terminnachrichten' ? 'Gut — wir erinnern Sie am Vortag.'
-      : haken.dataset.art === 'recall' ? 'Gut — wir melden uns, wenn es so weit ist.' : 'Gut — der Bestätigungslink kommt gleich nach dem Buchen.';
   }
   function einwilligungen() {
     const aus = {};
@@ -781,8 +729,8 @@
         const r = await api('code_pruefen', { get: { code, salon: Z.salon, leistungen: Z.gewaehlt.join(',') } });
         Z.code = r;
         ergebnis.textContent = r.art === 'rabatt'
-          ? `${r.name}: ${r.text}${r.rabatt_cent ? ` — Sie sparen ${euro(r.rabatt_cent)}` : ''}${r.nur_neu ? ' (für den ersten Besuch)' : ''}.`
-          : `Gutschein mit ${euro(r.rest_cent)} Restwert — wird im Salon verrechnet.`;
+          ? `${r.name}: ${r.text}${r.rabatt_cent ? `, Sie sparen ${euro(r.rabatt_cent)}` : ''}${r.nur_neu ? ' (für den ersten Besuch)' : ''}.`
+          : `Gutschein über ${euro(r.rest_cent)}, wird im Salon verrechnet.`;
       } catch (e) {
         ergebnis.textContent = e.message;
         ergebnis.classList.add('ist-fehler');
@@ -801,7 +749,7 @@
     if (!n?.warteliste || !(n.sms || n.email) || Z.ersetzt) return null;
     return el('p', { klasse: 'warte-weg' },
       el('button', { type: 'button', klasse: 'text-knopf', text: 'Nichts Passendes? Auf die Warteliste', onclick: () => wartelisteZeigen(tag) }),
-      ' — wir schreiben, sobald etwas frei wird.');
+      '. Wir schreiben, sobald etwas frei wird.');
   }
   function wartelisteZeigen(tag) {
     const box = $('warteliste');
@@ -815,7 +763,7 @@
     const wer = Z.person !== 'egal' && person(Z.person) ? ` bei ${person(Z.person).name}` : '';
     const form = el('form', { klasse: 'warte-form', novalidate: true },
       el('h3', { klasse: 'warte-titel', text: 'Auf die Warteliste' }),
-      el('p', { klasse: 'warte-lauf', text: `${gewaehlt().map((l) => l.name).join(' + ')}${wer}. Wird in Ihrem Zeitraum etwas frei, kommt sofort eine Nachricht — wer zuerst tippt, bekommt den Platz.` }),
+      el('p', { klasse: 'warte-lauf', text: `${gewaehlt().map((l) => l.name).join(' + ')}${wer}. Wird etwas frei, kommt sofort eine Nachricht. Wer zuerst tippt, bekommt den Platz.` }),
       el('div', { klasse: 'warte-reihe' },
         feld('w-von', 'Frühestens', { type: 'date', value: von, min: heute(), max: plusTage(heute(), 89), required: true }),
         feld('w-bis', 'Spätestens', { type: 'date', value: plusTage(von, 13), min: heute(), max: plusTage(heute(), 89), required: true })),
@@ -840,8 +788,7 @@
           email: $('k-email').value.trim() || kontakt.email || null, webseite: $('k-webseite').value } });
         box.replaceChildren(el('div', { klasse: 'warte-fertig' },
           el('p', { klasse: 'warte-titel', text: 'Sie stehen auf der Warteliste.' }),
-          el('p', { text: `Bis ${tagText(r.bis, true)}: Wird etwas frei, schicken wir ${r.kanal === 'email' ? 'eine E-Mail' : 'eine SMS'} mit einem Link — wer zuerst tippt, bekommt den Platz. Danach endet der Eintrag von selbst.` }),
-          el('p', { klasse: 'zusage-wortlaut', text: 'Austragen: STOP antworten oder den Link in der Nachricht nutzen.' })));
+          el('p', { text: `Bis ${tagText(r.bis, true)}. Wird etwas frei, kommt ${r.kanal === 'email' ? 'eine E-Mail' : 'eine SMS'} mit Link. Wer zuerst tippt, bekommt den Platz.` })));
         ansage('Sie stehen auf der Warteliste.');
       } catch (err) {
         fehler.textContent = err.message;
@@ -905,7 +852,7 @@
       } catch (err) {
         const unklar = err.status === 0 || (err.status >= 500 && ['intern', 'unerreichbar', undefined].includes(err.daten.code));
         if (!unklar || versuch >= 3) throw err;
-        knopf.textContent = 'Die Verbindung hakt — wir prüfen, ob es angekommen ist …';
+        knopf.textContent = 'Verbindung hakt, wir prüfen, ob es angekommen ist …';
         await warte(1200 * versuch);
         if (post.anfrage_id) {
           try {
@@ -962,7 +909,6 @@
       const liste = lesen('irmonhair-termine') || [];
       schreiben('irmonhair-termine', [t.token, ...liste.filter((x) => x !== t.token)].slice(0, 5));
       anfrageId = null;
-      Z.bestaetigen = !!t.bestaetigen;
       fertigZeigen(t, true);
     } catch (err) {
       knopf.disabled = false;
@@ -1006,7 +952,7 @@
       const s = Z.salon && salon(Z.salon);
       const box = $('kontakt-fehler');
       for (const i of document.querySelectorAll('#kontakt [aria-invalid]')) i.removeAttribute('aria-invalid');
-      box.replaceChildren('Das hat gerade nicht geklappt. Noch einmal tippen ist sicher — es entsteht kein zweiter Termin. ',
+      box.replaceChildren('Das hat nicht geklappt. Tippen Sie noch einmal, es entsteht kein zweiter Termin. ',
         s ? el('span', {}, 'Oder rufen Sie an: ', el('a', { href: 'tel:' + s.telefon, text: s.telefon_text }), '.') : '');
       box.hidden = false;
       return;
@@ -1075,12 +1021,11 @@
       if (nachher) wege.append(nachher);
     }
     if (t.treue) wege.append(treueKarte(t.treue));
-    if (frisch && Z.bestaetigen) wege.append(el('p', { klasse: 'fertig-notiz', text: 'Für die Angebote kommt gleich ein Bestätigungslink — erst mit Ihrem Klick darauf melden wir uns.' }));
     if (frisch && !storniert) {
       wege.append(el('p', { klasse: 'fertig-notiz' },
         $('k-email').value.trim() ? 'Die Bestätigung kommt per E-Mail. ' : '',
         'Verschieben oder absagen können Sie ', el('a', { href: `termin.html?t=${t.token}`, text: 'über diesen Link' }),
-        ` — bis ${Z.k?.regeln.stornofrist ?? 24} Stunden vorher. Er ist auf diesem Gerät gespeichert und steht auch im Kalendereintrag.`));
+        `, bis ${Z.k?.regeln.stornofrist ?? 24} Stunden vorher.`));
     }
     if (!frisch && !storniert && !t.vergangen) {
       if (t.storno_moeglich) {
@@ -1106,35 +1051,21 @@
   function nachherZusagen(t) {
     const n = Z.k?.nachrichten || {};
     const ew = t.einwilligungen || {};
-    const offen = [];
-    if (n.sms && t.hat_telefon && !ew.terminnachrichten?.erteilt) offen.push(['terminnachrichten', 'Soll eine SMS Sie am Vortag erinnern?', 'Ja, am Vortag erinnern', 'Gemacht — die SMS kommt am Tag vorher.']);
-    if (n.recall !== false && !ew.recall?.erteilt && offen.length === 0) {
-      const name = t.posten[0]?.name.split(/[,&]/)[0].trim();
-      offen.push(['recall', `Sollen wir Bescheid sagen, wenn ${name || 'der nächste Termin'} wieder dran ist?`, 'Ja, Bescheid sagen', 'Gemacht — wir melden uns, wenn es so weit ist.']);
-    }
-    if (!offen.length || !Z.k?.einwilligungen) return null;
-    const [art, frage, ja, danke] = offen[0];
+    if (n.recall === false || ew.recall?.erteilt || !Z.k?.einwilligungen?.recall || !(n.sms || t.hat_email)) return null;
     const box = el('div', { klasse: 'nachher' },
-      el('p', { klasse: 'nachher-frage', text: frage }),
-      art === 'terminnachrichten' && erinnerungVorschauFuer(t) ? el('span', { klasse: 'sms-vorschau' }, el('span', { klasse: 'sms-blase', text: erinnerungVorschauFuer(t) })) : null,
-      el('p', { klasse: 'zusage-wortlaut', text: Z.k.einwilligungen[art] }));
-    const knopf = el('button', { type: 'button', klasse: 'knopf-still', text: ja, onclick: async () => {
+      el('p', { klasse: 'nachher-frage', text: 'Sollen wir Bescheid geben, wenn der nächste Termin fällig ist?' }),
+      el('p', { klasse: 'nachher-zeile', text: 'Höchstens zwei Nachrichten. Abbestellen mit STOP.' }));
+    const knopf = el('button', { type: 'button', klasse: 'knopf-still', text: 'Ja, gern', onclick: async () => {
       knopf.disabled = true;
       try {
-        const r = await api('einwilligung', { post: { t: t.token, art } });
-        box.replaceChildren(el('p', { klasse: 'nachher-frage', text: danke }));
+        const r = await api('einwilligung', { post: { t: t.token, art: 'recall' } });
+        box.replaceChildren(el('p', { klasse: 'nachher-frage', text: 'Gern. Wir melden uns, wenn es so weit ist.' }));
         t.einwilligungen = r.einwilligungen;
-        ansage(danke);
+        ansage('Wir melden uns, wenn es so weit ist.');
       } catch (e) { knopf.disabled = false; zeigeHinweis(e.message); }
     } });
     box.append(knopf);
     return box;
-  }
-  function erinnerungVorschauFuer(t) {
-    const v = Z.k?.nachrichten?.vorschau_sms;
-    if (!v) return '';
-    return v.replace('{zeit}', t.start.slice(11)).replace('{person}', t.person_name).replace('{adresse}', t.salon.strasse.replace(/stra(ss|ß)e/, 'str.'))
-      .replace('{salon}', t.salon.name).replace('{vorname}', '').replace('{tag}', '').replace('{link}', location.host + '/…').replace(/ {2,}/g, ' ');
   }
   /** Die Treuekarte: Stempel als Punkte. */
   function treueKarte(tr) {
@@ -1142,7 +1073,7 @@
     return el('div', { klasse: 'treue' },
       el('p', { klasse: 'treue-titel', text: fertig ? 'Ihre Treuekarte ist voll' : 'Ihre Treuekarte' }),
       el('span', { klasse: 'treue-stempel', 'aria-hidden': 'true' }, Array.from({ length: tr.n }, (_, i) => el('i', { klasse: i < tr.stempel ? 'ist-voll' : '' }))),
-      el('p', { klasse: 'treue-text', text: fertig ? `${tr.praemie} Sagen Sie es beim nächsten Besuch.` : `${tr.stempel} von ${tr.n} — noch ${tr.n - tr.stempel} ${tr.n - tr.stempel === 1 ? 'Besuch' : 'Besuche'}. ${tr.praemie}` }));
+      el('p', { klasse: 'treue-text', text: fertig ? `${tr.praemie} Sagen Sie es beim nächsten Besuch.` : `${tr.stempel} von ${tr.n} Besuchen. ${tr.praemie}` }));
   }
 
   /* ── Ein Platz von der Warteliste (?w=…) ───────────────────────────── */
@@ -1185,9 +1116,9 @@
         }
       } });
       wege.append(knopf);
-      wege.append(el('p', { klasse: 'fertig-notiz', text: 'Mit einem Tipp verbindlich gebucht. Passt es nicht, müssen Sie nichts tun — Sie bleiben auf der Warteliste.' }));
+      wege.append(el('p', { klasse: 'fertig-notiz', text: 'Ein Tipp, und der Termin ist gebucht. Passt es nicht, bleiben Sie einfach auf der Warteliste.' }));
     } else {
-      if (a.warteliste?.aktiv) wege.append(el('p', { klasse: 'fertig-notiz', text: `Sie bleiben auf der Warteliste bis ${tagText(a.warteliste.bis, true)} — beim nächsten freien Platz melden wir uns wieder.` }));
+      if (a.warteliste?.aktiv) wege.append(el('p', { klasse: 'fertig-notiz', text: `Sie bleiben auf der Warteliste bis ${tagText(a.warteliste.bis, true)}. Beim nächsten freien Platz melden wir uns.` }));
       wege.append(el('a', { klasse: 'knopf', href: 'termin.html?salon=' + s.id, text: 'Selbst eine Zeit suchen' }));
       wege.append(el('a', { klasse: 'knopf-still', href: 'tel:' + s.telefon, text: s.telefon_text }));
     }
@@ -1256,7 +1187,7 @@
     zu('zeit');
     freiLaden();
     buchenHinweis();
-    zeigeHinweis(`Neue Zeit wählen — Ihr Termin am ${tagText(t.start.slice(0, 10))}, ${t.start.slice(11)}–${t.ende.slice(11)} bleibt bestehen, bis die neue Zeit sicher gebucht ist.`);
+    zeigeHinweis(`Neue Zeit wählen. Ihr Termin am ${tagText(t.start.slice(0, 10))}, ${t.start.slice(11)}–${t.ende.slice(11)} bleibt bestehen, bis die neue Zeit sicher gebucht ist.`);
     history.replaceState(null, '', 'termin.html');
   }
 
@@ -1380,7 +1311,7 @@
     $('suche').addEventListener('input', () => { clearTimeout(sucheUhr); sucheUhr = setTimeout(leistungenZeichnen, 120); });
     $('kontakt').addEventListener('submit', buchen);
     for (const id of ['k-name', 'k-telefon', 'k-email']) $(id).addEventListener('input', () => { if (!$('kontakt-fehler').hidden) feldFehler(null, ''); });
-    addEventListener('offline', () => zeigeHinweis('Keine Verbindung. Ihre Auswahl bleibt stehen — gebucht wird erst, wenn das Netz zurück ist.'));
+    addEventListener('offline', () => zeigeHinweis('Keine Verbindung. Ihre Auswahl bleibt stehen, gebucht wird, sobald das Netz zurück ist.'));
     // Zurück nach einer Weile: freie Zeiten auffrischen.
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && Z.frei && Date.now() - Z.frei.geladen > 120000 && ['person', 'zeit'].includes(Z.schritt)) freiLaden();
@@ -1398,7 +1329,7 @@
           document.querySelector('.buchung-kopf').hidden = true;
           $('rueckfall').hidden = true;
           fertigZeigen(a.termin, true);
-          zeigeHinweis('Ihre Buchung von vorhin ist angekommen — hier ist sie.');
+          zeigeHinweis('Ihre Buchung von vorhin ist angekommen.');
           return;
         }
       } catch (e) { /* später erneut */ }
@@ -1427,7 +1358,7 @@
     }
     $('rueckfall').hidden = true;
     $('bogen').hidden = false;
-    $('buchung-lauf').textContent = 'Salon, Leistung und Uhrzeit wählen — Sie sehen sofort, wer wann frei ist.';
+    $('buchung-lauf').textContent = 'Salon, Leistung und Uhrzeit wählen. Sie sehen sofort, wer wann frei ist.';
     if (k.regeln.hinweis) { const h = $('hinweis-band'); h.textContent = k.regeln.hinweis; h.hidden = false; h.classList.add('ist-dauerhaft'); }
     // Zurück über den Recall-Link: die Auswahl von damals, nur die Zeit fehlt.
     if (rueckruf && salon(rueckruf.salon) && rueckruf.leistungen.some((id) => leistung(id))) {
@@ -1439,7 +1370,7 @@
       personenZeichnen();
       zu('zeit', false);
       freiLaden();
-      zeigeHinweis(`Schön, dass Sie wieder da sind${rueckruf.vorname ? ', ' + rueckruf.vorname : ''} — Ihre Auswahl von damals ist eingetragen. Wählen Sie nur noch die Zeit.`);
+      zeigeHinweis(`Schön, dass Sie wieder da sind${rueckruf.vorname ? ', ' + rueckruf.vorname : ''}. Ihre Auswahl ist eingetragen, nur die Zeit fehlt.`);
       eigeneZeigen();
       return;
     }

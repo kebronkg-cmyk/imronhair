@@ -545,3 +545,27 @@
 .nachrichten { display: grid; gap: 1rem; max-width: 40rem; padding-bottom: var(--a5); }
 .nachrichten .hinweis-band { margin: 0; }
 .nachrichten-wege { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+/* ── Erinnerung am Vortag: ein Schalter ──────────────────────────────── */
+.erinnerung {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: center;
+  padding: .9rem 1rem; border: 1px solid var(--linie-stark); border-radius: 3px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.erinnerung-text { display: grid; gap: .2rem; min-width: 0; }
+.erinnerung-titel { color: var(--tinte); font-weight: 600; }
+.erinnerung-zeile { font-size: .86rem; color: var(--tinte-still); }
+.erinnerung-anteil { color: var(--gold-schrift); }
+.schalter-knopf {
+  appearance: none; position: relative; flex: none; width: 2.9rem; height: 1.7rem; margin: 0;
+  border: 1px solid var(--linie-stark); border-radius: 999px; background: var(--feld-grund); cursor: pointer;
+  transition: background-color var(--t1) var(--kurve), border-color var(--t1) var(--kurve);
+}
+.schalter-knopf::after {
+  content: ''; position: absolute; top: .17rem; left: .2rem; width: 1.2rem; height: 1.2rem; border-radius: 50%;
+  background: var(--tinte-still); transition: transform var(--t1) var(--kurve), background-color var(--t1) var(--kurve);
+}
+.schalter-knopf:checked { background: var(--wahl-grund); border-color: var(--knopf-kante); }
+.schalter-knopf:checked::after { transform: translateX(1.15rem); background: var(--gold); }
+.schalter-knopf:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.nachher-zeile { margin: 0; font-size: .86rem; color: var(--tinte-still); }

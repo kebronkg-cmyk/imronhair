@@ -730,7 +730,7 @@ function aktion_einstellungen_speichern(): array
 {
     anmeldung_pflicht(true, true);
     $e = einstellungen();
-    $grenzen = ['raster' => [5, 60], 'vorlauf' => [0, 2880], 'horizont' => [1, 365], 'stornofrist' => [0, 168], 'puffer' => [0, 60], 'max_offen' => [1, 20]];
+    $grenzen = ['raster' => [5, 60], 'vorlauf' => [0, 2880], 'horizont' => [1, 365], 'stornofrist' => [0, 168], 'puffer' => [0, 60], 'max_offen' => [1, 20], 'wegzeit' => [0, 180]];
     foreach ($grenzen as $f => [$min, $max]) {
         if (feld($f) === null) continue;
         $w = (int)feld($f);
