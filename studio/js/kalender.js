@@ -148,6 +148,20 @@ function arbeitsTeile(t) {
 }
 const schneiden = (a, b) => a.some(([x, y]) => b.some(([u, v]) => x < v && u < y));
 
+/** Freie Zeit einer Person an einem Tag: Arbeitszeit minus Termine (ganz,
+    auch die Einwirkzeit — die steht im Termin selbst), Abwesenheiten,
+    Termine im anderen Salon samt Weg; heute erst ab jetzt. Nur Lücken ab
+    30 Minuten, auf Viertelstunden. */
+function freieLuecken(pid, datum, termine, weg) {
+  let frei = [...arbeitAm(pid, datum)].sort((p, q) => p[0] - q[0]).map(([x, z]) => [x, z]);
+  const weg2 = (iv) => { frei = frei.flatMap(([x, z]) => (iv[1] <= x || iv[0] >= z) ? [[x, z]] : [[x, iv[0]], [iv[1], z]].filter(([u, v]) => v > u)); };
+  for (const t of termine) if (!abgesagt(t.status) && t.status !== 'nicht_erschienen') weg2(terminBereich(t));
+  for (const ab of abwesendAm(pid, datum)) weg2([ab.a, ab.b]);
+  for (const w of daten.woanders.filter((w) => w.person === pid && w.start.startsWith(datum))) weg2([minuten(w.start) - weg, minuten(w.ende) + weg]);
+  if (datum === heute()) weg2([0, Math.ceil(jetztMin() / 15) * 15]);
+  return frei.map(([x, z]) => [Math.ceil(x / 15) * 15, Math.floor(z / 15) * 15]).filter(([x, z]) => z - x >= 30);
+}
+
 /** Wer steht an diesem Tag im Salon? Arbeitszeit, Termin oder Abwesenheit. */
 function personenAm(datum) {
   const ids = new Set();
@@ -225,12 +239,23 @@ function raster(woche) {
         if (z > x) spalte.append(el('div', { klasse: 'kal-abw', stil: { top: y(x) + 'px', height: (z - x) * ppm + 'px' } }, el('span', { text: ABW[ab.art] || ab.art })));
       }
     }
-    // Termine derselben Person im anderen Salon.
+    // Termine derselben Person im anderen Salon — mit dem Weg davor und danach.
+    const weg = +(Z.s.einstellungen.wegzeit ?? 30);
     if (sp.person) {
       for (const w of daten.woanders.filter((w) => w.person === sp.person && w.start.startsWith(sp.datum))) {
-        const x = minuten(w.start), z = minuten(w.ende);
-        spalte.append(el('div', { klasse: 'kal-woanders', stil: { top: y(x) + 'px', height: (z - x) * ppm + 'px' } },
-          el('span', { text: 'in ' + (salonVon(w.salon)?.name || w.salon) })));
+        const x = Math.max(a, minuten(w.start) - weg), z = Math.min(b, minuten(w.ende) + weg);
+        spalte.append(el('div', { klasse: 'kal-woanders', stil: { top: y(x) + 'px', height: (z - x) * ppm + 'px', '--weg': weg * ppm + 'px' } },
+          el('span', { text: `in ${salonVon(w.salon)?.name || w.salon} ${w.start.slice(11)}–${w.ende.slice(11)}` }),
+          weg ? el('small', { text: `mit ${weg} Min. Weg` }) : null));
+      }
+    }
+    // Freie Lücken ab 30 Minuten: sichtbar und mit einem Tipp belegbar.
+    if (!woche && sp.person && sp.datum >= heute()) {
+      for (const [x, z] of freieLuecken(sp.person, sp.datum, termine, weg)) {
+        spalte.append(el('button', { type: 'button', klasse: 'kal-frei', stil: { top: y(x) + 'px', height: (z - x) * ppm + 'px' },
+          'aria-label': `${personVon(sp.person)?.name} frei ${hhmm(x)} bis ${hhmm(z)}, Termin anlegen`,
+          onclick: (e) => { e.stopPropagation(); neuerTermin({ datum: sp.datum, person: sp.person, zeit: hhmm(x) }); } },
+          el('span', { text: `frei ${hhmm(x)}–${hhmm(z)}` })));
       }
     }
     for (const b2 of anordnen(termine, woche)) spalte.append(terminBlock(b2, y, ppm, woche));
@@ -277,10 +302,12 @@ function spaltenKopf(sp, termine, woche) {
   const p = personVon(sp.person);
   const arbeit = arbeitAm(sp.person, sp.datum);
   const zeiten = arbeit.length ? arbeit.map(([x, y]) => `${hhmm(x).replace(/^0/, '').replace(':00', '')}–${hhmm(y).replace(/^0/, '').replace(':00', '')}`).join(', ') : 'frei';
+  const frei = sp.datum >= heute() ? freieLuecken(sp.person, sp.datum, termine, +(Z.s.einstellungen.wegzeit ?? 30)).reduce((s, [x, z]) => s + z - x, 0) : 0;
+  const freiText = frei ? ` · ${Math.floor(frei / 60) ? Math.floor(frei / 60) + ':' + String(frei % 60).padStart(2, '0') + ' Std.' : frei + ' Min.'} frei` : '';
   return el('div', { klasse: 'kal-spaltenkopf', stil: { '--farbe': `var(--person-${p?.farbe || 1})` } },
     el('span', { klasse: 'kal-kopf-zeichen', 'aria-hidden': 'true', text: (p?.name || '?').charAt(0) }),
     el('span', { klasse: 'kal-kopf-name', text: p?.name || sp.person }),
-    el('span', { klasse: 'kal-kopf-info', text: `${zeiten} · ${aktiv.length || 'keine'} ${aktiv.length === 1 ? 'Termin' : 'Termine'}` }));
+    el('span', { klasse: 'kal-kopf-info', text: `${zeiten} · ${aktiv.length || 'keine'} ${aktiv.length === 1 ? 'Termin' : 'Termine'}${freiText}` }));
 }
 
 function wochenPersonen() {
@@ -348,8 +375,12 @@ function terminBlock(b, y, ppm, woche) {
   // Phasen als Streifen: die Einwirkzeit hell und gestrichelt.
   let x = start;
   for (const [art, m] of t.phasen) {
-    if (art === 'pause') block.append(el('div', { klasse: 'termin-pause', stil: { top: (x - start) * ppm + 'px', height: m * ppm + 'px' } },
-      m * ppm >= 26 ? el('span', { text: 'Einwirkzeit' }) : null));
+    if (art === 'pause') {
+      const h = m * ppm;
+      block.append(el('div', { klasse: 'termin-pause', stil: { top: (x - start) * ppm + 'px', height: h + 'px' } },
+        h >= 22 ? el('span', { klasse: 'pause-zeile', text: `Einwirken bis ${hhmm(x + m)}` }) : null,
+        h >= 40 ? el('span', { klasse: 'pause-frei', text: woche ? 'frei für andere' : `${p?.name || 'Sie'} ist frei` }) : null));
+    }
     x += m;
   }
   // Platz bis zur ersten Einwirkzeit (oder bis zum Ende): davon hängt ab,
@@ -357,7 +388,7 @@ function terminBlock(b, y, ppm, woche) {
   const platz = t.phasen[0][1] * ppm - 4;
   block.classList.add(platz < 30 ? 'ist-knapp' : platz < 46 ? 'ist-zweizeilig' : 'ist-voll');
   const inhalt = el('div', { klasse: 'termin-inhalt' },
-    el('span', { klasse: 'termin-zeit', text: `${t.start.slice(11)}${woche && p ? ' · ' + p.name : ''}` }),
+    el('span', { klasse: 'termin-zeit', text: `${t.start.slice(11)}–${t.ende.slice(11)}${woche && p ? ' · ' + p.name : ''}` }),
     el('span', { klasse: 'termin-name' }, name,
       neu ? el('span', { klasse: 'termin-marke', title: 'Erster Besuch', text: 'neu' }) : null,
       t.kundennotiz || t.notiz ? el('span', { klasse: 'termin-marke', title: 'Mit Notiz', text: '✎' }) : null),
@@ -377,7 +408,7 @@ function spalteBedienen(spalte, anfang, ppm) {
   };
   // Freie Stelle: neuer Termin mit Person und Uhrzeit (auf 15 Minuten).
   spalte.addEventListener('click', (e) => {
-    if (e.target.closest('.termin, .kal-abw') || zug.bewegt) return;
+    if (e.target.closest('.termin, .kal-abw, .kal-frei') || zug.bewegt) return;
     const start = Math.floor(minuteBei(e.clientY) / 15) * 15;
     neuerTermin({ datum: spalte.dataset.datum, person: spalte.dataset.person || null, zeit: hhmm(Math.max(0, Math.min(start, 1425))) });
   });

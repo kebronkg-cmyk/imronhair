@@ -213,7 +213,7 @@ function platz_pruefen(bool $online, string $salon, array $phasen, string $start
         if (!$e['online_aktiv']) throw new Fehler('Online-Buchung ist gerade pausiert. Bitte rufen Sie an.', 503, 'pausiert');
         $fr = online_fruehestens();
         $weg = fn(string $text, string $code) => new Fehler($text, 409, $code, ['alternativen' => alternativen($salon, $phasen, $kandidaten, max($start, $fr), $fr, $ohne)]);
-        if ($start < $fr) throw $weg('Dieser Termin ist zu kurzfristig. Hier sind die nächsten freien Zeiten — oder rufen Sie an.', 'vergeben');
+        if ($start < $fr) throw $weg('Dieser Termin ist zu kurzfristig. Hier sind die nächsten freien Zeiten, oder rufen Sie an.', 'vergeben');
         if ($datum > tag_plus(date('Y-m-d'), (int)$e['horizont'])) throw new Fehler('So weit im Voraus ist noch nichts buchbar.', 409, 'horizont');
         $wer = freie_zeiten($salon, $phasen, $kandidaten, $datum, $datum, $fr, $ohne)[$datum][$t] ?? [];
         if (!$wer) throw $weg('Diese Uhrzeit wurde gerade vergeben. Hier sind die nächsten freien Zeiten:', 'vergeben');
@@ -270,9 +270,9 @@ function konflikte_beschreiben(array $k): array
     $aus = [];
     foreach ($k as $x) {
         if ($x['art'] === 'termin') {
-            $t = db()->eins('SELECT t.start, t.ende, t.gast_name, k.vorname, k.nachname FROM {p}termin t LEFT JOIN {p}kunde k ON k.id = t.kunde_id WHERE t.id = ?', [$x['termin_id']]);
+            $t = db()->eins('SELECT t.start, t.ende, t.gast_name, k.vorname, k.nachname, s.name AS salon FROM {p}termin t LEFT JOIN {p}kunde k ON k.id = t.kunde_id LEFT JOIN {p}salon s ON s.id = t.salon_id WHERE t.id = ?', [$x['termin_id']]);
             $name = trim(($t['vorname'] ?? '') . ' ' . ($t['nachname'] ?? '')) ?: ($t['gast_name'] ?? 'Termin');
-            $aus[] = ['art' => 'termin', 'termin_id' => $x['termin_id'], 'text' => substr($t['start'], 11, 5) . '–' . substr($t['ende'], 11, 5) . ' ' . $name];
+            $aus[] = ['art' => 'termin', 'termin_id' => $x['termin_id'], 'text' => substr($t['start'], 11, 5) . '–' . substr($t['ende'], 11, 5) . ' ' . $name . ' (Salon ' . $t['salon'] . ')'];
         } elseif ($x['art'] === 'abwesend') {
             $aus[] = ['art' => 'abwesend', 'text' => 'In dieser Zeit abwesend'];
         } elseif ($x['art'] === 'geschlossen') {
@@ -382,7 +382,7 @@ function termin_aendern(int $id, array $aenderung, int $version, bool $ausserhal
         $status = $aenderung['status'] ?? $t['status'];
         if (!in_array($status, STATUS, true)) throw new Fehler('Unbekannter Status.', 422);
         if ($status === 'storniert_salon' && $t['status'] !== 'storniert_salon' && trim((string)($aenderung['storno_grund'] ?? '')) === '') {
-            throw new Fehler('Bitte einen Grund für die Absage angeben — die Kundin bekommt ihn mitgeteilt.', 422, 'grund', ['feld' => 'storno_grund']);
+            throw new Fehler('Bitte einen Grund für die Absage angeben. Die Kundin bekommt ihn mitgeteilt.', 422, 'grund', ['feld' => 'storno_grund']);
         }
 
         $phasen = $aenderung['phasen'] ?? json_decode($t['phasen'], true);

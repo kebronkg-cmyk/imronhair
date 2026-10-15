@@ -513,6 +513,7 @@ const EINSTELLUNGEN_VORGABE = [
     'horizont' => 90,          // so viele Tage im Voraus online buchbar
     'stornofrist' => 24,       // Stunden vor Beginn, bis zu denen online storniert werden kann
     'puffer' => 0,             // Minuten Luft nach jedem Termin
+    'wegzeit' => 30,           // Minuten zwischen Terminen in zwei verschiedenen Salons
     'max_offen' => 3,          // offene Online-Termine je Telefonnummer
     'luecken_fuellen' => true, // auch Startzeiten direkt nach einem Termin anbieten
     'online_aktiv' => true,
@@ -597,13 +598,13 @@ function storniert(string $status): bool
 
 /** Wortlaut der Einwilligungen — so steht er auf der Seite, so wird er gespeichert. */
 const EINWILLIGUNGEN = [
-    'terminnachrichten' => 'Ich möchte Nachrichten zu meinem Termin (Erinnerung, Änderungen) auch per SMS oder WhatsApp bekommen.',
-    'recall' => 'Erinnern Sie mich, wenn mein nächster Termin fällig ist — höchstens eine Nachricht und eine Nachfrage, per SMS oder E-Mail. Abmelden jederzeit mit STOP.',
-    'angebote' => 'Schicken Sie mir gelegentlich Angebote und Neuigkeiten von Irmonhair — höchstens eine Nachricht im Monat, per E-Mail oder SMS. Ich bestätige das noch einmal über einen Link. Abmelden jederzeit mit STOP oder über den Link in jeder Nachricht.',
+    'terminnachrichten' => 'Erinnerung am Vortag per SMS, mit Link zum Verschieben. Abbestellen mit STOP.',
+    'recall' => 'Bescheid geben, wenn mein nächster Termin fällig ist. Höchstens zwei Nachrichten, abbestellen mit STOP.',
+    'angebote' => 'Gelegentlich Angebote von Irmonhair, höchstens eins im Monat. Abbestellen jederzeit mit STOP oder über den Link.',
 ];
 
 /** Gilt mit dem Eintrag in die Warteliste (dort steht er neben dem Knopf). */
-const EINWILLIGUNG_WARTELISTE = 'Benachrichtigen Sie mich per SMS oder E-Mail, wenn ein passender Termin frei wird. Der Eintrag endet von selbst am Ende des gewählten Zeitraums; austragen jederzeit mit STOP oder über den Link.';
+const EINWILLIGUNG_WARTELISTE = 'Nachricht per SMS oder E-Mail, sobald etwas frei wird. Endet von selbst am Ende des Zeitraums. Austragen mit STOP.';
 
 /** Nur nach Bestätigung über einen Link gültig (Double-Opt-in). */
 const EINWILLIGUNG_DOPPELT = ['angebote'];

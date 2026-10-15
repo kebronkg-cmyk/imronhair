@@ -76,7 +76,7 @@ const waschen = kat.leistungen.find((l) => l.salon === 'pasing' && l.name === 'W
 pruefe(schnitt && waschen, 'Katalog: Testleistungen vorhanden');
 pruefe(kat.nachrichten?.sms === true && kat.nachrichten.email === true, 'Katalog meldet SMS und E-Mail als eingerichtet', kat.nachrichten);
 pruefe(Object.keys(kat.einwilligungen).join() === 'terminnachrichten,recall,angebote', 'Drei Einwilligungen mit Wortlaut, Angebote mit Bestätigungslink', kat.einwilligungen);
-pruefe(kat.einwilligungen.angebote.includes('höchstens eine Nachricht im Monat') && kat.einwilligungen.recall.includes('STOP'), '    Häufigkeit und STOP stehen im Wortlaut');
+pruefe(kat.einwilligungen.angebote.includes('höchstens eins im Monat') && kat.einwilligungen.recall.includes('STOP'), '    Häufigkeit und STOP stehen im Wortlaut');
 pruefe(schnitt.recall_tage === 49 && kat.leistungen.some((l) => /Balayage/.test(l.name) && l.recall_tage === 77), 'Recall-Abstand je Leistung vorbelegt (Damen 7 Wo., Balayage 11 Wo.)');
 pruefe(kat.nachrichten.anteil_erinnerung === null, 'Kein erfundener Anteil „so viele lassen sich erinnern“ ohne genug echte Buchungen');
 

@@ -6,7 +6,7 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { $, el, fuellen, svg, ZEICHEN, euro, preisText, dauerText, TAG_LANG, MONAT_LANG, hhmm, minuten, heute, plusTage, montag, tagText,
-  meldung, fragen, speichern, summePhasen, alsDatum, iso, themaWahl, themaSetzen } from './hilfen.js';
+  meldung, fragen, speichern, summePhasen, alsDatum, iso, themaWahl, themaSetzen, augen } from './hilfen.js';
 import { Z, api, inhaberin, leitung, ROLLE_NAME, stammdatenLaden, personVon, salonVon, gruppeVon } from './api.js';
 import { tafelAuf, tafelZu } from './tafel.js';
 import { abwesenheitZeigen, abwesenheitNeu } from './termin.js';
@@ -150,6 +150,7 @@ function personBearbeiten(p) {
           team.neuLaden();
         } catch (e) { fehler.textContent = e.message; fehler.hidden = false; }
       } })));
+  augen(koerper);
 }
 
 /* ═══ Leistungen ══════════════════════════════════════════════════════ */
@@ -352,7 +353,7 @@ function passwortTeil() {
   const alt = el('input', { type: 'password', autocomplete: 'current-password' });
   const neu = el('input', { type: 'password', autocomplete: 'new-password', minlength: 10 });
   const fehler = el('p', { klasse: 'form-fehler', role: 'alert', hidden: true });
-  return abschnitt('Mein Passwort', 'Nach dem Ändern sind alle anderen Geräte abgemeldet.',
+  const teil = abschnitt('Mein Passwort', 'Nach dem Ändern sind alle anderen Geräte abgemeldet.',
     el('div', { klasse: 'feld-reihe' },
       el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Bisheriges Passwort' }), alt),
       el('label', { klasse: 'feld' }, el('span', { klasse: 'feld-name', text: 'Neues Passwort (mind. 10 Zeichen)' }), neu)),
@@ -362,6 +363,8 @@ function passwortTeil() {
       try { await api('passwort', { post: { alt: alt.value, neu: neu.value } }); alt.value = ''; neu.value = ''; meldung('Passwort geändert', 'ok'); }
       catch (e) { fehler.textContent = e.message; fehler.hidden = false; }
     } }));
+  augen(teil);
+  return teil;
 }
 
 function regelnTeil() {
@@ -381,6 +384,7 @@ function regelnTeil() {
       zahl('horizont', 'Buchbar im Voraus', 'Tage', { min: 1, max: 365 }),
       zahl('stornofrist', 'Online absagen bis', 'Std. vorher', { min: 0, max: 168 }),
       zahl('puffer', 'Luft nach jedem Termin', 'Min.', { min: 0, max: 60, step: 5 }),
+      zahl('wegzeit', 'Weg zwischen den Salons', 'Min.', { min: 0, max: 180, step: 5 }),
       zahl('max_offen', 'Offene Termine je Nummer', '', { min: 1, max: 20 })),
     fehler,
     el('button', { type: 'button', klasse: 'knopf', text: 'Speichern', onclick: async () => {

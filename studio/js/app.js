@@ -7,7 +7,7 @@
    der aktuelle Bereich still nach.
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { $, el, meldung, heute, themaSetzen, themaAnwenden } from './hilfen.js';
+import { $, el, meldung, heute, themaSetzen, themaAnwenden, augen } from './hilfen.js';
 import { Z, api, inhaberin, leitung, ApiFehler, ROLLE_NAME } from './api.js';
 import { tafelZu, tafelOffen } from './tafel.js';
 import * as kalender from './kalender.js';
@@ -95,6 +95,7 @@ function torZeigen(art, hinweis = '', personen = []) {
       feld('passwort', 'Passwort', { type: 'password', autocomplete: 'current-password', required: true }),
       el('label', { klasse: 'merken' }, el('input', { type: 'checkbox', id: 'tor-merken', checked: true }), el('span', { text: 'Auf diesem Gerät angemeldet bleiben (30 Tage)' })));
   }
+  augen(felder);
   $('tor-fehler').hidden = true;
   $('tor-form').onsubmit = async (e) => {
     e.preventDefault();

@@ -43,6 +43,8 @@ export const ZEICHEN = {
   uhr: '<circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.5 2"/>',
   stift: '<path d="M4 16l1-4 8-8 3 3-8 8zM11.5 5.5l3 3"/>',
   kalender: '<rect x="3" y="4.5" width="14" height="12" rx="1.5"/><path d="M3 8.5h14M7 3v3M13 3v3"/>',
+  auge: '<path d="M2 10s3-5.5 8-5.5S18 10 18 10s-3 5.5-8 5.5S2 10 2 10z"/><circle cx="10" cy="10" r="2.5"/>',
+  augeZu: '<path d="M2 10s3-5.5 8-5.5S18 10 18 10s-3 5.5-8 5.5S2 10 2 10z"/><circle cx="10" cy="10" r="2.5"/><path d="M3.5 3.5l13 13"/>',
 };
 
 /* ── Geld, Dauer ─────────────────────────────────────────────────────── */
@@ -175,6 +177,25 @@ export function absageFragen({ titel, text }) {
     d.returnValue = '';
     d.showModal();
   });
+}
+
+/** Ein Auge neben jedes Passwortfeld: antippen zeigt das Passwort. */
+export function augen(bereich) {
+  for (const feld of bereich.querySelectorAll('input[type="password"]')) {
+    if (feld.parentElement.classList.contains('passwort-rahmen')) continue;
+    const rahmen = el('span', { klasse: 'passwort-rahmen' });
+    feld.replaceWith(rahmen);
+    const knopf = el('button', { type: 'button', klasse: 'passwort-auge', 'aria-label': 'Passwort zeigen', 'aria-pressed': 'false' }, svg(ZEICHEN.auge));
+    knopf.addEventListener('click', () => {
+      const zeigen = feld.type === 'password';
+      feld.type = zeigen ? 'text' : 'password';
+      knopf.setAttribute('aria-pressed', String(zeigen));
+      knopf.setAttribute('aria-label', zeigen ? 'Passwort verbergen' : 'Passwort zeigen');
+      knopf.replaceChildren(svg(zeigen ? ZEICHEN.augeZu : ZEICHEN.auge));
+      feld.focus();
+    });
+    rahmen.append(feld, knopf);
+  }
 }
 
 /** Wartet kurz, bevor eine Funktion läuft (Eingabe beim Tippen). */
